@@ -1,0 +1,9 @@
+.header {
+  display: flex;
+  height: 90px;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  background-color: rgb(86, 98, 109);
+  color: #fff;
+  font-family: Nunito, sans-serif;
+}
