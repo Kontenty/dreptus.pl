@@ -23,18 +23,20 @@ const imgNum = [img1, img2, img3, img4, img5, img6, img7, img8, img9];
   ));
 }; */
 
-const DreptusCarousel = ({ width = 200 }: Props) => {
+const DreptusCarousel = ({ width }: Props) => {
   const settings: Settings = {
     dots: false,
+    arrows: false,
     infinite: true,
-    speed: 500,
-    autoplaySpeed: 2000,
+    speed: 600,
+    autoplaySpeed: 3000,
     autoplay: true,
+    easing: "ease-in-out",
     slidesToShow: 1,
     slidesToScroll: 1,
   };
   return (
-    <div style={{ width: width + "px" }}>
+    <div style={{ width: width ? width + "px" : "auto" }}>
       <Slider {...settings}>
         {imgNum.map((img) => (
           <div key={img.src}>
