@@ -102,17 +102,15 @@ const Home: NextPage = () => {
               Przy przesyłaniu odpowiedzi prosimy korzystać z formularza,
               odznaki czekają:
             </p>
-            <p className="p-justify">
-              <ol>
-                <li>1. „Z Dreptusiem po Dolinie Bugu” (dostępna)</li>
-                <li>
-                  2. „Z Dreptusiem po Polsce” – w stopniu zielonym i żółtym
-                  (dostępna)
-                </li>
-                <li>3. „Z Dreptusiem Traktem Królewskim” (dostępna)</li>
-              </ol>
-            </p>
-            <p className="p-justify">Do zobaczenia na trasach 😀</p>
+            <ol>
+              <li>1. „Z Dreptusiem po Dolinie Bugu” (dostępna)</li>
+              <li>
+                2. „Z Dreptusiem po Polsce” – w stopniu zielonym i żółtym
+                (dostępna)
+              </li>
+              <li>3. „Z Dreptusiem Traktem Królewskim” (dostępna)</li>
+            </ol>
+            <p>Do zobaczenia na trasach 😀</p>
           </article>
         </div>
       </section>

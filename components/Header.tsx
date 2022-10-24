@@ -8,9 +8,9 @@ type Props = {};
 const Header = (props: Props) => {
   return (
     <header className={css.header}>
-      <Link href="/">
+      <a href="/">
         <Image src={logo} alt="logo" height={150} layout="fixed" />
-      </Link>
+      </a>
       <nav className="flex gap-5 ml-5 self-center">
         <Link href="/">Strona główna</Link>
         <Link href="/blog">Aktualności</Link>

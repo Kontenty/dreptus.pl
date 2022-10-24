@@ -1,0 +1,33 @@
+.stack {
+  display: grid;
+}
+.stack > * {
+  grid-area: 1 / -1;
+}
+.content {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  height: 100%;
+  padding: 0.5rem;
+  padding-top: 2rem;
+  padding-left: 10vw;
+  color: #309066;
+  z-index: 2;
+}
+.section {
+  @apply flex flex-col gap-2 items-start;
+}
+.badge {
+  color: #fff;
+  background-color: #309066;
+  padding: 2px 12px;
+  border-radius: 0.25rem;
+  font-size: 13px;
+}
+.heading {
+  @apply text-2xl font-bold;
+}
+.image {
+  height: 100%;
+  background-color: rgb(172, 197, 92);
+}
