@@ -20,7 +20,7 @@
 }
 
 .title {
-  @apply font-semibold text-4xl mb-6;
+  @apply text-4xl mb-6;
 }
 
 .description {

@@ -2,11 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --heading-font: "Montserrat", sans-serif;
+  --text-font: "Nunito", sans-serif;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--text-font);
 }
 
 a {
@@ -24,8 +29,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Nunito", sans-serif;
-  font-weight: 600;
+  font-family: var(--heading-font);
+  font-weight: 500;
 }
 
 .p-justify {

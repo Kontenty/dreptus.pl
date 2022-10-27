@@ -20,7 +20,6 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ posts }) => {
-  console.log(posts);
   return (
     <main className={css.main}>
       <section>
