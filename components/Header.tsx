@@ -13,12 +13,12 @@ const Header = (props: Props) => {
       </a>
       <nav className="flex gap-5 ml-5 self-center">
         <Link href="/">Strona główna</Link>
-        <Link href="/blog">Aktualności</Link>
-        <Link href="/routes">Trasy</Link>
-        <Link href="/participants">Uczestnicy</Link>
-        <Link href="/about">Odznaki</Link>
-        <Link href="/start-form">Karta startowa</Link>
-        <Link href="/contact">Kontakt</Link>
+        <Link href="/">Aktualności</Link>
+        <Link href="/">Trasy</Link>
+        <Link href="/">Uczestnicy</Link>
+        <Link href="/">Odznaki</Link>
+        <Link href="/">Karta startowa</Link>
+        <Link href="/">Kontakt</Link>
       </nav>
     </header>
   );
