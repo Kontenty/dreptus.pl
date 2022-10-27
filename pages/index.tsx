@@ -1,12 +1,26 @@
-import type { NextPage } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import DCarousel from "components/carousel/DreptusCarousel";
 import css from "../styles/Home.module.css";
 import anouncment from "public/image/anouncment.png";
 import trip from "public/image/trip.png";
+import { Post } from "../types";
+import { getPosts } from "lib/db";
 
-const Home: NextPage = () => {
+export const getStaticProps: GetStaticProps = async (context) => {
+  const posts = await getPosts();
+  return {
+    props: { posts: posts ? JSON.parse(JSON.stringify(posts)) : [] }, // will be passed to the page component as props
+  };
+};
+
+interface Props {
+  posts: Post[];
+}
+
+const Home: NextPage<Props> = ({ posts }) => {
+  console.log(posts);
   return (
     <main className={css.main}>
       <section>
@@ -117,24 +131,15 @@ const Home: NextPage = () => {
       <section>
         <h3 className={css.title}>Ostatnio dodane trasy:</h3>
         <div className="flex flex-col">
-          <span>123 Brwinów / Małe i wielkie historie (20.10)</span>
-          <span>122 Niepodległa Rzeczpospolita Kampinoska (11.10)</span>
-          <span>121 Poznań / Czerwiec ’56 (06.10)</span>
-          <span>120 Poznań / Śladem robotniczego protestu (27.09)</span>
-          <span>119 Stary Licheń / Licheńskie Madonny (19.09)</span>
-          <span>118 Chludowo / Pod skrzydłami werbistów (11.09)</span>
-          <span>
-            117 Olkusz / Od olkuskich gwarków do rabsztyńskich rycerzy (05.09)
-          </span>
-          <span>116 Stary Licheń / Sanktuarium MB Licheńskiej (31.08)</span>
-          <span>
-            115 Poznań, Trakt Królewsko-Cesarski / Zamek Cesarski (23.08)
-          </span>
-          <span>
-            114 Poznań, Trakt Królewsko-Cesarski / Stary Rynek (16.08)
-          </span>
-          <span>113 Gdańsk / Śladami znanych gdańszczan (12.08)</span>
-          <span>112 Gdańsk / Uwaga! Lew! (04.08)</span>
+          {posts.map((post) => (
+            <span key={post.ID}>
+              {post.meta_value}. {post.post_title.replace("<br>", " / ")} (
+              {new Intl.DateTimeFormat("pl-PL", { dateStyle: "short" }).format(
+                new Date(post.post_date)
+              )}
+              )
+            </span>
+          ))}
         </div>
       </section>
     </main>
