@@ -13,7 +13,7 @@ const Header = (props: Props) => {
       </a>
       <nav className="flex gap-5 ml-5 self-center">
         <Link href="/">Strona główna</Link>
-        <Link href="/">Aktualności</Link>
+        <Link href="/news">Aktualności</Link>
         <Link href="/">Trasy</Link>
         <Link href="/">Uczestnicy</Link>
         <Link href="/">Odznaki</Link>

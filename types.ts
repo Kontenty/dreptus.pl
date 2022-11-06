@@ -23,4 +23,6 @@ export interface Post {
   post_mime_type: string;
   comment_count: number;
   meta_value?: string | number;
+  thumb_id?: number;
+  thumb_url?: string;
 }
