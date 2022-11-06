@@ -21,14 +21,14 @@ interface Props {
 
 const Home: NextPage<Props> = ({ posts }) => {
   return (
-    <main className={css.main}>
+    <>
       <section>
-        <h1 className={css.title}>Kim jest Dreptuś?</h1>
         <div className="flex">
           <div className="w-1/3">
             <DCarousel />
           </div>
           <article>
+            <h1 className={css.title}>Kim jest Dreptuś?</h1>
             <p className="p-justify">
               Dreptuś to wesoły, przemiły emotikon, który przyszedł na świat w
               niemieckim Freiburgu za sprawą Gerda Altmanna. Od pewnego czasu
@@ -92,12 +92,12 @@ const Home: NextPage<Props> = ({ posts }) => {
       </section>
       {/* Ogłoszenia */}
       <section>
-        <h2 className={css.title}>Ogłoszenia</h2>
         <div className="flex gap-6">
           <aside className="w-1/3">
             <Image src={anouncment} alt="Ogłoszenia" />
           </aside>
           <article className="w-2/3">
+            <h2 className={css.title}>Ogłoszenia</h2>
             <h3 className="text-xl text-center">
               Dreptuś zaprasza do wspólnego zwiedzania
             </h3>
@@ -141,7 +141,7 @@ const Home: NextPage<Props> = ({ posts }) => {
           ))}
         </div>
       </section>
-    </main>
+    </>
   );
 };
 
