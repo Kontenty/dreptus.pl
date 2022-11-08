@@ -26,3 +26,15 @@ export interface Post {
   thumb_id?: number;
   thumb_url?: string;
 }
+
+export interface Trip extends Post {
+  images: { url: string }[];
+  pdf: string;
+  author: string;
+  length: string;
+  pk: string;
+  lat: string;
+  lon: string;
+  founding: string;
+  type: string;
+}

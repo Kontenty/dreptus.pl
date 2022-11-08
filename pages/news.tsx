@@ -16,7 +16,6 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ posts }) => {
-  console.log(posts);
   return (
     <div className="grid grid-cols:1 lg:grid-cols-3 gap-6 ld:gap-10">
       {posts.map((p) => (

@@ -1,25 +1,26 @@
 import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import DCarousel from "components/carousel/DreptusCarousel";
 import css from "../styles/Home.module.css";
 import anouncment from "public/image/anouncment.png";
 import trip from "public/image/trip.png";
 import { Post } from "../types";
-import { getPosts } from "lib/db";
+import { getTrips } from "lib/db";
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const posts = await getPosts();
+  const trips = await getTrips();
   return {
-    props: { posts: posts ? JSON.parse(JSON.stringify(posts)) : [] }, // will be passed to the page component as props
+    props: { trips: trips ? JSON.parse(JSON.stringify(trips)) : [] }, // will be passed to the page component as props
   };
 };
 
 interface Props {
-  posts: Post[];
+  trips: Post[];
 }
 
-const Home: NextPage<Props> = ({ posts }) => {
+const Home: NextPage<Props> = ({ trips }) => {
   return (
     <>
       <section>
@@ -130,14 +131,18 @@ const Home: NextPage<Props> = ({ posts }) => {
       <section>
         <h3 className={css.title}>Ostatnio dodane trasy:</h3>
         <div className="flex flex-col">
-          {posts.map((post) => (
-            <span key={post.ID}>
-              {post.meta_value}. {post.post_title.replace("<br>", " / ")} (
-              {new Intl.DateTimeFormat("pl-PL", { dateStyle: "short" }).format(
-                new Date(post.post_date)
-              )}
-              )
-            </span>
+          {trips.map((trip) => (
+            <div key={trip.ID}>
+              <Link href={`/trips/${trip.post_name}`}>
+                <a>
+                  {trip.meta_value}. {trip.post_title.replace("<br>", " / ")} (
+                  {new Intl.DateTimeFormat("pl-PL", {
+                    dateStyle: "short",
+                  }).format(new Date(trip.post_date))}
+                  )
+                </a>
+              </Link>
+            </div>
           ))}
         </div>
       </section>
