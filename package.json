@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.13",
     "knex": "^2.3.0",
     "mysql2": "^2.3.3",
     "next": "12.3.1",

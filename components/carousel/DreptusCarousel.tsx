@@ -1,7 +1,5 @@
 import Image from "next/image";
 import Slider, { Settings } from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import img1 from "public/image/carousel/dreptus-ver-1.jpg";
 import img2 from "public/image/carousel/dreptus-ver-2.jpg";
 import img3 from "public/image/carousel/dreptus-ver-3.jpg";

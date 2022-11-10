@@ -28,7 +28,7 @@ export interface Post {
 }
 
 export interface Trip extends Post {
-  images: { url: string }[];
+  images: { url: string; title: string }[];
   pdf: string;
   author: string;
   length: string;
@@ -37,4 +37,5 @@ export interface Trip extends Post {
   lon: string;
   founding: string;
   type: string;
+  number: string;
 }

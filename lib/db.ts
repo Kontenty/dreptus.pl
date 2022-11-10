@@ -46,6 +46,7 @@ export const getTripBySlug = async (slug: string) => {
   const query = `SELECT ID, post_title, post_content,\
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_images' ) 'images',\
     (SELECT guid FROM wp_posts WHERE ID = (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_menu_pdf') ) 'pdf',\
+    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_zxr0feyjz' ) 'number',\
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_15kr29dj3' ) 'author',\
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_nv0mho3ts' ) 'length',\
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_yjar0aoq6' ) 'pk',\
@@ -58,7 +59,7 @@ FROM wp_posts WHERE ID = ${id}`;
   const imageString = postData[0][0].images;
   const trip = postData[0][0];
   const images = await db("wp_posts")
-    .select("guid as url")
+    .select("guid as url", "post_title as title")
     .whereIn("ID", imageString.split(","));
   trip.images = images;
   return trip;
