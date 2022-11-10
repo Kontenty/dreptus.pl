@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import DCarousel from "components/carousel/DreptusCarousel";
+import Hr from "components/hr";
 import css from "../styles/Home.module.css";
 import anouncment from "public/image/anouncment.png";
 import trip from "public/image/trip.png";
@@ -57,6 +58,7 @@ const Home: NextPage<Props> = ({ trips }) => {
         </div>
       </section>
       {/* tTRIP */}
+      <Hr length={20} />
       <section>
         <h2 className={css.title}>TRIP</h2>
         <div>
@@ -92,6 +94,7 @@ const Home: NextPage<Props> = ({ trips }) => {
         </div>
       </section>
       {/* Ogłoszenia */}
+      <Hr length={20} />
       <section>
         <div className="flex gap-6">
           <aside className="w-1/3">
