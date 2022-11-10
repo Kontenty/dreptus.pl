@@ -67,7 +67,7 @@ FROM wp_posts WHERE ID = ${id}`;
 
 export const getPostsWithThumb = async (limit = 10) => {
   const posts = await db.raw(
-    "SELECT p.ID, p.post_title, p.post_date, pm.meta_value as 'thumb_id', (SELECT p2.guid  FROM wp_posts p2 WHERE p2.ID=pm.meta_value) 'thumb_url' FROM wp_posts p JOIN wp_postmeta pm ON pm.post_id = p.ID WHERE pm.meta_key = ? AND p.post_status = ? ORDER BY p.ID DESC LIMIT ?",
+    "SELECT p.ID, p.post_title,p.post_name, p.post_date, pm.meta_value as 'thumb_id', (SELECT p2.guid  FROM wp_posts p2 WHERE p2.ID=pm.meta_value) 'thumb_url' FROM wp_posts p JOIN wp_postmeta pm ON pm.post_id = p.ID WHERE pm.meta_key = ? AND p.post_status = ? ORDER BY p.ID DESC LIMIT ?",
     ["_thumbnail_id", "publish", limit]
   );
   return posts[0];

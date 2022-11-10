@@ -29,7 +29,11 @@ const Header = (props: Props) => {
           <Link key={i} href={link.link}>
             <a
               className={
-                router.pathname == link.link ? css.activeLink : css.link
+                router.pathname === link.link
+                  ? css.activeLink
+                  : router.pathname.includes(link.link + "/")
+                  ? css.activeLink
+                  : css.link
               }
             >
               {link.name}
