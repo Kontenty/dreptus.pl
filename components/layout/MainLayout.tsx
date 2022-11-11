@@ -9,11 +9,11 @@ type Props = {
 
 const MainLayout = ({ children }: Props) => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
       <main className={css.main}>{children}</main>
       <Footer />
-    </>
+    </div>
   );
 };
 
