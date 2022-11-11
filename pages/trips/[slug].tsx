@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Image, { StaticImageData } from "next/image";
-import ErrorPage from "next/error";
+// import ErrorPage from "next/error";
 import Slider from "react-slick";
 import {
   ArrowLeftCircleIcon,
@@ -16,8 +16,9 @@ import pinByFoot from "public/image/icons/pin-foot.png";
 import pinByBike from "public/image/icons/pin-bike.png";
 import css from "styles/Trip.module.css";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function SlickArrow(props: any) {
-  const { className, style, onClick } = props;
+  const { className, onClick } = props;
   const isLeft: boolean = className.includes("slick-prev");
   return (
     <button className={isLeft ? css.arrowBoxL : css.arrowBoxR}>

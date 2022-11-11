@@ -1,12 +1,9 @@
-import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import css from "./Footer.module.css";
 import footerImg from "public/image/footer-bg.jpg";
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <footer>
       <div className={css.stack}>

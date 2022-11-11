@@ -5,8 +5,6 @@ import { useRouter } from "next/router";
 import logo from "public/image/logo.png";
 import css from "./Header.module.css";
 
-type Props = {};
-
 const links = [
   { name: "Strona główna", link: "/" },
   { name: "Aktualności", link: "/news" },
@@ -17,7 +15,7 @@ const links = [
   { name: "Kontakt", link: "/contact" },
 ];
 
-const Header = (props: Props) => {
+const Header = () => {
   const router = useRouter();
   return (
     <header className={css.header}>

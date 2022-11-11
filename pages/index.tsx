@@ -1,5 +1,4 @@
 import type { NextPage, GetStaticProps } from "next";
-import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import DCarousel from "components/carousel/DreptusCarousel";
@@ -7,10 +6,10 @@ import Hr from "components/hr";
 import css from "../styles/Home.module.css";
 import anouncment from "public/image/anouncment.png";
 import trip from "public/image/trip.png";
-import { Post } from "../types";
+import { Post } from "types";
 import { getTrips } from "lib/db";
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   const trips = await getTrips();
   return {
     props: { trips: trips ? JSON.parse(JSON.stringify(trips)) : [] }, // will be passed to the page component as props

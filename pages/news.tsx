@@ -1,11 +1,10 @@
 import type { NextPage, GetStaticProps } from "next";
-import Head from "next/head";
 import Image from "next/image";
 import { Post } from "../types";
 import { getPostsWithThumb } from "lib/db";
 import Link from "next/link";
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   const posts = await getPostsWithThumb(9);
   return {
     props: { posts: posts ? JSON.parse(JSON.stringify(posts)) : [] }, // will be passed to the page component as props
@@ -42,7 +41,7 @@ const Home: NextPage<Props> = ({ posts }) => {
                     dateStyle: "short",
                   }).format(new Date(p.post_date))}
                 </p>
-                <h2 dangerouslySetInnerHTML={{ __html: p.post_title }}></h2>
+                <h2 dangerouslySetInnerHTML={{ __html: p.post_title }}></h2>ks
               </div>
             </a>
           </Link>
