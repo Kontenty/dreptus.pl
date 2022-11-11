@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function Trips() {
+export default function Participants() {
   return (
     <div className="justify-self-center">
       <h1 className="text-3xl mb-10">

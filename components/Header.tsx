@@ -9,9 +9,9 @@ const links = [
   { name: "Strona główna", link: "/" },
   { name: "Aktualności", link: "/news" },
   { name: "Trasy", link: "/trips" },
-  { name: "Uczestnicy", link: "/p" },
-  { name: "Odznaki", link: "/o" },
-  { name: "Karta startowa", link: "/k" },
+  { name: "Uczestnicy", link: "/participants" },
+  { name: "Odznaki", link: "/odznaki" },
+  { name: "Karta startowa", link: "/form" },
   { name: "Kontakt", link: "/contact" },
 ];
 
