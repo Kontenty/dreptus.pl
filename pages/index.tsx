@@ -57,7 +57,7 @@ const Home: NextPage<Props> = ({ trips }) => {
         </div>
       </section>
       {/* tTRIP */}
-      <Hr length={20} />
+      <Hr length={18} />
       <section>
         <h2 className={css.title}>TRIP</h2>
         <div>
@@ -93,7 +93,7 @@ const Home: NextPage<Props> = ({ trips }) => {
         </div>
       </section>
       {/* Ogłoszenia */}
-      <Hr length={20} />
+      <Hr length={18} />
       <section>
         <div className="flex gap-6">
           <aside className="w-1/3">
