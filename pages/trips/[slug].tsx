@@ -166,8 +166,27 @@ const ModalGallery = ({
   onClose: () => void;
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const stopClose = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+  };
+  useEffect(() => {
+    if (onClose) {
+      const keyDownHandler = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          onClose();
+        }
+      };
+
+      document.addEventListener("keydown", keyDownHandler);
+
+      return () => {
+        document.removeEventListener("keydown", keyDownHandler);
+      };
+    }
+  }, [onClose]);
   return (
-    <div className={css.modalWrapper}>
+    <div className={css.modalWrapper} onClick={onClose}>
       <div className="flex justify-between p-4">
         <span className="text-gray-200">
           {currentSlide || initial + 1} / {images.length}
@@ -178,7 +197,7 @@ const ModalGallery = ({
         />
       </div>
       <div className="flex flex-col justify-center flex-grow px-16 pb-8">
-        <div>
+        <div onClick={stopClose}>
           <Slider
             arrows
             infinite
