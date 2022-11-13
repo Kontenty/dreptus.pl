@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 // import ErrorPage from "next/error";
 import Slider from "react-slick";
 import {
@@ -12,8 +12,7 @@ import {
 
 import type { Trip } from "types";
 import { getTripSlugs, getTripBySlug } from "lib/db";
-import pinByFoot from "public/image/icons/pin-foot.png";
-import pinByBike from "public/image/icons/pin-bike.png";
+import { FootmanPinIcon, CyclistPinIcon } from "components/icons";
 import css from "styles/Trip.module.css";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,9 +35,9 @@ function SlickArrow(props: any) {
 interface Props {
   trip: Trip;
 }
-const Icon: Record<string, StaticImageData> = {
-  "10898": pinByFoot,
-  "10899": pinByBike,
+const Icon: Record<string, JSX.Element> = {
+  "10898": <FootmanPinIcon />,
+  "10899": <CyclistPinIcon />,
 };
 const TripPost: NextPage<Props> = ({ trip }) => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
@@ -53,11 +52,11 @@ const TripPost: NextPage<Props> = ({ trip }) => {
       ) : (
         <>
           <div className="flex items-center py-10">
-            <div className="flex flex-col px-10">
-              <h3 className="text-2xl">{trip.number}</h3>
-              <Image src={Icon[trip.type]} height={50} width={40} alt="pin" />
+            <div className="flex flex-col px-10 border-r-2 border-teal-800">
+              <h3 className="text-2xl mb-4">{trip.number}</h3>
+              {Icon[trip.type]}
             </div>
-            <div className="px-10 border-l-2 border-teal-800">
+            <div className="px-10">
               <h1
                 className="text-3xl text-teal-800"
                 dangerouslySetInnerHTML={{ __html: trip.post_title }}
