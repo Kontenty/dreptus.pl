@@ -19,7 +19,7 @@ const Header = () => {
   const router = useRouter();
   return (
     <header className={css.header}>
-      <a href="/">
+      <a href="/" className="z-10">
         <Image src={logo} alt="logo" height={150} layout="fixed" />
       </a>
       <nav className="flex gap-5 ml-5 self-center">
