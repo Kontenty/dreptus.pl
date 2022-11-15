@@ -1,15 +1,10 @@
-import Link from "next/link";
+import Main from "components/layout/MainLayout";
+import UnderConstruction from "components/UnderConstruction";
 
 export default function Odznaki() {
   return (
-    <div className="justify-self-center">
-      <h1 className="text-3xl mb-10">
-        <span className="text-5xl animate-pulse">⚒</span>
-        <span> - strona w trakcie budowy</span>
-      </h1>
-      <Link href="/">
-        <a className="underline underline-offset-4">Wróć do początku</a>
-      </Link>
-    </div>
+    <Main>
+      <UnderConstruction />
+    </Main>
   );
 }

@@ -2,6 +2,7 @@ import type { NextPage, GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import DCarousel from "components/carousel/DreptusCarousel";
+import Main from "components/layout/MainLayout";
 import Hr from "components/hr";
 import css from "../styles/Home.module.css";
 import anouncment from "public/image/anouncment.png";
@@ -22,7 +23,7 @@ interface Props {
 
 const Home: NextPage<Props> = ({ trips }) => {
   return (
-    <>
+    <Main>
       <section>
         <div className="flex">
           <div className="w-1/3">
@@ -148,7 +149,7 @@ const Home: NextPage<Props> = ({ trips }) => {
           ))}
         </div>
       </section>
-    </>
+    </Main>
   );
 };
 
