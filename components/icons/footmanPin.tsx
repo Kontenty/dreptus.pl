@@ -2,14 +2,15 @@ import colors from "tailwindcss/colors";
 
 type Props = {
   color?: string;
+  height?: number;
 };
 
-const footmanPin = ({ color = colors.green[700] }: Props) => {
+const FootmanPin = ({ color = colors.green[700], height = 50 }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="40"
-      height="50"
+      width="auto"
+      height={height}
       fill="none"
       viewBox="0 0 40 50"
     >
@@ -28,4 +29,4 @@ const footmanPin = ({ color = colors.green[700] }: Props) => {
   );
 };
 
-export default footmanPin;
+export default FootmanPin;
