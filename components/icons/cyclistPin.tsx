@@ -4,7 +4,7 @@ type Props = {
   color?: string;
 };
 
-const Icon = ({ color = colors.lime[700] }: Props) => {
+const Icon = ({ color = colors.sky[700] }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

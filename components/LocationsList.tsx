@@ -11,7 +11,7 @@ const LocationsList = ({ list }: Props) => {
         <div
           key={loc.slug}
           role="button"
-          className="bg-blue-700 text-white p-3 rounded cursor-pointer"
+          className="bg-sky-700 text-white p-3 rounded cursor-pointer"
         >
           {loc.name} ({loc.count})
         </div>

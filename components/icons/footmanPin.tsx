@@ -4,7 +4,7 @@ type Props = {
   color?: string;
 };
 
-const footmanPin = ({ color = colors.blue[700] }: Props) => {
+const footmanPin = ({ color = colors.green[700] }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

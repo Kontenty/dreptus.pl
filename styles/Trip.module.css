@@ -29,7 +29,7 @@
 }
 
 .arrowBox {
-  @apply absolute flex justify-center items-center w-9 h-9 bg-lime-600 top-0 bottom-0 my-auto;
+  @apply absolute flex justify-center items-center w-9 h-9 bg-green-700 top-0 bottom-0 my-auto;
   border-radius: 50%;
   z-index: 1;
 }
