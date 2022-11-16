@@ -9,7 +9,7 @@ const FootmanPin = ({ color = colors.green[700], height = 50 }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="auto"
+      width={height * 0.8}
       height={height}
       fill="none"
       viewBox="0 0 40 50"

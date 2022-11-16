@@ -1,16 +1,18 @@
+import "../styles/prime-theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Layout from "components/layout/FullWidthLayout";
-import "../styles/globals.css";
-import { LoadScript } from "@react-google-maps/api";
-const googleKey = "AIzaSyB1XwgwHr9tgBinodv48WPifH4euSOn9CA";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
+  });
   return (
     <Layout>
-      <LoadScript googleMapsApiKey={googleKey}>
-        <Component {...pageProps} />
-      </LoadScript>
-      ;
+      <Component {...pageProps} />;
     </Layout>
   );
 }

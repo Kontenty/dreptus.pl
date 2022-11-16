@@ -39,3 +39,21 @@ export interface Trip extends Post {
   type: string;
   number: string;
 }
+
+export interface TripFormMap extends TripsForMapResponse {
+  locations: string[];
+}
+
+export interface TripsForMapResponse {
+  ID: number;
+  title: string;
+  slug: string;
+  length: string;
+  pk: string;
+  lat: string;
+  lon: string;
+  type: string;
+  number: string;
+  category_names: string;
+  category_slugs: string;
+}

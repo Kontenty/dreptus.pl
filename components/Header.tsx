@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <header className={css.header}>
       <a href="/" className="z-10">
-        <Image src={logo} alt="logo" height={150} layout="fixed" />
+        <Image src={logo} alt="logo" height={150} layout="fixed" priority />
       </a>
       <nav className="flex gap-5 ml-5 self-center">
         {links.map((link, i) => (

@@ -9,7 +9,7 @@ const Icon = ({ color = colors.sky[700], height = 50 }: Props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="auto"
+      width={height * 0.8}
       height={height}
       fill="none"
       viewBox="0 0 40 50"
@@ -17,8 +17,8 @@ const Icon = ({ color = colors.sky[700], height = 50 }: Props) => {
       <path
         fill={color}
         stroke="#414140"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         d="M40.3 20c0 9.34-4.904 16.72-9.858 21.793a49.732 49.732 0 0 1-6.805 5.79c-.928.655-1.7 1.151-2.24 1.483a27.92 27.92 0 0 1-.597.359 28.218 28.218 0 0 1-.597-.359 42.963 42.963 0 0 1-2.24-1.484 49.726 49.726 0 0 1-6.805-5.79C6.204 36.72 1.3 29.34 1.3 20a19.5 19.5 0 0 1 39 0Z"
       />
       <path
@@ -27,9 +27,9 @@ const Icon = ({ color = colors.sky[700], height = 50 }: Props) => {
       />
       <path
         fill="#fff"
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M10.99 30.947c3.617 0 6.55-2.939 6.55-6.563 0-3.625-2.933-6.563-6.55-6.563s-6.55 2.938-6.55 6.563c0 3.624 2.933 6.563 6.55 6.563Zm0-1.47a5.088 5.088 0 0 0 5.083-5.093 5.088 5.088 0 0 0-5.083-5.094 5.088 5.088 0 0 0-5.083 5.094 5.088 5.088 0 0 0 5.083 5.093ZM30.052 30.947c3.617 0 6.549-2.939 6.549-6.563 0-3.625-2.932-6.563-6.55-6.563-3.616 0-6.549 2.938-6.549 6.563 0 3.624 2.933 6.563 6.55 6.563Zm0-1.47a5.088 5.088 0 0 0 5.083-5.093 5.088 5.088 0 0 0-5.083-5.094 5.088 5.088 0 0 0-5.083 5.094 5.088 5.088 0 0 0 5.083 5.093Z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
       <path
         fill="#fff"

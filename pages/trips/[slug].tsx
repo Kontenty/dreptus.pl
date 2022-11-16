@@ -11,8 +11,8 @@ import {
 } from "@heroicons/react/24/outline";
 
 import type { Trip } from "types";
+import { getIcon, getIconUrl } from "lib/utils";
 import { getTripSlugs, getTripBySlug } from "lib/db";
-import { FootmanPinIcon, CyclistPinIcon } from "components/icons";
 import css from "styles/Trip.module.css";
 import MainLayout from "components/layout/MainLayout";
 
@@ -36,17 +36,11 @@ function SlickArrow(props: any) {
 interface Props {
   trip: Trip;
 }
-const Icon: Record<string, { component: JSX.Element; string: string }> = {
-  "10898": {
-    component: <FootmanPinIcon />,
-    string: "/image/icons/footman-circle.svg",
-  },
-  "10899": {
-    component: <CyclistPinIcon />,
-    string: "/image/icons/footman-circle.svg",
-  },
-};
+
 const TripPost: NextPage<Props> = ({ trip }) => {
+  /* const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
+  }); */
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const router = useRouter();
   const center = { lat: Number(trip.lat), lng: Number(trip.lon) };
@@ -60,7 +54,7 @@ const TripPost: NextPage<Props> = ({ trip }) => {
             <Map
               center={center}
               zoom={14}
-              marker={{ icon: Icon[trip.type].string, center }}
+              marker={{ icon: getIconUrl(trip.type), center }}
               containerStyle={{ width: "100%", height: "300px" }}
             />
           </div>
@@ -68,7 +62,7 @@ const TripPost: NextPage<Props> = ({ trip }) => {
             <div className="flex items-center py-4">
               <div className="flex flex-col px-10 border-r-2 border-teal-800">
                 <h3 className="text-2xl mb-4">{trip.number}</h3>
-                {Icon[trip.type].component}
+                {getIcon(trip.type)}
               </div>
               <div className="px-10">
                 <h1
