@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { ReactNode } from "react";
 import { GoogleMap, MarkerF } from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 const defaultContainerStyle = {
   width: "900px",
@@ -12,50 +13,63 @@ const defaultCenter = {
 };
 
 interface Props {
+  children?: ReactNode;
   center: { lat: number; lng: number };
   zoom?: number;
   containerStyle?: {
     width: string;
     height: string;
   };
-  marker: {
+  marker?: {
     center: { lat: number; lng: number };
 
     icon?: string;
   };
 }
 
-class Map extends Component<Props> {
-  render() {
-    const {
-      center = defaultCenter,
-      containerStyle = defaultContainerStyle,
-      zoom = 10,
-      marker,
-    } = this.props;
-    const icon = marker.icon || "/image/icons/footman-circle.svg";
-    return (
-      <GoogleMap
-        id="map-with-marker"
-        mapContainerStyle={containerStyle}
-        center={marker.center}
-        zoom={zoom}
-        options={{
-          disableDefaultUI: true,
-          fullscreenControl: true,
-          zoomControl: true,
+const Map = ({
+  center = defaultCenter,
+  containerStyle = defaultContainerStyle,
+  zoom = 10,
+  marker,
+  children,
+}: Props) => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
+  });
+  function markerRender() {
+    const icon = marker?.icon ?? "/image/icons/footman-circle.svg";
+    return marker ? (
+      <MarkerF
+        position={marker.center}
+        icon={{
+          url: icon,
         }}
-      >
-        {/* Child components, such as markers, info windows, etc. */}
-        <MarkerF
-          position={center}
-          icon={{
-            url: icon,
-          }}
-        />
-        <></>
-      </GoogleMap>
-    );
+      />
+    ) : null;
   }
-}
-export default Map;
+  return isLoaded ? (
+    <GoogleMap
+      id="map-with-marker"
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={zoom}
+      options={{
+        disableDefaultUI: true,
+        fullscreenControl: true,
+        zoomControl: true,
+        mapTypeId: "terrain",
+      }}
+    >
+      {/* Child components, such as markers, info windows, etc. */}
+      {children}
+      {marker && markerRender()}
+      <></>
+    </GoogleMap>
+  ) : (
+    <div style={containerStyle} className="flex justify-center items-center">
+      <h1 className="text-2xl">Map loading</h1>
+    </div>
+  );
+};
+export default React.memo(Map);

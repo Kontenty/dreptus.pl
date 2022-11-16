@@ -42,6 +42,7 @@ export interface Trip extends Post {
 
 export interface TripFormMap extends TripsForMapResponse {
   locations: string[];
+  dolinaBugu: boolean;
 }
 
 export interface TripsForMapResponse {
@@ -50,8 +51,8 @@ export interface TripsForMapResponse {
   slug: string;
   length: string;
   pk: string;
-  lat: string;
-  lon: string;
+  lat: number;
+  lon: number;
   type: string;
   number: string;
   category_names: string;
