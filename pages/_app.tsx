@@ -1,7 +1,7 @@
-import "../styles/prime-theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "../styles/globals.css";
+import "../styles/prime-theme.css";
 import type { AppProps } from "next/app";
 import Layout from "components/layout/FullWidthLayout";
 
