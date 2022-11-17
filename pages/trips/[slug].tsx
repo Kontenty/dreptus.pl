@@ -7,6 +7,7 @@ import Slider from "react-slick";
 import {
   ArrowLeftCircleIcon,
   ArrowRightCircleIcon,
+  MapIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
@@ -71,7 +72,7 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                 ></h1>
               </div>
             </div>
-            <section>
+            <section className="flex justify-between items-center border-b-2 border-teal-800 pb-2">
               <div className={css.adnotations}>
                 <span className="text-bolder">Opracowanie trasy</span>
                 <span className="text-indigo-800">{trip.author}</span>
@@ -82,41 +83,72 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                 <span className="text-bolder">Finansowanie</span>
                 <span className="text-indigo-800">{trip.founding}</span>
               </div>
+              <div>
+                <a
+                  role="button"
+                  target="_blank"
+                  href={trip.pdf}
+                  rel="noreferrer"
+                  className="flex gap-4 border-2 rounded-lg px-6 py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
+                >
+                  Pobierz mapę
+                  <MapIcon className="w-6 h-6" />
+                </a>
+              </div>
             </section>
-            <article
-              className="px-6 py-4 bg-white rounded-md"
-              dangerouslySetInnerHTML={{ __html: trip.post_content }}
-            ></article>
-            <aside>
-              <Slider
-                arrows
-                infinite
-                speed={500}
-                // centerMode
-                slidesToShow={1}
-                slidesToScroll={1}
-                variableWidth
-                prevArrow={<SlickArrow />}
-                nextArrow={<SlickArrow />}
-              >
-                {trip.images.map((img, i) => (
-                  <div key={img.url + "div"} className="px-2">
-                    <div
-                      className={css.imgBox}
-                      onClick={() => setSelectedImage(i)}
-                    >
-                      <Image
-                        src={img.url}
-                        height={200}
-                        width={300}
-                        alt="trip photo"
-                        className={css.img}
-                      />
-                    </div>
+            <div className="flex gap-4 lg:gap-8">
+              <div className="flex flex-col gap-4 w-2/3">
+                <article
+                  className="px-6 py-4 bg-white rounded-md"
+                  dangerouslySetInnerHTML={{ __html: trip.post_content }}
+                ></article>
+                <aside>
+                  <Slider
+                    arrows
+                    infinite
+                    speed={500}
+                    // centerMode
+                    slidesToShow={1}
+                    slidesToScroll={1}
+                    variableWidth
+                    prevArrow={<SlickArrow />}
+                    nextArrow={<SlickArrow />}
+                  >
+                    {trip.images.map((img, i) => (
+                      <div key={img.url + "div"} className="px-2">
+                        <div
+                          className={css.imgBox}
+                          onClick={() => setSelectedImage(i)}
+                        >
+                          <Image
+                            src={img.url}
+                            height={200}
+                            width={300}
+                            alt="trip photo"
+                            className={css.img}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </Slider>
+                </aside>
+              </div>
+              <div className="w-1/3">
+                {trip.pdfImages.map((pdf) => (
+                  <div
+                    key={pdf.title}
+                    className="relative w-full h-[500px] mb-1"
+                  >
+                    <Image
+                      src={pdf.url}
+                      alt={pdf.title}
+                      layout="fill"
+                      objectFit="contain"
+                    />
                   </div>
                 ))}
-              </Slider>
-            </aside>
+              </div>
+            </div>
           </MainLayout>
           {selectedImage !== null && (
             <ModalGallery

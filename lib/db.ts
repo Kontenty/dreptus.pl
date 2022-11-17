@@ -54,15 +54,21 @@ export const getTripBySlug = async (slug: string) => {
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_boz3z5wv9' ) 'founding',\
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_0o5uhb4c9' ) 'type',\
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_latitude' ) 'lat',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_longitude' ) 'lon'\
+    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_longitude' ) 'lon',\
+    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_i5t95ytae' ) 'pdf_images'\
 FROM wp_posts WHERE ID = ${id}`;
   const postData = await db.raw(query);
   const imageString = postData[0][0].images;
+  const pdfImageString = postData[0][0].pdf_images;
   const trip = postData[0][0];
   const images = await db("wp_posts")
     .select("guid as url", "post_title as title")
     .whereIn("ID", imageString.split(","));
+  const pdfImages = await db("wp_posts")
+    .select("guid as url", "post_title as title")
+    .whereIn("ID", pdfImageString.split(","));
   trip.images = images;
+  trip.pdfImages = pdfImages;
   return trip;
 };
 

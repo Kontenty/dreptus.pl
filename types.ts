@@ -30,6 +30,8 @@ export interface Post {
 export interface Trip extends Post {
   images: { url: string; title: string }[];
   pdf: string;
+  pdf_images: string;
+  pdfImages: { url: string; title: string }[];
   author: string;
   length: string;
   pk: string;
