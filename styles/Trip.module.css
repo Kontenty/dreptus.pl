@@ -13,34 +13,12 @@
   border-radius: 10px;
   cursor: pointer;
 }
-.imgBoxBig {
-  position: relative;
-  height: 566px;
-  width: 800px;
-  margin-right: auto;
-  margin-left: auto;
-  border-radius: 5px;
-  overflow: hidden;
-}
 
 .img {
   object-fit: cover;
   object-position: 50% 50%;
 }
 
-.arrowBox {
-  @apply absolute flex justify-center items-center w-9 h-9 bg-green-700 top-0 bottom-0 my-auto;
-  border-radius: 50%;
-  z-index: 1;
-}
-.arrowBoxL {
-  @apply arrowBox;
-  @apply -left-10;
-}
-.arrowBoxR {
-  @apply arrowBox;
-  @apply -right-10;
-}
 .arrow {
   @apply w-6 h-6;
   width: 2.25rem;
@@ -51,7 +29,9 @@
   cursor: pointer;
 }
 
-.modalWrapper {
-  @apply fixed inset-0 flex flex-col bg-gray-900 overflow-hidden z-10;
-  background-color: rgba(19, 19, 19, 0.97);
+.fitImg {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
 }

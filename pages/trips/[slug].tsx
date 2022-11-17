@@ -1,39 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Map from "components/map/at-gmap-api";
 import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Slider from "react-slick";
-import {
-  ArrowLeftCircleIcon,
-  ArrowRightCircleIcon,
-  MapIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { MapIcon } from "@heroicons/react/24/outline";
 
 import type { Trip } from "types";
 import { getIcon, getIconUrl } from "lib/utils";
 import { getTripSlugs, getTripBySlug } from "lib/db";
 import css from "styles/Trip.module.css";
 import MainLayout from "components/layout/MainLayout";
+import SlickArrow from "components/SlickArrow";
+import ModalGallery from "components/ModalGallery";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function SlickArrow(props: any) {
-  const { className, onClick } = props;
-  const isLeft: boolean = className.includes("slick-prev");
-  return (
-    <button className={isLeft ? css.arrowBoxL : css.arrowBoxR}>
-      {isLeft ? (
-        <ArrowLeftCircleIcon onClick={onClick} className="text-white w-6 h-6" />
-      ) : (
-        <ArrowRightCircleIcon
-          onClick={onClick}
-          className="text-white w-6 h-6"
-        />
-      )}
-    </button>
-  );
-}
 interface Props {
   trip: Trip;
 }
@@ -43,6 +23,10 @@ const TripPost: NextPage<Props> = ({ trip }) => {
     googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
   }); */
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [currentImageSet, setCurrentImageSet] = useState<Trip["images"] | null>(
+    null
+  );
+  const [isFullGallery, setIsFullGallery] = useState(false);
   const router = useRouter();
   const center = { lat: Number(trip.lat), lng: Number(trip.lon) };
   return (
@@ -89,9 +73,9 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                   target="_blank"
                   href={trip.pdf}
                   rel="noreferrer"
-                  className="flex gap-4 border-2 rounded-lg px-6 py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
+                  className="flex items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
                 >
-                  Pobierz mapę
+                  <span>Pobierz&nbsp;mapę</span>
                   <MapIcon className="w-6 h-6" />
                 </a>
               </div>
@@ -118,7 +102,11 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                       <div key={img.url + "div"} className="px-2">
                         <div
                           className={css.imgBox}
-                          onClick={() => setSelectedImage(i)}
+                          onClick={() => {
+                            setSelectedImage(i);
+                            setCurrentImageSet(trip.images);
+                            setIsFullGallery(false);
+                          }}
                         >
                           <Image
                             src={img.url}
@@ -133,16 +121,24 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                   </Slider>
                 </aside>
               </div>
-              <div className="w-1/3">
-                {trip.pdfImages.map((pdf) => (
+              <div className="w-1/3 relative flex flex-col gap-1">
+                {trip.pdfImages.map((pdf, i) => (
                   <div
                     key={pdf.title}
-                    className="relative w-full h-[500px] mb-1"
+                    className="relative hover:scale-125 hover:z-10 transition-all duration-500 cursor-pointer"
+                    onClick={() => {
+                      setSelectedImage(i);
+                      setCurrentImageSet(trip.pdfImages);
+                      setIsFullGallery(true);
+                    }}
                   >
                     <Image
+                      key={pdf.title}
                       src={pdf.url}
                       alt={pdf.title}
-                      layout="fill"
+                      layout="responsive"
+                      width="100%"
+                      height="100%"
                       objectFit="contain"
                     />
                   </div>
@@ -150,11 +146,16 @@ const TripPost: NextPage<Props> = ({ trip }) => {
               </div>
             </div>
           </MainLayout>
-          {selectedImage !== null && (
+          {selectedImage !== null && currentImageSet && (
             <ModalGallery
-              images={trip.images}
+              images={currentImageSet}
               initial={selectedImage}
-              onClose={() => setSelectedImage(null)}
+              full={isFullGallery}
+              onClose={() => {
+                setSelectedImage(null);
+                setCurrentImageSet(null);
+                setIsFullGallery(false);
+              }}
             />
           )}
         </>
@@ -194,80 +195,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
       })) || [],
     fallback: false,
   };
-};
-
-const ModalGallery = ({
-  images,
-  initial = 0,
-  onClose,
-}: {
-  images: Trip["images"];
-  initial?: number;
-  onClose: () => void;
-}) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const stopClose = (e: React.SyntheticEvent) => {
-    e.stopPropagation();
-  };
-  useEffect(() => {
-    if (onClose) {
-      const keyDownHandler = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
-          event.preventDefault();
-          onClose();
-        }
-      };
-
-      document.addEventListener("keydown", keyDownHandler);
-
-      return () => {
-        document.removeEventListener("keydown", keyDownHandler);
-      };
-    }
-  }, [onClose]);
-  return (
-    <div className={css.modalWrapper} onClick={onClose}>
-      <div className="flex justify-between p-4">
-        <span className="text-gray-200">
-          {currentSlide || initial + 1} / {images.length}
-        </span>
-        <XMarkIcon
-          className="w-6 h-6 cursor-pointer text-gray-300 hover:text-white transition-colors"
-          onClick={onClose}
-        />
-      </div>
-      <div className="flex flex-col justify-center flex-grow px-16 pb-8">
-        <div onClick={stopClose}>
-          <Slider
-            arrows
-            infinite
-            fade
-            speed={500}
-            slidesToShow={1}
-            slidesToScroll={1}
-            prevArrow={<SlickArrow />}
-            nextArrow={<SlickArrow />}
-            initialSlide={initial}
-            afterChange={(i: number) => setCurrentSlide(i + 1)}
-          >
-            {images.map((img) => (
-              <React.Fragment key={img.url}>
-                <div className={css.imgBoxBig}>
-                  <Image
-                    src={img.url}
-                    layout="fill"
-                    objectFit="contain"
-                    alt="trip photo"
-                  />
-                </div>
-                <h1 className="text-xl text-white text-center mt-4">
-                  {img.title}
-                </h1>
-              </React.Fragment>
-            ))}
-          </Slider>
-        </div>
-      </div>
-    </div>
-  );
 };
