@@ -1,20 +1,36 @@
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, InferGetStaticPropsType } from "next";
 import Image from "next/image";
-import Main from "components/layout/MainLayout";
-import { Post } from "../types";
-import { getPostsWithThumb } from "lib/db";
 import Link from "next/link";
+import { getPlaiceholder } from "plaiceholder";
+import Main from "components/layout/MainLayout";
+import { getPostsWithThumb } from "lib/db";
 
-export const getStaticProps: GetStaticProps = async () => {
-  const posts = await getPostsWithThumb(9);
+export const getStaticProps = async () => {
+  const postsData = await getPostsWithThumb(9);
+  const posts = await Promise.all(
+    postsData.map(async (p) => {
+      const {
+        base64,
+        img: { src, type },
+      } = await getPlaiceholder(p?.thumb_url || "");
+      return {
+        ...p,
+        post_date: p.post_date.toString(),
+        image: {
+          src,
+          type,
+          title: p.post_name,
+          blurDataURL: base64,
+        },
+      };
+    })
+  );
   return {
-    props: { posts: posts ? JSON.parse(JSON.stringify(posts)) : [] }, // will be passed to the page component as props
+    props: { posts }, // will be passed to the page component as props
   };
 };
 
-interface Props {
-  posts: Post[];
-}
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Home: NextPage<Props> = ({ posts }) => {
   return (
@@ -30,10 +46,11 @@ const Home: NextPage<Props> = ({ posts }) => {
                 <div className="overflow-hidden">
                   <div className="hover:scale-125 transition-all duration-500">
                     <Image
-                      src={p?.thumb_url || ""}
-                      alt="thumbnail"
+                      alt={`thumbnail-${p.post_name}`}
                       width={380}
                       height={280}
+                      placeholder="blur"
+                      {...p.image}
                     />
                   </div>
                 </div>
