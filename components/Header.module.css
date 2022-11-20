@@ -6,6 +6,12 @@
   background-color: rgb(86, 98, 109);
   color: #fff;
   font-family: var(--heading-font);
+  position: relative;
+}
+
+.nav {
+  @apply flex gap-8 ml-5 self-center;
+  flex-wrap: wrap;
 }
 
 .activeLink {
@@ -24,6 +30,7 @@
 .link {
   position: relative;
   color: #ccc;
+  font-weight: 600;
   transition: width color 0.3s ease-in-out;
 }
 .link::after {
@@ -43,4 +50,11 @@
   left: 0;
   width: 100%;
   transition: width 0.3s ease-in-out;
+}
+.logoBox {
+  width: 150px;
+  height: 150px;
+  background-color: #fff;
+  @apply shadow-lg rounded-full border-2 border-slate-200;
+  z-index: 2;
 }

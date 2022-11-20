@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import logo from "public/image/logo.png";
+import logo from "public/image/logo200.png";
 import css from "./Header.module.css";
 
 const links = [
@@ -19,10 +19,10 @@ const Header = () => {
   const router = useRouter();
   return (
     <header className={css.header}>
-      <a href="/" className="z-10">
-        <Image src={logo} alt="logo" height={150} layout="fixed" priority />
+      <a href="/" className={css.logoBox}>
+        <Image src={logo} alt="logo" height={150} width={150} priority />
       </a>
-      <nav className="flex gap-5 ml-5 self-center">
+      <nav className={css.nav}>
         {links.map((link, i) => (
           <Link key={i} href={link.link}>
             <a
