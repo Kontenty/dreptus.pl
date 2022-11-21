@@ -22,6 +22,7 @@ export interface Post {
   meta_value?: string | number;
   thumb_id?: number;
   thumb_url?: string;
+  number: string;
 }
 export interface PostResponse {
   ID: number;

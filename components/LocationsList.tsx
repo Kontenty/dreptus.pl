@@ -8,19 +8,21 @@ type Props = {
 const LocationsList = ({ list }: Props) => {
   return (
     <div className="flex flex-col gap-1">
-      {list.map((loc) => (
-        <Link
-          key={loc.slug}
-          href={{ pathname: `/trips`, query: { slug: loc.slug } }}
-        >
-          <div
-            role="button"
-            className="bg-sky-700 text-white p-3 rounded cursor-pointer"
+      {list.map((loc) =>
+        loc.count > 0 ? (
+          <Link
+            key={loc.slug}
+            href={{ pathname: `/trips`, query: { slug: loc.slug } }}
           >
-            {loc.name} ({loc.count})
-          </div>
-        </Link>
-      ))}
+            <div
+              role="button"
+              className="bg-sky-700 text-white p-3 rounded cursor-pointer"
+            >
+              {loc.name} ({loc.count})
+            </div>
+          </Link>
+        ) : null
+      )}
     </div>
   );
 };

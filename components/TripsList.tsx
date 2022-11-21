@@ -44,8 +44,8 @@ const TripsList = ({ trips }: Props) => {
       responsiveLayout="scroll"
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       currentPageReportTemplate="{first} do {last} z {totalRecords}"
-      rows={10}
-      rowsPerPageOptions={[10, 50, 100]}
+      rows={50}
+      rowsPerPageOptions={[20, 50, 100, 200]}
       onSelectionChange={handleTripSelect}
       selectionMode="single"
       dataKey="ID"

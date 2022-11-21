@@ -142,8 +142,7 @@ const Home: NextPage<Props> = ({ trips }) => {
               <div key={trip.ID}>
                 <Link href={`/trips/${trip.post_name}`}>
                   <a>
-                    {trip.meta_value}. {trip.post_title.replace("<br>", " / ")}{" "}
-                    (
+                    {trip.number}. {trip.post_title.replace("<br>", " / ")} (
                     {new Intl.DateTimeFormat("pl-PL", {
                       dateStyle: "short",
                     }).format(new Date(trip.post_date))}

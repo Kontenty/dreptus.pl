@@ -21,7 +21,7 @@ export const getTrips = async (limit = 10) => {
       "p.post_date",
       "p.post_title",
       "p.post_name",
-      "wp_postmeta.meta_value"
+      "wp_postmeta.meta_value as number"
     )
     .where({
       post_type: "listing",

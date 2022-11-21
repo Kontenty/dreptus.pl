@@ -10,7 +10,6 @@ import cl from "classnames";
 import { locale, addLocale } from "primereact/api";
 
 import Main from "components/layout/MainLayout";
-import { GetStaticProps } from "next";
 import { getTrips } from "lib/db";
 import { Post } from "types";
 
@@ -215,12 +214,32 @@ export default function StartForm({ trips }: Props) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps = async () => {
   const tripsData: Post[] = await getTrips(10000);
-  const trips = tripsData?.map((t) => ({
-    label: t.post_title.replace("<br>", " - "),
-    value: t.post_name,
-  }));
+  const trips = tripsData
+    .sort((a, b) => {
+      const is1Hash = a.number.charAt(0) === "#";
+      const is2Hash = b.number.charAt(0) === "#";
+      if (is1Hash && is2Hash) {
+        return Number(a.number.replace("#", "")) <
+          Number(b.number.replace("#", ""))
+          ? 1
+          : -1;
+      }
+      if (is1Hash) return -1;
+      if (is2Hash) return 1;
+      if (a < b) {
+        return 1;
+      } else if (a > b) {
+        return -1;
+      }
+      return 0;
+    })
+    .reverse()
+    .map((t) => ({
+      label: `${t.number}. ${t.post_title.replace("<br>", " - ")}`,
+      value: t.post_name,
+    }));
   return {
     props: {
       trips: trips || [],
