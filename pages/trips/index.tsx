@@ -1,21 +1,19 @@
-// import Link from "next/link";
-import { GetStaticProps } from "next";
+import { InferGetStaticPropsType } from "next";
+
 import LocationsList from "components/LocationsList";
 import { getLocations, getTripsForMap } from "lib/db";
-import { TripFormMap } from "types";
 import TripsList from "components/TripsList";
 import Map from "components/map/at-gmap-api";
 import { locationsList } from "lib/data";
 import TripMarkerCluster from "components/map/at-gmap-api/TripMarkerCluster";
-// import Map from "components/map/at-gmap-api";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps = async () => {
   const locations = await getLocations();
   const tripsData = await getTripsForMap();
   const trips = tripsData.map((trip) => ({
     ...trip,
     lat: Number(trip.lat),
-    lon: Number(trip.lon),
+    lng: Number(trip.lng),
     locations: trip.category_names
       .split(",")
       .filter((name) => locationsList.includes(name.toLowerCase()))
@@ -26,14 +24,11 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       locations: locations ? JSON.parse(JSON.stringify(locations)) : [],
       trips: trips || [],
-    }, // will be passed to the page component as props
+    },
   };
 };
 
-interface Props {
-  locations: { name: string; count: number; slug: string }[];
-  trips: TripFormMap[];
-}
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Trips({ locations, trips }: Props) {
   return (

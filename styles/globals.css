@@ -39,6 +39,20 @@ h6 {
   }
 } */
 
+/* google maps */
 button.gm-control-active {
   opacity: 0.7;
+}
+
+.gm-style .gm-style-iw-c {
+  padding: 0;
+}
+.gm-style .gm-style-iw-d {
+  padding: 0;
+  width: 300px;
+  overflow: hidden !important;
+}
+.gm-style button.gm-ui-hover-effect {
+  background: rgb(255 255 255 / 0.9) !important;
+  @apply shadow top-0 right-0 !important;
 }
