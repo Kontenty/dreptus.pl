@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
 import Main from "components/layout/MainLayout";
 import { getPostsWithThumb } from "lib/db";
+import { card, newsGrid } from "styles/News.module.css";
 
 export const getStaticProps = async () => {
   const postsData = await getPostsWithThumb(9);
@@ -35,12 +36,9 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 const Home: NextPage<Props> = ({ posts }) => {
   return (
     <Main>
-      <div className="grid grid-cols:1 lg:grid-cols-3 gap-6 ld:gap-10">
+      <div className={newsGrid}>
         {posts.map((p) => (
-          <div
-            key={p.ID}
-            className="border border-slate-200 rounded cursor-pointer overflow-hidden"
-          >
+          <div key={p.ID} className={card}>
             <Link href={p?.post_name ? `/trips/${p.post_name}` : "/news"}>
               <a>
                 <div className="overflow-hidden">
@@ -60,7 +58,7 @@ const Home: NextPage<Props> = ({ posts }) => {
                       dateStyle: "short",
                     }).format(new Date(p.post_date))}
                   </p>
-                  <h2 dangerouslySetInnerHTML={{ __html: p.post_title }}></h2>ks
+                  <h2 dangerouslySetInnerHTML={{ __html: p.post_title }}></h2>
                 </div>
               </a>
             </Link>

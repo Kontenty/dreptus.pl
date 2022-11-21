@@ -1,0 +1,12 @@
+.card {
+  @apply border border-slate-200 rounded cursor-pointer overflow-hidden shadow-md hover:shadow-xl transition-all ease-in-out;
+  transition-duration: 400ms;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.newsGrid {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-12;
+}
