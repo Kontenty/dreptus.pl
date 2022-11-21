@@ -14,6 +14,7 @@ const Hero = () => {
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          placeholder="blur"
           alt="krajobraz"
         />
       </div>
