@@ -3,9 +3,6 @@ import Image from "next/image";
 import css from "./Hero.module.css";
 import familyImg from "public/image/main-page/family.png";
 import familyCyclingImg from "public/image/main-page/family-cycling.png";
-// import crs1 from "public/image/main-page/crs-1.jpg";
-// import crs2 from "public/image/main-page/crs-2.jpg";
-// import crs3 from "public/image/main-page/crs-3.jpg";
 import HeroCarousel from "components/carousel/HeroCarousel";
 
 const Hero = () => {
