@@ -19,16 +19,13 @@ interface Props {
 }
 
 const TripPost: NextPage<Props> = ({ trip }) => {
-  /* const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.GOOGLE_API_KEY || "",
-  }); */
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [currentImageSet, setCurrentImageSet] = useState<Trip["images"] | null>(
     null
   );
   const [isFullGallery, setIsFullGallery] = useState(false);
   const router = useRouter();
-  const center = { lat: Number(trip.lat), lng: Number(trip.lon) };
+  const center = { lat: Number(trip.lat), lng: Number(trip.lng) };
   return (
     <div>
       {router.isFallback ? (
@@ -84,7 +81,12 @@ const TripPost: NextPage<Props> = ({ trip }) => {
               <div className="flex flex-col gap-4 w-2/3">
                 <article
                   className="px-6 py-4 bg-white rounded-md"
-                  dangerouslySetInnerHTML={{ __html: trip.post_content }}
+                  dangerouslySetInnerHTML={{
+                    __html: trip.post_content.replaceAll(
+                      'style="color: #000080;',
+                      ""
+                    ),
+                  }}
                 ></article>
                 <aside>
                   <Slider

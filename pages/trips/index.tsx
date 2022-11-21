@@ -1,4 +1,6 @@
 import { InferGetStaticPropsType } from "next";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import LocationsList from "components/LocationsList";
 import { getLocations, getTripsForMap } from "lib/db";
@@ -12,6 +14,7 @@ export const getStaticProps = async () => {
   const tripsData = await getTripsForMap();
   const trips = tripsData.map((trip) => ({
     ...trip,
+    position: { lat: Number(trip.lat), lng: Number(trip.lng) },
     lat: Number(trip.lat),
     lng: Number(trip.lng),
     locations: trip.category_names
@@ -31,14 +34,31 @@ export const getStaticProps = async () => {
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Trips({ locations, trips }: Props) {
+  const router = useRouter();
+  const { slug } = router.query;
+  const [data, setData] = useState<typeof trips>();
+
+  useEffect(() => {
+    setData(trips);
+  }, [trips]);
+
+  useEffect(() => {
+    if (slug === "all") setData(trips);
+    else if (typeof slug === "string") {
+      const newData = trips?.filter((d) => d.category_slugs.includes(slug));
+      setData(newData);
+    }
+  }, [slug, trips]);
+
   return (
     <>
       <Map
         center={{ lat: 52, lng: 19 }}
         zoom={6}
         containerStyle={{ width: "100%", height: "550px" }}
+        options={{}}
       >
-        <TripMarkerCluster trips={trips} />
+        <TripMarkerCluster trips={data || trips} />
       </Map>
       <div className="flex gap-10 w-[1100px] mx-auto py-4">
         <div className="lg:pt-4">
@@ -46,7 +66,7 @@ export default function Trips({ locations, trips }: Props) {
           <LocationsList list={locations} />
         </div>
         <div className="bg-white rounded-md p-2 flex-grow">
-          <TripsList trips={trips} />
+          <TripsList trips={data || trips} />
         </div>
       </div>
     </>

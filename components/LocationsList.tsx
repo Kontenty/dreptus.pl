@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 type Props = {
   list: { name: string; count: number; slug: string }[];
@@ -8,13 +9,17 @@ const LocationsList = ({ list }: Props) => {
   return (
     <div className="flex flex-col gap-1">
       {list.map((loc) => (
-        <div
+        <Link
           key={loc.slug}
-          role="button"
-          className="bg-sky-700 text-white p-3 rounded cursor-pointer"
+          href={{ pathname: `/trips`, query: { slug: loc.slug } }}
         >
-          {loc.name} ({loc.count})
-        </div>
+          <div
+            role="button"
+            className="bg-sky-700 text-white p-3 rounded cursor-pointer"
+          >
+            {loc.name} ({loc.count})
+          </div>
+        </Link>
       ))}
     </div>
   );

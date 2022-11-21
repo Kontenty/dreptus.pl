@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { InfoWindow, MarkerClusterer, Marker } from "@react-google-maps/api";
+import {
+  useGoogleMap,
+  InfoWindow,
+  MarkerClusterer,
+  Marker,
+} from "@react-google-maps/api";
 import { getIconUrl } from "lib/utils";
 import { TripFormMap } from "types";
 import Image from "next/image";
@@ -13,12 +18,22 @@ type Props = {
 
 const TripMarkerCluster = ({ trips }: Props) => {
   const [popupData, setPopup] = useState<TripFormMap | null>(null);
+  const gMap = useGoogleMap();
+
+  useEffect(() => {
+    if (trips && gMap) {
+      const bounds = new google.maps.LatLngBounds();
+      trips.forEach((d) => bounds.extend(d.position));
+      console.log({ bounds });
+      gMap.fitBounds(bounds);
+    }
+  }, [gMap, trips]);
   return (
     <>
       {popupData && (
         <InfoWindow
           options={{ pixelOffset: new google.maps.Size(0, -50) }}
-          position={{ lat: popupData.lat, lng: popupData.lng }}
+          position={popupData.position}
           onCloseClick={() => setPopup(null)}
         >
           <Popup trip={popupData} />
@@ -30,7 +45,7 @@ const TripMarkerCluster = ({ trips }: Props) => {
             {trips.map((trip) => (
               <Marker
                 key={trip.ID}
-                position={{ lat: trip.lat, lng: trip.lng }}
+                position={trip.position}
                 icon={
                   trip.dolinaBugu
                     ? "/image/pieszo-dolina.png"

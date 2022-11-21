@@ -67,6 +67,7 @@ export interface Trip extends Post {
 export interface TripFormMap extends TripsForMapResponse {
   locations: string;
   dolinaBugu: boolean;
+  position: google.maps.LatLngLiteral;
 }
 
 export interface TripsForMapResponse {

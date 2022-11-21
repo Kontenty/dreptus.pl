@@ -72,7 +72,11 @@ FROM wp_posts WHERE ID = ${id}`;
   return trip;
 };
 
-export const getTripsForMap = async (): Promise<TripsForMapResponse[]> => {
+export const getTripsForMap = async (
+  location = "all"
+): Promise<TripsForMapResponse[]> => {
+  const locationQuery = location === "all" ? "" : `AND t.slug = ${location}`;
+
   const query = `
     SELECT  p.ID, 
         p.post_title as title, 
@@ -91,7 +95,7 @@ export const getTripsForMap = async (): Promise<TripsForMapResponse[]> => {
     LEFT JOIN wp_postmeta as pm1 ON ( pm1.post_id = p.ID)
     LEFT JOIN wp_posts as p2 ON p2.ID = pm1.meta_value
     JOIN wp_term_relationships AS tr ON tr.object_id=p.ID JOIN wp_terms AS t ON t.term_id =tr.term_taxonomy_id
-    WHERE p.post_type = 'listing' AND p.post_status = "publish"
+    WHERE p.post_type = 'listing' AND p.post_status = "publish ${locationQuery}"
     GROUP BY p.ID,p.post_title;
   `;
   const postData = await db.raw(query);

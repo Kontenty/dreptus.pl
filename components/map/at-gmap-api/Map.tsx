@@ -1,6 +1,10 @@
-import React, { ReactNode } from "react";
-import { GoogleMap, MarkerF } from "@react-google-maps/api";
-import { useJsApiLoader } from "@react-google-maps/api";
+import React from "react";
+import {
+  useJsApiLoader,
+  GoogleMap,
+  MarkerF,
+  type GoogleMapProps,
+} from "@react-google-maps/api";
 
 const defaultContainerStyle = {
   width: "900px",
@@ -12,10 +16,7 @@ const defaultCenter = {
   lng: 52.241,
 };
 
-interface Props {
-  children?: ReactNode;
-  center: { lat: number; lng: number };
-  zoom?: number;
+interface Props extends GoogleMapProps {
   containerStyle?: {
     width: string;
     height: string;
