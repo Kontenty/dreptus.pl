@@ -3,26 +3,14 @@
 @tailwind utilities;
 @import "slick-carousel/slick/slick.css";
 
+@layer base {
+  body {
+    @apply text-brand-text;
+  }
+}
+
 :root {
   --heading-font: "Nunito", sans-serif;
-  --text-font: "Nunito", sans-serif;
-}
-
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: var(--text-font);
-  color: #4d4d4d;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 h1,
@@ -33,7 +21,7 @@ h5,
 h6 {
   font-family: var(--heading-font);
   font-weight: 500;
-  @apply text-slate-800;
+  @apply text-slate-600;
 }
 
 .p-justify {

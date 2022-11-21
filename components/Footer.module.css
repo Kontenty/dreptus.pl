@@ -11,7 +11,7 @@
   padding: 0.5rem;
   padding-top: 2rem;
   padding-left: 10vw;
-  color: #309066;
+  @apply text-brand-green;
   z-index: 2;
 }
 .section {
@@ -19,7 +19,7 @@
 }
 .badge {
   color: #fff;
-  background-color: #309066;
+  @apply bg-brand-green;
   padding: 2px 12px;
   border-radius: 0.25rem;
   font-size: 13px;
