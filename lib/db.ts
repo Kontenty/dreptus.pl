@@ -123,4 +123,9 @@ export const getPostsWithThumb = async (
   return posts[0];
 };
 
+export const getPage = async (id: number): Promise<PostResponse> => {
+  const data = await db("wp_posts").select("post_content").where({ ID: id });
+  return data[0];
+};
+
 export default db;
