@@ -14,11 +14,13 @@ module.exports = {
           text: "#344979",
           brown: "#784940",
           primary: "#4168C4",
-          green: "#5A7828",
-          "green-light": "#97C44B",
+          green: {
+            dark: "#5A7828",
+            light: "#97C44B",
+          },
         },
       },
     },
+    plugins: [require("@tailwindcss/typography")],
   },
-  plugins: [],
 };
