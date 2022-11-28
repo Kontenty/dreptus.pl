@@ -11,7 +11,7 @@ import { locale, addLocale } from "primereact/api";
 
 import Main from "components/layout/MainLayout";
 import { getTrips } from "lib/db";
-import { Post } from "types";
+import { Post } from "src/types";
 
 addLocale("pl", {
   accept: "Tak",

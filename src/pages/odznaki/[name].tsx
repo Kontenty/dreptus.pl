@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticPropsContext } from "next";
 import Main from "components/layout/MainLayout";
 import { getPage } from "lib/db";
-import { PostResponse } from "types";
+import { PostResponse } from "src/types";
 
 const dict: Record<string, number> = {
   "z-dreptusiem-po-polsce": 11620,

@@ -6,7 +6,7 @@ import Image from "next/image";
 import Slider from "react-slick";
 import { MapIcon } from "@heroicons/react/24/outline";
 
-import type { Trip } from "types";
+import type { Trip } from "src/types";
 import { getIcon, getIconUrl } from "lib/utils";
 import { getTripSlugs, getTripBySlug } from "lib/db";
 import css from "styles/Trip.module.css";

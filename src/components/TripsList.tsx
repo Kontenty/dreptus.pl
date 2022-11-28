@@ -5,7 +5,7 @@ import {
   DataTableSelectionChangeParams,
 } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { TripFormMap } from "types";
+import { TripFormMap } from "src/types";
 // import css from "./tripsList.module.css";
 import { getIcon } from "lib/utils";
 

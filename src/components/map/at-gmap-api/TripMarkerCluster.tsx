@@ -7,7 +7,7 @@ import {
   Marker,
 } from "@react-google-maps/api";
 import { getIconUrl } from "lib/utils";
-import { TripFormMap } from "types";
+import { TripFormMap } from "src/types";
 import Image from "next/image";
 import { EyeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import css from "./map.module.css";

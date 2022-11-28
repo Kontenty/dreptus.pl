@@ -1,5 +1,5 @@
 import knex from "knex";
-import { PostResponse, TripsForMapResponse } from "types";
+import { PostResponse, TripsForMapResponse } from "src/types";
 
 const db = knex({
   client: "mysql2",

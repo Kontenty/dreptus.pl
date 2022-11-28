@@ -7,7 +7,7 @@ import Hr from "components/hr";
 import css from "../styles/Home.module.css";
 import anouncment from "public/image/anouncment.png";
 import trip from "public/image/trip.png";
-import { Post } from "types";
+import { Post } from "src/types";
 import { getTrips } from "lib/db";
 import Hero from "components/hero";
 
