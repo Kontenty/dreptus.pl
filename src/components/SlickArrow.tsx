@@ -4,7 +4,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 const arrowStyle =
-  "absolute flex justify-center items-center w-9 h-9 bg-green-700 top-0 bottom-0 my-auto rounded-full z-10";
+  "absolute flex justify-center items-center w-9 h-9 bg-brand-green-dark top-0 bottom-0 my-auto rounded-full z-10";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function SlickArrow(props: any) {

@@ -3,7 +3,7 @@ import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Slider from "react-slick";
-import { MapIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, MapIcon } from "@heroicons/react/24/outline";
 
 import { SingleTripMap } from "components/map/SingleTripMap";
 import type { Trip } from "src/types";
@@ -74,7 +74,7 @@ const TripPost: NextPage<Props> = ({ trip }) => {
             <div className="flex gap-4 lg:gap-8">
               <div className="flex flex-col gap-4 w-2/3">
                 <article
-                  className={css.article}
+                  className="post-article"
                   dangerouslySetInnerHTML={{
                     __html: trip.post_content.replaceAll(
                       'style="color: #000080;',
@@ -111,6 +111,9 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                             alt="trip photo"
                             className={css.img}
                           />
+                          <div className={css.imgOverlay}>
+                            <EyeIcon className={css.imgIcon} />
+                          </div>
                         </div>
                       </div>
                     ))}

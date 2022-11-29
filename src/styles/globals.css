@@ -77,3 +77,16 @@ button.gm-control-active {
 .elementor h5 em {
   font-style: normal;
 }
+
+.post-article {
+  @apply px-6 py-4 bg-white rounded-md text-justify;
+}
+
+.post-article img.alignleft {
+  float: left;
+  @apply py-4 pr-4;
+}
+.post-article img.alignright {
+  float: right;
+  @apply py-4 pl-4;
+}
