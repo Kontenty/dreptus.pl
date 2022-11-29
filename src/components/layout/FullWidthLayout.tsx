@@ -1,5 +1,6 @@
 import Head from "next/head";
 import type { ReactNode } from "react";
+import { ScrollTop } from "primereact/scrolltop";
 import Header from "components/Header";
 import Footer from "components/Footer";
 
@@ -49,6 +50,7 @@ const FullWidthLayout = ({ children }: Props) => {
         <div className="flex flex-col flex-grow">{children}</div>
         <Footer />
       </div>
+      <ScrollTop />
     </>
   );
 };
