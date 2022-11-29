@@ -9,7 +9,20 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 const links = [
   { name: "Strona główna", link: "/" },
   { name: "Aktualności", link: "/news" },
-  { name: "Trasy", link: "/trips" },
+  {
+    name: "Trasy",
+    link: "/trips",
+    children: [
+      {
+        name: "Piesze",
+        link: "/trips?slug=pieszo",
+      },
+      {
+        name: "Rowerowe",
+        link: "/trips?slug=rowerowe",
+      },
+    ],
+  },
   { name: "Uczestnicy", link: "/participants" },
   {
     name: "Odznaki",
@@ -48,7 +61,8 @@ const Header = () => {
                 key={i + "child"}
                 className={`${css.navItem} ${css.dropdown}`}
               >
-                <span
+                <Link
+                  href={link.link}
                   className={
                     router.pathname === link.link
                       ? css.activeLink
@@ -59,7 +73,7 @@ const Header = () => {
                 >
                   {link.name}
                   <ChevronDownIcon className="w-4 h-4 ml-1 inline-block" />
-                </span>
+                </Link>
                 <div className={css.dropdownContent}>
                   <div className={css.slided}>
                     {link.children.map((childLink) => (

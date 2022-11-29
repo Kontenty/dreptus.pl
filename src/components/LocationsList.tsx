@@ -16,7 +16,7 @@ const LocationsList = ({ list }: Props) => {
           >
             <div
               role="button"
-              className="bg-sky-700 text-white p-3 rounded cursor-pointer"
+              className="bg-brand-primary text-white p-3 rounded cursor-pointer hover:bg-brand-primary/90"
             >
               {loc.name} ({loc.count})
             </div>
@@ -26,7 +26,7 @@ const LocationsList = ({ list }: Props) => {
       <Link href="/trips">
         <div
           role="button"
-          className="bg-brand-green-dark text-white p-3 rounded cursor-pointer"
+          className="bg-brand-green-dark text-white p-3 rounded cursor-pointer hover:bg-brand-green-dark/90"
         >
           Wysztkie ({list.reduce((a, b) => a + b.count, 0)})
         </div>
