@@ -3,6 +3,7 @@ import { Formik, Form, useField } from "formik";
 import { Messages } from "primereact/messages";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
+import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import * as Yup from "yup";
@@ -153,6 +154,7 @@ export default function StartForm({ trips }: Props) {
           email: "",
           date: null,
           location: "",
+          checked: false,
         }}
         validationSchema={Yup.object({
           fullName: Yup.string()
@@ -164,6 +166,7 @@ export default function StartForm({ trips }: Props) {
           email: Yup.string()
             .email("Nieprawidłowy adres")
             .required("Pole jest wymagane"),
+          checked: Yup.boolean().oneOf([true], "Wymagane jest wyraenie zgody"),
         })}
         onSubmit={(data) => {
           console.log(data);
@@ -180,6 +183,9 @@ export default function StartForm({ trips }: Props) {
                   filter
                   // onChange={(e) => setCity(e.value)}
                   placeholder="Wybierz przebytą trasę"
+                  className={cl({
+                    "p-invalid": formik.errors.trip && formik.touched.trip,
+                  })}
                 />
                 {formik.touched.trip && formik.errors.trip ? (
                   <small className="p-error">{formik.errors.trip}</small>
@@ -188,7 +194,7 @@ export default function StartForm({ trips }: Props) {
               {fields1.map((f, i) => (
                 <FormikInput key={i + f.name} {...f} />
               ))}
-              {Array.from(Array(10).keys()).map((num) => (
+              {Array.from(Array(30).keys()).map((num) => (
                 <React.Fragment key={"question" + num}>
                   <FormikInput
                     label={`Odpwiedź ${num + 1}`}
@@ -200,6 +206,28 @@ export default function StartForm({ trips }: Props) {
                   />
                 </React.Fragment>
               ))}
+            </div>
+            <div className="mt-6">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  inputId="cb1"
+                  {...formik.getFieldProps("checked")}
+                  checked={formik.values.checked}
+                  className={cl({
+                    "p-invalid":
+                      formik.errors.checked && formik.touched.checked,
+                  })}
+                ></Checkbox>
+                <label htmlFor="cb1" className="p-checkbox-label">
+                  <small>
+                    WYRAŻAM ZGODĘ NA UMIESZCZENIE DANYCH NA STRONIE
+                    HTTPS://DREPTUŚ.PL*
+                  </small>
+                </label>
+              </div>
+              {formik.errors.checked && formik.touched.checked ? (
+                <small className="p-error">{formik.errors.checked}</small>
+              ) : null}
             </div>
             <Button
               aria-label="submit"
