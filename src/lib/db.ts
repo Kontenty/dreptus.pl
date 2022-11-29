@@ -127,5 +127,11 @@ export const getPage = async (id: number): Promise<PostResponse> => {
   const data = await db("wp_posts").select("post_content").where({ ID: id });
   return data[0];
 };
+export const getElementorPage = async (id: number): Promise<string> => {
+  const data = await db("wp_postmeta")
+    .select("meta_value")
+    .where({ post_id: id, meta_key: "_elementor_data" });
+  return data[0].meta_value;
+};
 
 export default db;

@@ -56,3 +56,24 @@ button.gm-control-active {
   background: rgb(255 255 255 / 0.9) !important;
   @apply shadow top-0 right-0 !important;
 }
+
+/* odznaki */
+.elementor ol {
+  list-style-type: decimal;
+}
+.elementor ul {
+  list-style-type: disc;
+}
+.elementor li ul {
+  margin-left: 1rem;
+}
+.elementor h3 span,
+.elementor h4 span,
+.elementor h5 span {
+  @apply text-brand-text;
+}
+.elementor h3 em,
+.elementor h4 em,
+.elementor h5 em {
+  font-style: normal;
+}

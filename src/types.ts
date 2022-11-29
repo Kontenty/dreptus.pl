@@ -88,3 +88,29 @@ export interface TripsForMapResponse {
   category_slugs: string;
   thumb_url: string;
 }
+
+export type ElementorElement = {
+  id: string;
+  elType: string;
+  settings: {
+    title: string;
+    editor: string;
+    align: string;
+    title_color: string;
+    _margin: {
+      unit: string;
+      top: string;
+      right: string;
+      bottom: string;
+      left: string;
+      isLinked: boolean;
+    };
+  };
+  elements: ElementorElement[];
+  widgetType: string;
+};
+
+export type ElementorData = {
+  id: string;
+  elements: ElementorElement[];
+}[];
