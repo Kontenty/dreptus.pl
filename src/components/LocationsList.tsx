@@ -23,6 +23,14 @@ const LocationsList = ({ list }: Props) => {
           </Link>
         ) : null
       )}
+      <Link href="/trips">
+        <div
+          role="button"
+          className="bg-brand-green-dark text-white p-3 rounded cursor-pointer"
+        >
+          Wysztkie ({list.reduce((a, b) => a + b.count, 0)})
+        </div>
+      </Link>
     </div>
   );
 };
