@@ -1,3 +1,5 @@
+export type GoogleMapsT = typeof google.maps;
+
 export interface Post {
   ID: number;
   post_author: number;
@@ -63,6 +65,7 @@ export interface Trip extends Post {
   founding: string;
   type: string;
   number: string;
+  position: google.maps.LatLngLiteral;
 }
 
 export interface TripFormMap extends TripsForMapResponse {

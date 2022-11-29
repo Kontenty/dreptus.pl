@@ -1,0 +1,18 @@
+.mapLg {
+  height: 550px;
+}
+.mapSm {
+  height: 300px;
+}
+
+.imgOverlay {
+  @apply absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 bg-black/60 transition-opacity duration-300;
+}
+
+.imgIcon {
+  @apply w-7 h-7 text-white transition-transform translate-y-2 delay-75;
+}
+
+.imgOverlay:hover .imgIcon {
+  @apply translate-y-0;
+}

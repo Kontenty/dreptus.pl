@@ -5,9 +5,8 @@ import { useEffect, useState } from "react";
 import LocationsList from "components/LocationsList";
 import { getLocations, getTripsForMap } from "lib/db";
 import TripsList from "components/TripsList";
-import Map from "components/map/at-gmap-api";
+import { TripsMap } from "components/map/TripsMap";
 import { locationsList } from "lib/data";
-import TripMarkerCluster from "components/map/at-gmap-api/TripMarkerCluster";
 
 export const getStaticProps = async () => {
   const locations = await getLocations();
@@ -73,14 +72,7 @@ export default function Trips({ locations, trips }: Props) {
 
   return (
     <>
-      <Map
-        center={{ lat: 52, lng: 19 }}
-        zoom={6}
-        containerStyle={{ width: "100%", height: "550px" }}
-        options={{}}
-      >
-        <TripMarkerCluster trips={data || trips} />
-      </Map>
+      <TripsMap trips={data || trips} />
       <div className="flex gap-10 w-[1100px] mx-auto py-4">
         <div className="lg:pt-4">
           <h2 className="text-lg mb-1">Filtry</h2>

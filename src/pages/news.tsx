@@ -40,27 +40,25 @@ const Home: NextPage<Props> = ({ posts }) => {
         {posts.map((p) => (
           <div key={p.ID} className={css.card}>
             <Link href={p?.post_name ? `/trips/${p.post_name}` : "/news"}>
-              <a>
-                <div className="overflow-hidden">
-                  <div className="hover:scale-125 transition-all duration-500">
-                    <Image
-                      alt={`thumbnail-${p.post_name}`}
-                      width={380}
-                      height={280}
-                      placeholder="blur"
-                      {...p.image}
-                    />
-                  </div>
+              <div className="overflow-hidden">
+                <div className="hover:scale-125 transition-all duration-500">
+                  <Image
+                    alt={`thumbnail-${p.post_name}`}
+                    width={380}
+                    height={280}
+                    placeholder="blur"
+                    {...p.image}
+                  />
                 </div>
-                <div className="px-5 py-4">
-                  <p className="text-xs text-slate-500 mb-2">
-                    {new Intl.DateTimeFormat("pl-PL", {
-                      dateStyle: "short",
-                    }).format(new Date(p.post_date))}
-                  </p>
-                  <h2 dangerouslySetInnerHTML={{ __html: p.post_title }}></h2>
-                </div>
-              </a>
+              </div>
+              <div className="px-5 py-4">
+                <p className="text-xs text-slate-500 mb-2">
+                  {new Intl.DateTimeFormat("pl-PL", {
+                    dateStyle: "short",
+                  }).format(new Date(p.post_date))}
+                </p>
+                <h2 dangerouslySetInnerHTML={{ __html: p.post_title }}></h2>
+              </div>
             </Link>
           </div>
         ))}

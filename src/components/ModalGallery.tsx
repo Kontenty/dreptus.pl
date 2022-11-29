@@ -66,8 +66,9 @@ const ModalGallery = ({
                 <div className={full ? css.imgBoxFull : css.imgBoxBig}>
                   <Image
                     src={img.url}
-                    layout="fill"
-                    objectFit="contain"
+                    fill
+                    sizes="100%"
+                    style={{ objectFit: "contain" }}
                     alt="trip photo"
                   />
                 </div>

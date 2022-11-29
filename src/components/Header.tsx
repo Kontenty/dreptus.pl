@@ -37,9 +37,9 @@ const Header = () => {
   const router = useRouter();
   return (
     <header className={css.header}>
-      <a href="/" className={css.logoBox}>
-        <Image src={logo} alt="logo" height={150} width={150} priority />
-      </a>
+      <Link href="/" className={css.logoBox}>
+        <Image src={logo} alt="logo" height={150} width={150} />
+      </Link>
       <nav className={css.nav}>
         {links.map((link, i) => {
           if (link.children) {
@@ -63,8 +63,12 @@ const Header = () => {
                 <div className={css.dropdownContent}>
                   <div className={css.slided}>
                     {link.children.map((childLink) => (
-                      <Link key={i + childLink.link} href={childLink.link}>
-                        <a className={css.dropdownItem}> {childLink.name} </a>
+                      <Link
+                        key={i + childLink.link}
+                        href={childLink.link}
+                        className={css.dropdownItem}
+                      >
+                        {childLink.name}
                       </Link>
                     ))}
                   </div>
@@ -74,18 +78,18 @@ const Header = () => {
           }
           return (
             <div key={i} className={css.navItem}>
-              <Link key={i} href={link.link}>
-                <a
-                  className={
-                    router.pathname === link.link
-                      ? css.activeLink
-                      : router.pathname.includes(link.link + "/")
-                      ? css.activeLink
-                      : css.link
-                  }
-                >
-                  {link.name}
-                </a>
+              <Link
+                key={i}
+                href={link.link}
+                className={
+                  router.pathname === link.link
+                    ? css.activeLink
+                    : router.pathname.includes(link.link + "/")
+                    ? css.activeLink
+                    : css.link
+                }
+              >
+                {link.name}
               </Link>
             </div>
           );

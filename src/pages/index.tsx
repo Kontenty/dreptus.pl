@@ -141,13 +141,11 @@ const Home: NextPage<Props> = ({ trips }) => {
             {trips.map((trip) => (
               <div key={trip.ID}>
                 <Link href={`/trips/${trip.post_name}`}>
-                  <a>
-                    {trip.number}. {trip.post_title.replace("<br>", " / ")} (
-                    {new Intl.DateTimeFormat("pl-PL", {
-                      dateStyle: "short",
-                    }).format(new Date(trip.post_date))}
-                    )
-                  </a>
+                  {trip.number}. {trip.post_title.replace("<br>", " / ")} (
+                  {new Intl.DateTimeFormat("pl-PL", {
+                    dateStyle: "short",
+                  }).format(new Date(trip.post_date))}
+                  )
                 </Link>
               </div>
             ))}

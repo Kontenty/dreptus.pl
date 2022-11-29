@@ -12,9 +12,9 @@ const Hero = () => {
       <div className={css.background}>
         <Image
           src={coverImg}
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          fill
+          sizes="100vw"
+          style={{ objectFit: "cover", objectPosition: "center" }}
           placeholder="blur"
           alt="krajobraz"
         />

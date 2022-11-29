@@ -9,8 +9,8 @@ export default function FourOhFour() {
           <span className="animate-pulse">404</span>
           <span> - nie znalazłem tej strony</span>
         </h1>
-        <Link href="/">
-          <a className="underline underline-offset-4">Wróć do początku</a>
+        <Link href="/" className="underline underline-offset-4">
+          Wróć do początku
         </Link>
       </div>
     </MainLayout>

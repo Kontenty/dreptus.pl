@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Map from "components/map/at-gmap-api";
 import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Slider from "react-slick";
 import { MapIcon } from "@heroicons/react/24/outline";
 
+import { SingleTripMap } from "components/map/SingleTripMap";
 import type { Trip } from "src/types";
-import { getIcon, getIconUrl } from "lib/utils";
+import { getIcon } from "lib/utils";
 import { getTripSlugs, getTripBySlug } from "lib/db";
 import css from "styles/Trip.module.css";
 import MainLayout from "components/layout/MainLayout";
@@ -25,7 +25,6 @@ const TripPost: NextPage<Props> = ({ trip }) => {
   );
   const [isFullGallery, setIsFullGallery] = useState(false);
   const router = useRouter();
-  const center = { lat: Number(trip.lat), lng: Number(trip.lng) };
   return (
     <div>
       {router.isFallback ? (
@@ -33,15 +32,10 @@ const TripPost: NextPage<Props> = ({ trip }) => {
       ) : (
         <>
           <div className="p-6">
-            <Map
-              center={center}
-              zoom={14}
-              marker={{ icon: getIconUrl(trip.type), center }}
-              containerStyle={{ width: "100%", height: "300px" }}
-            />
+            <SingleTripMap trip={trip} />
           </div>
           <MainLayout spacing="S">
-            <div className="flex items-center py-4">
+            <div className="flex items-center pb-2">
               <div className="flex flex-col px-10 border-r-2 border-teal-800">
                 <h3 className="text-2xl mb-4">{trip.number}</h3>
                 {getIcon(trip.type)}
@@ -53,7 +47,7 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                 ></h1>
               </div>
             </div>
-            <section className="flex justify-between items-center border-b-2 border-teal-800 pb-2">
+            <section className="flex justify-between items-center border-b-2 border-teal-800 pb-4">
               <div className={css.adnotations}>
                 <span className="text-bolder">Opracowanie trasy</span>
                 <span className="text-indigo-800">{trip.author}</span>
@@ -80,7 +74,7 @@ const TripPost: NextPage<Props> = ({ trip }) => {
             <div className="flex gap-4 lg:gap-8">
               <div className="flex flex-col gap-4 w-2/3">
                 <article
-                  className="px-6 py-4 bg-white rounded-md"
+                  className={css.article}
                   dangerouslySetInnerHTML={{
                     __html: trip.post_content.replaceAll(
                       'style="color: #000080;',
@@ -138,10 +132,13 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                       key={pdf.title}
                       src={pdf.url}
                       alt={pdf.title}
-                      layout="responsive"
-                      width="100%"
-                      height="100%"
-                      objectFit="contain"
+                      width={200}
+                      height={200}
+                      style={{
+                        objectFit: "contain",
+                        width: "100%",
+                        height: "auto",
+                      }}
                     />
                   </div>
                 ))}
@@ -169,11 +166,14 @@ export default TripPost;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params?.slug && typeof params.slug === "string") {
-    const trip: Trip[] = await getTripBySlug(params.slug);
+    const trip = await getTripBySlug(params.slug);
     return {
       props: {
         params,
-        trip,
+        trip: {
+          ...trip,
+          position: { lat: Number(trip.lat), lng: Number(trip.lng) },
+        },
       },
     };
   }

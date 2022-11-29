@@ -18,7 +18,8 @@
     "paths": {
       "components/*": ["src/components/*"],
       "lib/*": ["src/lib/*"],
-      "styles/*": ["src/styles/*"]
+      "styles/*": ["src/styles/*"],
+      "context": ["src/context"]
     },
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },

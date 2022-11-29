@@ -24,7 +24,6 @@ const TripMarkerCluster = ({ trips }: Props) => {
     if (trips && gMap) {
       const bounds = new google.maps.LatLngBounds();
       trips.forEach((d) => bounds.extend(d.position));
-      console.log({ bounds });
       gMap.fitBounds(bounds);
     }
   }, [gMap, trips]);
@@ -72,19 +71,17 @@ function Popup({ trip }: PopupProps) {
   return (
     <div className="relative bg-white w-[300px] min-h-[200px]">
       <Link href={trip.slug ? `/trips/${trip.slug}` : "/trips"}>
-        <a>
-          <div className="relative h-[200px]">
-            <Image
-              src={trip.thumb_url}
-              layout="fill"
-              objectFit="cover"
-              alt="trip thumb image"
-            />
-            <div className={css.imgOverlay}>
-              <EyeIcon className={css.imgIcon} />
-            </div>
+        <div className="relative h-[200px]">
+          <Image
+            src={trip.thumb_url}
+            fill
+            style={{ objectFit: "cover" }}
+            alt="trip thumb image"
+          />
+          <div className={css.imgOverlay}>
+            <EyeIcon className={css.imgIcon} />
           </div>
-        </a>
+        </div>
       </Link>
       <div className="p-4">
         <p
