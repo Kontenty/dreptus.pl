@@ -90,3 +90,14 @@ button.gm-control-active {
   float: right;
   @apply py-4 pl-4;
 }
+.post-article ol {
+  @apply list-decimal;
+  padding-inline-start: 2rem;
+}
+.post-article ul {
+  @apply list-disc;
+  padding-inline-start: 2rem;
+}
+.post-article em {
+  font-style: normal;
+}
