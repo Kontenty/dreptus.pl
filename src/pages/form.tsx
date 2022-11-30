@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Formik, Form, useField } from "formik";
+import { Formik, Form, useField, Field } from "formik";
 import { Messages } from "primereact/messages";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
@@ -156,6 +156,7 @@ export default function StartForm({ trips }: Props) {
           date: null,
           location: "",
           checked: false,
+          add: "null",
         }}
         validationSchema={Yup.object({
           fullName: Yup.string()
@@ -171,6 +172,13 @@ export default function StartForm({ trips }: Props) {
         })}
         onSubmit={(data) => {
           console.log(data);
+          fetch("/api/trip-report", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
         }}
       >
         {(formik) => (
@@ -208,7 +216,12 @@ export default function StartForm({ trips }: Props) {
                 </React.Fragment>
               ))}
             </div>
-            <div className="mt-6">
+            <Field
+              type="text"
+              name="add"
+              className="h-6 opacity-0 pointer-events-none"
+            />
+            <div>
               <div className="flex items-center gap-2">
                 <Checkbox
                   inputId="cb1"
