@@ -1,0 +1,27 @@
+.formInactive {
+  animation: 2s hideForm;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hideForm {
+  from {
+    opacity: 1;
+    height: auto;
+  }
+  to {
+    opacity: 0;
+    height: 0;
+    position: absolute;
+  }
+}
+
+.btnAnimated {
+  width: 0;
+}
+
+@keyframes hideBtn {
+  from {
+  }
+  to {
+  }
+}

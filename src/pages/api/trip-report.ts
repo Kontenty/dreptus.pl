@@ -70,7 +70,8 @@ const config = {
 };
 
 export default async function handler(req: Request, res: NextApiResponse) {
-  try {
+  res.send("ok");
+  /* try {
     await schema.validate(req.body);
   } catch (error) {
     res.status(406).send("Inapriopriate data");
@@ -127,5 +128,5 @@ export default async function handler(req: Request, res: NextApiResponse) {
         res.status(200).send("ok");
       }
     }
-  );
+  ); */
 }
