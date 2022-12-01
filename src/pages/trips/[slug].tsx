@@ -124,7 +124,7 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                 {trip.pdfImages.map((pdf, i) => (
                   <div
                     key={pdf.title}
-                    className="relative hover:scale-125 hover:z-10 transition-all duration-500 cursor-pointer"
+                    className="relative hover:scale-110 hover:z-10 transition-all duration-500 cursor-pointer"
                     onClick={() => {
                       setSelectedImage(i);
                       setCurrentImageSet(trip.pdfImages);
