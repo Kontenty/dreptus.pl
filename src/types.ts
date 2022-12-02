@@ -48,8 +48,8 @@ export interface PostResponse {
   post_mime_type: string;
   comment_count: number;
   meta_value?: string | number;
-  thumb_id?: number;
-  thumb_url?: string;
+  thumb_id: number;
+  thumb_url: string;
 }
 
 export interface Trip extends Post {

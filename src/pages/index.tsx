@@ -5,7 +5,6 @@ import DCarousel from "components/carousel/DreptusCarousel";
 import Main from "components/layout/MainLayout";
 import Hr from "components/hr";
 import css from "../styles/Home.module.css";
-// import anouncment from "public/image/anouncment.png";
 import trip from "public/image/trip.png";
 import { Post } from "src/types";
 import { getTrips, getTripsCount } from "lib/db";
@@ -14,7 +13,7 @@ import { SpeakerWaveIcon } from "@heroicons/react/24/outline";
 
 export const getStaticProps: GetStaticProps = async () => {
   const trips = await getTrips();
-  const tripsCount = await getTripsCount();
+  const tripsCount = (await getTripsCount()) || "150";
   return {
     props: {
       trips: trips ? JSON.parse(JSON.stringify(trips)) : [],
@@ -25,7 +24,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 interface Props {
   trips: Post[];
-  tripsCount: number;
+  tripsCount: string;
 }
 
 const Home: NextPage<Props> = ({ trips, tripsCount }) => {
@@ -107,8 +106,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
         <section>
           <div className="flex gap-6">
             <aside className="w-1/4 center-hv">
-              {/* <Image src={anouncment} alt="Ogłoszenia" /> */}
-              <div className="center-hv w-24 h-24 rounded-full bg-brand-primary/70">
+              <div className="center-hv w-24 h-24 rounded-full bg-brand-green-light/90">
                 <SpeakerWaveIcon className="w-16 h-16 text-white" />
               </div>
             </aside>
@@ -129,13 +127,11 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
                 nowe, nigdy wcześniej nie publikowane. Z kolei trasy starsze
                 zostały w większości sprawdzone i uaktualnione.
                 <br />
-                <p className="pb-2">
-                  Mamy 25 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 3 w
-                  stopniu żółtym (50 tras), 15 “Z Dreptusiem Traktem
-                  Królewskim” i 2 “Z Dreptusiem po Dolinie Bugu”. Z tras
-                  spłynęło ponad 1000 zgłoszeń! Przy przesyłaniu odpowiedzi
-                  prosimy korzystać z formularza, odznaki czekają:
-                </p>
+                Mamy 25 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 3 w
+                stopniu żółtym (50 tras), 15 “Z Dreptusiem Traktem
+                Królewskim” i 2 “Z Dreptusiem po Dolinie Bugu”. Z tras spłynęło
+                ponad 1000 zgłoszeń! Przy przesyłaniu odpowiedzi prosimy
+                korzystać z formularza, odznaki czekają:
               </p>
               <ol>
                 <li>1. „Z Dreptusiem po Dolinie Bugu” (dostępna)</li>

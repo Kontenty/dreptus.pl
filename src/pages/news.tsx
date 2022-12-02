@@ -2,6 +2,7 @@ import type { NextPage, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
+
 import Main from "components/layout/MainLayout";
 import { getPostsWithThumb } from "lib/db";
 import css from "styles/News.module.css";
@@ -9,6 +10,11 @@ import packImg from "public/image/pakiety-startowe2.jpg";
 
 export const getStaticProps = async () => {
   const postsData = await getPostsWithThumb(6);
+  if (!postsData) {
+    return {
+      props: { posts: [] },
+    };
+  }
   const posts = await Promise.all(
     postsData.map(async (p) => {
       const {
@@ -28,7 +34,7 @@ export const getStaticProps = async () => {
     })
   );
   return {
-    props: { posts }, // will be passed to the page component as props
+    props: { posts: posts || [] }, // will be passed to the page component as props
   };
 };
 
