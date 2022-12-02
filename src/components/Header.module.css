@@ -81,6 +81,13 @@
   color: #fff;
 }
 
+.chevron {
+  @apply w-4 h-4 ml-1 inline-block transition-transform;
+}
+
+.dropdown:hover .chevron {
+  @apply translate-y-2;
+}
 .dropdown:hover .dropdownContent {
   opacity: 1;
   visibility: visible;

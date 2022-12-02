@@ -2,7 +2,7 @@ import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import LocationsList from "components/LocationsList";
+import TripListFilter from "components/TripListFilter";
 import { getLocations, getTripsForMap } from "lib/db";
 import TripsList from "components/TripsList";
 import { TripsMap } from "components/map/TripsMap";
@@ -57,8 +57,7 @@ export default function Trips({ locations, trips }: Props) {
       <TripsMap trips={data || trips} />
       <div className="flex gap-10 w-[1100px] mx-auto py-4">
         <div className="lg:pt-4">
-          <h2 className="text-lg mb-1">Filtry</h2>
-          <LocationsList list={locations} />
+          <TripListFilter locationsList={locations} />
         </div>
         <div className="bg-white rounded-md p-2 flex-grow">
           <TripsList trips={data || trips} />

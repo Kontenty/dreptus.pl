@@ -12,16 +12,6 @@ const links = [
   {
     name: "Trasy",
     link: "/trips",
-    children: [
-      {
-        name: "Piesze",
-        link: "/trips?slug=pieszo",
-      },
-      {
-        name: "Rowerowe",
-        link: "/trips?slug=rowerowe",
-      },
-    ],
   },
   { name: "Uczestnicy", link: "/participants" },
   {
@@ -72,7 +62,7 @@ const Header = () => {
                   }
                 >
                   {link.name}
-                  <ChevronDownIcon className="w-4 h-4 ml-1 inline-block" />
+                  <ChevronDownIcon className={css.chevron} />
                 </Link>
                 <div className={css.dropdownContent}>
                   <div className={css.slided}>
