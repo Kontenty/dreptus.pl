@@ -5,24 +5,30 @@ import DCarousel from "components/carousel/DreptusCarousel";
 import Main from "components/layout/MainLayout";
 import Hr from "components/hr";
 import css from "../styles/Home.module.css";
-import anouncment from "public/image/anouncment.png";
+// import anouncment from "public/image/anouncment.png";
 import trip from "public/image/trip.png";
 import { Post } from "src/types";
-import { getTrips } from "lib/db";
+import { getTrips, getTripsCount } from "lib/db";
 import Hero from "components/hero";
+import { SpeakerWaveIcon } from "@heroicons/react/24/outline";
 
 export const getStaticProps: GetStaticProps = async () => {
   const trips = await getTrips();
+  const tripsCount = await getTripsCount();
   return {
-    props: { trips: trips ? JSON.parse(JSON.stringify(trips)) : [] }, // will be passed to the page component as props
+    props: {
+      trips: trips ? JSON.parse(JSON.stringify(trips)) : [],
+      tripsCount,
+    }, // will be passed to the page component as props
   };
 };
 
 interface Props {
   trips: Post[];
+  tripsCount: number;
 }
 
-const Home: NextPage<Props> = ({ trips }) => {
+const Home: NextPage<Props> = ({ trips, tripsCount }) => {
   return (
     <>
       <Hero />
@@ -100,28 +106,36 @@ const Home: NextPage<Props> = ({ trips }) => {
         <Hr length={18} />
         <section>
           <div className="flex gap-6">
-            <aside className="w-1/3">
-              <Image src={anouncment} alt="Ogłoszenia" />
+            <aside className="w-1/4 center-hv">
+              {/* <Image src={anouncment} alt="Ogłoszenia" /> */}
+              <div className="center-hv w-24 h-24 rounded-full bg-brand-primary/70">
+                <SpeakerWaveIcon className="w-16 h-16 text-white" />
+              </div>
             </aside>
-            <article className="w-2/3">
+            <article className="w-2/3 max-w-prose">
               <h2 className={css.title}>Ogłoszenia</h2>
               <h3 className="text-xl text-center">
                 Dreptuś zaprasza do wspólnego zwiedzania
               </h3>
-              <p className="p-justify">
-                Za nami rok intensywnej pracy nad Projektem Turystyczno
+              <p className="p-justify ">
+                Za nami dwa lata intensywnej pracy nad Projektem Turystyczno
                 Rekreacyjnej Imprezy Plenerowej. Powstała strona internetowa,
-                sukcesywnie przybywa tras.{" "}
-                <strong>Obecnie jest ich 100 😀</strong>
-                , z czego blisko połowa w samej Warszawie. Choć jedna trasa
-                pojawiła się już na terenie 8 województw. Większość to trasy
+                sukcesywnie przybywa tras.
+                <br />
+                <strong>Obecnie jest ich {tripsCount} 😀</strong>
+                , z czego jedna trzecia w samej Warszawie. Już tylko na terenie
+                5 województw nie ma jeszcze ani jednej trasy, ale pracujemy nad
+                tym, aby ten stan nie potrwał zbyt długo. Większość to trasy
                 nowe, nigdy wcześniej nie publikowane. Z kolei trasy starsze
                 zostały w większości sprawdzone i uaktualnione.
                 <br />
-                Mamy 14 zdobywców odznaki “Z Dreptusiem po Polsce”, 4 “Z
-                Dreptusiem Traktem Królewskim” i 2 “Z Dreptusiem po Dolinie
-                Bugu”. Przy przesyłaniu odpowiedzi prosimy korzystać z
-                formularza, odznaki czekają:
+                <p className="pb-2">
+                  Mamy 25 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 3 w
+                  stopniu żółtym (50 tras), 15 “Z Dreptusiem Traktem
+                  Królewskim” i 2 “Z Dreptusiem po Dolinie Bugu”. Z tras
+                  spłynęło ponad 1000 zgłoszeń! Przy przesyłaniu odpowiedzi
+                  prosimy korzystać z formularza, odznaki czekają:
+                </p>
               </p>
               <ol>
                 <li>1. „Z Dreptusiem po Dolinie Bugu” (dostępna)</li>
@@ -131,7 +145,7 @@ const Home: NextPage<Props> = ({ trips }) => {
                 </li>
                 <li>3. „Z Dreptusiem Traktem Królewskim” (dostępna)</li>
               </ol>
-              <p>Do zobaczenia na trasach 😀</p>
+              <p className="text-right">Do zobaczenia na trasach 😀</p>
             </article>
           </div>
         </section>

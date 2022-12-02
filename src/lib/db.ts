@@ -133,5 +133,11 @@ export const getElementorPage = async (id: number): Promise<string> => {
     .where({ post_id: id, meta_key: "_elementor_data" });
   return data[0].meta_value;
 };
+export const getTripsCount = async (): Promise<string> => {
+  const data = await db.raw(
+    'SELECT SUM(b.count) as sum from wp_term_taxonomy b where b.taxonomy like "%listing_location%"'
+  );
+  return data[0][0].sum;
+};
 
 export default db;

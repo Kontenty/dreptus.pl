@@ -6,7 +6,7 @@ export const getStaticProps = async () => {
   const content = await getElementorPage(9850);
   return {
     props: {
-      content: JSON.parse(content.replaceAll("color: #ffffff;", "")) || null,
+      content: JSON.parse(content) || null,
     }, // will be passed to the page component as props
   };
 };
@@ -28,9 +28,7 @@ const mapElementor = (node: ElementorElement): any => {
         key={node.id}
         className="elementor"
         dangerouslySetInnerHTML={{
-          __html: node.settings.editor
-            .replaceAll('style="color: #000080;', "")
-            .replaceAll('style="color: #ffffff;', ""),
+          __html: node.settings.editor.replaceAll('style="color: #000080;', ""),
         }}
       ></div>
     );

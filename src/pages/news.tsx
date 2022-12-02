@@ -5,7 +5,7 @@ import { getPlaiceholder } from "plaiceholder";
 import Main from "components/layout/MainLayout";
 import { getPostsWithThumb } from "lib/db";
 import css from "styles/News.module.css";
-import packImg from "public/image/pakiety-startowe.jpg";
+import packImg from "public/image/pakiety-startowe2.jpg";
 
 export const getStaticProps = async () => {
   const postsData = await getPostsWithThumb(6);
@@ -71,8 +71,14 @@ const Home: NextPage<Props> = ({ posts }) => {
         <h2 className="text-4xl mb-6 text-brand-green-dark">
           Pakiety startowe
         </h2>
-        <div className="flex flex-wrap-reverse gap-6">
-          <article>
+        <div className="">
+          <article className="">
+            <Image
+              src={packImg}
+              alt="pakiety startowe"
+              width={400}
+              className="float-right sm:pl-4 pb-4"
+            />
             <p className="text-justify max-w-2xl">
               Idąc za namową dobrej znajomej business woman (dla wtajemniczonych
               E.T.) oraz chcąc poprawić frekwencję na trasach postanowiłem
@@ -92,9 +98,7 @@ const Home: NextPage<Props> = ({ posts }) => {
               myślicie? Czekam na Wasze głosy i uwagi.
             </p>
           </article>
-          <aside className="lg:w-1/3">
-            <Image src={packImg} alt="pakiety startowe" />
-          </aside>
+          <aside className="max-w-"></aside>
         </div>
       </section>
     </Main>
