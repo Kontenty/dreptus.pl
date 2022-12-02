@@ -71,7 +71,7 @@ const config = {
 
 export default async function handler(req: Request, res: NextApiResponse) {
   res.send("ok");
-  /* try {
+  try {
     await schema.validate(req.body);
   } catch (error) {
     res.status(406).send("Inapriopriate data");
@@ -81,6 +81,7 @@ export default async function handler(req: Request, res: NextApiResponse) {
   console.log(data);
 
   const html = `
+      <div style="color: #344979">
       <h2>Przesłane odpowiedzi</h2>
       <br>
       <table>
@@ -91,6 +92,7 @@ export default async function handler(req: Request, res: NextApiResponse) {
       </tr>`
       )}
       </table>
+      </div>
     `;
   const text = `
       Przesłane odpowiedzi /n
@@ -128,5 +130,5 @@ export default async function handler(req: Request, res: NextApiResponse) {
         res.status(200).send("ok");
       }
     }
-  ); */
+  );
 }
