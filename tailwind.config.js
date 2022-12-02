@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-const twTypography = import("@tailwindcss/typography");
 
 module.exports = {
   content: [
@@ -23,6 +22,6 @@ module.exports = {
         },
       },
     },
-    plugins: [twTypography],
+    plugins: [],
   },
 };

@@ -12,6 +12,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "xn--dreptu-8ib.pl",
       },
+      {
+        protocol: "http",
+        hostname: "dreptus.cal24.pl",
+      },
     ],
   },
 };
