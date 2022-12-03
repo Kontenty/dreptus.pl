@@ -13,6 +13,7 @@
     "@googlemaps/js-api-loader": "^1.15.1",
     "@googlemaps/markerclusterer": "^2.0.13",
     "@heroicons/react": "^2.0.13",
+    "@next/font": "^13.0.6",
     "@plaiceholder/next": "^2.5.0",
     "@react-google-maps/api": "^2.17.0",
     "@tailwindcss/typography": "^0.5.8",
