@@ -4,7 +4,7 @@ import Link from "next/link";
 const categories = [
   { name: "Piesze", slug: "pieszo" },
   { name: "Rowerowe", slug: "rowerowe" },
-  { name: "Dolina bugu", slug: "dolina-bugu" },
+  { name: "Dolina Bugu", slug: "dolina-bugu" },
 ];
 type Props = {
   locationsList: { name: string; count: number; slug: string }[];

@@ -164,7 +164,7 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
           email: Yup.string()
             .email("Nieprawidłowy adres")
             .required("Pole jest wymagane"),
-          checked: Yup.boolean().oneOf([true], "Wymagane jest wyraenie zgody"),
+          checked: Yup.boolean().oneOf([true], "Wymagane jest wyrażenie zgody"),
         })}
         onSubmit={(data) => {
           fetch("/api/trip-report", {
@@ -201,7 +201,7 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
               {Array.from(Array(30).keys()).map((num) => (
                 <React.Fragment key={"question" + num}>
                   <FormikInput
-                    label={`Odpwiedź ${num + 1}`}
+                    label={`Odpowiedź ${num + 1}`}
                     name={`answer-${num + 1}`}
                   />
                   <FormikInput
@@ -229,8 +229,8 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
                 ></Checkbox>
                 <label htmlFor="cb1" className="p-checkbox-label">
                   <small>
-                    WYRAŻAM ZGODĘ NA UMIESZCZENIE DANYCH NA STRONIE
-                    HTTPS://DREPTUŚ.PL*
+                    Wyrażam zgodę na przetwarzanie danych osobowych przez
+                    dreptuś.pl w celu weryfikacji zgłoszenia *
                   </small>
                 </label>
               </div>
@@ -238,6 +238,25 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
                 <small className="p-error">{formik.errors.checked}</small>
               ) : null}
             </div>
+            {/* <div>
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  inputId="cb1"
+                  {...formik.getFieldProps("checked")}
+                  checked={formik.values.checked}
+                  className={cl({
+                    "p-invalid":
+                      formik.errors.checked && formik.touched.checked,
+                  })}
+                ></Checkbox>
+                <label htmlFor="cb1" className="p-checkbox-label">
+                  <small>
+                    Wyrażam zgodę na umieszczenie mojego imienia i nazwiska na
+                    liście uczestników na stronie dreptuś.pl
+                  </small>
+                </label>
+              </div>
+            </div> */}
             <Button
               aria-label="submit"
               type="submit"
