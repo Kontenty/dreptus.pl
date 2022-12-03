@@ -70,7 +70,6 @@ const config = {
 };
 
 export default async function handler(req: Request, res: NextApiResponse) {
-  res.send("ok");
   try {
     await schema.validate(req.body);
   } catch (error) {
@@ -78,7 +77,6 @@ export default async function handler(req: Request, res: NextApiResponse) {
   }
 
   const data = serialize(req.body);
-  console.log(data);
 
   const html = `
       <div style="color: #344979">
@@ -103,32 +101,46 @@ export default async function handler(req: Request, res: NextApiResponse) {
       )}
     `;
 
-  const transporter = nodemailer.createTransport({
-    host: config.host,
-    port: config.port,
-    secure: true, // true for 465, false for other ports
-    auth: {
-      user: config.user, // generated ethereal user
-      pass: config.password, // generated ethereal password
-    },
-  });
-
-  // send mail with defined transport object
-  transporter.sendMail(
+  const messages = [
     {
       from: '"Dreptuś.pl - zgłoszenia" <zgloszenia@dreptuś.pl>', // sender address
       to: config.receiver, // list of receivers
-      subject: "Odpowiedzi Dreptuś.pl 👣", // Subject line
+      subject: "Zgłoszenie udziału w Dreptuś.pl 👣", // Subject line
       text, // plain text body
       html, // html body
     },
-    (error) => {
-      if (error) {
-        console.log("Mail send error", error);
-        res.status(400).send("Could not send email");
-      } else {
-        res.status(200).send("ok");
-      }
-    }
-  );
+    {
+      from: '"Dreptuś.pl - zgłoszenia" <zgloszenia@dreptuś.pl>', // sender address
+      to: req.body.email, // list of receivers
+      subject: "Zgłoszenie udziału w Dreptuś.pl 👣", // Subject line
+      text: `Dziękujemy za zgłoszenie udziału w Dreptuś /n
+      Po rozpatrzeniu odpowiedzi prześlemy wyniki
+      `, // plain text body
+      html: `<div style="color: #344979">
+      <h2>Dziękujemy za zgłoszenie udziału w Dreptuś,</h2>
+      <p>na trasie ${req.body.trip}</p>
+      Po rozpatrzeniu odpowiedzi prześlemy wyniki</div>`, // html body
+    },
+  ];
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: config.host,
+      port: config.port,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: config.user, // generated ethereal user
+        pass: config.password, // generated ethereal password
+      },
+    });
+
+    await transporter.sendMail(messages[0]);
+    await transporter.sendMail(messages[1]);
+
+    transporter.close();
+    res.status(200).send("ok");
+  } catch (error) {
+    console.log("mail send error", error);
+    res.status(400).send("Could not send email");
+  }
 }
