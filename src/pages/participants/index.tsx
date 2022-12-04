@@ -3,11 +3,15 @@ import { getElementorPage } from "lib/db";
 import { ElementorData, ElementorElement } from "src/types";
 
 export const getStaticProps = async () => {
-  const content = await getElementorPage(9850);
+  const data = await getElementorPage(9850);
+  const content = data.replaceAll(
+    /https:.{15,18}.pl\\\/[0-9]{4}\\\/[0-9]{2}\\\//g,
+    "/participants/"
+  );
   return {
     props: {
       content: JSON.parse(content) || null,
-    }, // will be passed to the page component as props
+    },
   };
 };
 

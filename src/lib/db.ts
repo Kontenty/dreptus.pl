@@ -140,4 +140,19 @@ export const getTripsCount = async (): Promise<string> => {
   return data[0][0].sum;
 };
 
+export const getParticipantSlugs = async () => {
+  const data = await db("wp_posts")
+    .select("post_name")
+    .where({ post_type: "post", post_status: "publish" });
+  return data;
+};
+export const getParticipantBySlug = async (
+  name: string
+): Promise<PostResponse> => {
+  const data = await db("wp_posts")
+    .select("*")
+    .where({ post_type: "post", post_status: "publish", post_name: name });
+  return data[0];
+};
+
 export default db;
