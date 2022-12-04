@@ -7,9 +7,6 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
-      sans: ["var(--font-nunito)", ...fontFamily.sans],
-    },
     extend: {
       colors: {
         brand: {
@@ -21,6 +18,9 @@ module.exports = {
             light: "#97C44B",
           },
         },
+      },
+      fontFamily: {
+        sans: ["nunito", ...fontFamily.sans],
       },
     },
     plugins: [],
