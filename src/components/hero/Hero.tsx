@@ -28,7 +28,7 @@ const Hero = () => {
               <span className={css.banerText}>Impreza</span>
               <span className={css.banerText}>Plenerowa</span>
             </div>
-            <div className="relative flex gap-8 mx-auto">
+            <div className="relative flex justify-center md:gap-8 mx-auto">
               <Image src={familyImg} height={150} width={150} alt="rodzina" />
               <Image
                 src={familyCyclingImg}

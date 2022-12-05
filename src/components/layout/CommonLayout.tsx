@@ -14,7 +14,10 @@ const FullWidthLayout = ({ children }: Props) => {
       <Head>
         <title>Dreptuś</title>
       </Head>
-      <div id="root" className="flex flex-col min-h-screen">
+      <div
+        id="root"
+        className="flex flex-col min-h-screen overflow-x-auto pt-[76px] md:pt-[90px]"
+      >
         <Header />
         <div className="flex flex-col flex-grow">{children}</div>
         <Footer />

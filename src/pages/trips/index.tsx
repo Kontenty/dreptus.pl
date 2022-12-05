@@ -55,7 +55,7 @@ export default function Trips({ locations, trips }: Props) {
   return (
     <>
       <TripsMap trips={data || trips} />
-      <div className="flex gap-10 w-[1100px] mx-auto py-4">
+      <div className="flex gap-10 w-[1100px] mx-auto py-4 overflow-x-auto">
         <div className="lg:pt-4">
           <TripListFilter locationsList={locations} />
         </div>

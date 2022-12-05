@@ -33,9 +33,9 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
       <Hero />
       <Main>
         <section>
-          <div className="flex">
-            <div className="w-1/3">
-              <DCarousel />
+          <div className={css.aboutSection}>
+            <div>
+              <DCarousel width={280} />
             </div>
             <article>
               <h1 className={css.title}>Kim jest Dreptuś?</h1>
@@ -104,13 +104,13 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
         {/* Ogłoszenia */}
         <Hr length={18} />
         <section>
-          <div className="flex gap-6">
-            <aside className="w-1/4 center-hv">
+          <div className="md:flex gap-6">
+            <aside className="hidden md:flex justify-center items-center basis-1/4">
               <div className="center-hv w-24 h-24 rounded-full bg-brand-green-light/90">
                 <SpeakerWaveIcon className="w-16 h-16 text-white" />
               </div>
             </aside>
-            <article className="w-2/3 max-w-prose">
+            <article className="basis-3/4 max-w-prose">
               <h2 className={css.title}>Ogłoszenia</h2>
               <h3 className="text-xl text-center">
                 Dreptuś zaprasza do wspólnego zwiedzania

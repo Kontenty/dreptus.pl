@@ -1,5 +1,6 @@
 .heroRoot {
   display: grid;
+  overflow: hidden;
   /* width: fit-content; */
 }
 .heroRoot > * {
@@ -7,7 +8,7 @@
 }
 
 .heroContent {
-  @apply relative flex justify-center p-10;
+  @apply relative md:flex md:justify-center p-6 md:p-10;
 }
 .background {
   position: relative;
@@ -36,6 +37,7 @@
 
 .aside {
   width: calc(640px + 3rem);
+  @apply hidden sm:block;
 }
 .imgBox {
   border: solid rgb(255 255 255 / 0.7);
