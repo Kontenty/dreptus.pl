@@ -7,11 +7,11 @@ import css from "src/styles//Particioant.module.css";
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   if (params?.name && typeof params.name === "string") {
-    const data = (await getParticipantBySlug(params.name)) || null;
+    const data = await getParticipantBySlug(params.name);
     return {
       props: {
         params,
-        data: JSON.parse(JSON.stringify(data)),
+        data: data ? JSON.parse(JSON.stringify(data)) : null,
       },
     };
   }
@@ -33,7 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
           id: slug?.ID,
         },
       })) || [],
-    fallback: true,
+    fallback: false,
   };
 };
 
