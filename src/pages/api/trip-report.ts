@@ -140,7 +140,6 @@ export default async function handler(req: Request, res: NextApiResponse) {
     transporter.close();
     res.status(200).send("ok");
   } catch (error) {
-    console.log("mail send error", error);
     res.status(400).send("Could not send email");
   }
 }

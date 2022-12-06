@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import DCarousel from "components/carousel/DreptusCarousel";
@@ -71,7 +71,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
           <h2 className={css.title}>TRIP</h2>
           <div>
             <aside className="float-right w-1/2">
-              <Image src={trip} alt="TRIP" />
+              <Image alt="TRIP" src={trip} />
             </aside>
             <article>
               <p className="p-justify">
@@ -127,11 +127,11 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
                 nowe, nigdy wcześniej nie publikowane. Z kolei trasy starsze
                 zostały w większości sprawdzone i uaktualnione.
                 <br />
-                Mamy 25 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 3 w
-                stopniu żółtym (50 tras), 15 “Z Dreptusiem Traktem
-                Królewskim” i 2 “Z Dreptusiem po Dolinie Bugu”. Z tras spłynęło
-                ponad 1000 zgłoszeń! Przy przesyłaniu odpowiedzi prosimy
-                korzystać z formularza, odznaki czekają:
+                Mamy&nbsp;25 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 3
+                w stopniu żółtym (50 tras),&nbsp;15 “Z Dreptusiem Traktem
+                Królewskim”&nbsp;i&nbsp;2 “Z Dreptusiem po Dolinie Bugu”.&nbsp;Z
+                tras spłynęło ponad 1000 zgłoszeń!&nbsp;Przy przesyłaniu
+                odpowiedzi prosimy korzystać z formularza, odznaki czekają:
               </p>
               <ol>
                 <li>1. „Z Dreptusiem po Dolinie Bugu” (dostępna)</li>

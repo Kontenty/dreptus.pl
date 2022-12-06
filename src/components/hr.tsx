@@ -10,7 +10,7 @@ const Hr = ({ length = 10 }: Props) => {
     <div className="flex gap-2 max-w-full overflow-hidden">
       {Array.from(Array(length).keys()).map((i) => (
         <div key={i}>
-          <Image src={foot} alt="foot print" />
+          <Image alt="foot print" src={foot} />
         </div>
       ))}
     </div>

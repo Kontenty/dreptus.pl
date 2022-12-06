@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Formik, Form, useField, Field } from "formik";
+import { Field, Form, Formik, useField } from "formik";
 import { Messages } from "primereact/messages";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
@@ -8,7 +8,7 @@ import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import * as Yup from "yup";
 import cl from "classnames";
-import { locale, addLocale } from "primereact/api";
+import { addLocale, locale } from "primereact/api";
 
 addLocale("pl", {
   accept: "Tak",
@@ -89,8 +89,8 @@ const FormikInput = ({ label, type, ...props }: FField) => {
             id="basic"
             {...field}
             {...props}
-            locale="pl"
             dateFormat="dd-mm-yy"
+            locale="pl"
           />
           <label htmlFor={field.name}>{label}</label>
         </span>
@@ -154,6 +154,15 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
           checked: false,
           add: "null",
         }}
+        onSubmit={(data) => {
+          fetch("/api/trip-report", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }).then((res) => res.ok && onSuccess());
+        }}
         validationSchema={Yup.object({
           fullName: Yup.string()
             .min(4, "Min 4 znaki")
@@ -166,30 +175,19 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
             .required("Pole jest wymagane"),
           checked: Yup.boolean().oneOf([true], "Wymagane jest wyrażenie zgody"),
         })}
-        onSubmit={(data) => {
-          fetch("/api/trip-report", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((res) => res.ok && onSuccess());
-        }}
       >
         {(formik) => (
           <Form className="w-[1000px] ">
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 p-fluid">
               <div className="col-span-2">
                 <Dropdown
-                  // value={city}
                   {...formik.getFieldProps("trip")}
-                  options={trips}
-                  filter
-                  // onChange={(e) => setCity(e.value)}
-                  placeholder="Wybierz przebytą trasę"
                   className={cl({
                     "p-invalid": formik.errors.trip && formik.touched.trip,
                   })}
+                  filter
+                  options={trips}
+                  placeholder="Wybierz przebytą trasę"
                 />
                 {formik.touched.trip && formik.errors.trip ? (
                   <small className="p-error">{formik.errors.trip}</small>
@@ -212,9 +210,9 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
               ))}
             </div>
             <Field
-              type="text"
-              name="add"
               className="h-6 opacity-0 pointer-events-none"
+              name="add"
+              type="text"
             />
             <div>
               <div className="flex items-center gap-2">
@@ -227,7 +225,7 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
                       formik.errors.checked && formik.touched.checked,
                   })}
                 ></Checkbox>
-                <label htmlFor="cb1" className="p-checkbox-label">
+                <label className="p-checkbox-label" htmlFor="cb1">
                   <small>
                     Wyrażam zgodę na przetwarzanie danych osobowych przez
                     dreptuś.pl w celu weryfikacji zgłoszenia *
@@ -259,9 +257,9 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
             </div> */}
             <Button
               aria-label="submit"
-              type="submit"
               className="p-button-raised mt-6 w-44"
               label="Wyślij"
+              type="submit"
             ></Button>
           </Form>
         )}

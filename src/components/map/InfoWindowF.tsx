@@ -1,13 +1,13 @@
 /* global google */
 import {
-  memo,
-  useRef,
   Children,
-  useState,
-  useEffect,
-  useContext,
+  memo,
   type ReactNode,
   type ReactPortal,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
 import { createPortal } from "react-dom";
 
@@ -245,8 +245,9 @@ function InfoWindowFunctional({
     } else if (infoWindow.getPosition()) {
       infoWindow.open(map);
     } else {
+      // eslint-disable-next-line no-console
       console.log(
-        `❌ You must provide either an anchor (typically render it inside a <Marker>) or a position props for <InfoWindow>.`
+        "❌ You must provide either an anchor (typically render it inside a <Marker>) or a position props for <InfoWindow>."
       );
     }
 

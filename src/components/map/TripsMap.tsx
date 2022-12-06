@@ -18,9 +18,9 @@ export function TripsMap({ trips }: Props) {
         <MarkerCluster locations={trips} onClick={(t) => setTripInfo(t)} />
         {tripInfo && (
           <InfoWindowF
+            onCloseClick={() => setTripInfo(null)}
             options={{ pixelOffset: new googlemaps.Size(0, -50) }}
             position={tripInfo?.position}
-            onCloseClick={() => setTripInfo(null)}
           >
             <PopupContent trip={tripInfo} />
           </InfoWindowF>

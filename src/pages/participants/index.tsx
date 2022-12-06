@@ -20,20 +20,20 @@ const mapElementor = (node: ElementorElement): any => {
   if (node?.settings?.title) {
     return (
       <h1
-        key={node.id}
         className="text-4xl text-center mb-4"
         dangerouslySetInnerHTML={{ __html: node.settings.title }}
+        key={node.id}
       ></h1>
     );
   }
   if (node?.settings?.editor) {
     return (
       <div
-        key={node.id}
         className="elementor"
         dangerouslySetInnerHTML={{
           __html: node.settings.editor.replaceAll('style="color: #000080;', ""),
         }}
+        key={node.id}
       ></div>
     );
   }
@@ -44,7 +44,7 @@ const mapElementor = (node: ElementorElement): any => {
           key={node.id}
           style={{
             display: "grid",
-            gridTemplateColumns: `9fr 1fr 2fr`,
+            gridTemplateColumns: "9fr 1fr 2fr",
           }}
         >
           {node?.elements.map(mapElementor)}
@@ -53,7 +53,7 @@ const mapElementor = (node: ElementorElement): any => {
     }
     if (node.elType === "column") {
       return (
-        <div key={node.id} style={{ display: "flex", flexDirection: `column` }}>
+        <div key={node.id} style={{ display: "flex", flexDirection: "column" }}>
           {node?.elements.map(mapElementor)}
         </div>
       );

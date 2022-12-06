@@ -45,8 +45,9 @@ export default function Trips({ locations, trips }: Props) {
   }, [trips]);
 
   useEffect(() => {
-    if (slug === "all") setData(trips);
-    else if (typeof slug === "string") {
+    if (slug === "all") {
+      setData(trips);
+    } else if (typeof slug === "string") {
       const newData = trips?.filter((d) => d.category_slugs.includes(slug));
       setData(newData);
     }

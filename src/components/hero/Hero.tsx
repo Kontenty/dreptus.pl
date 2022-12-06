@@ -11,12 +11,12 @@ const Hero = () => {
     <section className={css.heroRoot}>
       <div className={css.background}>
         <Image
-          src={coverImg}
-          fill
-          sizes="100vw"
-          style={{ objectFit: "cover", objectPosition: "center" }}
-          placeholder="blur"
           alt="krajobraz"
+          fill
+          placeholder="blur"
+          sizes="100vw"
+          src={coverImg}
+          style={{ objectFit: "cover", objectPosition: "center" }}
         />
       </div>
       <div className={css.heroContent}>
@@ -29,12 +29,12 @@ const Hero = () => {
               <span className={css.banerText}>Plenerowa</span>
             </div>
             <div className="relative flex justify-center md:gap-8 mx-auto">
-              <Image src={familyImg} height={150} width={150} alt="rodzina" />
+              <Image alt="rodzina" height={150} src={familyImg} width={150} />
               <Image
+                alt="rodzina na rowerze"
+                height={150}
                 src={familyCyclingImg}
                 width={300}
-                height={150}
-                alt="rodzina na rowerze"
               />
             </div>
           </div>

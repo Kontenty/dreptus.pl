@@ -8,7 +8,7 @@ const UnderConstruction = () => {
         <span className="text-5xl animate-pulse">⚒</span>
         <span> - strona w trakcie budowy</span>
       </h1>
-      <Link href="/" className="underline underline-offset-4">
+      <Link className="underline underline-offset-4" href="/">
         Wróć do początku
       </Link>
     </div>

@@ -24,7 +24,7 @@ export default function StartForm({ trips }: Props) {
           </p>
         </div>
       ) : (
-        <TripReportForm trips={trips} onSuccess={() => setFormSent(true)} />
+        <TripReportForm onSuccess={() => setFormSent(true)} trips={trips} />
       )}
     </Main>
   );

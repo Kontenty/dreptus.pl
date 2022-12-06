@@ -38,21 +38,21 @@ const TripsList = ({ trips }: Props) => {
   };
   return (
     <DataTable
-      value={trips}
-      paginator
-      header="Lista tras"
-      responsiveLayout="scroll"
-      paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
       currentPageReportTemplate="{first} do {last} z {totalRecords}"
+      dataKey="ID"
+      header="Lista tras"
+      onSelectionChange={handleTripSelect}
+      paginator
+      paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+      responsiveLayout="scroll"
       rows={50}
       rowsPerPageOptions={[20, 50, 100, 200]}
-      onSelectionChange={handleTripSelect}
       selectionMode="single"
-      dataKey="ID"
       size="small"
+      value={trips}
     >
-      <Column header="Numer" body={tripNumBodyTemplate}></Column>
-      <Column header="Tytuł" body={tripTitleBodyTemplate}></Column>
+      <Column body={tripNumBodyTemplate} header="Numer"></Column>
+      <Column body={tripTitleBodyTemplate} header="Tytuł"></Column>
       <Column field="locations" header="Lokalizacja"></Column>
       <Column field="pk" header="PK"></Column>
       <Column field="length" header="Długość"></Column>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
-import { GoogleContext, GmapContext } from "context";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { GmapContext, GoogleContext } from "context";
 import { cva } from "class-variance-authority";
 import css from "./Map.module.css";
 

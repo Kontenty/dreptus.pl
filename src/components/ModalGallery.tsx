@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Slider from "react-slick";
 import SlickArrow from "components/SlickArrow";
@@ -50,26 +50,26 @@ const ModalGallery = ({
       <div className="flex flex-col justify-center flex-grow px-16 pb-8">
         <div onClick={stopClose}>
           <Slider
-            arrows
-            infinite
-            fade
-            speed={500}
-            slidesToShow={1}
-            slidesToScroll={1}
-            prevArrow={<SlickArrow />}
-            nextArrow={<SlickArrow />}
-            initialSlide={initial}
             afterChange={(i: number) => setCurrentSlide(i + 1)}
+            arrows
+            fade
+            infinite
+            initialSlide={initial}
+            nextArrow={<SlickArrow />}
+            prevArrow={<SlickArrow />}
+            slidesToScroll={1}
+            slidesToShow={1}
+            speed={500}
           >
             {images.map((img) => (
               <React.Fragment key={img.url}>
                 <div className={full ? css.imgBoxFull : css.imgBoxBig}>
                   <Image
-                    src={img.url}
+                    alt="trip photo"
                     fill
                     sizes="100%"
+                    src={img.url}
                     style={{ objectFit: "contain" }}
-                    alt="trip photo"
                   />
                 </div>
                 {!full && (

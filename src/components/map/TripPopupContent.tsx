@@ -13,11 +13,11 @@ export function PopupContent({ trip }: PopupProps) {
       <Link href={trip.slug ? `/trips/${trip.slug}` : "/trips"}>
         <div className="relative h-[200px]">
           <Image
-            src={trip.thumb_url}
+            alt="trip thumb image"
             fill
             sizes="100%"
+            src={trip.thumb_url}
             style={{ objectFit: "cover" }}
-            alt="trip thumb image"
           />
           <div className={css.imgOverlay}>
             <EyeIcon className={css.imgIcon} />

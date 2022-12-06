@@ -13,11 +13,11 @@ export default function SlickArrow(props: any) {
   return (
     <button className={`${arrowStyle} ${isLeft ? "-left-10" : "-right-11"}`}>
       {isLeft ? (
-        <ArrowLeftCircleIcon onClick={onClick} className="text-white w-6 h-6" />
+        <ArrowLeftCircleIcon className="text-white w-6 h-6" onClick={onClick} />
       ) : (
         <ArrowRightCircleIcon
-          onClick={onClick}
           className="text-white w-6 h-6"
+          onClick={onClick}
         />
       )}
     </button>

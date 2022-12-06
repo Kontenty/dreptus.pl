@@ -1,9 +1,9 @@
 import React from "react";
 import {
-  useJsApiLoader,
   GoogleMap,
-  MarkerF,
   type GoogleMapProps,
+  MarkerF,
+  useJsApiLoader,
 } from "@react-google-maps/api";
 
 const defaultContainerStyle = {
@@ -42,25 +42,25 @@ const Map = ({
     const icon = marker?.icon ?? "/image/icons/footman-circle.svg";
     return marker ? (
       <MarkerF
-        position={marker.center}
         icon={{
           url: icon,
         }}
+        position={marker.center}
       />
     ) : null;
   }
   return isLoaded ? (
     <GoogleMap
+      center={center}
       id="map-with-marker"
       mapContainerStyle={containerStyle}
-      center={center}
-      zoom={zoom}
       options={{
         disableDefaultUI: true,
         fullscreenControl: true,
         zoomControl: true,
         mapTypeId: "terrain",
       }}
+      zoom={zoom}
     >
       {/* Child components, such as markers, info windows, etc. */}
       {children}
@@ -68,7 +68,7 @@ const Map = ({
       <></>
     </GoogleMap>
   ) : (
-    <div style={containerStyle} className="flex justify-center items-center">
+    <div className="flex justify-center items-center" style={containerStyle}>
       <h1 className="text-2xl">Map loading</h1>
     </div>
   );

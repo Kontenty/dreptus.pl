@@ -46,14 +46,14 @@ const Header = () => {
   };
   return (
     <header className={css.header}>
-      <Link href="/" className={css.logoBox}>
+      <Link className={css.logoBox} href="/">
         <Image
-          src={logo}
           alt="logo"
-          height={150}
-          width={150}
           className="shadow-lg rounded-full border-2 border-slate-200 bg-white w-[100px] md:w-[150px]"
+          height={150}
           onClick={toggleNav}
+          src={logo}
+          width={150}
         />
       </Link>
       <nav className={cl(css.nav, { [css.navHidden]: !showNav })}>
@@ -61,11 +61,10 @@ const Header = () => {
           if (link.children) {
             return (
               <div
-                key={i + "child"}
                 className={`${css.navItem} ${css.dropdown}`}
+                key={i + "child"}
               >
                 <Link
-                  href={link.link || ""}
                   className={
                     router.pathname === link.link
                       ? css.activeLink
@@ -73,6 +72,7 @@ const Header = () => {
                       ? css.activeLink
                       : css.nonLink
                   }
+                  href={link.link || ""}
                 >
                   {link.name}
                   <ChevronDownIcon className={css.chevron} />
@@ -81,9 +81,9 @@ const Header = () => {
                   <div className={css.slided}>
                     {link.children.map((childLink) => (
                       <Link
-                        key={i + childLink.link}
-                        href={childLink.link}
                         className={css.dropdownItem}
+                        href={childLink.link}
+                        key={i + childLink.link}
                         onClick={toggleNav}
                       >
                         {childLink.name}
@@ -95,10 +95,8 @@ const Header = () => {
             );
           }
           return (
-            <div key={i} className={css.navItem}>
+            <div className={css.navItem} key={i}>
               <Link
-                key={i}
-                href={link.link}
                 className={
                   router.pathname === link.link
                     ? css.activeLink
@@ -106,6 +104,8 @@ const Header = () => {
                     ? css.activeLink
                     : css.link
                 }
+                href={link.link}
+                key={i}
                 onClick={toggleNav}
               >
                 {link.name}
@@ -115,7 +115,7 @@ const Header = () => {
         })}
       </nav>
       <div className="block md:hidden pt-4 pr-2 ml-auto">
-        <Button icon="pi pi-bars" className="p-button-sm" onClick={toggleNav} />
+        <Button className="p-button-sm" icon="pi pi-bars" onClick={toggleNav} />
       </div>
     </header>
   );

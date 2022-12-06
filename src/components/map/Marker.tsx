@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { GmapContext } from "context";
 
 type Props = google.maps.MarkerOptions & {
@@ -16,7 +16,7 @@ const Marker = ({ icon, position, onClick }: Props) => {
         icon,
         animation: google.maps.Animation.DROP,
       });
-      if (onClick) marker.addListener("click", () => onClick());
+      if (onClick) {marker.addListener("click", () => onClick());}
     }
   }, [icon, map, onClick, position]);
 

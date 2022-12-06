@@ -1,4 +1,4 @@
-import type { NextPage, InferGetStaticPropsType } from "next";
+import type { InferGetStaticPropsType, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
@@ -47,15 +47,15 @@ const Home: NextPage<Props> = ({ posts }) => {
         <h2 className="text-4xl mb-6 text-brand-green-dark">Najnowsze trasy</h2>
         <div className={css.newsGrid}>
           {posts.map((p) => (
-            <div key={p.ID} className={css.card}>
+            <div className={css.card} key={p.ID}>
               <Link href={p?.post_name ? `/trips/${p.post_name}` : "/news"}>
                 <div className="overflow-hidden">
                   <div className="hover:scale-105 transition-all duration-500">
                     <Image
                       alt={`thumbnail-${p.post_name}`}
-                      width={380}
                       height={280}
                       placeholder="blur"
+                      width={380}
                       {...p.image}
                     />
                   </div>
@@ -80,10 +80,10 @@ const Home: NextPage<Props> = ({ posts }) => {
         <div className="">
           <article className="">
             <Image
-              src={packImg}
               alt="pakiety startowe"
-              width={400}
               className="float-right sm:pl-4 pb-4"
+              src={packImg}
+              width={400}
             />
             <p className="text-justify max-w-2xl">
               Idąc za namową dobrej znajomej business woman (dla wtajemniczonych

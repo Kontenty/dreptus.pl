@@ -1,4 +1,4 @@
-import { FootmanPinIcon, CyclistPinIcon } from "components/icons";
+import { CyclistPinIcon, FootmanPinIcon } from "components/icons";
 import { activityCode } from "./data";
 
 type Props = {
@@ -29,8 +29,12 @@ export const sortTrips = (a: { number: string }, b: { number: string }) => {
       ? -1
       : 1;
   }
-  if (is1Hash) return 1;
-  if (is2Hash) return -1;
+  if (is1Hash) {
+    return 1;
+  }
+  if (is2Hash) {
+    return -1;
+  }
   const n1 = Number(a.number);
   const n2 = Number(b.number);
   if (Number.isNaN(n1) && Number.isNaN(n2)) {

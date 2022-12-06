@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import css from "./Footer.module.css";
 import footerImg from "public/image/footer-bg.jpg";
@@ -10,21 +11,27 @@ const Footer = () => {
         <div className={css.content}>
           <div className={css.section}>
             <h3 className={css.heading}>Kategorie tras</h3>
-            <a href="/" className={css.badge}>
+            <Link
+              className={css.badge}
+              href={{ pathname: "/trips", query: { slug: "pieszo" } }}
+            >
               Trasy piesze
-            </a>
-            <a href="/" className={css.badge}>
+            </Link>
+            <Link
+              className={css.badge}
+              href={{ pathname: "/trips", query: { slug: "rowerowe" } }}
+            >
               Trasy rowerowe
-            </a>
-            <a href="/" className={css.badge}>
-              Trasy motorowe
-            </a>
-            <a href="/" className={css.badge}>
+            </Link>
+            <Link
+              className={css.badge}
+              href={{ pathname: "/trips", query: { slug: "pieszo" } }}
+            >
               Dolina Bugu
-            </a>
-            <a href="/" className={css.badge}>
+            </Link>
+            <Link className={css.badge} href="/trips">
               Wszystkie trasy
-            </a>
+            </Link>
           </div>
           <div className={css.section}>
             <h3 className={css.heading}>Dariusz Mazurek</h3>
@@ -41,7 +48,7 @@ const Footer = () => {
           </div>
         </div>
         <div className={css.image}>
-          <Image src={footerImg} alt="łąka" />
+          <Image alt="łąka" src={footerImg} />
         </div>
       </div>
     </footer>

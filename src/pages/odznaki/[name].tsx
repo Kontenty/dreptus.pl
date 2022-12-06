@@ -40,20 +40,20 @@ const mapElementor = (node: ElementorElement) => {
   if (node?.settings?.title) {
     return (
       <h1
-        key={node.id}
         className="text-4xl text-center mb-4"
         dangerouslySetInnerHTML={{ __html: node.settings.title }}
+        key={node.id}
       ></h1>
     );
   }
   if (node?.settings?.editor) {
     return (
       <section
-        key={node.id}
         className="elementor"
         dangerouslySetInnerHTML={{
           __html: node.settings.editor.replaceAll('style="color: #000080;', ""),
         }}
+        key={node.id}
       ></section>
     );
   }

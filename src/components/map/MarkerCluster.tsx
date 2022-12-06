@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MarkerClusterer as gMarkerclusterer } from "@googlemaps/markerclusterer";
 import { GmapContext } from "context";
 import { getIconUrl } from "lib/utils";
@@ -15,7 +15,6 @@ const MarkerCluster = ({ locations, onClick }: Props) => {
 
   useEffect(() => {
     if (map && locations?.length) {
-      console.log("new cluster");
       const bounds = new google.maps.LatLngBounds();
       const markers = locations.map((trip) => {
         const { position } = trip;

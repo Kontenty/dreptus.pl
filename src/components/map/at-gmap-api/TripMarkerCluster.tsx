@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  useGoogleMap,
   InfoWindow,
-  MarkerClusterer,
   Marker,
+  MarkerClusterer,
+  useGoogleMap,
 } from "@react-google-maps/api";
 import { getIconUrl } from "lib/utils";
 import { TripFormMap } from "src/types";
@@ -31,9 +31,9 @@ const TripMarkerCluster = ({ trips }: Props) => {
     <>
       {popupData && (
         <InfoWindow
+          onCloseClick={() => setPopup(null)}
           options={{ pixelOffset: new google.maps.Size(0, -50) }}
           position={popupData.position}
-          onCloseClick={() => setPopup(null)}
         >
           <Popup trip={popupData} />
         </InfoWindow>
@@ -43,16 +43,16 @@ const TripMarkerCluster = ({ trips }: Props) => {
           <>
             {trips.map((trip) => (
               <Marker
-                key={trip.ID}
-                position={trip.position}
+                clusterer={clusterer}
                 icon={
                   trip.dolinaBugu
                     ? "/image/pieszo-dolina.png"
                     : getIconUrl(trip.type)
                 }
-                clusterer={clusterer}
+                key={trip.ID}
                 onClick={() => setPopup(trip)}
                 options={{ animation: google.maps.Animation.DROP }}
+                position={trip.position}
               />
             ))}
           </>
@@ -73,10 +73,10 @@ function Popup({ trip }: PopupProps) {
       <Link href={trip.slug ? `/trips/${trip.slug}` : "/trips"}>
         <div className="relative h-[200px]">
           <Image
-            src={trip.thumb_url}
-            fill
-            style={{ objectFit: "cover" }}
             alt="trip thumb image"
+            fill
+            src={trip.thumb_url}
+            style={{ objectFit: "cover" }}
           />
           <div className={css.imgOverlay}>
             <EyeIcon className={css.imgIcon} />

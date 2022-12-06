@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Slider from "react-slick";
@@ -8,7 +8,7 @@ import { EyeIcon, MapIcon } from "@heroicons/react/24/outline";
 import { SingleTripMap } from "components/map/SingleTripMap";
 import type { Trip } from "src/types";
 import { getIcon } from "lib/utils";
-import { getTripSlugs, getTripBySlug } from "lib/db";
+import { getTripBySlug, getTripSlugs } from "lib/db";
 import css from "styles/Trip.module.css";
 import MainLayout from "components/layout/MainLayout";
 import SlickArrow from "components/SlickArrow";
@@ -60,11 +60,11 @@ const TripPost: NextPage<Props> = ({ trip }) => {
               </div>
               <div>
                 <a
-                  role="button"
-                  target="_blank"
+                  className="flex items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
                   href={trip.pdf}
                   rel="noreferrer"
-                  className="flex items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
+                  role="button"
+                  target="_blank"
                 >
                   <span>Pobierz&nbsp;mapę</span>
                   <MapIcon className="w-6 h-6" />
@@ -86,16 +86,15 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                   <Slider
                     arrows
                     infinite
-                    speed={500}
-                    // centerMode
-                    slidesToShow={1}
-                    slidesToScroll={1}
-                    variableWidth
-                    prevArrow={<SlickArrow />}
                     nextArrow={<SlickArrow />}
+                    prevArrow={<SlickArrow />}
+                    slidesToScroll={1}
+                    slidesToShow={1}
+                    speed={500}
+                    variableWidth
                   >
                     {trip.images.map((img, i) => (
-                      <div key={img.url + "div"} className="px-2">
+                      <div className="px-2" key={img.url + "div"}>
                         <div
                           className={css.imgBox}
                           onClick={() => {
@@ -105,11 +104,11 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                           }}
                         >
                           <Image
-                            src={img.url}
-                            height={200}
-                            width={300}
                             alt="trip photo"
                             className={css.img}
+                            height={200}
+                            src={img.url}
+                            width={300}
                           />
                           <div className={css.imgOverlay}>
                             <EyeIcon className={css.imgIcon} />
@@ -123,8 +122,8 @@ const TripPost: NextPage<Props> = ({ trip }) => {
               <div className="w-1/3 relative flex flex-col gap-1">
                 {trip.pdfImages.map((pdf, i) => (
                   <div
-                    key={pdf.title}
                     className="relative hover:scale-110 hover:z-10 transition-all duration-500 cursor-pointer"
+                    key={pdf.title}
                     onClick={() => {
                       setSelectedImage(i);
                       setCurrentImageSet(trip.pdfImages);
@@ -132,16 +131,16 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                     }}
                   >
                     <Image
+                      alt={pdf.title}
+                      height={200}
                       key={pdf.title}
                       src={pdf.url}
-                      alt={pdf.title}
-                      width={200}
-                      height={200}
                       style={{
                         objectFit: "contain",
                         width: "100%",
                         height: "auto",
                       }}
+                      width={200}
                     />
                   </div>
                 ))}
@@ -150,9 +149,9 @@ const TripPost: NextPage<Props> = ({ trip }) => {
           </MainLayout>
           {selectedImage !== null && currentImageSet && (
             <ModalGallery
+              full={isFullGallery}
               images={currentImageSet}
               initial={selectedImage}
-              full={isFullGallery}
               onClose={() => {
                 setSelectedImage(null);
                 setCurrentImageSet(null);
