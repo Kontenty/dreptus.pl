@@ -8,6 +8,7 @@ import TripsList from "components/TripsList";
 import { TripsMap } from "components/map/TripsMap";
 import { locationsList } from "lib/data";
 import { sortTrips } from "lib/utils";
+import css from "src/styles/Trip.module.css";
 
 export const getStaticProps = async () => {
   const locations = await getLocations();
@@ -56,7 +57,7 @@ export default function Trips({ locations, trips }: Props) {
   return (
     <>
       <TripsMap trips={data || trips} />
-      <div className="flex gap-10 w-[1100px] mx-auto py-4 overflow-x-auto">
+      <div className={css.lists}>
         <div className="lg:pt-4">
           <TripListFilter locationsList={locations} />
         </div>

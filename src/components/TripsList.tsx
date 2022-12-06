@@ -6,8 +6,7 @@ import {
 } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TripFormMap } from "src/types";
-// import css from "./tripsList.module.css";
-import { getIcon } from "lib/utils";
+import { getIcon, useMediaQuery } from "lib/index";
 
 type Props = {
   trips: TripFormMap[];
@@ -31,6 +30,8 @@ const tripNumBodyTemplate = (trip: TripFormMap) => {
 
 const TripsList = ({ trips }: Props) => {
   const router = useRouter();
+  const isMd = useMediaQuery("min-width: 768px");
+
   const handleTripSelect = (ev: DataTableSelectionChangeParams) => {
     setTimeout(() => {
       router.push(`/trips/${ev.value.slug}`);
@@ -38,6 +39,7 @@ const TripsList = ({ trips }: Props) => {
   };
   return (
     <DataTable
+      className="min-w-[450px]"
       currentPageReportTemplate="{first} do {last} z {totalRecords}"
       dataKey="ID"
       header="Lista tras"
@@ -48,7 +50,7 @@ const TripsList = ({ trips }: Props) => {
       rows={50}
       rowsPerPageOptions={[20, 50, 100, 200]}
       selectionMode="single"
-      size="small"
+      size={isMd ? "normal" : "small"}
       value={trips}
     >
       <Column body={tripNumBodyTemplate} header="Numer"></Column>

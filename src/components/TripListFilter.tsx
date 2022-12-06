@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { Sidebar } from "primereact/sidebar";
+
+import css from "./TripListFilter.module.css";
+import { Button } from "primereact/button";
 
 const categories = [
   { name: "Piesze", slug: "pieszo" },
@@ -11,50 +15,92 @@ type Props = {
 };
 
 const TripListFilter = ({ locationsList }: Props) => {
+  const [showMenu, setShowMenu] = useState(false);
   return (
     <>
-      <span className="pl-3">Filtr kategorii</span>
+      <Button
+        aria-controls="overlay_tmenu"
+        aria-haspopup
+        className="md:hidden p-button-sm"
+        icon="pi pi-sliders-h"
+        label="Filtry"
+        onClick={() => setShowMenu(!showMenu)}
+      />
+      <Sidebar onHide={() => setShowMenu(false)} visible={showMenu}>
+        <div>
+          <span className="pl-3">Filtr kategorii</span>
 
-      <div className="flex flex-col gap-1 mb-4">
-        {categories.map((loc) => (
-          <Link
-            href={{ pathname: "/trips", query: { slug: loc.slug } }}
-            key={loc.slug}
-          >
-            <div
-              className="bg-brand-primary text-white p-3 rounded cursor-pointer hover:bg-brand-primary/90"
-              role="button"
-            >
-              {loc.name}
-            </div>
-          </Link>
-        ))}
-      </div>
-      <span className="pl-3">Filtr lokalizacji</span>
-      <div className="flex flex-col gap-1">
-        {locationsList.map((loc) =>
-          loc.count > 0 ? (
+          <div className={`${css.buttonsMobile} mb-4`}>
+            {categories.map((loc) => (
+              <Link
+                href={{ pathname: "/trips", query: { slug: loc.slug } }}
+                key={loc.slug}
+                onClick={() => setShowMenu(false)}
+              >
+                <div className={css.btnDiv} role="button">
+                  {loc.name}
+                </div>
+              </Link>
+            ))}
+          </div>
+          <span className="pl-3">Filtr lokalizacji</span>
+          <div className={css.buttonsMobile}>
+            {locationsList.map((loc) =>
+              loc.count > 0 ? (
+                <Link
+                  className={css.btnDiv}
+                  href={{ pathname: "/trips", query: { slug: loc.slug } }}
+                  key={loc.slug}
+                  onClick={() => setShowMenu(false)}
+                  role="button"
+                >
+                  {loc.name} ({loc.count})
+                </Link>
+              ) : null
+            )}
+            <Link href="/trips">
+              <div className={css.allBtnDiv} role="button">
+                Wysztkie ({locationsList.reduce((a, b) => a + b.count, 0)})
+              </div>
+            </Link>
+          </div>
+        </div>
+      </Sidebar>
+      <div className="hidden md:block">
+        <span className="pl-3">Filtr kategorii</span>
+
+        <div className={`${css.buttons} mb-4`}>
+          {categories.map((loc) => (
             <Link
               href={{ pathname: "/trips", query: { slug: loc.slug } }}
               key={loc.slug}
             >
-              <div
-                className="bg-brand-primary text-white p-3 rounded cursor-pointer hover:bg-brand-primary/90"
-                role="button"
-              >
-                {loc.name} ({loc.count})
+              <div className={css.btnDiv} role="button">
+                {loc.name}
               </div>
             </Link>
-          ) : null
-        )}
-        <Link href="/trips">
-          <div
-            className="bg-brand-green-dark text-white p-3 mt-2 rounded cursor-pointer hover:bg-brand-green-dark/90"
-            role="button"
-          >
-            Wysztkie ({locationsList.reduce((a, b) => a + b.count, 0)})
-          </div>
-        </Link>
+          ))}
+        </div>
+        <span className="pl-3">Filtr lokalizacji</span>
+        <div className={css.buttons}>
+          {locationsList.map((loc) =>
+            loc.count > 0 ? (
+              <Link
+                href={{ pathname: "/trips", query: { slug: loc.slug } }}
+                key={loc.slug}
+              >
+                <div className={css.btnDiv} role="button">
+                  {loc.name} ({loc.count})
+                </div>
+              </Link>
+            ) : null
+          )}
+          <Link href="/trips">
+            <div className={css.allBtnDiv} role="button">
+              Wysztkie ({locationsList.reduce((a, b) => a + b.count, 0)})
+            </div>
+          </Link>
+        </div>
       </div>
     </>
   );

@@ -1,3 +1,7 @@
+.lists {
+  @apply md:flex gap-10 w-screen xl:w-[1100px] mx-auto py-4 overflow-x-auto;
+}
+
 .adnotations {
   display: grid;
   grid-row-gap: 0.125rem;

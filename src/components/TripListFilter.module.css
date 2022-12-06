@@ -1,0 +1,13 @@
+.btnDiv {
+  @apply flex md:block items-center bg-brand-primary text-white p-3 rounded cursor-pointer hover:bg-brand-primary/90;
+}
+.allBtnDiv {
+  @apply bg-brand-green-dark text-white p-3 mt-2 rounded cursor-pointer hover:bg-brand-green-dark/90;
+}
+
+.buttons {
+  @apply flex flex-col gap-1;
+}
+.buttonsMobile {
+  @apply grid grid-cols-2 text-sm gap-1 items-stretch;
+}
