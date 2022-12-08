@@ -31,12 +31,12 @@ const TripPost: NextPage<Props> = ({ trip }) => {
         <h1>Loading…</h1>
       ) : (
         <>
-          <div className="p-6">
+          <div className="p-2 md:p-6">
             <SingleTripMap trip={trip} />
           </div>
           <MainLayout spacing="S">
             <div className="flex items-center pb-2">
-              <div className="flex flex-col px-10 border-r-2 border-teal-800">
+              <div className="flex flex-col px-4 md:px-10 border-r-2 border-teal-800">
                 <h3 className="text-2xl mb-4">{trip.number}</h3>
                 {getIcon(trip.type)}
               </div>
@@ -47,7 +47,7 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                 ></h1>
               </div>
             </div>
-            <section className="flex justify-between items-center border-b-2 border-teal-800 pb-4">
+            <section className="md:flex md:justify-between items-center border-b-2 border-teal-800 pb-4">
               <div className={css.adnotations}>
                 <span className="text-bolder">Opracowanie trasy</span>
                 <span className="text-indigo-800">{trip.author}</span>
@@ -58,9 +58,9 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                 <span className="text-bolder">Finansowanie</span>
                 <span className="text-indigo-800">{trip.founding}</span>
               </div>
-              <div>
+              <div className="px-2 pt-2">
                 <a
-                  className="flex items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
+                  className="flex justify-center items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-2 md:py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
                   href={trip.pdf}
                   rel="noreferrer"
                   role="button"
@@ -71,8 +71,8 @@ const TripPost: NextPage<Props> = ({ trip }) => {
                 </a>
               </div>
             </section>
-            <div className="flex gap-4 lg:gap-8">
-              <div className="flex flex-col gap-4 w-2/3">
+            <div className="md:flex gap-4 lg:gap-8">
+              <div className="flex flex-col gap-4 md:w-2/3">
                 <article
                   className="post-article"
                   dangerouslySetInnerHTML={{

@@ -79,7 +79,7 @@ button.gm-control-active {
 }
 
 .post-article {
-  @apply px-6 py-4 bg-white rounded-md text-justify;
+  @apply md:px-6 py-2 md:py-4 bg-white rounded-md text-justify;
 }
 
 .post-article img.alignleft {

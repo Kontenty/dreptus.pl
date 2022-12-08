@@ -60,7 +60,7 @@ const TripListFilter = ({ locationsList }: Props) => {
             )}
             <Link href="/trips">
               <div className={css.allBtnDiv} role="button">
-                Wysztkie ({locationsList.reduce((a, b) => a + b.count, 0)})
+                Wszystkie ({locationsList.reduce((a, b) => a + b.count, 0)})
               </div>
             </Link>
           </div>
@@ -97,7 +97,7 @@ const TripListFilter = ({ locationsList }: Props) => {
           )}
           <Link href="/trips">
             <div className={css.allBtnDiv} role="button">
-              Wysztkie ({locationsList.reduce((a, b) => a + b.count, 0)})
+              Wszystkie ({locationsList.reduce((a, b) => a + b.count, 0)})
             </div>
           </Link>
         </div>

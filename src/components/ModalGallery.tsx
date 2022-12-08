@@ -47,7 +47,7 @@ const ModalGallery = ({
           onClick={onClose}
         />
       </div>
-      <div className="flex flex-col justify-center flex-grow px-16 pb-8">
+      <div className="flex flex-col justify-center flex-grow lg:px-16 pb-8">
         <div onClick={stopClose}>
           <Slider
             afterChange={(i: number) => setCurrentSlide(i + 1)}
@@ -66,10 +66,10 @@ const ModalGallery = ({
                 <div className={full ? css.imgBoxFull : css.imgBoxBig}>
                   <Image
                     alt="trip photo"
+                    className="object-contain object-center"
                     fill
                     sizes="100%"
                     src={img.url}
-                    style={{ objectFit: "contain" }}
                   />
                 </div>
                 {!full && (

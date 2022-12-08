@@ -9,8 +9,8 @@ type Props = {
 
 const MainLayout = ({ children, spacing = "L" }: Props) => {
   const mainClass = cl(css.main, {
-    "gap-10": spacing === "L",
-    "gap-4": spacing === "S",
+    "gap-4 md:gap-10": spacing === "L",
+    "gap-2 md:gap-4": spacing === "S",
   });
   return <main className={mainClass}>{children}</main>;
 };

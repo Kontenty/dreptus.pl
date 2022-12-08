@@ -1,7 +1,8 @@
 .imgBoxBig {
   position: relative;
   height: 566px;
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   margin-right: auto;
   margin-left: auto;
   border-radius: 5px;

@@ -5,9 +5,8 @@
 .adnotations {
   display: grid;
   grid-row-gap: 0.125rem;
-  grid-column-gap: 1rem;
   grid-template-columns: auto 1fr;
-  @apply px-6 py-1;
+  @apply gap-x-2 md:gap-x-4 text-sm md:text-base md:px-6 py-1;
 }
 
 .imgBox {

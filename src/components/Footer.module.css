@@ -9,9 +9,7 @@
   grid-template-columns: 2fr 3fr;
   height: 100%;
   padding: 0.5rem;
-  padding-top: 2rem;
-  padding-left: 10vw;
-  @apply text-brand-green-dark;
+  @apply text-brand-green-dark pt-16 md:pt-8 lg:pl-[10vw];
   z-index: 2;
 }
 .section {
