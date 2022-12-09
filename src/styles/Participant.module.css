@@ -18,6 +18,9 @@
   border-collapse: collapse;
 }
 
+.mainList tr {
+  background: #fff;
+}
 .mainList td,
 .mainList th {
   border: 1px solid #dee2e6;

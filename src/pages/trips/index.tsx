@@ -30,6 +30,7 @@ export const getStaticProps = async () => {
     props: {
       locations: locations ? JSON.parse(JSON.stringify(locations)) : [],
       trips: trips || [],
+      revalidate: 60,
     },
   };
 };

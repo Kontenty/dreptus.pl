@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Slider from "react-slick";
 import { EyeIcon, MapIcon } from "@heroicons/react/24/outline";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 import { SingleTripMap } from "components/map/SingleTripMap";
 import type { Trip } from "src/types";
@@ -28,7 +29,9 @@ const TripPost: NextPage<Props> = ({ trip }) => {
   return (
     <div>
       {router.isFallback ? (
-        <h1>Loading…</h1>
+        <div className="w-full h-80 center-hv">
+          <ProgressSpinner />
+        </div>
       ) : (
         <>
           <div className="p-2 md:p-6">
@@ -197,6 +200,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
           id: trip?.ID,
         },
       })) || [],
-    fallback: false,
+    fallback: true,
   };
 };
