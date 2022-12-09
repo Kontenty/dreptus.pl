@@ -43,7 +43,9 @@ export const getTripSlugs = async () => {
 export const getTripBySlug = async (slug: string) => {
   const idData = await db("wp_posts").select("ID").where({ post_name: slug });
   const id = idData[0].ID;
-  if (!id) {return [];}
+  if (!id) {
+    return [];
+  }
   const query = `SELECT ID, post_title, post_content,\
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_images' ) 'images',\
     (SELECT guid FROM wp_posts WHERE ID = (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_menu_pdf') ) 'pdf',\

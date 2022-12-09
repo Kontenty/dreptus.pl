@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticPropsContext } from "next";
 import { InferGetStaticPropsType } from "next";
 import { getParticipantBySlug, getParticipantSlugs } from "lib/db";
 import MainLayout from "components/layout/MainLayout";
-import css from "src/styles//Particioant.module.css";
+import css from "src/styles//Participant.module.css";
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   if (params?.name && typeof params.name === "string") {
@@ -47,7 +47,7 @@ const TripParticipants = ({ data }: Props) => {
         dangerouslySetInnerHTML={{ __html: data.post_title }}
       />
       <div
-        className={css.table}
+        className={css.mainList}
         dangerouslySetInnerHTML={{ __html: data.post_content }}
       />
     </MainLayout>

@@ -1,0 +1,39 @@
+.table {
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table tr:first-child {
+  color: white;
+}
+.table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.mainList h2 {
+  @apply text-3xl mb-4 mt-6;
+}
+
+.mainList table {
+  border-collapse: collapse;
+}
+
+.mainList td,
+.mainList th {
+  border: 1px solid #dee2e6;
+  border-width: 0 0 1px 0;
+  padding: 0.75rem 1rem;
+}
+.mainList th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border: 1px solid #dee2e6;
+  border-width: 0 0 1px 0;
+  font-weight: 700;
+  color: #343a40;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
+}
+.mainList td:nth-child(2) {
+  text-align: center;
+}

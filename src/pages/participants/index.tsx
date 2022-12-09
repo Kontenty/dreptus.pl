@@ -1,86 +1,27 @@
 import Main from "components/layout/MainLayout";
-import { getElementorPage } from "lib/db";
-import { ElementorData, ElementorElement } from "src/types";
+import { getPage } from "lib/db";
+import { PostResponse } from "src/types";
+import css from "src/styles//Participant.module.css";
 
 export const getStaticProps = async () => {
-  const data = await getElementorPage(9850);
-  const content = data.replaceAll(
-    /https:.{15,18}.pl\\\/[0-9]{4}\\\/[0-9]{2}\\\//g,
-    "/participants/"
-  );
+  const data = await getPage(19516);
   return {
     props: {
-      content: JSON.parse(content) || null,
+      content: data || null,
     },
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mapElementor = (node: ElementorElement): any => {
-  if (node?.settings?.title) {
-    return (
-      <h1
-        className="text-4xl text-center mb-4"
-        dangerouslySetInnerHTML={{ __html: node.settings.title }}
-        key={node.id}
-      ></h1>
-    );
-  }
-  if (node?.settings?.editor) {
-    return (
-      <div
-        className="elementor"
-        dangerouslySetInnerHTML={{
-          __html: node.settings.editor.replaceAll('style="color: #000080;', ""),
-        }}
-        key={node.id}
-      ></div>
-    );
-  }
-  if (node?.elements.length) {
-    if (node.elType === "section") {
-      return (
-        <div
-          key={node.id}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "9fr 1fr 2fr",
-          }}
-        >
-          {node?.elements.map(mapElementor)}
-        </div>
-      );
-    }
-    if (node.elType === "column") {
-      return (
-        <div key={node.id} style={{ display: "flex", flexDirection: "column" }}>
-          {node?.elements.map(mapElementor)}
-        </div>
-      );
-    }
-    return node?.elements.map(mapElementor);
-  }
-};
-
-type Props = { content: ElementorData };
+type Props = { content: PostResponse };
 export default function Participants({ content }: Props) {
   return (
     <Main>
       <article className="flex flex-col gap-3 min-w-[670px] overflow-x-auto">
         {/* <pre>{JSON.stringify(content, null, 2)}</pre> */}
-        {content
-          ? content?.[0].elements.map((el) => {
-              if (el.settings.title) {
-                return <h1 key={el.id}>{el.settings.title}</h1>;
-              }
-              if (el.settings.editor) {
-                return <section key={el.id}>{el.settings.editor}</section>;
-              }
-              if (el?.elements?.length) {
-                return el.elements.map(mapElementor);
-              }
-            })
-          : null}
+        <div
+          className={css.mainList}
+          dangerouslySetInnerHTML={{ __html: content.post_content }}
+        ></div>
       </article>
     </Main>
   );
