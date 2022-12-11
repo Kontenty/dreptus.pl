@@ -52,7 +52,7 @@ export interface PostResponse {
   thumb_url: string;
 }
 
-export interface Trip extends Post {
+export interface TripDetails extends Post {
   images: { url: string; title: string }[];
   pdf: string;
   pdf_images: string;

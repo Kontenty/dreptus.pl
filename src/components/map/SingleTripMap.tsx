@@ -1,9 +1,9 @@
 import { getIconUrl } from "lib/utils";
-import { Trip } from "src/types";
+import { TripDetails } from "src/types";
 import Map from "./Map";
 import Marker from "./Marker";
 
-type Props = { trip: Trip };
+type Props = { trip: TripDetails };
 
 export function SingleTripMap({ trip }: Props) {
   return (

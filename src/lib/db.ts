@@ -1,5 +1,5 @@
 import knex from "knex";
-import { PostResponse, TripsForMapResponse } from "src/types";
+import { PostResponse, TripDetails, TripsForMapResponse } from "src/types";
 
 const db = knex({
   client: "mysql2",
@@ -40,11 +40,13 @@ export const getTripSlugs = async () => {
   return posts;
 };
 
-export const getTripBySlug = async (slug: string) => {
+export const getTripBySlug = async (
+  slug: string
+): Promise<TripDetails | null> => {
   const idData = await db("wp_posts").select("ID").where({ post_name: slug });
   const id = idData[0].ID;
   if (!id) {
-    return [];
+    return null;
   }
   const query = `SELECT ID, post_title, post_content,\
     (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_images' ) 'images',\
@@ -125,7 +127,9 @@ export const getPostsWithThumb = async (
   return posts[0];
 };
 
-export const getPage = async (id: number): Promise<PostResponse> => {
+export const getPage = async (
+  id: number
+): Promise<PostResponse | undefined> => {
   const data = await db("wp_posts").select("post_content").where({ ID: id });
   return data[0];
 };

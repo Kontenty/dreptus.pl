@@ -11,10 +11,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   if (params?.name && typeof params.name === "string") {
     const data = await getParticipantBySlug(params.name);
     if (!data) {
-      // If there is a server error, you might want to
-      // throw an error instead of returning so that the cache is not updated
-      // until the next successful request.
-      throw new Error("Failed to fetch participants data");
+      return { notFound: true };
     }
     return {
       props: {
@@ -42,7 +39,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
           id: slug?.ID,
         },
       })) || [],
-    fallback: true,
+    fallback: "blocking",
   };
 };
 

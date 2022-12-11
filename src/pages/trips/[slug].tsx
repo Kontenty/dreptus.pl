@@ -7,7 +7,7 @@ import { EyeIcon, MapIcon } from "@heroicons/react/24/outline";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 import { SingleTripMap } from "components/map/SingleTripMap";
-import type { Trip } from "src/types";
+import type { TripDetails } from "src/types";
 import { getIcon } from "lib/utils";
 import { getTripBySlug, getTripSlugs } from "lib/db";
 import css from "styles/Trip.module.css";
@@ -16,14 +16,14 @@ import SlickArrow from "components/SlickArrow";
 import ModalGallery from "components/ModalGallery";
 
 interface Props {
-  trip: Trip;
+  trip: TripDetails;
 }
 
 const TripPost: NextPage<Props> = ({ trip }) => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
-  const [currentImageSet, setCurrentImageSet] = useState<Trip["images"] | null>(
-    null
-  );
+  const [currentImageSet, setCurrentImageSet] = useState<
+    TripDetails["images"] | null
+  >(null);
   const [isFullGallery, setIsFullGallery] = useState(false);
   const router = useRouter();
   return (
@@ -172,6 +172,9 @@ export default TripPost;
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params?.slug && typeof params.slug === "string") {
     const trip = await getTripBySlug(params.slug);
+    if (!trip) {
+      return { notFound: true };
+    }
     return {
       props: {
         params,
