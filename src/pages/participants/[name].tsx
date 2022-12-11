@@ -18,7 +18,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
         params,
         data: data ? JSON.parse(JSON.stringify(data)) : null,
       },
-      revalidate: 60,
+      revalidate: 3600,
     };
   }
   return {

@@ -18,8 +18,8 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       trips: trips ? JSON.parse(JSON.stringify(trips)) : [],
       tripsCount,
-      revalidate: 60,
-    }, // will be passed to the page component as props
+      revalidate: 3600,
+    },
   };
 };
 
