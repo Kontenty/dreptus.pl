@@ -5,11 +5,11 @@ import DCarousel from "components/carousel/DreptusCarousel";
 import Main from "components/layout/MainLayout";
 import Hr from "components/hr";
 import css from "../styles/Home.module.css";
-import trip from "public/image/trip.png";
+import trip from "public/image/trip.jpg";
+import together from "public/image/wspolne-zwiedzanie.png";
 import { Post } from "src/types";
 import { getTrips, getTripsCount } from "lib/db";
 import Hero from "components/hero";
-import { SpeakerWaveIcon } from "@heroicons/react/24/outline";
 
 export const getStaticProps: GetStaticProps = async () => {
   const trips = await getTrips();
@@ -71,7 +71,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
         <section>
           <h2 className={css.title}>TRIP</h2>
           <div>
-            <aside className="float-right w-1/2">
+            <aside className="float-right w-2/5 p-2 pl-4">
               <Image alt="TRIP" src={trip} />
             </aside>
             <article>
@@ -105,17 +105,14 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
         {/* Ogłoszenia */}
         <Hr length={18} />
         <section>
+          <h2 className={css.title}>
+            Dreptuś zaprasza do wspólnego zwiedzania
+          </h2>
           <div className="md:flex gap-6">
             <aside className="hidden md:flex justify-center items-center basis-1/4">
-              <div className="center-hv w-24 h-24 rounded-full bg-brand-green-light/90">
-                <SpeakerWaveIcon className="w-16 h-16 text-white" />
-              </div>
+              <Image alt="odznaki dreptuś" src={together} width={200} />
             </aside>
             <article className="basis-3/4 max-w-prose">
-              <h2 className={css.title}>Ogłoszenia</h2>
-              <h3 className="text-xl text-center">
-                Dreptuś zaprasza do wspólnego zwiedzania
-              </h3>
               <p className="p-justify ">
                 Za nami dwa lata intensywnej pracy nad Projektem Turystyczno
                 Rekreacyjnej Imprezy Plenerowej. Powstała strona internetowa,
