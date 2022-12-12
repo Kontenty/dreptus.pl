@@ -114,6 +114,14 @@ const Header = () => {
           );
         })}
       </nav>
+      <div className="ml-auto center-hv">
+        <Link href="https://www.facebook.com/trip.wycieczki">
+          <i
+            className="pi pi-facebook text-white  hover:text-blue-200"
+            style={{ fontSize: "1.5rem" }}
+          ></i>
+        </Link>
+      </div>
       <div className="block md:hidden pt-4 pr-2 ml-auto">
         <Button className="p-button-sm" icon="pi pi-bars" onClick={toggleNav} />
       </div>
