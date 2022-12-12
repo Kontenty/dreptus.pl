@@ -16,7 +16,7 @@ export const GoogleProvider = ({ children }: Props) => {
       const loader = new Loader({
         apiKey: "AIzaSyB1XwgwHr9tgBinodv48WPifH4euSOn9CA",
         version: "weekly",
-        libraries: ["marker"],
+        libraries: ["marker", "geometry"],
       });
       const loadedGoogle = await loader.load();
       setGooglemaps(loadedGoogle.maps);
