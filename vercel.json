@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/wp-admin",
+      "destination": "https://wp.xn--dreptu-8ib.pl/wp-admin",
+      "statusCode": 301
+    }
+  ]
+}
