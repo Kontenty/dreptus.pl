@@ -28,8 +28,6 @@ const TripListFilter = ({ locationsList }: Props) => {
       />
       <Sidebar onHide={() => setShowMenu(false)} visible={showMenu}>
         <div>
-          <span className="pl-3">Filtr kategorii</span>
-
           <div className={`${css.buttonsMobile} mb-4`}>
             {categories.map((loc) => (
               <Link
@@ -43,7 +41,6 @@ const TripListFilter = ({ locationsList }: Props) => {
               </Link>
             ))}
           </div>
-          <span className="pl-3">Filtr lokalizacji</span>
           <div className={css.buttonsMobile}>
             {locationsList.map((loc) =>
               loc.count > 0 ? (
@@ -67,8 +64,6 @@ const TripListFilter = ({ locationsList }: Props) => {
         </div>
       </Sidebar>
       <div className="hidden md:block">
-        <span className="pl-3">Filtr kategorii</span>
-
         <div className={`${css.buttons} mb-4`}>
           {categories.map((loc) => (
             <Link
@@ -81,7 +76,6 @@ const TripListFilter = ({ locationsList }: Props) => {
             </Link>
           ))}
         </div>
-        <span className="pl-3">Filtr lokalizacji</span>
         <div className={css.buttons}>
           {locationsList.map((loc) =>
             loc.count > 0 ? (

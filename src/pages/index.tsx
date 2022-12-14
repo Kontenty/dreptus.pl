@@ -6,7 +6,7 @@ import Main from "components/layout/MainLayout";
 import Hr from "components/hr";
 import css from "../styles/Home.module.css";
 import trip from "public/image/trip.jpg";
-import together from "public/image/wspolne-zwiedzanie.png";
+import odznaki from "public/image/odznaki.jpg";
 import { Post } from "src/types";
 import { getTrips, getTripsCount } from "lib/db";
 import Hero from "components/hero";
@@ -110,7 +110,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
           </h2>
           <div className="md:flex gap-6">
             <aside className="hidden md:flex justify-center items-center basis-1/4">
-              <Image alt="odznaki dreptuś" src={together} width={200} />
+              <Image alt="odznaki dreptuś" src={odznaki} width={200} />
             </aside>
             <article className="basis-3/4 max-w-prose">
               <p className="p-justify ">

@@ -18,7 +18,9 @@ import ModalGallery from "components/ModalGallery";
 import { GoogleContext } from "context";
 
 const formatDistance = (d: number) => {
-  return d < 1000 ? `${d.toFixed(0)} m` : `${(d / 1000).toFixed(2)} km`;
+  return d < 1000
+    ? `${(Math.round(d / 10) * 10).toFixed(0)} m`
+    : `${(d / 1000).toFixed(d < 10000 ? 1 : 0)} km`;
 };
 interface Props {
   trip: TripDetails;
@@ -160,7 +162,7 @@ const TripPost: NextPage<Props> = ({ trip, tripsList }) => {
                   >
                     <Image
                       alt={pdf.title}
-                      height={200}
+                      height={400}
                       key={pdf.title}
                       src={pdf.url}
                       style={{
@@ -168,7 +170,7 @@ const TripPost: NextPage<Props> = ({ trip, tripsList }) => {
                         width: "100%",
                         height: "auto",
                       }}
-                      width={200}
+                      width={400}
                     />
                   </div>
                 ))}
@@ -198,7 +200,7 @@ const TripPost: NextPage<Props> = ({ trip, tripsList }) => {
                           {near.category_names.replaceAll(",", ", ")}
                         </small>
                         <span>
-                          <span className="text-sm">Odległość od punktu</span>{" "}
+                          <span className="text-sm">Odległość </span>{" "}
                           {formatDistance(near.distance)}
                         </span>
                       </div>
