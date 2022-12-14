@@ -22,13 +22,20 @@ const Hero = () => {
       <div className={css.heroContent}>
         <div className={css.baner}>
           <div className={css.banerInner}>
-            <div className="flex flex-col mx-auto 2xl:gap-2">
+            <div
+              className="flex flex-col mx-auto 2xl:gap-2"
+              data-aos="fade-right"
+            >
               <span className={css.banerText}>Turystyczna</span>
               <span className={css.banerText}>Rodzinna</span>
               <span className={css.banerText}>Impreza</span>
               <span className={css.banerText}>Plenerowa</span>
             </div>
-            <div className="relative flex justify-center md:gap-8 mx-auto">
+            <div
+              className="relative flex justify-center md:gap-8 mx-auto"
+              data-aos="fade-up"
+              data-aos-delay="150"
+            >
               <Image alt="rodzina" height={150} src={familyImg} width={150} />
               <Image
                 alt="rodzina na rowerze"
@@ -39,7 +46,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <aside className={css.aside}>
+        <aside className={css.aside} data-aos="fade-left" data-aos-delay="100">
           <div className={css.imgBox}>
             <HeroCarousel />
           </div>

@@ -33,7 +33,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
     <>
       <Hero />
       <Main>
-        <section>
+        <section data-aos="fade-up">
           <div className={css.aboutSection}>
             <div>
               <DCarousel width={280} />
@@ -68,10 +68,13 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
         </section>
         {/* tTRIP */}
         <Hr length={18} />
-        <section>
+        <section data-aos="fade-up">
           <h2 className={css.title}>TRIP</h2>
           <div>
-            <aside className="float-right w-2/5 p-2 pl-4">
+            <aside
+              className="float-right w-2/5 p-2 pl-4"
+              data-aos="zoom-in-left"
+            >
               <Image alt="TRIP" src={trip} />
             </aside>
             <article>
@@ -104,12 +107,15 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
         </section>
         {/* Ogłoszenia */}
         <Hr length={18} />
-        <section>
+        <section data-aos="fade-up">
           <h2 className={css.title}>
             Dreptuś zaprasza do wspólnego zwiedzania
           </h2>
           <div className="md:flex gap-6">
-            <aside className="hidden md:flex justify-center items-center basis-1/4">
+            <aside
+              className="hidden md:flex justify-center items-center basis-1/4"
+              data-aos="zoom-in-right"
+            >
               <Image alt="odznaki dreptuś" src={odznaki} width={200} />
             </aside>
             <article className="basis-3/4 max-w-prose">
@@ -143,7 +149,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
             </article>
           </div>
         </section>
-        <section>
+        <section data-aos="fade">
           <h3 className={css.title}>Ostatnio dodane trasy:</h3>
           <div className="flex flex-col">
             {trips.map((trip) => (

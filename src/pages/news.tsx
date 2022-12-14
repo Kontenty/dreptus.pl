@@ -46,29 +46,31 @@ const Home: NextPage<Props> = ({ posts }) => {
       <section>
         <h2 className="text-4xl mb-6 text-brand-green-dark">Najnowsze trasy</h2>
         <div className={css.newsGrid}>
-          {posts.map((p) => (
-            <div className={css.card} key={p.ID}>
-              <Link href={p?.post_name ? `/trips/${p.post_name}` : "/news"}>
-                <div className="overflow-hidden">
-                  <div className="hover:scale-105 transition-all duration-500">
-                    <Image
-                      alt={`thumbnail-${p.post_name}`}
-                      height={280}
-                      placeholder="blur"
-                      width={380}
-                      {...p.image}
-                    />
+          {posts.map((p, i) => (
+            <div data-aos="fade" data-aos-delay={i * 200} key={p.ID}>
+              <div className={css.card} key={p.ID}>
+                <Link href={p?.post_name ? `/trips/${p.post_name}` : "/news"}>
+                  <div className="overflow-hidden">
+                    <div className="hover:scale-105 transition-all duration-500">
+                      <Image
+                        alt={`thumbnail-${p.post_name}`}
+                        height={280}
+                        placeholder="blur"
+                        width={380}
+                        {...p.image}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="px-5 py-4">
-                  <p className="text-xs text-slate-500 mb-2">
-                    {new Intl.DateTimeFormat("pl-PL", {
-                      dateStyle: "short",
-                    }).format(new Date(p.post_date))}
-                  </p>
-                  <h2 dangerouslySetInnerHTML={{ __html: p.post_title }}></h2>
-                </div>
-              </Link>
+                  <div className="px-5 py-4">
+                    <p className="text-xs text-slate-500 mb-2">
+                      {new Intl.DateTimeFormat("pl-PL", {
+                        dateStyle: "short",
+                      }).format(new Date(p.post_date))}
+                    </p>
+                    <h2 dangerouslySetInnerHTML={{ __html: p.post_title }}></h2>
+                  </div>
+                </Link>
+              </div>
             </div>
           ))}
         </div>
