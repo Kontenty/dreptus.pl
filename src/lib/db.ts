@@ -146,6 +146,15 @@ export const getTripsCount = async (): Promise<string> => {
   return data[0][0].sum;
 };
 
+export const getParticipantsPostsList = async () => {
+  const aTrips = await db.raw(
+    'SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE p.post_type = "post" AND m.meta_key = "liczba_uczestnikow" AND p.post_title  LIKE "a%" ORDER BY p.post_title;'
+  );
+  const nonATrips = await db.raw(
+    'SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE p.post_type = "post" AND m.meta_key = "liczba_uczestnikow" AND p.post_title NOT LIKE "a%" ORDER BY p.post_title;'
+  );
+  return { atrips: aTrips[0], nonATrips: nonATrips[0] };
+};
 export const getParticipantSlugs = async () => {
   const data = await db("wp_posts")
     .select("post_name")
