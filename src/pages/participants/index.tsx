@@ -67,7 +67,6 @@ export default function Participants({ atrips, nonATrips }: Props) {
             className="min-w-[450px]"
             currentPageReportTemplate="{first} do {last} z {totalRecords}"
             dataKey="ID"
-            header="Lista tras"
             onSelectionChange={handleSelect}
             paginator
             paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
