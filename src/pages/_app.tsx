@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "../styles/globals.css";
@@ -8,10 +9,9 @@ import { GoogleProvider } from "context";
 import { Analytics } from "@vercel/analytics/react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useLayoutEffect } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
-  useLayoutEffect(() => {
+  useEffect(() => {
     AOS.init({ duration: 1200, easing: "ease-out-back", once: true });
   }, []);
   return (
