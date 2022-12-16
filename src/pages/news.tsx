@@ -47,7 +47,7 @@ const Home: NextPage<Props> = ({ posts }) => {
         <h2 className="text-4xl mb-6 text-brand-green-dark">Najnowsze trasy</h2>
         <div className={css.newsGrid}>
           {posts.map((p, i) => (
-            <div data-aos="fade" data-aos-delay={i * 200} key={p.ID}>
+            <div data-aos="fade-up" data-aos-delay={i * 200} key={p.ID}>
               <div className={css.card} key={p.ID}>
                 <Link href={p?.post_name ? `/trips/${p.post_name}` : "/news"}>
                   <div className="overflow-hidden">

@@ -59,10 +59,10 @@ export default function Trips({ locations, trips }: Props) {
     <>
       <TripsMap trips={data || trips} />
       <div className={css.lists}>
-        <div className="lg:pt-4">
+        <div className="lg:pt-4" data-aos="fade-right">
           <TripListFilter locationsList={locations} />
         </div>
-        <div className="bg-white rounded-md p-2 flex-grow">
+        <div className="bg-white rounded-md p-2 flex-grow" data-aos="fade-left">
           <TripsList trips={data || trips} />
         </div>
       </div>

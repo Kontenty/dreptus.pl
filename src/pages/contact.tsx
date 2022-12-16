@@ -8,7 +8,7 @@ import Main from "components/layout/MainLayout";
 export default function Contact() {
   return (
     <Main>
-      <div className="my-auto">
+      <div className="my-auto" data-aos="fade-up">
         <p className="text-3xl">Dariusz Mazurek</p>
         <div className="text-xl flex flex-col gap-6 mt-6">
           <p className="flex gap-3 items-center">

@@ -8,11 +8,11 @@ import Layout from "components/layout/CommonLayout";
 import { GoogleProvider } from "context";
 import { Analytics } from "@vercel/analytics/react";
 import AOS from "aos";
-import "aos/dist/aos.css";
+import "src/styles/customized-aos.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    AOS.init({ duration: 1200, easing: "ease-out-back", once: true });
+    AOS.init({ duration: 1200, easing: "ease-out", once: true });
   }, []);
   return (
     <>

@@ -7,7 +7,10 @@ type Props = {
 
 const Hr = ({ length = 10 }: Props) => {
   return (
-    <div className="flex gap-2 max-w-full overflow-hidden">
+    <div
+      className="flex gap-2 max-w-full overflow-hidden"
+      data-aos="slide-right"
+    >
       {Array.from(Array(length).keys()).map((i) => (
         <div key={i}>
           <Image alt="foot print" src={foot} />

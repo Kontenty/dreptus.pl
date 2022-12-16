@@ -42,7 +42,10 @@ export default function Participants({ atrips, nonATrips }: Props) {
   };
   return (
     <Main>
-      <article className="flex flex-col gap-12 min-w-[670px] overflow-x-auto">
+      <article
+        className="flex flex-col gap-12 min-w-[670px] overflow-x-auto"
+        data-aos="fade-up"
+      >
         <div>
           <h2 className="text-3xl">Z Dreptusiem po Dolinie Bugu</h2>
           <DataTable

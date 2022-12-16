@@ -39,7 +39,9 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
               <DCarousel width={280} />
             </div>
             <article>
-              <h1 className={css.title}>Kim jest Dreptuś?</h1>
+              <h1 className={css.title} data-aos="slide-up">
+                Kim jest Dreptuś?
+              </h1>
               <p className="p-justify">
                 Dreptuś to wesoły, przemiły emotikon, który przyszedł na świat w
                 niemieckim Freiburgu za sprawą Gerda Altmanna. Od pewnego czasu
@@ -149,7 +151,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
             </article>
           </div>
         </section>
-        <section data-aos="fade">
+        <section data-aos="fade-up">
           <h3 className={css.title}>Ostatnio dodane trasy:</h3>
           <div className="flex flex-col">
             {trips.map((trip) => (
