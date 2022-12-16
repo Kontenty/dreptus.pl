@@ -13,6 +13,10 @@ const nextConfig = {
         hostname: "xn--dreptu-8ib.pl",
       },
       {
+        protocol: "https",
+        hostname: "wp.xn--dreptu-8ib.pl",
+      },
+      {
         protocol: "http",
         hostname: "dreptus.cal24.pl",
       },
