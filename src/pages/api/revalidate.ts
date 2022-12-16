@@ -18,6 +18,9 @@ export default async function handler(
       await res.revalidate("/trips");
       await res.revalidate("/form");
     }
+    if (req.query.new === "participant") {
+      await res.revalidate("/participants");
+    }
     return res.json({ revalidated: true });
   } catch (err) {
     // If there was an error, Next.js will continue
