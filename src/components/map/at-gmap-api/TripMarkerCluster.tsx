@@ -77,6 +77,7 @@ function Popup({ trip }: PopupProps) {
             fill
             src={trip.thumb_url}
             style={{ objectFit: "cover" }}
+            unoptimized
           />
           <div className={css.imgOverlay}>
             <EyeIcon className={css.imgIcon} />

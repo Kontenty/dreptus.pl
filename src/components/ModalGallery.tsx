@@ -70,6 +70,7 @@ const ModalGallery = ({
                     fill
                     sizes="100%"
                     src={img.url}
+                    unoptimized
                   />
                 </div>
                 {!full && (

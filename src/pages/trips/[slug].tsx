@@ -191,6 +191,7 @@ const TripPost: NextPage<Props> = ({ trip, tripsList }) => {
                       className="rounded"
                       height={100}
                       src={near.thumb_url}
+                      unoptimized
                       width={150}
                     />
                     <Link href={`/trips/${near.slug}`}>

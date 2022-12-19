@@ -36,11 +36,18 @@ const Hero = () => {
               data-aos="fade-up"
               data-aos-delay="150"
             >
-              <Image alt="rodzina" height={150} src={familyImg} width={150} />
+              <Image
+                alt="rodzina"
+                height={150}
+                src={familyImg}
+                unoptimized
+                width={150}
+              />
               <Image
                 alt="rodzina na rowerze"
                 height={150}
                 src={familyCyclingImg}
+                unoptimized
                 width={300}
               />
             </div>

@@ -53,6 +53,7 @@ const Header = () => {
           height={150}
           onClick={toggleNav}
           src={logo}
+          unoptimized
           width={150}
         />
       </Link>
