@@ -17,7 +17,7 @@ export const getStaticProps = async () => {
     props: {
       atrips: JSON.parse(JSON.stringify(atrips)) || null,
       nonATrips: JSON.parse(JSON.stringify(nonATrips)) || null,
-      revalidate: 3600,
+      revalidate: 60 * 60 * 12,
     },
   };
 };

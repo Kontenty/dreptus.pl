@@ -269,6 +269,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
           id: trip?.ID,
         },
       })) || [],
-    fallback: true,
+    fallback: "blocking",
   };
 };
