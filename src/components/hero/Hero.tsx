@@ -12,11 +12,13 @@ const Hero = () => {
       <div className={css.background}>
         <Image
           alt="krajobraz"
+          className="object-cover object-center"
           fill
+          loading="eager"
           placeholder="blur"
           sizes="100vw"
           src={coverImg}
-          style={{ objectFit: "cover", objectPosition: "center" }}
+          unoptimized
         />
       </div>
       <div className={css.heroContent}>

@@ -51,6 +51,7 @@ const Header = () => {
           alt="logo"
           className="shadow-lg rounded-full border-2 border-slate-200 bg-white w-[100px] md:w-[150px]"
           height={150}
+          loading="eager"
           onClick={toggleNav}
           src={logo}
           unoptimized

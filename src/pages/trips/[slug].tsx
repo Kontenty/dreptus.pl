@@ -138,6 +138,7 @@ const TripPost: NextPage<Props> = ({ trip, tripsList }) => {
                             className={css.img}
                             height={200}
                             src={img.url}
+                            unoptimized
                             width={300}
                           />
                           <div className={css.imgOverlay}>
@@ -170,6 +171,7 @@ const TripPost: NextPage<Props> = ({ trip, tripsList }) => {
                         width: "100%",
                         height: "auto",
                       }}
+                      unoptimized
                       width={400}
                     />
                   </div>

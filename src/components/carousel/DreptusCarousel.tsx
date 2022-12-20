@@ -38,7 +38,7 @@ const DreptusCarousel = ({ width }: Props) => {
       <Slider {...settings}>
         {imgNum.map((img) => (
           <div key={img.src}>
-            <Image alt="Dreptuś" src={img} />
+            <Image alt="Dreptuś" src={img} unoptimized />
           </div>
         ))}
       </Slider>

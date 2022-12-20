@@ -56,6 +56,7 @@ const Home: NextPage<Props> = ({ posts }) => {
                         alt={`thumbnail-${p.post_name}`}
                         height={280}
                         placeholder="blur"
+                        unoptimized
                         width={380}
                         {...p.image}
                       />

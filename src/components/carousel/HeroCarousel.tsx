@@ -26,7 +26,7 @@ export default function HeroCarousel() {
     <Slider {...settings}>
       {array.map((img) => (
         <div className="relative" key={img.src}>
-          <Image alt="turystyka" placeholder="blur" src={img} />
+          <Image alt="turystyka" placeholder="blur" src={img} unoptimized />
         </div>
       ))}
     </Slider>

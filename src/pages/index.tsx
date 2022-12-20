@@ -77,7 +77,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
               className="float-right w-2/5 p-2 pl-4"
               data-aos="zoom-in-left"
             >
-              <Image alt="TRIP" src={trip} />
+              <Image alt="TRIP" src={trip} unoptimized />
             </aside>
             <article>
               <p className="p-justify">
