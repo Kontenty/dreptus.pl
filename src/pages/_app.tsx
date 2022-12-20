@@ -5,7 +5,6 @@ import "../styles/globals.css";
 import "../styles/prime-theme.css";
 import type { AppProps } from "next/app";
 import Layout from "components/layout/CommonLayout";
-import { GoogleProvider } from "context";
 import { Analytics } from "@vercel/analytics/react";
 import AOS from "aos";
 import "src/styles/customized-aos.css";
@@ -16,11 +15,9 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <>
-      <GoogleProvider>
-        <Layout>
-          <Component {...pageProps} />;
-        </Layout>
-      </GoogleProvider>
+      <Layout>
+        <Component {...pageProps} />;
+      </Layout>
       <Analytics />
     </>
   );

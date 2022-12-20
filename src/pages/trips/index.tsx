@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { GoogleProvider } from "context";
 
 import TripListFilter from "components/TripListFilter";
 import { getLocations, getTripsForMap } from "lib/db";
@@ -57,15 +58,20 @@ export default function Trips({ locations, trips }: Props) {
 
   return (
     <>
-      <TripsMap trips={data || trips} />
-      <div className={css.lists}>
-        <div className="lg:pt-4" data-aos="fade-right">
-          <TripListFilter locationsList={locations} />
+      <GoogleProvider>
+        <TripsMap trips={data || trips} />
+        <div className={css.lists}>
+          <div className="lg:pt-4" data-aos="fade-right">
+            <TripListFilter locationsList={locations} />
+          </div>
+          <div
+            className="bg-white rounded-md p-2 flex-grow"
+            data-aos="fade-left"
+          >
+            <TripsList trips={data || trips} />
+          </div>
         </div>
-        <div className="bg-white rounded-md p-2 flex-grow" data-aos="fade-left">
-          <TripsList trips={data || trips} />
-        </div>
-      </div>
+      </GoogleProvider>
     </>
   );
 }
