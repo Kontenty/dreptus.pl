@@ -2,7 +2,7 @@ import {
   DataTable,
   DataTableSelectionChangeParams,
 } from "primereact/datatable";
-import { Column, ColumnBodyOptions } from "primereact/column";
+import { Column } from "primereact/column";
 import Main from "components/layout/MainLayout";
 import { getParticipantsPostsList } from "lib/db";
 import { PostResponse } from "src/types";
@@ -23,11 +23,11 @@ export const getStaticProps = async () => {
 };
 
 const dateTmpl = (row: PostResponse) =>
-  new Intl.DateTimeFormat("pl-PL", { dateStyle: "short" }).format(
-    new Date(row.post_modified)
-  );
-const indexTmpl = (row: PostResponse, options: ColumnBodyOptions) =>
-  options.rowIndex + 1;
+  new Intl.DateTimeFormat("pl-PL", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(row.post_modified));
 const titleTmpl = (row: PostResponse) => row.post_title.replace("<br>", " ");
 
 type List = (PostResponse & { participants: string })[];
@@ -58,9 +58,12 @@ export default function Participants({ atrips, nonATrips }: Props) {
             // size={isMd ? "normal" : "small"}
             value={atrips}
           >
-            <Column body={indexTmpl} header="L.p."></Column>
             <Column body={titleTmpl} header="Nazwa Trasy"></Column>
-            <Column field="participants" header="Liczba Uczestników"></Column>
+            <Column
+              align="center"
+              field="participants"
+              header="Liczba Uczestników"
+            ></Column>
             <Column body={dateTmpl} header="Data Aktualizacji"></Column>
           </DataTable>
         </div>
@@ -80,7 +83,6 @@ export default function Participants({ atrips, nonATrips }: Props) {
             // size={isMd ? "normal" : "small"}
             value={nonATrips}
           >
-            <Column body={indexTmpl} header="L.p."></Column>
             <Column body={titleTmpl} header="Nazwa Trasy"></Column>
             <Column field="participants" header="Liczba Uczestników"></Column>
             <Column body={dateTmpl} header="Data Aktualizacji"></Column>

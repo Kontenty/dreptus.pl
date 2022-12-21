@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { Button } from "primereact/button";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import cl from "classnames";
 
 import logo from "public/image/logo200.png";
 import css from "./Header.module.css";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
 
 const links = [
   { name: "Strona główna", link: "/" },
