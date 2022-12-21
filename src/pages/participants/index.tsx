@@ -28,7 +28,8 @@ const dateTmpl = (row: PostResponse) =>
     month: "2-digit",
     year: "numeric",
   }).format(new Date(row.post_modified));
-const titleTmpl = (row: PostResponse) => row.post_title.replace("<br>", " ");
+const titleTmpl = (row: PostResponse) =>
+  row.post_title.replace(/,{0,1}<br>/, ", ");
 
 type List = (PostResponse & { participants: string })[];
 type Props = { atrips: List; nonATrips: List };
@@ -43,7 +44,7 @@ export default function Participants({ atrips, nonATrips }: Props) {
   return (
     <Main>
       <article
-        className="flex flex-col gap-12 min-w-[670px] overflow-x-auto"
+        className="flex flex-col gap-2 min-w-[670px] overflow-x-auto"
         data-aos="fade-up"
       >
         <div>
@@ -84,7 +85,11 @@ export default function Participants({ atrips, nonATrips }: Props) {
             value={nonATrips}
           >
             <Column body={titleTmpl} header="Nazwa Trasy"></Column>
-            <Column field="participants" header="Liczba Uczestników"></Column>
+            <Column
+              align="center"
+              field="participants"
+              header="Liczba Uczestników"
+            ></Column>
             <Column body={dateTmpl} header="Data Aktualizacji"></Column>
           </DataTable>
         </div>
