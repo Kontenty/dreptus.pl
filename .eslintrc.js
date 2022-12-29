@@ -85,5 +85,5 @@ module.exports = {
       version: "detect",
     },
   },
-  ignorePatterns: [".*rc.js"],
+  ignorePatterns: [".*rc.js", "*.config.js"],
 };
