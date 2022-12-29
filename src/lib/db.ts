@@ -43,37 +43,41 @@ export const getTripSlugs = async () => {
 export const getTripBySlug = async (
   slug: string
 ): Promise<TripDetails | null> => {
-  const idData = await db("wp_posts").select("ID").where({ post_name: slug });
-  const id = idData[0].ID;
-  if (!id) {
+  try {
+    const idData = await db("wp_posts").select("ID").where({ post_name: slug });
+    const id = idData?.[0]?.ID;
+    if (!id) {
+      return null;
+    }
+    const query = `SELECT ID, post_title, post_content,\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_images' ) 'images',\
+      (SELECT guid FROM wp_posts WHERE ID = (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_menu_pdf') ) 'pdf',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_zxr0feyjz' ) 'number',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_15kr29dj3' ) 'author',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_nv0mho3ts' ) 'length',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_yjar0aoq6' ) 'pk',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_boz3z5wv9' ) 'founding',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_0o5uhb4c9' ) 'type',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_latitude' ) 'lat',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_longitude' ) 'lng',\
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_i5t95ytae' ) 'pdf_images'\
+  FROM wp_posts WHERE ID = ${id}`;
+    const postData = await db.raw(query);
+    const trip = postData[0][0];
+    const imageString = trip.images;
+    const pdfImageString = trip.pdf_images;
+    const images = await db("wp_posts")
+      .select("guid as url", "post_title as title")
+      .whereIn("ID", imageString.split(","));
+    const pdfImages = await db("wp_posts")
+      .select("guid as url", "post_title as title")
+      .whereIn("ID", pdfImageString.split(","));
+    trip.images = images;
+    trip.pdfImages = pdfImages;
+    return trip;
+  } catch (error) {
     return null;
   }
-  const query = `SELECT ID, post_title, post_content,\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_images' ) 'images',\
-    (SELECT guid FROM wp_posts WHERE ID = (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_menu_pdf') ) 'pdf',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_zxr0feyjz' ) 'number',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_15kr29dj3' ) 'author',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_nv0mho3ts' ) 'length',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_yjar0aoq6' ) 'pk',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_boz3z5wv9' ) 'founding',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_0o5uhb4c9' ) 'type',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_latitude' ) 'lat',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_longitude' ) 'lng',\
-    (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_i5t95ytae' ) 'pdf_images'\
-FROM wp_posts WHERE ID = ${id}`;
-  const postData = await db.raw(query);
-  const imageString = postData[0][0].images;
-  const pdfImageString = postData[0][0].pdf_images;
-  const trip = postData[0][0];
-  const images = await db("wp_posts")
-    .select("guid as url", "post_title as title")
-    .whereIn("ID", imageString.split(","));
-  const pdfImages = await db("wp_posts")
-    .select("guid as url", "post_title as title")
-    .whereIn("ID", pdfImageString.split(","));
-  trip.images = images;
-  trip.pdfImages = pdfImages;
-  return trip;
 };
 
 export const getTripsForMap = async (
