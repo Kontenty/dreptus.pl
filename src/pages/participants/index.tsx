@@ -9,37 +9,60 @@ import { PostResponse } from "src/types";
 import { useRouter } from "next/router";
 
 export const getStaticProps = async () => {
-  const { atrips, nonATrips } = await getParticipantsPostsList();
-  if (!atrips || !nonATrips) {
+  const trips = await getParticipantsPostsList();
+  if (!trips) {
     throw new Error("lists of participants - fetch data error");
   }
+  const chunked = trips.reduce((result: PostResponse[][], current) => {
+    if (/^[A-Z][0-9]{2}/.test(current.post_title)) {
+      result[0] ? result[0].push(current) : (result[0] = [current]);
+    } else if (/^[0-9]{3}/.test(current.post_title)) {
+      result[1] ? result[1].push(current) : (result[1] = [current]);
+    } else if (/^#[0-9]{2}/.test(current.post_title)) {
+      result[2] ? result[2].push(current) : (result[2] = [current]);
+    }
+    return result;
+  }, []);
+  chunked.unshift([
+    { post_title: "Z Dreptusiem po Dolinie Bugu:" } as PostResponse,
+  ]);
+  chunked.splice(2, 0, [
+    { post_title: "Z Dreptusiem po Polsce:" } as PostResponse,
+  ]);
   return {
     props: {
-      atrips: JSON.parse(JSON.stringify(atrips)) || null,
-      nonATrips: JSON.parse(JSON.stringify(nonATrips)) || null,
+      trips: JSON.parse(JSON.stringify(chunked.flat())) || null,
       revalidate: 60 * 60 * 12,
     },
   };
 };
 
 const dateTmpl = (row: PostResponse) =>
-  new Intl.DateTimeFormat("pl-PL", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(row.post_modified));
+  row.post_modified
+    ? new Intl.DateTimeFormat("pl-PL", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }).format(new Date(row.post_modified))
+    : "";
 const titleTmpl = (row: PostResponse) =>
-  row.post_title.replace(/,{0,1}<br>/, ", ");
+  /^Z Dreptusiem/i.test(row.post_title) ? (
+    <span className="font-bold text-lg">{row.post_title}</span>
+  ) : (
+    row.post_title.replace(/,{0,1}<br>/, ", ")
+  );
 
 type List = (PostResponse & { participants: string })[];
-type Props = { atrips: List; nonATrips: List };
+type Props = { trips: List };
 
-export default function Participants({ atrips, nonATrips }: Props) {
+export default function Participants({ trips }: Props) {
   const router = useRouter();
   const handleSelect = (ev: DataTableSelectionChangeParams) => {
-    setTimeout(() => {
-      router.push(`/participants/${ev.value.post_name}`);
-    }, 300);
+    if (ev.value.post_name) {
+      setTimeout(() => {
+        router.push(`/participants/${ev.value.post_name}`);
+      }, 300);
+    }
   };
   return (
     <Main>
@@ -48,28 +71,7 @@ export default function Participants({ atrips, nonATrips }: Props) {
         data-aos="fade-up"
       >
         <div>
-          <h2 className="text-3xl">Z Dreptusiem po Dolinie Bugu</h2>
-          <DataTable
-            className="min-w-[450px]"
-            currentPageReportTemplate="{first} do {last} z {totalRecords}"
-            dataKey="ID"
-            onSelectionChange={handleSelect}
-            responsiveLayout="scroll"
-            selectionMode="single"
-            // size={isMd ? "normal" : "small"}
-            value={atrips}
-          >
-            <Column body={titleTmpl} header="Nazwa Trasy"></Column>
-            <Column
-              align="center"
-              field="participants"
-              header="Liczba Uczestników"
-            ></Column>
-            <Column body={dateTmpl} header="Data Aktualizacji"></Column>
-          </DataTable>
-        </div>
-        <div>
-          <h2 className="text-3xl">Z Dreptusiem po Polsce</h2>
+          <h2 className="text-3xl">Lista uczestników tras</h2>
           <DataTable
             className="min-w-[450px]"
             currentPageReportTemplate="{first} do {last} z {totalRecords}"
@@ -82,7 +84,7 @@ export default function Participants({ atrips, nonATrips }: Props) {
             rowsPerPageOptions={[20, 50, 100, 200]}
             selectionMode="single"
             // size={isMd ? "normal" : "small"}
-            value={nonATrips}
+            value={trips}
           >
             <Column body={titleTmpl} header="Nazwa Trasy"></Column>
             <Column
