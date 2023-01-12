@@ -18,7 +18,6 @@ const Hero = () => {
           placeholder="blur"
           sizes="100vw"
           src={coverImg}
-          unoptimized
         />
       </div>
       <div className={css.heroContent}>
