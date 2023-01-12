@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -28,9 +28,12 @@ interface Props {
   tripsList: TripFormMap[];
 }
 
-const TripPost: NextPage<Props> = ({ trip, tripsList }) => {
+const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
+  trip,
+  tripsList,
+  googlemaps,
+}) => {
   const router = useRouter();
-  const { googlemaps } = useContext(GoogleContext);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [currentImageSet, setCurrentImageSet] = useState<
     TripDetails["images"] | null
@@ -233,7 +236,15 @@ const TripPost: NextPage<Props> = ({ trip, tripsList }) => {
     </GoogleProvider>
   );
 };
-export default TripPost;
+export default function TripDetails(props: Props) {
+  return (
+    <GoogleProvider>
+      <GoogleContext.Consumer>
+        {(value) => <TripPost {...props} googlemaps={value.googlemaps} />}
+      </GoogleContext.Consumer>
+    </GoogleProvider>
+  );
+}
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params?.slug && typeof params.slug === "string") {
