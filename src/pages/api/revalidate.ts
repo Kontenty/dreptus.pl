@@ -7,19 +7,34 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.query.secret !== token) {
+  if (req.query?.secret !== token) {
     return res.status(401).json({ message: "Invalid token" });
   }
 
+  const slug = req.query?.slug;
+
   try {
-    await res.revalidate("/");
-    if (req.query.new === "trip") {
-      await res.revalidate("/news");
-      await res.revalidate("/trips");
-      await res.revalidate("/form");
+    if (req.query?.new === "trip") {
+      const promises = [
+        res.revalidate("/"),
+        res.revalidate("/news"),
+        res.revalidate("/trips"),
+        res.revalidate("/form"),
+      ];
+      if (slug) {
+        promises.push(res.revalidate(`/trips/${slug}`));
+      }
+      await Promise.all(promises);
     }
-    if (req.query.new === "participant") {
-      await res.revalidate("/participants");
+    if (req.query?.new === "participant") {
+      if (slug) {
+        await Promise.all([
+          res.revalidate("/participants"),
+          res.revalidate(`/participants/${slug}`),
+        ]);
+      } else {
+        await res.revalidate("/participants");
+      }
     }
     return res.json({ revalidated: true });
   } catch (err) {
