@@ -24,14 +24,9 @@ const array = [crs0, crs1, crs2, crs3, crs4];
 export default function HeroCarousel() {
   return (
     <Slider {...settings}>
-      {array.map((img, i) => (
+      {array.map((img) => (
         <div className="relative" key={img.src}>
-          <Image
-            alt="turystyka"
-            placeholder="blur"
-            src={img}
-            unoptimized={i > 0}
-          />
+          <Image alt="turystyka" placeholder="blur" src={img} />
         </div>
       ))}
     </Slider>

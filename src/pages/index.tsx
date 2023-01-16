@@ -77,7 +77,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
               className="float-right w-2/5 p-2 pl-4"
               data-aos="zoom-in-left"
             >
-              <Image alt="TRIP" src={trip} unoptimized />
+              <Image alt="TRIP" src={trip} />
             </aside>
             <article>
               <p className="p-justify">
@@ -118,12 +118,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
               className="hidden md:flex justify-center items-center basis-1/4"
               data-aos="zoom-in-right"
             >
-              <Image
-                alt="odznaki dreptuś"
-                src={odznaki}
-                unoptimized
-                width={200}
-              />
+              <Image alt="odznaki dreptuś" src={odznaki} width={200} />
             </aside>
             <article className="basis-3/4 max-w-prose">
               <p className="p-justify ">

@@ -13,7 +13,7 @@ const Hr = ({ length = 10 }: Props) => {
     >
       {Array.from(Array(length).keys()).map((i) => (
         <div key={i}>
-          <Image alt="foot print" src={foot} unoptimized />
+          <Image alt="foot print" src={foot} />
         </div>
       ))}
     </div>

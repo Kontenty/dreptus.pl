@@ -54,7 +54,6 @@ const Header = () => {
           loading="eager"
           onClick={toggleNav}
           src={logo}
-          unoptimized
           width={150}
         />
       </Link>

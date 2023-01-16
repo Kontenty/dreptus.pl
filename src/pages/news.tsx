@@ -86,7 +86,6 @@ const Home: NextPage<Props> = ({ posts }) => {
               alt="pakiety startowe"
               className="float-right sm:pl-4 pb-4"
               src={packImg}
-              unoptimized
               width={400}
             />
             <p className="text-justify max-w-2xl">

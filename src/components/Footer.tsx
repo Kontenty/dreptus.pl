@@ -48,7 +48,7 @@ const Footer = () => {
           </div>
         </div>
         <div className={css.image}>
-          <Image alt="łąka" src={footerImg} unoptimized />
+          <Image alt="łąka" src={footerImg} />
         </div>
       </div>
     </footer>
