@@ -57,6 +57,35 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
     [trip, tripsList, googlemaps]
   );
 
+  const handleDownload = async (url: string) => {
+    let linkUrl = url;
+    if (window.orientation !== undefined || window.innerWidth < 800) {
+      // this is a mobile browser
+      const res = await fetch(url, { method: "GET", mode: "no-cors" });
+      const blob = await res.blob();
+      linkUrl =
+        window.URL && window.URL.createObjectURL
+          ? window.URL.createObjectURL(blob)
+          : window.webkitURL.createObjectURL(blob);
+    }
+    const tempLink = document.createElement("a");
+    tempLink.style.display = "none";
+    tempLink.href = linkUrl;
+    tempLink.setAttribute("download", url.split("/").at(-1) ?? "mapa.pdf");
+
+    if (typeof tempLink.download === "undefined") {
+      tempLink.setAttribute("target", "_blank");
+    }
+
+    document.body.appendChild(tempLink);
+    tempLink.click();
+
+    return setTimeout(() => {
+      document.body.removeChild(tempLink);
+      window.URL.revokeObjectURL(linkUrl);
+    }, 200);
+  };
+
   return (
     <GoogleProvider>
       <div>
@@ -94,19 +123,53 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                   <span className="text-indigo-800">{trip.founding}</span>
                 </div>
                 <div className="px-2 pt-2">
-                  <a
+                  <button
                     className="flex justify-center items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-2 md:py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
-                    href={trip.pdf}
-                    rel="noreferrer"
-                    role="button"
-                    target="_blank"
+                    onClick={() => handleDownload(trip.pdf)}
                   >
                     <span>Pobierz&nbsp;mapę</span>
                     <MapIcon className="w-6 h-6" />
-                  </a>
+                  </button>
                 </div>
               </section>
-              <div className="md:flex gap-4 lg:gap-8">
+              <div className="flex-grow" data-aos="fade-up">
+                <Slider
+                  arrows
+                  infinite
+                  nextArrow={<SlickArrow />}
+                  prevArrow={<SlickArrow />}
+                  slidesToScroll={1}
+                  slidesToShow={1}
+                  speed={500}
+                  variableWidth
+                >
+                  {trip.images.map((img, i) => (
+                    <div className="px-2" key={img.url + "div"}>
+                      <div
+                        className={css.imgBox}
+                        onClick={() => {
+                          setSelectedImage(i);
+                          setCurrentImageSet(trip.images);
+                          setIsFullGallery(false);
+                        }}
+                      >
+                        <Image
+                          alt="trip photo"
+                          className={css.img}
+                          height={200}
+                          src={img.url}
+                          unoptimized
+                          width={300}
+                        />
+                        <div className={css.imgOverlay}>
+                          <EyeIcon className={css.imgIcon} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+              <section className="md:flex gap-4 lg:gap-8">
                 <div className="flex flex-col gap-4 md:w-2/3">
                   <article
                     className="post-article"
@@ -117,45 +180,8 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                       ),
                     }}
                   ></article>
-                  <aside>
-                    <Slider
-                      arrows
-                      infinite
-                      nextArrow={<SlickArrow />}
-                      prevArrow={<SlickArrow />}
-                      slidesToScroll={1}
-                      slidesToShow={1}
-                      speed={500}
-                      variableWidth
-                    >
-                      {trip.images.map((img, i) => (
-                        <div className="px-2" key={img.url + "div"}>
-                          <div
-                            className={css.imgBox}
-                            onClick={() => {
-                              setSelectedImage(i);
-                              setCurrentImageSet(trip.images);
-                              setIsFullGallery(false);
-                            }}
-                          >
-                            <Image
-                              alt="trip photo"
-                              className={css.img}
-                              height={200}
-                              src={img.url}
-                              unoptimized
-                              width={300}
-                            />
-                            <div className={css.imgOverlay}>
-                              <EyeIcon className={css.imgIcon} />
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </Slider>
-                  </aside>
                 </div>
-                <div className="md:w-1/3 relative flex flex-col gap-1">
+                <aside className="md:w-1/3 relative flex flex-col gap-1">
                   {trip.pdfImages.map((pdf, i) => (
                     <div
                       className="relative hover:scale-110 hover:z-10 transition-all duration-500 cursor-pointer"
@@ -181,10 +207,10 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                       />
                     </div>
                   ))}
-                </div>
-              </div>
+                </aside>
+              </section>
               {nearbyTrips?.length && (
-                <section className="mt-8 lg:w-2/3">
+                <section className="mt-8 lg:w-2/3" data-aos="fade-up">
                   <h3 className="text-center text-xl font-semibold">
                     Najbliższe trasy
                   </h3>

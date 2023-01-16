@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Slider from "react-slick";
 import SlickArrow from "components/SlickArrow";
@@ -16,6 +16,7 @@ const ModalGallery = ({
   full?: boolean;
   onClose: () => void;
 }) => {
+  const sliderRef = useRef<Slider>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const stopClose = (e: React.SyntheticEvent) => {
     e.stopPropagation();
@@ -26,6 +27,10 @@ const ModalGallery = ({
         if (event.key === "Escape") {
           event.preventDefault();
           onClose();
+        } else if (event.key === "ArrowRight") {
+          sliderRef?.current?.slickNext();
+        } else if (event.key === "ArrowLeft") {
+          sliderRef?.current?.slickPrev();
         }
       };
 
@@ -57,6 +62,7 @@ const ModalGallery = ({
             initialSlide={initial}
             nextArrow={<SlickArrow />}
             prevArrow={<SlickArrow />}
+            ref={sliderRef}
             slidesToScroll={1}
             slidesToShow={1}
             speed={500}
