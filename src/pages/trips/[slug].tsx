@@ -59,19 +59,17 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
 
   const handleDownload = async (url: string) => {
     let linkUrl = url;
-    if (window.orientation !== undefined || window.innerWidth < 800) {
-      // this is a mobile browser
-      const res = await fetch(url, { method: "GET", mode: "no-cors" });
-      const blob = await res.blob();
-      linkUrl =
-        window.URL && window.URL.createObjectURL
-          ? window.URL.createObjectURL(blob)
-          : window.webkitURL.createObjectURL(blob);
-    }
+    const fileName = url.split("/").at(-1);
+    const res = await fetch(url, { method: "GET" });
+    const blob = await res.blob();
+    linkUrl =
+      window.URL && window.URL.createObjectURL
+        ? window.URL.createObjectURL(blob)
+        : window.webkitURL.createObjectURL(blob);
     const tempLink = document.createElement("a");
     tempLink.style.display = "none";
     tempLink.href = linkUrl;
-    tempLink.setAttribute("download", url.split("/").at(-1) ?? "mapa.pdf");
+    tempLink.setAttribute("download", fileName ?? "mapa.pdf");
 
     if (typeof tempLink.download === "undefined") {
       tempLink.setAttribute("target", "_blank");
@@ -126,6 +124,7 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                   <button
                     className="flex justify-center items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-2 md:py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
                     onClick={() => handleDownload(trip.pdf)}
+                    role="button"
                   >
                     <span>Pobierz&nbsp;mapę</span>
                     <MapIcon className="w-6 h-6" />
