@@ -11,14 +11,12 @@ import css from "./Header.module.css";
 
 const links = [
   { name: "Strona główna", link: "/" },
-  { name: "Aktualności", link: "/news" },
-  {
-    name: "Trasy",
-    link: "/trips",
-  },
-  { name: "Uczestnicy", link: "/participants" },
+  { name: "Aktualności", link: "/news", as: "/aktualnosci" },
+  { name: "Trasy", link: "/trips", as: "/lista-tras" },
+  { name: "Uczestnicy", link: "/participants", as: "/uczestnicy-tras" },
   {
     name: "Odznaki",
+    as: "/odznaki",
     children: [
       {
         name: "Z Dreptusiem po Polsce",
@@ -34,8 +32,8 @@ const links = [
       },
     ],
   },
-  { name: "Karta startowa", link: "/form" },
-  { name: "Kontakt", link: "/contact" },
+  { name: "Karta startowa", link: "/form", as: "/karta-startowa" },
+  { name: "Kontakt", link: "/contact", as: "/kontakt" },
 ];
 
 const Header = () => {
@@ -98,6 +96,7 @@ const Header = () => {
           return (
             <div className={css.navItem} key={i}>
               <Link
+                as={link.as}
                 className={
                   router.pathname === link.link
                     ? css.activeLink

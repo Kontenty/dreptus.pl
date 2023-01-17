@@ -2,9 +2,10 @@ import type { InferGetStaticPropsType, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
+import { Accordion, AccordionTab } from "primereact/accordion";
 
 import Main from "components/layout/MainLayout";
-import { getPostsWithThumb } from "lib/db";
+import { getPage, getPostsWithThumb } from "lib/db";
 import css from "styles/News.module.css";
 import packImg from "public/image/pakiety-startowe2.jpg";
 
@@ -33,14 +34,16 @@ export const getStaticProps = async () => {
       };
     })
   );
+  const packets = await getPage(20167);
+  // tableToJson(packets?.post_content ?? "");
   return {
-    props: { posts: posts || [], revalidate: 60 * 60 * 12 },
+    props: { posts: posts || [], packets, revalidate: 60 * 60 * 12 },
   };
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Home: NextPage<Props> = ({ posts }) => {
+const NewsPage: NextPage<Props> = ({ posts, packets }) => {
   return (
     <Main>
       <section>
@@ -76,6 +79,7 @@ const Home: NextPage<Props> = ({ posts }) => {
           ))}
         </div>
       </section>
+
       <section>
         <h2 className="text-4xl mb-6 text-brand-green-dark">
           Pakiety startowe
@@ -107,11 +111,24 @@ const Home: NextPage<Props> = ({ posts }) => {
               myślicie? Czekam na Wasze głosy i uwagi.
             </p>
           </article>
-          <aside className="max-w-"></aside>
         </div>
       </section>
+      <div className="card clear-both">
+        <Accordion>
+          <AccordionTab header="Pakiety">
+            {packets && (
+              <div
+                className="format-table"
+                dangerouslySetInnerHTML={{
+                  __html: packets.post_content,
+                }}
+              />
+            )}
+          </AccordionTab>
+        </Accordion>
+      </div>
     </Main>
   );
 };
 
-export default Home;
+export default NewsPage;
