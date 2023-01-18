@@ -31,6 +31,7 @@ const TripListFilter = ({ locationsList }: Props) => {
           <div className={`${css.buttonsMobile} mb-4`}>
             {categories.map((loc) => (
               <Link
+                as={`/trips/${loc.slug}`}
                 href={{ pathname: "/trips", query: { slug: loc.slug } }}
                 key={loc.slug}
                 onClick={() => setShowMenu(false)}
@@ -45,6 +46,7 @@ const TripListFilter = ({ locationsList }: Props) => {
             {locationsList.map((loc) =>
               loc.count > 0 ? (
                 <Link
+                  as={`/trips/${loc.slug}`}
                   className={css.btnDiv}
                   href={{ pathname: "/trips", query: { slug: loc.slug } }}
                   key={loc.slug}
