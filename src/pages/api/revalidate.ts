@@ -25,8 +25,7 @@ export default async function handler(
         promises.push(res.revalidate(`/trips/${slug}`));
       }
       await Promise.all(promises);
-    }
-    if (req.query?.new === "participant") {
+    } else if (req.query?.new === "participant") {
       if (slug) {
         await Promise.all([
           res.revalidate("/participants"),
@@ -35,7 +34,10 @@ export default async function handler(
       } else {
         await res.revalidate("/participants");
       }
+    } else if (req.query?.new === "packet") {
+      await res.revalidate("/news");
     }
+
     return res.json({ revalidated: true });
   } catch (err) {
     // If there was an error, Next.js will continue
