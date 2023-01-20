@@ -20,7 +20,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["nunito", ...fontFamily.sans],
+        sans: ["var(--nunito-font)", ...fontFamily.sans],
       },
     },
     plugins: [],
