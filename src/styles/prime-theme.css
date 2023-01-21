@@ -818,6 +818,7 @@
   border: 0 none;
   border-radius: 6px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  max-width: 100vw;
 }
 .p-dropdown-panel .p-dropdown-header {
   padding: 0.75rem 1.25rem;
@@ -860,7 +861,8 @@
   background: transparent;
   transition: box-shadow 0.2s;
   border-radius: 0;
-  font-family: sans-serif;
+  font-family: var(--nunito-font), sans-serif;
+  text-overflow: ellipsis;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
   color: var(--primary-color);
