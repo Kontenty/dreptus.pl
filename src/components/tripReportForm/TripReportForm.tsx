@@ -177,9 +177,9 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
         })}
       >
         {(formik) => (
-          <Form className="w-[1000px] ">
-            <div className="grid grid-cols-2 gap-x-4 gap-y-6 p-fluid">
-              <div className="col-span-2">
+          <Form className="md:w-[1000px] ">
+            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 md:gap-y-6 p-fluid">
+              <div className="md:col-span-2">
                 <Dropdown
                   {...formik.getFieldProps("trip")}
                   className={cl({

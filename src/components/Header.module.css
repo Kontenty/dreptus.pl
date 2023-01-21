@@ -77,11 +77,10 @@
 
 /* Dropdown Content (Hidden by Default) */
 .dropdownContent {
-  @apply absolute -left-4;
+  @apply absolute -left-4 top-0 md:top-[90px];
   background: none;
   opacity: 0;
   overflow: hidden;
-  top: 90px;
   visibility: hidden;
   z-index: 1;
 }
@@ -98,7 +97,8 @@
 .dropdown:hover .chevron {
   @apply translate-y-2;
 }
-.dropdown:hover .dropdownContent {
+.dropdown:hover .dropdownContent,
+.dropdown:focus .dropdownContent {
   opacity: 1;
   visibility: visible;
 }

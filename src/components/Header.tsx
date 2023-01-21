@@ -42,6 +42,7 @@ const Header = () => {
   const toggleNav = () => {
     setShowNav((prev) => !prev);
   };
+  const hideNav = () => setShowNav(false);
   return (
     <header className={css.header}>
       <Link className={css.logoBox} href="/">
@@ -50,7 +51,7 @@ const Header = () => {
           className="shadow-lg rounded-full border-2 border-slate-200 bg-white w-[100px] md:w-[150px]"
           height={150}
           loading="eager"
-          onClick={toggleNav}
+          onClick={hideNav}
           src={logo}
           width={150}
         />
@@ -83,7 +84,7 @@ const Header = () => {
                         className={css.dropdownItem}
                         href={childLink.link}
                         key={i + childLink.link}
-                        onClick={toggleNav}
+                        onClick={hideNav}
                       >
                         {childLink.name}
                       </Link>
@@ -106,7 +107,7 @@ const Header = () => {
                 }
                 href={link.link}
                 key={i}
-                onClick={toggleNav}
+                onClick={hideNav}
               >
                 {link.name}
               </Link>

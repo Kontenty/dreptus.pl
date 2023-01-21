@@ -218,15 +218,15 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                       className="flex items-center gap-8 my-4 hover:bg-slate-50"
                       key={near.ID}
                     >
-                      <Image
-                        alt="w pobliźu"
-                        className="rounded"
-                        height={100}
-                        src={near.thumb_url}
-                        unoptimized
-                        width={150}
-                      />
                       <Link href={`/trips/${near.slug}`}>
+                        <Image
+                          alt="w pobliźu"
+                          className="rounded"
+                          height={100}
+                          src={near.thumb_url}
+                          unoptimized
+                          width={150}
+                        />
                         <div className="flex flex-col gap-1">
                           <h4>{near.title.replace("<br>", " - ")}</h4>
                           <small>
