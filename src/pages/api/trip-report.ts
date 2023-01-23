@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import * as Yup from "yup";
-dotenv.config();
+import { config } from "src/lib/config";
 
 const schema = Yup.object({
   fullName: Yup.string().min(4, "Min 4 znaki").required("Pole jest wymagane"),
@@ -61,14 +60,6 @@ const serialize = (data: Request["body"]) => {
   return serialized;
 };
 
-const config = {
-  user: process.env.MAIL_USER ?? "",
-  password: process.env.MAIL_PASS ?? "",
-  port: process.env.MAIL_PORT ? Number(process.env.MAIL_PORT) : 587,
-  host: process.env.MAIL_HOST ?? "",
-  receiver: process.env.MAIL_TO ?? "",
-};
-
 export default async function handler(req: Request, res: NextApiResponse) {
   try {
     await schema.validate(req.body);
@@ -104,7 +95,7 @@ export default async function handler(req: Request, res: NextApiResponse) {
   const messages = [
     {
       from: '"Dreptuś.pl - zgłoszenia" <zgloszenia@dreptuś.pl>', // sender address
-      to: config.receiver, // list of receivers
+      to: config.mail.receiver, // list of receivers
       subject: "Zgłoszenie udziału w Dreptuś.pl 👣", // Subject line
       text, // plain text body
       html, // html body
@@ -125,13 +116,8 @@ export default async function handler(req: Request, res: NextApiResponse) {
 
   try {
     const transporter = nodemailer.createTransport({
-      host: config.host,
-      port: config.port,
+      ...config.mail.nodemailer,
       secure: true, // true for 465, false for other ports
-      auth: {
-        user: config.user, // generated ethereal user
-        pass: config.password, // generated ethereal password
-      },
     });
 
     await transporter.sendMail(messages[0]);
