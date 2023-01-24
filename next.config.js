@@ -24,6 +24,16 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    swcPlugins: [
+      [
+        "next-superjson-plugin",
+        {
+          excluded: [],
+        },
+      ],
+    ],
+  },
   async redirects() {
     return [
       {
