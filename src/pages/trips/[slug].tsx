@@ -143,7 +143,7 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                   variableWidth
                 >
                   {trip.images.map((img, i) => (
-                    <div className="px-2" key={img.url + "div"}>
+                    <div className="px-2" key={img.guid + "div"}>
                       <div
                         className={css.imgBox}
                         onClick={() => {
@@ -156,7 +156,7 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                           alt="trip photo"
                           className={css.img}
                           height={200}
-                          src={img.url}
+                          src={img.guid}
                           unoptimized
                           width={300}
                         />
@@ -184,7 +184,7 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                   {trip.pdfImages.map((pdf, i) => (
                     <div
                       className="relative hover:scale-110 hover:z-10 transition-all duration-500 cursor-pointer"
-                      key={pdf.title}
+                      key={pdf.post_title}
                       onClick={() => {
                         setSelectedImage(i);
                         setCurrentImageSet(trip.pdfImages);
@@ -192,10 +192,10 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                       }}
                     >
                       <Image
-                        alt={pdf.title}
+                        alt={pdf.post_title}
                         height={400}
-                        key={pdf.title}
-                        src={pdf.url}
+                        key={pdf.post_title}
+                        src={pdf.guid}
                         style={{
                           objectFit: "contain",
                           width: "100%",
@@ -308,7 +308,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       allTrips?.map((trip) => ({
         params: {
           slug: `${trip?.post_name}`,
-          id: trip?.ID,
         },
       })) || [],
     fallback: "blocking",

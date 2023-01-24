@@ -53,10 +53,11 @@ export interface PostResponse {
 }
 
 export interface TripDetails extends Post {
-  images: { url: string; title: string }[];
+  images_str: string;
+  images: { guid: string; post_title: string }[];
   pdf: string;
   pdf_images: string;
-  pdfImages: { url: string; title: string }[];
+  pdfImages: { guid: string; post_title: string }[];
   author: string;
   length: string;
   pk: string;

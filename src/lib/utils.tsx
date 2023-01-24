@@ -21,7 +21,13 @@ export function getIconUrl(code: string) {
   return dict[activityCode[code]] || "/image/icons/footman-circle.svg";
 }
 
-export const sortTrips = (a: { number: string }, b: { number: string }) => {
+export const sortTrips = (
+  a: { number: string | null },
+  b: { number: string | null }
+) => {
+  if (a.number === null || b.number === null) {
+    return 0;
+  }
   const is1Hash = a.number.charAt(0) === "#";
   const is2Hash = b.number.charAt(0) === "#";
   if (is1Hash && is2Hash) {

@@ -25,7 +25,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     const id = dict[params.name] || 11620;
     const content = await getElementorPage(id);
     return {
-      props: { content: JSON.parse(content) || null }, // will be passed to the page component as props
+      props: { content: content ? JSON.parse(content) : null }, // will be passed to the page component as props
     };
   }
   return {

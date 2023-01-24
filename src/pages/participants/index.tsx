@@ -31,7 +31,7 @@ export const getStaticProps = async () => {
   ]);
   return {
     props: {
-      trips: JSON.parse(JSON.stringify(chunked.flat())) || null,
+      trips: chunked.flat() || null,
       revalidate: 60 * 60 * 12,
     },
   };

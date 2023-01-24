@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { InferGetStaticPropsType, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import DCarousel from "components/carousel/DreptusCarousel";
@@ -7,26 +7,22 @@ import Hr from "components/hr";
 import css from "../styles/Home.module.css";
 import trip from "public/image/trip.jpg";
 import odznaki from "public/image/odznaki.jpg";
-import { Post } from "src/types";
 import { getTrips, getTripsCount } from "lib/db";
 import Hero from "components/hero";
 
-export const getStaticProps: GetStaticProps = async () => {
-  const trips = await getTrips();
-  const tripsCount = (await getTripsCount()) || "150";
+export const getStaticProps = async () => {
+  const trips = await getTrips(10);
+  const tripsCount = (await getTripsCount()) || 158;
   return {
     props: {
-      trips: trips ? JSON.parse(JSON.stringify(trips)) : [],
+      trips: trips ?? [],
       tripsCount,
       revalidate: 60 * 60 * 12,
     },
   };
 };
 
-interface Props {
-  trips: Post[];
-  tripsCount: string;
-}
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Home: NextPage<Props> = ({ trips, tripsCount }) => {
   return (
@@ -157,7 +153,8 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
             {trips.map((trip) => (
               <div key={trip.ID}>
                 <Link href={`/trips/${trip.post_name}`}>
-                  {trip.number}. {trip.post_title.replace("<br>", " / ")} (
+                  {trip.wp_postmeta[0].meta_value}.{" "}
+                  {trip.post_title.replace("<br>", " / ")} (
                   {new Intl.DateTimeFormat("pl-PL", {
                     dateStyle: "short",
                   }).format(new Date(trip.post_date))}

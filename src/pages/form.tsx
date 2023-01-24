@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Main from "components/layout/MainLayout";
 import TripReportForm from "components/tripReportForm";
 import { getTrips } from "lib/db";
-import { Post } from "src/types";
 import { sortTrips } from "lib/utils";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 interface Props {
@@ -31,11 +30,14 @@ export default function StartForm({ trips }: Props) {
 }
 
 export const getStaticProps = async () => {
-  const tripsData: Post[] = await getTrips(10000);
-  const trips = tripsData.sort(sortTrips).map((t) => ({
-    label: `${t.number} ${t.post_title.replace("<br>", ", ")}`,
-    value: `${t.number} ${t.post_title.replace("<br>", ", ")}`,
-  }));
+  const tripsData = await getTrips(10000);
+  const trips = tripsData
+    .map((t) => ({ ...t, number: t.wp_postmeta[0].meta_value }))
+    .sort(sortTrips)
+    .map((t) => ({
+      label: `${t.number} ${t.post_title.replace("<br>", ", ")}`,
+      value: `${t.number} ${t.post_title.replace("<br>", ", ")}`,
+    }));
   return {
     props: {
       trips: trips || [],

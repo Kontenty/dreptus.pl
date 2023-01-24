@@ -11,10 +11,11 @@ const categories = [
   { name: "Dolina Bugu", slug: "dolina-bugu" },
 ];
 type Props = {
+  count: number;
   locationsList: { name: string; count: number; slug: string }[];
 };
 
-const TripListFilter = ({ locationsList }: Props) => {
+const TripListFilter = ({ count, locationsList }: Props) => {
   const [showMenu, setShowMenu] = useState(false);
   return (
     <>
@@ -59,7 +60,7 @@ const TripListFilter = ({ locationsList }: Props) => {
             )}
             <Link href="/trips">
               <div className={css.allBtnDiv} role="button">
-                Wszystkie ({locationsList.reduce((a, b) => a + b.count, 0)})
+                Wszystkie ({count})
               </div>
             </Link>
           </div>
@@ -93,7 +94,7 @@ const TripListFilter = ({ locationsList }: Props) => {
           )}
           <Link href="/trips">
             <div className={css.allBtnDiv} role="button">
-              Wszystkie ({locationsList.reduce((a, b) => a + b.count, 0)})
+              Wszystkie ({count})
             </div>
           </Link>
         </div>

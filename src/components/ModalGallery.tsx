@@ -11,7 +11,7 @@ const ModalGallery = ({
   full = false,
   onClose,
 }: {
-  images: { url: string; title: string }[];
+  images: { guid: string; post_title: string }[];
   initial?: number;
   full?: boolean;
   onClose: () => void;
@@ -68,20 +68,20 @@ const ModalGallery = ({
             speed={500}
           >
             {images.map((img) => (
-              <React.Fragment key={img.url}>
+              <React.Fragment key={img.guid}>
                 <div className={full ? css.imgBoxFull : css.imgBoxBig}>
                   <Image
                     alt="trip photo"
                     className="object-contain object-center"
                     fill
                     sizes="100%"
-                    src={img.url}
+                    src={img.guid}
                     unoptimized
                   />
                 </div>
                 {!full && (
                   <h1 className="text-xl text-white text-center mt-4">
-                    {img.title}
+                    {img.post_title}
                   </h1>
                 )}
               </React.Fragment>

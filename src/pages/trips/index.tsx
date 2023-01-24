@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { GoogleProvider } from "context";
 
 import TripListFilter from "components/TripListFilter";
-import { getLocations, getTripsForMap } from "lib/db";
+import { getLocations, getTripsCount, getTripsForMap } from "lib/db";
 import TripsList from "components/TripsList";
 import { TripsMap } from "components/map/TripsMap";
 import { locationsList } from "lib/data";
@@ -12,6 +12,7 @@ import { sortTrips } from "lib/utils";
 import css from "src/styles/Trip.module.css";
 
 export const getStaticProps = async () => {
+  const count = await getTripsCount();
   const locations = await getLocations();
   const tripsData = await getTripsForMap();
   const trips = tripsData
@@ -29,7 +30,8 @@ export const getStaticProps = async () => {
     .sort(sortTrips);
   return {
     props: {
-      locations: locations ? JSON.parse(JSON.stringify(locations)) : [],
+      count,
+      locations: locations || [],
       trips: trips || [],
       revalidate: 60 * 60 * 12,
     },
@@ -38,7 +40,7 @@ export const getStaticProps = async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-export default function Trips({ locations, trips }: Props) {
+export default function Trips({ count, locations, trips }: Props) {
   const router = useRouter();
   const { slug } = router.query;
   const [data, setData] = useState<typeof trips>();
@@ -62,7 +64,7 @@ export default function Trips({ locations, trips }: Props) {
         <TripsMap trips={data || trips} />
         <div className={css.lists}>
           <div className="lg:pt-4" data-aos="fade-right">
-            <TripListFilter locationsList={locations} />
+            <TripListFilter count={count} locationsList={locations} />
           </div>
           <div
             className="bg-white rounded-md p-2 flex-grow"

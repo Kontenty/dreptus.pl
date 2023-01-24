@@ -1,81 +1,75 @@
-import knex from "knex";
+import { Prisma } from "@prisma/client";
+import { log } from "next-axiom";
 import { PostResponse, TripDetails, TripsForMapResponse } from "src/types";
+import prisma from "./prisma";
 
-const db = knex({
-  client: "mysql2",
-  connection: {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-  },
-  debug: false,
-  pool: { min: 1, max: 5 },
-});
+export const getTrips = async (limit = 10) =>
+  prisma.wp_posts.findMany({
+    where: { post_type: "listing", post_status: "publish" },
+    select: {
+      ID: true,
+      post_date: true,
+      post_title: true,
+      post_name: true,
+      wp_postmeta: {
+        where: { meta_key: "_cth_cus_field_zxr0feyjz" },
+        select: { meta_value: true },
+      },
+    },
+    orderBy: { post_date: "desc" },
+    take: limit,
+  });
 
-export const getTrips = async (limit = 10) => {
-  const posts = await db("wp_posts as p")
-    .join("wp_postmeta", "wp_postmeta.post_id", "p.ID")
-    .select(
-      "p.ID",
-      "p.post_date",
-      "p.post_title",
-      "p.post_name",
-      "wp_postmeta.meta_value as number"
-    )
-    .where({
-      post_type: "listing",
-      post_status: "publish",
-      meta_key: "_cth_cus_field_zxr0feyjz",
-    })
-    .orderBy("post_date", "desc")
-    .limit(limit);
-  return posts;
-};
-
-export const getTripSlugs = async () => {
-  const posts = await db("wp_posts")
-    .select("post_name")
-    .where({ post_type: "listing", post_status: "publish" });
-  return posts;
-};
+export const getTripSlugs = () =>
+  prisma.wp_posts.findMany({
+    select: { post_name: true },
+    where: { post_type: "listing", post_status: "publish" },
+  });
 
 export const getTripBySlug = async (
   slug: string
 ): Promise<TripDetails | null> => {
   try {
-    const idData = await db("wp_posts").select("ID").where({ post_name: slug });
-    const id = idData?.[0]?.ID;
+    const idData = await prisma.wp_posts.findFirst({
+      select: { ID: true },
+      where: { post_name: slug },
+    });
+    const id = idData?.ID;
     if (!id) {
       return null;
     }
-    const query = `SELECT ID, post_title, post_content,\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_images' ) 'images',\
-      (SELECT guid FROM wp_posts WHERE ID = (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_menu_pdf') ) 'pdf',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_zxr0feyjz' ) 'number',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_15kr29dj3' ) 'author',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_nv0mho3ts' ) 'length',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_yjar0aoq6' ) 'pk',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_boz3z5wv9' ) 'founding',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_0o5uhb4c9' ) 'type',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_latitude' ) 'lat',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_longitude' ) 'lng',\
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_i5t95ytae' ) 'pdf_images'\
+    const query = Prisma.sql`SELECT ID, post_title, post_content,
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_images' ) as images_str,
+      (SELECT guid FROM wp_posts WHERE ID = (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_menu_pdf') ) as pdf_images,
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_zxr0feyjz' ) as number,
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_15kr29dj3' ) as author,
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_nv0mho3ts' ) as length,
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_yjar0aoq6' ) as pk,
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_boz3z5wv9' ) as founding,
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_0o5uhb4c9' ) as type,
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_latitude' ) 'lat',
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_longitude' ) 'lng',
+      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_i5t95ytae' ) 'pdf_images'
   FROM wp_posts WHERE ID = ${id}`;
-    const postData = await db.raw(query);
-    const trip = postData[0][0];
-    const imageString = trip.images;
-    const pdfImageString = trip.pdf_images;
-    const images = await db("wp_posts")
-      .select("guid as url", "post_title as title")
-      .whereIn("ID", imageString.split(","));
-    const pdfImages = await db("wp_posts")
-      .select("guid as url", "post_title as title")
-      .whereIn("ID", pdfImageString.split(","));
-    trip.images = images;
-    trip.pdfImages = pdfImages;
-    return trip;
+    const [trip] = await prisma.$queryRaw<TripDetails[]>`${query}`;
+
+    const images = await prisma.wp_posts.findMany({
+      select: { ID: true, guid: true, post_title: true },
+      where: {
+        ID: { in: trip?.images_str.split(",").map((n) => Number(n)) },
+      },
+    });
+
+    const pdfImages = await prisma.wp_posts.findMany({
+      select: { ID: true, guid: true, post_title: true },
+      where: {
+        ID: { in: trip?.pdf_images.split(",").map((n) => Number(n)) },
+      },
+    });
+
+    return { ...trip, images, pdfImages };
   } catch (error) {
+    log.error("Get trip by slug error", { msg: error });
     return null;
   }
 };
@@ -86,7 +80,7 @@ export const getTripsForMap = async (
   const locationQuery = location === "all" ? "" : `AND t.slug = ${location}`;
 
   const query = `
-    SELECT  p.ID, 
+      SELECT  p.ID, 
         p.post_title as title, 
         p.post_name as slug, 
         GROUP_CONCAT(DISTINCT t.name) as category_names,
@@ -103,72 +97,55 @@ export const getTripsForMap = async (
     LEFT JOIN wp_postmeta as pm1 ON ( pm1.post_id = p.ID)
     LEFT JOIN wp_posts as p2 ON p2.ID = pm1.meta_value
     JOIN wp_term_relationships AS tr ON tr.object_id=p.ID JOIN wp_terms AS t ON t.term_id =tr.term_taxonomy_id
-    WHERE p.post_type = 'listing' AND p.post_status = "publish ${locationQuery}"
+    WHERE p.post_type = 'listing' AND p.post_status = 'publish' ${locationQuery}
     GROUP BY p.ID,p.post_title;
   `;
-  const postData = await db.raw(query);
-  return postData[0];
+  const postData = await prisma.$queryRawUnsafe<TripsForMapResponse[]>(query);
+  return postData;
 };
 
 export const getLocations = async () => {
-  const query = `
-    SELECT a.name, b.count, a.slug from wp_term_taxonomy b 
+  const postData = await prisma.$queryRaw<
+    { name: string; count: number; slug: string }[]
+  >`SELECT a.name, b.count, a.slug from wp_term_taxonomy b 
     LEFT JOIN wp_terms a ON a.term_id = b.term_id 
-    WHERE b.taxonomy like "%listing_location%" ORDER BY b.count DESC;
-  `;
-  const postData = await db.raw(query);
+    WHERE b.taxonomy like "%listing_location%" ORDER BY b.count DESC;`;
 
-  return postData?.[0] || [];
+  return postData?.map((l) => ({ ...l, count: Number(l.count) })) || [];
 };
 
-export const getPostsWithThumb = async (
-  limit = 10
-): Promise<PostResponse[]> => {
-  const posts = await db.raw(
-    "SELECT p.ID, p.post_title,p.post_name, p.post_date, pm.meta_value as 'thumb_id', (SELECT p2.guid  FROM wp_posts p2 WHERE p2.ID=pm.meta_value) 'thumb_url' FROM wp_posts p JOIN wp_postmeta pm ON pm.post_id = p.ID WHERE pm.meta_key = ? AND p.post_status = ? ORDER BY p.ID DESC LIMIT ?",
-    ["_thumbnail_id", "publish", limit]
-  );
-  return posts[0];
-};
+export const getPostsWithThumb = async (limit = 10): Promise<PostResponse[]> =>
+  prisma.$queryRaw<
+    PostResponse[]
+  >`SELECT p.ID, p.post_title,p.post_name, p.post_date, pm.meta_value as 'thumb_id', (SELECT p2.guid  FROM wp_posts p2 WHERE p2.ID=pm.meta_value) 'thumb_url' FROM wp_posts p JOIN wp_postmeta pm ON pm.post_id = p.ID WHERE pm.meta_key = '_thumbnail_id' AND p.post_status = 'publish' ORDER BY p.ID DESC LIMIT ${limit}`;
 
-export const getPage = async (
-  id: number
-): Promise<PostResponse | undefined> => {
-  const data = await db("wp_posts").select("post_content").where({ ID: id });
-  return data[0];
-};
-export const getElementorPage = async (id: number): Promise<string> => {
-  const data = await db("wp_postmeta")
-    .select("meta_value")
-    .where({ post_id: id, meta_key: "_elementor_data" });
-  return data[0].meta_value;
-};
-export const getTripsCount = async (): Promise<string> => {
-  const data = await db.raw(
-    'SELECT SUM(b.count) as sum from wp_term_taxonomy b where b.taxonomy like "%listing_location%"'
-  );
-  return data[0][0].sum;
-};
+export const getPage = (id: number) =>
+  prisma.wp_posts.findUnique({ where: { ID: id } });
 
-export const getParticipantsPostsList = async (): Promise<PostResponse[]> => {
-  const trips = await db.raw(
-    'SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE p.post_type = "post" AND p.post_status = "publish" AND m.meta_key = "liczba_uczestnikow" ORDER BY p.post_title;'
-  );
-  return trips[0];
+export const getElementorPage = async (id: number) => {
+  const data = await prisma.wp_postmeta.findFirst({
+    select: { meta_value: true },
+    where: { post_id: id, meta_key: "_elementor_data" },
+  });
+  return data ? data?.meta_value : null;
 };
-export const getParticipantSlugs = async () => {
-  const data = await db("wp_posts")
-    .select("post_name")
-    .where({ post_type: "post", post_status: "publish" });
-  return data;
-};
-export const getParticipantBySlug = async (
-  name: string
-): Promise<PostResponse> => {
-  const data = await db("wp_posts")
-    .select("*")
-    .where({ post_type: "post", post_status: "publish", post_name: name });
-  return data[0];
-};
+export const getTripsCount = () =>
+  prisma.wp_posts.count({
+    where: { post_type: "listing", post_status: "publish" },
+  });
 
-export default db;
+export const getParticipantsPostsList = () =>
+  prisma.$queryRaw<
+    PostResponse[]
+  >`SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE p.post_type = "post" AND p.post_status = "publish" AND m.meta_key = "liczba_uczestnikow" ORDER BY p.post_title;`;
+
+export const getParticipantSlugs = () =>
+  prisma.wp_posts.findMany({
+    select: { post_name: true },
+    where: { post_type: "post", post_status: "publish" },
+  });
+
+export const getParticipantBySlug = (name: string) =>
+  prisma.wp_posts.findFirst({
+    where: { post_type: "post", post_status: "publish", post_name: name },
+  });

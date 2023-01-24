@@ -16,7 +16,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     return {
       props: {
         params,
-        data: data ? JSON.parse(JSON.stringify(data)) : null,
+        data: data ?? null,
       },
       revalidate: 60 * 60 * 12,
     };
@@ -36,7 +36,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       slugs?.map((slug) => ({
         params: {
           name: `${slug?.post_name}`,
-          id: slug?.ID,
         },
       })) || [],
     fallback: "blocking",
