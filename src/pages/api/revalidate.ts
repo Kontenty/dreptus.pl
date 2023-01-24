@@ -10,6 +10,9 @@ export default async function handler(
   if (req.query?.secret !== token) {
     return res.status(401).json({ message: "Invalid token" });
   }
+  if (req.headers.host?.includes("dreptus.vercel.app")) {
+    return res.redirect(307, `https://xn--dreptu-8ib.pl${req?.url}`);
+  }
 
   const slug = req.query?.slug;
 
