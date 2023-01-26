@@ -149,3 +149,8 @@ export const getParticipantBySlug = (name: string) =>
   prisma.wp_posts.findFirst({
     where: { post_type: "post", post_status: "publish", post_name: name },
   });
+
+export const getAdmins = () =>
+  prisma.$queryRaw<
+    { user_email: string }[]
+  >`SELECT user_email FROM wp_users u JOIN wp_usermeta m ON m.user_id = u.ID WHERE m.meta_key = "wp_user_level" AND m.meta_value  > 6;`;

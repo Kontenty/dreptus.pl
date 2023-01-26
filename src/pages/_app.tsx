@@ -8,18 +8,23 @@ import "../styles/prime-theme.css";
 import type { AppProps } from "next/app";
 export { reportWebVitals } from "next-axiom";
 
+import { SessionProvider } from "next-auth/react";
+import type { Session } from "next-auth";
 import Layout from "components/layout/CommonLayout";
 import { Analytics } from "@vercel/analytics/react";
 import "src/styles/customized-aos.css";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<{ session: Session }>) {
   useEffect(() => {
     AOS.init({ duration: 1200, easing: "ease-out", once: true });
   }, []);
   return (
-    <>
+    <SessionProvider session={session}>
       <style global jsx>
         {`
           :root {
@@ -31,6 +36,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />;
       </Layout>
       <Analytics />
-    </>
+    </SessionProvider>
   );
 }
