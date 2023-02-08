@@ -17,6 +17,12 @@ export default NextAuth({
   ],
   adapter: PrismaAdapter(prisma),
   callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+      }
+      return token;
+    },
     async signIn({ user, account, profile, email, credentials }) {
       const admins = await getAdmins();
       if (admins.some((a) => a.user_email === user.email)) {

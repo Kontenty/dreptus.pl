@@ -1,4 +1,5 @@
-import { DefaultSession } from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
+import "next-auth/jwt";
 
 declare module "next-auth" {
   /**
@@ -8,5 +9,16 @@ declare module "next-auth" {
     user: {
       role?: string;
     } & DefaultSession["user"];
+  }
+  interface User extends DefaultUser {
+    role?: admin;
+  }
+}
+
+declare module "next-auth/jwt" {
+  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
+
+  interface JWT {
+    role?: "admin";
   }
 }
