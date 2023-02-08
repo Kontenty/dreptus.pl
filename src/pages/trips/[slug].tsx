@@ -214,11 +214,8 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                     Najbliższe trasy
                   </h3>
                   {nearbyTrips?.map((near) => (
-                    <div
-                      className="flex items-center gap-8 my-4 hover:bg-slate-50"
-                      key={near.ID}
-                    >
-                      <Link href={`/trips/${near.slug}`}>
+                    <Link href={`/trips/${near.slug}`} key={near.ID}>
+                      <div className="flex items-center gap-8 my-4 hover:bg-slate-50">
                         <Image
                           alt="w pobliźu"
                           className="rounded"
@@ -237,8 +234,8 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                             {formatDistance(near.distance)}
                           </span>
                         </div>
-                      </Link>
-                    </div>
+                      </div>
+                    </Link>
                   ))}
                 </section>
               )}
