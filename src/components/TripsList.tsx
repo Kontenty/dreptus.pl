@@ -1,9 +1,6 @@
-import { useRouter } from "next/router";
 import React from "react";
-import {
-  DataTable,
-  DataTableSelectionChangeParams,
-} from "primereact/datatable";
+import { useRouter } from "next/router";
+import { DataTable, DataTableSelectionChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TripFormMap } from "src/types";
 import { getIcon, useMediaQuery } from "lib/index";
@@ -32,9 +29,13 @@ const TripsList = ({ trips }: Props) => {
   const router = useRouter();
   const isMd = useMediaQuery("min-width: 768px");
 
-  const handleTripSelect = (ev: DataTableSelectionChangeParams) => {
+  const handleTripSelect = (
+    ev: DataTableSelectionChangeEvent<TripFormMap[]>
+  ) => {
+    const val = ev.value as TripFormMap;
+
     setTimeout(() => {
-      router.push(`/trips/${ev.value.slug}`);
+      router.push(`/trips/${val.slug}`);
     }, 300);
   };
   return (
