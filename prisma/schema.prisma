@@ -8,6 +8,25 @@ datasource db {
   shadowDatabaseUrl = env("DATABASE_CON_URL_SHADOW")
 }
 
+model Participant {
+  id               Int      @id @default(autoincrement())
+  name             String
+  origin           String
+  trip_participant TripParticipant[]
+
+  @@unique([name, origin])
+}
+
+model TripParticipant {
+  id             Int      @id @default(autoincrement())
+  participant_id Int
+  trip_id        Int
+  answers        String
+  report_date    DateTime @default(now())
+  participant    Participant @relation(fields: [participant_id], references: [id])
+  trip           wp_posts    @relation(fields: [trip_id], references: [ID])
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -324,6 +343,7 @@ model wp_posts {
   post_mime_type        String        @default("") @db.VarChar(100)
   comment_count         Int           @default(0)
   wp_postmeta           wp_postmeta[]
+  trip_participant      TripParticipant[]
 
   @@index([post_author], map: "post_author")
   @@index([post_name(length: 191)], map: "post_name")
