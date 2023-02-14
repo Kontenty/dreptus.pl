@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { SWRConfig } from "swr";
 import AOS from "aos";
 import { Nunito } from "@next/font/google";
 import "primereact/resources/primereact.min.css";
@@ -32,10 +33,17 @@ export default function App({
           }
         `}
       </style>
-      <Layout>
-        <Component {...pageProps} />;
-      </Layout>
-      <Analytics />
+      <SWRConfig
+        value={{
+          fetcher: (resource, init) =>
+            fetch(resource, init).then((res) => res.json()),
+        }}
+      >
+        <Layout>
+          <Component {...pageProps} />;
+        </Layout>
+        <Analytics />
+      </SWRConfig>
     </SessionProvider>
   );
 }

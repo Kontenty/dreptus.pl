@@ -40,6 +40,7 @@
     "react-slick": "^0.29.0",
     "sharp": "^0.31.3",
     "slick-carousel": "^1.8.1",
+    "swr": "^2.0.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -54,6 +55,7 @@
     "autoprefixer": "^10.4.13",
     "eslint": "8.31.0",
     "eslint-config-next": "^13.1.1",
+    "node-html-parser": "^6.1.4",
     "postcss": "^8.4.21",
     "prisma": "^4.9.0",
     "tailwindcss": "^3.2.4",
