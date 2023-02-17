@@ -101,6 +101,9 @@ button.gm-control-active {
   font-style: normal;
 }
 
+.format-table h2 {
+  font-size: 36px;
+}
 .format-table table {
   min-width: 100%;
 }

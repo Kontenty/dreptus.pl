@@ -12,7 +12,7 @@ import Layout from "components/layout/CommonLayout";
 import { Analytics } from "@vercel/analytics/react";
 import "src/styles/customized-aos.css";
 
-const nunito = Nunito({ subsets: ["latin"] });
+const nunito = Nunito({ subsets: ["latin", "latin-ext"] });
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
