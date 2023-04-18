@@ -25,7 +25,7 @@ const Footer = () => {
             </Link>
             <Link
               className={css.badge}
-              href={{ pathname: "/trips", query: { slug: "pieszo" } }}
+              href={{ pathname: "/trips", query: { slug: "dolina-bugu" } }}
             >
               Dolina Bugu
             </Link>
