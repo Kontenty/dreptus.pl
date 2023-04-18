@@ -32,13 +32,14 @@ export default function StartForm({ trips }: Props) {
 
 export const getStaticProps = async () => {
   const tripsData: Post[] = await getTrips(10000);
-  const trips = tripsData.sort(sortTrips).map((t) => ({
+  const trips = [...tripsData].sort(sortTrips).map((t) => ({
     label: `${t.number} ${t.post_title.replace("<br>", ", ")}`,
     value: `${t.number} ${t.post_title.replace("<br>", ", ")}`,
   }));
   return {
     props: {
       trips: trips || [],
+      revalidate: 60 * 60 * 12,
     },
   };
 };

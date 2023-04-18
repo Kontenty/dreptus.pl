@@ -33,6 +33,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       props: {
         rulesPageContent: JSON.parse(rulesPageContent) || null,
         scorersContent,
+        revalidate: 60 * 60 * 1,
       },
     };
   }

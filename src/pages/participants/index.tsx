@@ -11,13 +11,16 @@ export const getStaticProps = async () => {
     throw new Error("lists of participants - fetch data error");
   }
   const chunked = trips.reduce((result: PostResponse[][], current) => {
-    if (/^[A-Z][0-9]{2}/.test(current.post_title)) {
-      result[0] ? result[0].push(current) : (result[0] = [current]);
-    } else if (/^[0-9]{3}/.test(current.post_title)) {
-      result[1] ? result[1].push(current) : (result[1] = [current]);
-    } else if (/^#[0-9]{2}/.test(current.post_title)) {
-      result[2] ? result[2].push(current) : (result[2] = [current]);
-    }
+    const regexList = [/^[A-Z]\d{2}/, /^\d{3}/, /^#\d{2}/];
+    regexList.forEach((regex, i) => {
+      if (regex.test(current.post_title)) {
+        if (result[i]) {
+          result[i].push(current);
+        } else {
+          result[i] = [current];
+        }
+      }
+    });
     return result;
   }, []);
   chunked.unshift([
@@ -94,7 +97,6 @@ export default function Participants({ trips }: Props) {
             <Column body={dateTmpl} header="Data Aktualizacji"></Column>
           </DataTable>
         </div>
-        ;
       </article>
     </Main>
   );

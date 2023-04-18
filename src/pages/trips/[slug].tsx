@@ -7,7 +7,7 @@ import Slider from "react-slick";
 import { EyeIcon, MapIcon } from "@heroicons/react/24/outline";
 import { ProgressSpinner } from "primereact/progressspinner";
 
-import { GoogleProvider } from "context";
+import { GoogleContext, GoogleProvider } from "context";
 import { SingleTripMap } from "components/map/SingleTripMap";
 import type { TripDetails, TripFormMap } from "src/types";
 import { getIcon } from "lib/utils";
@@ -16,12 +16,12 @@ import css from "styles/Trip.module.css";
 import MainLayout from "components/layout/MainLayout";
 import SlickArrow from "components/SlickArrow";
 import ModalGallery from "components/ModalGallery";
-import { GoogleContext } from "context";
 
 const formatDistance = (d: number) => {
+  const precision = d < 10000 ? 1 : 0;
   return d < 1000
     ? `${(Math.round(d / 10) * 10).toFixed(0)} m`
-    : `${(d / 1000).toFixed(d < 10000 ? 1 : 0)} km`;
+    : `${(d / 1000).toFixed(precision)} km`;
 };
 interface Props {
   trip: TripDetails;
@@ -258,7 +258,7 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
     </GoogleProvider>
   );
 };
-export default function TripDetails(props: Props) {
+export default function TripDetailsPage(props: Props) {
   return (
     <GoogleProvider>
       <GoogleContext.Consumer>
@@ -287,6 +287,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           position: { lat: Number(trip.lat), lng: Number(trip.lng) },
         },
         tripsList,
+        revalidate: 60 * 60 * 12,
       },
     };
   }

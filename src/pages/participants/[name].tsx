@@ -1,6 +1,9 @@
 import React from "react";
-import { GetStaticPaths, GetStaticPropsContext } from "next";
-import { InferGetStaticPropsType } from "next";
+import {
+  GetStaticPaths,
+  GetStaticPropsContext,
+  type InferGetStaticPropsType,
+} from "next";
 import { getParticipantBySlug, getParticipantSlugs } from "lib/db";
 import MainLayout from "components/layout/MainLayout";
 import css from "src/styles//Participant.module.css";

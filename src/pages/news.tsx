@@ -14,6 +14,7 @@ export const getStaticProps = async () => {
   if (!postsData) {
     return {
       props: { posts: [] },
+      revalidate: 60 * 60 * 12,
     };
   }
   const posts = await Promise.all(
