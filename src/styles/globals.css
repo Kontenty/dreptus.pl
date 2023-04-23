@@ -123,6 +123,9 @@ button.gm-control-active {
   border-width: 0 0 1px 0;
   padding: 0.75rem 1rem;
 }
+.format-table td h3 {
+  font-size: 24px;
+}
 .format-table td.has-text-align-center {
   text-align: center;
 }

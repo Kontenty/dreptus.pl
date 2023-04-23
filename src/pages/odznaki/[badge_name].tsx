@@ -6,9 +6,9 @@ import { getElementorPage, getPage } from "lib/db";
 import { ElementorData, ElementorElement, PostResponse } from "src/types";
 
 const dict: Record<string, { rules: number; scorers: number }> = {
-  "z-dreptusiem-po-polsce": { rules: 11620, scorers: 11614 },
-  "z-dreptusiem-po-dolinie-bugu": { rules: 11617, scorers: 11611 },
-  "z-dreptusiem-traktem-krolewskim": { rules: 14076, scorers: 15151 },
+  "z-dreptusiem-po-polsce": { rules: 11620, scorers: 21255 },
+  "z-dreptusiem-po-dolinie-bugu": { rules: 11617, scorers: 21319 },
+  "z-dreptusiem-traktem-krolewskim": { rules: 14076, scorers: 21322 },
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -25,7 +25,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   if (params?.badge_name && typeof params.badge_name === "string") {
     const rulesPageId = dict[params.badge_name].rules || 11620;
-    const scorersPageId = dict[params.badge_name].scorers || 11614;
+    const scorersPageId = dict[params.badge_name].scorers || 21255;
     const rulesPageContent = await getElementorPage(rulesPageId);
     const scorersContent = await getPage(scorersPageId);
 
@@ -94,10 +94,7 @@ export default function Odznaki({ rulesPageContent, scorersContent }: Props) {
           <div
             className="format-table w-[1000px]"
             dangerouslySetInnerHTML={{
-              __html: scorersContent.post_content.replace(
-                'bgcolor="#1a3e73"',
-                "align='center'"
-              ),
+              __html: scorersContent.post_content,
             }}
           />
         </TabPanel>
