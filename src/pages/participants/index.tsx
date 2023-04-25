@@ -1,7 +1,4 @@
-import {
-  DataTable,
-  DataTableSelectionChangeParams,
-} from "primereact/datatable";
+import { DataTable, DataTableSelectionChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import Main from "components/layout/MainLayout";
 import { getParticipantsPostsList } from "lib/db";
@@ -57,10 +54,11 @@ type Props = { trips: List };
 
 export default function Participants({ trips }: Props) {
   const router = useRouter();
-  const handleSelect = (ev: DataTableSelectionChangeParams) => {
-    if (ev.value.post_name) {
+  const handleSelect = (ev: DataTableSelectionChangeEvent<List>) => {
+    const value = ev.value as List[0];
+    if (value.post_name) {
       setTimeout(() => {
-        router.push(`/participants/${ev.value.post_name}`);
+        router.push(`/participants/${value.post_name}`);
       }, 300);
     }
   };
