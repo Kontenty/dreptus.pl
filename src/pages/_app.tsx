@@ -11,11 +11,69 @@ export { reportWebVitals } from "next-axiom";
 
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
+import { addLocale, locale } from "primereact/api";
 import Layout from "components/layout/CommonLayout";
 import { Analytics } from "@vercel/analytics/react";
 import "src/styles/customized-aos.css";
 
 const nunito = Nunito({ subsets: ["latin"] });
+
+addLocale("pl", {
+  accept: "Tak",
+  reject: "Nie",
+  choose: "Wybierz",
+  upload: "Wyślij",
+  cancel: "Anuluj",
+  dayNames: [
+    "Niedziela",
+    "Poniedziałek",
+    "Wtorek",
+    "Środa",
+    "Czwartek",
+    "Piątek",
+    "Sobota",
+  ],
+  dayNamesShort: ["niedz.", "pon.", "wt.", "śr.", "czw.", "pt.", "sob."],
+  dayNamesMin: ["niedz.", "pon.", "wt.", "śr.", "czw.", "pt.", "sob."],
+  monthNames: [
+    "Styczeń",
+    "Luty",
+    "Marzec",
+    "Kwiecień",
+    "Maj",
+    "Czerwiec",
+    "Lipiec",
+    "Sierpień",
+    "Wrzesień",
+    "Październik",
+    "Listopad",
+    "Grudzień",
+  ],
+  monthNamesShort: [
+    "STY",
+    "LUT",
+    "MAR",
+    "KWI",
+    "MAJ",
+    "CZE",
+    "LIP",
+    "SIE",
+    "WRZ",
+    "PAŹ",
+    "LIS",
+    "GRU",
+  ],
+  today: "Dziś",
+  clear: "Wyczyść",
+  weekHeader: "tydz.",
+  firstDayOfWeek: 0,
+  dateFormat: "dd/mm/yyyy",
+  weak: "Słaby",
+  medium: "Umiarkowany",
+  strong: "Silny",
+  passwordPrompt: "Podaj hasło",
+});
+locale("pl");
 
 export default function App({
   Component,

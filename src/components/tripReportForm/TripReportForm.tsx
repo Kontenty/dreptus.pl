@@ -8,64 +8,6 @@ import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import * as Yup from "yup";
 import cl from "classnames";
-import { addLocale, locale } from "primereact/api";
-
-addLocale("pl", {
-  accept: "Tak",
-  reject: "Nie",
-  choose: "Wybierz",
-  upload: "Wyślij",
-  cancel: "Anuluj",
-  dayNames: [
-    "Niedziela",
-    "Poniedziałek",
-    "Wtorek",
-    "Środa",
-    "Czwartek",
-    "Piątek",
-    "Sobota",
-  ],
-  dayNamesShort: ["niedz.", "pon.", "wt.", "śr.", "czw.", "pt.", "sob."],
-  dayNamesMin: ["niedz.", "pon.", "wt.", "śr.", "czw.", "pt.", "sob."],
-  monthNames: [
-    "Styczeń",
-    "Luty",
-    "Marzec",
-    "Kwiecień",
-    "Maj",
-    "Czerwiec",
-    "Lipiec",
-    "Sierpień",
-    "Wrzesień",
-    "Październik",
-    "Listopad",
-    "Grudzień",
-  ],
-  monthNamesShort: [
-    "STY",
-    "LUT",
-    "MAR",
-    "KWI",
-    "MAJ",
-    "CZE",
-    "LIP",
-    "SIE",
-    "WRZ",
-    "PAŹ",
-    "LIS",
-    "GRU",
-  ],
-  today: "Dziś",
-  clear: "Wyczyść",
-  weekHeader: "tydz.",
-  firstDayOfWeek: 0,
-  dateFormat: "dd/mm/yyyy",
-  weak: "Słaby",
-  medium: "Umiarkowany",
-  strong: "Silny",
-  passwordPrompt: "Podaj hasło",
-});
-locale("pl");
 
 type FField = {
   name: string;
