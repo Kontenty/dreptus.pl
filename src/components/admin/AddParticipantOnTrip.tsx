@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import useSWR from "swr";
+import React, { useRef, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
 import type { Participant } from "@prisma/client";
 import {
   AutoComplete,
@@ -10,6 +10,7 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Nullable } from "primereact/ts-helpers";
+import { Toast } from "primereact/toast";
 
 type ExtParticpant = {
   nameExt: string;
@@ -22,18 +23,19 @@ type TripOption = { label: string; value: number };
 type Props = { tripsList: TripOption[] };
 
 const AddParticipantOnTrip = ({ tripsList }: Props) => {
+  const { mutate } = useSWRConfig();
   const { data: participantsList } = useSWR<Participant[]>(
     "/api/admin/get-participants"
   );
+  const toast = useRef<Toast>(null);
   const [suggestions, setSuggestions] = useState<
     { name: string; id: number }[]
   >([]);
-  const [selectedTrip, setSelectedTrip] = useState<TripOption | null>(null);
+  const [selectedTrip, setSelectedTrip] = useState<number | null>(null);
   const [participantName, setParticipantName] = useState("");
   const [origin, setOrigin] = useState("");
-  const [date, setDate] = useState<string | Date | Date[] | null | undefined>(
-    null
-  );
+  const [date, setDate] = useState<Nullable<string | Date | Date[]>>(null);
+  const [answers, setAnswers] = useState("");
 
   const search = (event: AutoCompleteCompleteEvent) => {
     const name = event.query.toLowerCase();
@@ -47,6 +49,53 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
     setOrigin(value.origin);
     setParticipantName(value.name);
   };
+
+  const showWrongData = () => {
+    toast.current?.show({
+      severity: "error",
+      summary: "Błąd",
+      detail: "Wysłano nieprawidłowe dane",
+      life: 3000,
+    });
+  };
+  const showSuccess = () => {
+    toast.current?.show({
+      severity: "success",
+      summary: "Sukces",
+      detail: "Pomyślnie dodano nowego użytkownika",
+      life: 3000,
+    });
+    mutate(`/api/admin/get-trip-participants?id=${selectedTrip}`);
+    setSelectedTrip(null);
+    setParticipantName("");
+    setOrigin("");
+    setDate("");
+    setAnswers("");
+  };
+
+  const onSubmit = () => {
+    fetch("/api/admin/add-participant", {
+      method: "POST",
+      body: JSON.stringify({
+        name: participantName,
+        origin,
+        date,
+        tripId: selectedTrip,
+        answers,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return showSuccess();
+      }
+      if (res.status === 406) {
+        showWrongData();
+      }
+    });
+  };
+
   return (
     <section className="mb-8">
       <h2 className="text-2xl">Dodaj uczestnika trasy</h2>
@@ -86,6 +135,16 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
           />
         </div>
         <div className="flex flex-col">
+          <label htmlFor="ppt-answers">Odpowiedzi</label>
+
+          <InputText
+            id="ppt-answers"
+            onChange={(e) => setAnswers(e.target.value)}
+            required
+            value={answers}
+          />
+        </div>
+        <div className="flex flex-col">
           <label htmlFor="ppt-date">Data zgłoszenia</label>
 
           <Calendar
@@ -98,9 +157,10 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
           />
         </div>
         <div className="flex items-end">
-          <Button label="Zapisz" />
+          <Button label="Zapisz" onClick={onSubmit} />
         </div>
       </div>
+      <Toast ref={toast} />
     </section>
   );
 };
