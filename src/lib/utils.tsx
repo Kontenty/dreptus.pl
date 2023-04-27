@@ -22,10 +22,10 @@ export function getIconUrl(code: string) {
 }
 
 export const sortTrips = (
-  a: { number: string | null },
-  b: { number: string | null }
+  a: { number: string | null | undefined },
+  b: { number: string | null | undefined }
 ) => {
-  if (a.number === null || b.number === null) {
+  if (typeof a.number !== "string" || typeof b.number !== "string") {
     return 0;
   }
   const is1Hash = a.number.charAt(0) === "#";

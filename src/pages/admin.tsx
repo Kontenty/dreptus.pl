@@ -1,62 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import { type NextPage } from "next";
-// import { signIn, signOut, useSession } from "next-auth/react";
-// import { Button } from "primereact/button";
+import { Dropdown } from "primereact/dropdown";
 import ParticipantsOnTrip from "components/admin/ParticipantsOnTrip";
 import AddParticipantOnTrip from "components/admin/AddParticipantOnTrip";
 import { getTrips } from "lib/db";
 import { sortTrips } from "lib/utils";
+import prismaClient from "src/lib/prisma";
+import Main from "components/layout/MainLayout";
 
 type Props = {
   trips: {
     label: string;
     value: number;
   }[];
+  tripsParticipants: {
+    label: string;
+    value: number;
+  }[];
 };
 
-const AdminPage: NextPage<Props> = ({ trips }) => {
-  // const { data: session, status } = useSession();
+const AdminPage: NextPage<Props> = ({ trips, tripsParticipants }) => {
+  const [selectedTripId, setSelectedTripId] = useState<number | null>(null);
   return (
-    <div className="mt-24">
-      <div className="flex mx-4 gap-4">
-        <div className="flex-grow">
-          <AddParticipantOnTrip tripsList={trips} />
-          <ParticipantsOnTrip tripId={11870} />
+    <Main>
+      <AddParticipantOnTrip tripsList={trips} />
+      <div>
+        <h2 className="text-2xl mb-2">Zarządzaj uczestnikami</h2>
+        <div className="flex flex-col mb-4 w-[600px]">
+          <label>Trasa</label>
+          <Dropdown
+            filter
+            onChange={(e) => setSelectedTripId(e.value)}
+            options={tripsParticipants}
+            placeholder="Wybierz trasę"
+            value={selectedTripId}
+          />
         </div>
+        <ParticipantsOnTrip tripId={selectedTripId} />
       </div>
-    </div>
+    </Main>
   );
-  /* if (status !== "authenticated") {
-    return (
-      <div className="center-hv mt-24 mx-16">
-        <Button onClick={() => signIn()}>Zaloguj się</Button>
-      </div>
-    );
-  }
-  return (
-    <div className="mt-24">
-      {session?.user.role === "admin" ? (
-        <div className="flex mx-4 gap-4">
-          <div>
-            <Button onClick={() => signOut()}>Wyloguj się</Button>
-          </div>
-          <div className="flex-grow">
-            <UsersAdmin />
-          </div>
-        </div>
-      ) : (
-        <div>
-          <h2 className="text-3xl mb-4">Nie masz dostępu do tej strony</h2>
-          <Button onClick={() => signOut()}>Wyloguj się</Button>
-        </div>
-      )}
-    </div>
-  ); */
 };
 
 export default AdminPage;
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
+  // const t = await getParticipantsPostsList();
+  const tripsParticipantsData = await prismaClient.wp_posts.findMany({
+    where: { post_status: "publish", post_type: "post" },
+  });
+  const tripsParticipants = tripsParticipantsData
+    .map((t) => ({
+      ...t,
+      number: t.post_title.split(" ").at(0),
+      value: t.ID,
+      label: `${t.post_title.replace(/,?<br> ?/, ", ")}`,
+    }))
+    .sort(sortTrips);
   const tripsData = await getTrips(10000);
   const trips = tripsData
     .map((t) => ({ ...t, number: t.wp_postmeta[0].meta_value }))
@@ -68,6 +68,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       trips: trips || [],
+      tripsParticipants,
     },
   };
 };
