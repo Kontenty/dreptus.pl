@@ -26,7 +26,7 @@ export default async function handler(
   try {
     await schema.validate(req.body);
   } catch (error) {
-    res.status(406).send("Inapriopriate data");
+    return res.status(406).send("Inapriopriate data");
   }
 
   try {
