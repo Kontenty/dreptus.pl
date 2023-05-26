@@ -1,7 +1,8 @@
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "primereact/button";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import cl from "classnames";
@@ -38,6 +39,8 @@ const links = [
 
 const Header = () => {
   const router = useRouter();
+  const { status } = useSession();
+
   const [showNav, setShowNav] = useState(false);
   const toggleNav = () => {
     setShowNav((prev) => !prev);
@@ -115,7 +118,16 @@ const Header = () => {
           );
         })}
       </nav>
-      <div className="ml-auto center-hv">
+      <div className="ml-auto center-hv gap-4">
+        {status === "authenticated" && (
+          <button
+            className="border-white border py-2 px-4 rounded-md text-slate-300 hover:text-slate-50 transition-colors"
+            onClick={() => signOut()}
+          >
+            Wyloguj się
+          </button>
+        )}
+
         <Link href="https://www.facebook.com/trip.wycieczki">
           <i
             className="pi pi-facebook text-white  hover:text-blue-200"

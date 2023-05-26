@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { type NextPage } from "next";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import ParticipantsOnTrip from "components/admin/ParticipantsOnTrip";
 import AddParticipantOnTrip from "components/admin/AddParticipantOnTrip";
@@ -16,6 +18,24 @@ type Props = {
 
 const AdminPage: NextPage<Props> = ({ tripsParticipants }) => {
   const [selectedTripId, setSelectedTripId] = useState<number | null>(null);
+
+  const { data: session, status } = useSession();
+  if (status !== "authenticated") {
+    return (
+      <div className="center-hv mt-24 mx-16">
+        <Button onClick={() => signIn()}>Zaloguj się</Button>
+      </div>
+    );
+  }
+
+  if (session?.user.role !== "admin") {
+    return (
+      <div>
+        <h2 className="text-3xl mb-4">Nie masz dostępu do tej strony</h2>
+        <Button onClick={() => signOut()}>Wyloguj się</Button>
+      </div>
+    );
+  }
   return (
     <Main>
       <AddParticipantOnTrip tripsList={tripsParticipants} />
