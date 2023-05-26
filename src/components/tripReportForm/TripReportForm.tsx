@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { Field, Form, Formik, useField } from "formik";
+import { Field, Form, Formik } from "formik";
 import { Messages } from "primereact/messages";
-import { InputText } from "primereact/inputtext";
-import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import * as Yup from "yup";
 import cl from "classnames";
+
+import FormikInput from "components/FormikInput";
 
 type FField = {
   name: string;
@@ -20,45 +20,6 @@ const fields1: FField[] = [
   { name: "date", label: "Data przebycia trasy", type: "date" },
   { name: "location", label: "Klub / miejscowość" },
 ];
-
-const FormikInput = ({ label, type, ...props }: FField) => {
-  const [field, meta] = useField(props);
-  if (type === "date") {
-    return (
-      <div>
-        <span className="p-float-label">
-          <Calendar
-            id="basic"
-            {...field}
-            {...props}
-            dateFormat="dd-mm-yy"
-            locale="pl"
-          />
-          <label htmlFor={field.name}>{label}</label>
-        </span>
-        {meta.touched && meta.error ? (
-          <small className="p-error">{meta.error}</small>
-        ) : null}
-      </div>
-    );
-  }
-  return (
-    <div>
-      <span className="p-float-label">
-        <InputText
-          id={field.name}
-          {...field}
-          {...props}
-          className={cl({ "p-invalid": meta.touched && meta.error })}
-        />
-        <label htmlFor={field.name}>{label}</label>
-      </span>
-      {meta.touched && meta.error ? (
-        <small className="p-error">{meta.error}</small>
-      ) : null}
-    </div>
-  );
-};
 
 interface Props {
   trips: { value: string; label: string }[];
