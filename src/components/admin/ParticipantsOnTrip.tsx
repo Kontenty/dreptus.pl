@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { log } from "next-axiom";
 import useSWR from "swr";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
@@ -37,28 +38,32 @@ const UsersOnTrip = ({ tripId }: Props) => {
       {
         method: "DELETE",
       }
-    ).then((res) => {
-      setDeleteDialog(false);
+    )
+      .then((res) => {
+        setDeleteDialog(false);
 
-      if (res.ok) {
-        toast?.current &&
-          toast.current.show({
-            severity: "success",
-            summary: "Pomyślnie",
-            detail: "usunięto uczestnika",
-            life: 3000,
-          });
-        mutate();
-      } else {
-        toast?.current &&
-          toast.current.show({
-            severity: "error",
-            summary: "Błąd",
-            detail: "uczestnik nie został usunięty",
-            life: 3000,
-          });
-      }
-    });
+        if (res.ok) {
+          toast?.current &&
+            toast.current.show({
+              severity: "success",
+              summary: "Pomyślnie",
+              detail: "usunięto uczestnika",
+              life: 3000,
+            });
+          mutate();
+        } else {
+          toast?.current &&
+            toast.current.show({
+              severity: "error",
+              summary: "Błąd",
+              detail: "uczestnik nie został usunięty",
+              life: 3000,
+            });
+        }
+      })
+      .catch((error) =>
+        log.error("admin: add participant error", { message: error })
+      );
   };
 
   const actionBodyTemplate = (participant: TripParticipant) => {

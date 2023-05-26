@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useReducer, useRef, useState } from "react";
+import { log } from "next-axiom";
 import useSWR, { useSWRConfig } from "swr";
 import type { Participant } from "@prisma/client";
 import {
@@ -22,6 +23,61 @@ type ExtParticpant = {
 type TripOption = { label: string; value: number };
 type Props = { tripsList: TripOption[] };
 
+type State = {
+  selectedTrip: number | null;
+  participantName: string;
+  origin: string;
+  answers: string;
+  date: Nullable<string | Date | Date[]>;
+};
+const initialState: State = {
+  selectedTrip: null,
+  participantName: "",
+  origin: "",
+  answers: "",
+  date: null,
+};
+type Action =
+  | { type: "trip"; value: State["selectedTrip"] }
+  | { type: "participant"; value: State["participantName"] }
+  | {
+      type: "selectParticipant";
+      value: {
+        participant: State["participantName"];
+        origin: State["origin"];
+      };
+    }
+  | { type: "origin"; value: State["origin"] }
+  | { type: "answers"; value: State["answers"] }
+  | { type: "date"; value: State["date"] }
+  | { type: "reset" };
+
+function reducer(state: State, action: Action) {
+  switch (action.type) {
+    case "reset":
+      return initialState;
+    case "trip":
+      return { ...state, selectedTrip: action.value };
+    case "participant":
+      return { ...state, participantName: action.value };
+    case "selectParticipant":
+      return {
+        ...state,
+        participantName: action.value.participant,
+        origin: action.value.origin,
+      };
+    case "origin":
+      return { ...state, origin: action.value };
+    case "answers":
+      return { ...state, answers: action.value };
+    case "date":
+      return { ...state, date: action.value };
+
+    default:
+      return state;
+  }
+}
+
 const AddParticipantOnTrip = ({ tripsList }: Props) => {
   const { mutate } = useSWRConfig();
   const { data: participantsList } = useSWR<Participant[]>(
@@ -31,23 +87,21 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
   const [suggestions, setSuggestions] = useState<
     { name: string; id: number }[]
   >([]);
-  const [selectedTrip, setSelectedTrip] = useState<number | null>(null);
-  const [participantName, setParticipantName] = useState("");
-  const [origin, setOrigin] = useState("");
-  const [date, setDate] = useState<Nullable<string | Date | Date[]>>(null);
-  const [answers, setAnswers] = useState("");
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const search = (event: AutoCompleteCompleteEvent) => {
     const name = event.query.toLowerCase();
     const filteredList = participantsList
       ?.filter((pp) => pp.name.toLowerCase().includes(name))
       .map((pp) => ({ ...pp, nameExt: `${pp.name} - ${pp.origin}` }));
-    setSuggestions(filteredList || []);
+    setSuggestions(filteredList ?? []);
   };
 
-  const onParticipantSelect = (value: ExtParticpant) => {
-    setOrigin(value.origin);
-    setParticipantName(value.name);
+  const onParticipantSelect = ({ name, origin }: ExtParticpant) => {
+    dispatch({
+      type: "selectParticipant",
+      value: { origin, participant: name },
+    });
   };
 
   const showWrongData = () => {
@@ -58,42 +112,42 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
       life: 3000,
     });
   };
-  const showSuccess = () => {
+  const showSuccess = async () => {
     toast.current?.show({
       severity: "success",
       summary: "Sukces",
       detail: "Pomyślnie dodano nowego użytkownika",
       life: 3000,
     });
-    mutate(`/api/admin/get-trip-participants?id=${selectedTrip}`);
-    setSelectedTrip(null);
-    setParticipantName("");
-    setOrigin("");
-    setDate("");
-    setAnswers("");
+    await mutate(`/api/admin/get-trip-participants?id=${state.selectedTrip}`);
+    dispatch({ type: "reset" });
   };
 
   const onSubmit = () => {
     fetch("/api/admin/add-participant", {
       method: "POST",
       body: JSON.stringify({
-        name: participantName,
-        origin,
-        date,
-        tripId: selectedTrip,
-        answers,
+        name: state.participantName,
+        origin: state.origin,
+        date: state.date,
+        tripId: state.selectedTrip,
+        answers: state.answers,
       }),
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((res) => {
-      if (res.ok) {
-        return showSuccess();
-      }
-      if (res.status === 406) {
-        showWrongData();
-      }
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          return showSuccess();
+        }
+        if (res.status === 406) {
+          showWrongData();
+        }
+      })
+      .catch((error) =>
+        log.error("admin: add participant error", { message: error })
+      );
   };
 
   return (
@@ -106,10 +160,10 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
             className="w-full"
             filter
             id="ppt-trip"
-            onChange={(e) => setSelectedTrip(e.value)}
+            onChange={(e) => dispatch({ type: "trip", value: e.value })}
             options={tripsList}
             placeholder="Wybierz trasę"
-            value={selectedTrip}
+            value={state.selectedTrip}
           />
         </div>
         <div className="p-fluid">
@@ -119,10 +173,10 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
             field="nameExt"
             inputClassName="w-full"
             inputId="ppt-name"
-            onChange={(e) => setParticipantName(e.value)}
+            onChange={(e) => dispatch({ type: "participant", value: e.value })}
             onSelect={(e) => onParticipantSelect(e.value)}
             suggestions={suggestions}
-            value={participantName}
+            value={state.participantName}
           />
         </div>
         <div className="flex flex-col">
@@ -130,8 +184,10 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
 
           <InputText
             id="ppt-origin"
-            onChange={(e) => setOrigin(e.target.value)}
-            value={origin}
+            onChange={(e) =>
+              dispatch({ value: e.target.value, type: "origin" })
+            }
+            value={state.origin}
           />
         </div>
         <div className="flex flex-col">
@@ -139,9 +195,11 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
 
           <InputText
             id="ppt-answers"
-            onChange={(e) => setAnswers(e.target.value)}
+            onChange={(e) =>
+              dispatch({ value: e.target.value, type: "answers" })
+            }
             required
-            value={answers}
+            value={state.answers}
           />
         </div>
         <div className="flex flex-col">
@@ -152,8 +210,8 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
             id="ppt-date"
             locale="pl"
             maxDate={new Date()}
-            onChange={(e) => setDate(e.value)}
-            value={date}
+            onChange={(e) => dispatch({ value: e.value, type: "date" })}
+            value={state.date}
           />
         </div>
         <div className="flex items-end">
