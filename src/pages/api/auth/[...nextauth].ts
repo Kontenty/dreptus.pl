@@ -1,12 +1,12 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
 import { config } from "src/lib/config";
 import prisma from "lib/prisma";
 import { getAdmins } from "lib/db";
 
-export default NextAuth({
-  secret: process.env.AUTH_SECRET,
+export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     EmailProvider({
       server: {
@@ -41,4 +41,6 @@ export default NextAuth({
       return session;
     },
   },
-});
+};
+
+export default NextAuth(authOptions);

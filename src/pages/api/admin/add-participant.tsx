@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 
 import prismaClient from "src/lib/prisma";
 import * as Yup from "yup";
@@ -23,6 +25,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await getServerSession(req, res, authOptions);
+  if (session?.user?.role !== "admin") {
+    res.status(401).json({ message: "You must be logged in." });
+    return;
+  }
   try {
     await schema.validate(req.body);
   } catch (error) {
