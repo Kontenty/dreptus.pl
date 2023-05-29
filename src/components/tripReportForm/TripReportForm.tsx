@@ -28,7 +28,7 @@ interface Props {
 export default function TripReportForm({ trips, onSuccess }: Props) {
   const msg = useRef<Messages>(null);
   useEffect(() => {
-    if (msg && msg.current) {
+    if (msg?.current) {
       msg.current?.show([
         {
           severity: "error",

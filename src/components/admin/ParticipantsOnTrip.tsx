@@ -6,6 +6,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
+import EditParticipantOnTrip from "./EditParticipantOnTrip";
 
 type Props = { tripId: number | null };
 type TripParticipant = {
@@ -26,13 +27,14 @@ const UsersOnTrip = ({ tripId }: Props) => {
   const [selectedTripParticipant, setSelectedTripParticipant] =
     useState<TripParticipant | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
+  const [editDialog, setEditDialog] = useState<boolean>(false);
 
-  const confirmDeleteProduct = (participant: TripParticipant) => {
+  const confirmDeleteParticipant = (participant: TripParticipant) => {
     setSelectedTripParticipant(participant);
     setDeleteDialog(true);
   };
 
-  const deleteProduct = () => {
+  const deleteParticipant = () => {
     fetch(
       `/api/admin/remove-trip-participant?id=${selectedTripParticipant?.id}`,
       {
@@ -62,8 +64,49 @@ const UsersOnTrip = ({ tripId }: Props) => {
         }
       })
       .catch((error) =>
-        log.error("admin: add participant error", { message: error })
+        log.error("admin: delete participant error", { message: error })
       );
+  };
+
+  const saveParticipant = (participant: TripParticipant) => {
+    fetch("/api/admin/edit-trip-participant", {
+      method: "POST",
+      body: JSON.stringify(participant),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        setDeleteDialog(false);
+
+        if (res.ok) {
+          toast?.current &&
+            toast.current.show({
+              severity: "success",
+              summary: "Pomyślnie",
+              detail: "zapisano zmiany",
+              life: 3000,
+            });
+          mutate();
+        } else {
+          toast?.current &&
+            toast.current.show({
+              severity: "error",
+              summary: "Błąd",
+              detail: "zmiany nie zostały zapisane",
+              life: 3000,
+            });
+        }
+      })
+      .catch((error) =>
+        log.error("admin: add participant error", { message: error })
+      )
+      .finally(() => setEditDialog(false));
+  };
+
+  const editParticipant = (participant: TripParticipant) => {
+    setEditDialog(true);
+    setSelectedTripParticipant(participant);
   };
 
   const actionBodyTemplate = (participant: TripParticipant) => {
@@ -71,15 +114,14 @@ const UsersOnTrip = ({ tripId }: Props) => {
       <React.Fragment>
         <Button
           className="mr-2"
-          disabled
           icon="pi pi-pencil"
-          // onClick={() => editProduct(rowData)}
+          onClick={() => editParticipant(participant)}
           outlined
           rounded
         />
         <Button
           icon="pi pi-trash"
-          onClick={() => confirmDeleteProduct(participant)}
+          onClick={() => confirmDeleteParticipant(participant)}
           outlined
           rounded
           severity="danger"
@@ -131,7 +173,7 @@ const UsersOnTrip = ({ tripId }: Props) => {
             <Button
               icon="pi pi-check"
               label="Tak"
-              onClick={deleteProduct}
+              onClick={deleteParticipant}
               severity="danger"
             />
           </>
@@ -153,6 +195,19 @@ const UsersOnTrip = ({ tripId }: Props) => {
             {selectedTripParticipant?.name} z trasy
           </span>
         </div>
+      </Dialog>
+      <Dialog
+        onHide={() => setEditDialog(false)}
+        style={{ width: "700px" }}
+        visible={editDialog}
+      >
+        {selectedTripParticipant && (
+          <EditParticipantOnTrip
+            onAbort={() => setEditDialog(false)}
+            onSubmit={saveParticipant}
+            participant={selectedTripParticipant}
+          />
+        )}
       </Dialog>
       <Toast ref={toast} />
     </div>
