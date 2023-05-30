@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user }) {
       const admins = await getAdmins();
       if (admins.some((a) => a.user_email === user.email)) {
         return true;
@@ -40,6 +40,10 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+  },
+  pages: {
+    signIn: "/auth/signin",
+    verifyRequest: "/auth/verify-request",
   },
 };
 
