@@ -1,16 +1,25 @@
+import { InferGetStaticPropsType } from "next";
 import { DataTable, DataTableSelectionChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import Main from "components/layout/MainLayout";
-import { getParticipantsPostsList } from "lib/db";
+import { getTripsParticipants } from "lib/db";
 import { PostResponse } from "src/types";
 import { useRouter } from "next/router";
+import { formatDate } from "lib/utils";
+
+const dummyListEl = {
+  id: 0,
+  trip_id: 0,
+  report_date: null,
+  pptCount: null,
+};
 
 export const getStaticProps = async () => {
-  const trips = await getParticipantsPostsList();
+  const trips = await getTripsParticipants();
   if (!trips) {
     throw new Error("lists of participants - fetch data error");
   }
-  const chunked = trips.reduce((result: PostResponse[][], current) => {
+  const chunked = trips.reduce((result, current) => {
     if (/^[A-Z][0-9]{2}/.test(current.post_title)) {
       result[0] ? result[0].push(current) : (result[0] = [current]);
     } else if (/^[0-9]{3}/.test(current.post_title)) {
@@ -19,12 +28,12 @@ export const getStaticProps = async () => {
       result[2] ? result[2].push(current) : (result[2] = [current]);
     }
     return result;
-  }, []);
+  }, [] as (typeof trips)[]);
   chunked.unshift([
-    { post_title: "Z Dreptusiem po Dolinie Bugu:" } as PostResponse,
+    { ...dummyListEl, post_title: "Z Dreptusiem po Dolinie Bugu:" },
   ]);
   chunked.splice(2, 0, [
-    { post_title: "Z Dreptusiem po Polsce:" } as PostResponse,
+    { ...dummyListEl, post_title: "Z Dreptusiem po Polsce:" },
   ]);
   return {
     props: {
@@ -34,14 +43,6 @@ export const getStaticProps = async () => {
   };
 };
 
-const dateTmpl = (row: PostResponse) =>
-  row.post_modified
-    ? new Intl.DateTimeFormat("pl-PL", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }).format(new Date(row.post_modified))
-    : "";
 const titleTmpl = (row: PostResponse) =>
   /^Z Dreptusiem/i.test(row.post_title) ? (
     <span className="font-bold text-lg">{row.post_title}</span>
@@ -49,16 +50,17 @@ const titleTmpl = (row: PostResponse) =>
     row.post_title.replace(/,{0,1}<br>/, ", ")
   );
 
-type List = (PostResponse & { participants: string })[];
-type Props = { trips: List };
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+type Trip = Props["trips"][0];
 
 export default function Participants({ trips }: Props) {
   const router = useRouter();
-  const handleSelect = (ev: DataTableSelectionChangeEvent<List>) => {
-    const value = ev.value as List[0];
-    if (value.post_name) {
+
+  const handleSelect = (ev: DataTableSelectionChangeEvent<Trip[]>) => {
+    const value = ev.value as Trip;
+    if (value.trip_id) {
       setTimeout(() => {
-        router.push(`/participants/${value.post_name}`);
+        router.push(`/participants/${value.trip_id}`);
       }, 300);
     }
   };
@@ -87,10 +89,14 @@ export default function Participants({ trips }: Props) {
             <Column body={titleTmpl} header="Nazwa Trasy"></Column>
             <Column
               align="center"
-              field="participants"
+              body={(d) => Number(d.pptCount) || ""}
+              field="pptCount"
               header="Liczba Uczestników"
             ></Column>
-            <Column body={dateTmpl} header="Data Aktualizacji"></Column>
+            <Column
+              body={(d) => formatDate(d.report_date)}
+              header="Data Aktualizacji"
+            ></Column>
           </DataTable>
         </div>
         ;

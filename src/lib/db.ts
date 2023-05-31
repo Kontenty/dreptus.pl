@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, TripParticipant } from "@prisma/client";
 import { log } from "next-axiom";
 import { PostResponse, TripDetails, TripsForMapResponse } from "src/types";
 import prisma from "./prisma";
@@ -139,15 +139,37 @@ export const getParticipantsPostsList = () =>
     PostResponse[]
   >`SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE p.post_type = "post" AND p.post_status = "publish" AND m.meta_key = "liczba_uczestnikow" ORDER BY p.post_title;`;
 
+export const getTripsParticipants = () =>
+  prisma.$queryRaw<
+    {
+      id: number;
+      trip_id: number;
+      report_date: Date | null;
+      pptCount: bigint | null;
+      post_title: string;
+    }[]
+  >`SELECT tp.id,  tp.trip_id, p.post_title, MAX(tp.report_date) as report_date, COUNT(tp.trip_id) as pptCount  FROM TripParticipant tp
+  JOIN wp_posts p ON p.ID = tp.trip_id
+  GROUP  BY tp.trip_id ORDER BY p.post_title;`;
+
 export const getParticipantSlugs = () =>
-  prisma.wp_posts.findMany({
-    select: { post_name: true },
-    where: { post_type: "post", post_status: "publish" },
+  prisma.tripParticipant.groupBy({
+    by: ["trip_id"],
   });
 
-export const getParticipantBySlug = (name: string) =>
-  prisma.wp_posts.findFirst({
-    where: { post_type: "post", post_status: "publish", post_name: name },
+export const getParticipantBySlug = (id: number) =>
+  prisma.tripParticipant.findMany({
+    where: {
+      trip_id: id,
+    },
+    include: {
+      participant: true,
+      trip: {
+        select: {
+          post_title: true,
+        },
+      },
+    },
   });
 
 export const getAdmins = () =>

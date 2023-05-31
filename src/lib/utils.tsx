@@ -65,3 +65,18 @@ export const sortTrips = (
   }
   return 0;
 };
+
+export const formatDate = (date: string | Date) => {
+  if (!date) {
+    return "";
+  }
+  const dateObject = typeof date === "string" ? new Date(date) : date;
+  if (isNaN(dateObject.getTime())) {
+    return "";
+  }
+  return new Intl.DateTimeFormat("pl-PL", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(dateObject);
+};
