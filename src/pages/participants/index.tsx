@@ -30,10 +30,10 @@ export const getStaticProps = async () => {
     return result;
   }, [] as (typeof trips)[]);
   chunked.unshift([
-    { ...dummyListEl, post_title: "Z Dreptusiem po Dolinie Bugu:" },
+    { ...dummyListEl, post_title: "Z Dreptusiem po Dolinie Bugu:", id: 100001 },
   ]);
   chunked.splice(2, 0, [
-    { ...dummyListEl, post_title: "Z Dreptusiem po Polsce:" },
+    { ...dummyListEl, post_title: "Z Dreptusiem po Polsce:", id: 100002 },
   ]);
   return {
     props: {
@@ -75,7 +75,7 @@ export default function Participants({ trips }: Props) {
           <DataTable
             className="min-w-[450px]"
             currentPageReportTemplate="{first} do {last} z {totalRecords}"
-            dataKey="ID"
+            dataKey="id"
             onSelectionChange={handleSelect}
             paginator
             paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
@@ -99,7 +99,6 @@ export default function Participants({ trips }: Props) {
             ></Column>
           </DataTable>
         </div>
-        ;
       </article>
     </Main>
   );

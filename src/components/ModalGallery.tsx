@@ -60,8 +60,8 @@ const ModalGallery = ({
             fade
             infinite
             initialSlide={initial}
-            nextArrow={<SlickArrow />}
-            prevArrow={<SlickArrow />}
+            nextArrow={<SlickArrow theme="dark" />}
+            prevArrow={<SlickArrow theme="dark" />}
             ref={sliderRef}
             slidesToScroll={1}
             slidesToShow={1}
@@ -80,7 +80,7 @@ const ModalGallery = ({
                   />
                 </div>
                 {!full && (
-                  <h1 className="text-xl text-white text-center mt-4">
+                  <h1 className="text-xl text-slate-100 text-center mt-4">
                     {img.post_title}
                   </h1>
                 )}

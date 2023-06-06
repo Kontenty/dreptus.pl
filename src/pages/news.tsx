@@ -14,6 +14,7 @@ export const getStaticProps = async () => {
   if (!postsData) {
     return {
       props: { posts: [] },
+      revalidate: 60 * 60 * 12,
     };
   }
   const posts = await Promise.all(
@@ -35,7 +36,6 @@ export const getStaticProps = async () => {
     })
   );
   const packets = await getPage(20167);
-  // tableToJson(packets?.post_content ?? "");
   return {
     props: { posts: posts || [], packets, revalidate: 60 * 60 * 12 },
   };

@@ -129,10 +129,10 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
                 nowe, nigdy wcześniej nie publikowane. Z kolei trasy starsze
                 zostały w większości sprawdzone i uaktualnione.
                 <br />
-                Mamy&nbsp;25 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 3
+                Mamy&nbsp;37 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 4
                 w stopniu żółtym (50 tras),&nbsp;15 “Z Dreptusiem Traktem
                 Królewskim”&nbsp;i&nbsp;2 “Z Dreptusiem po Dolinie Bugu”.&nbsp;Z
-                tras spłynęło ponad 1000 zgłoszeń!&nbsp;Przy przesyłaniu
+                tras spłynęło ponad 1600 zgłoszeń!&nbsp;Przy przesyłaniu
                 odpowiedzi prosimy korzystać z formularza, odznaki czekają:
               </p>
               <ol>

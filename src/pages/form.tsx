@@ -41,6 +41,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       trips: trips || [],
+      revalidate: 60 * 60 * 12,
     },
   };
 };
