@@ -17,19 +17,19 @@ const links = [
   { name: "Uczestnicy", link: "/participants", as: "/uczestnicy-tras" },
   {
     name: "Odznaki",
-    as: "/odznaki",
+    as: "/badges",
     children: [
       {
         name: "Z Dreptusiem po Polsce",
-        link: "/odznaki/z-dreptusiem-po-polsce",
+        link: "/badges/z-dreptusiem-po-polsce",
       },
       {
         name: "Z Dreptusiem po Dolinie Bugu",
-        link: "/odznaki/z-dreptusiem-po-dolinie-bugu",
+        link: "/badges/z-dreptusiem-po-dolinie-bugu",
       },
       {
         name: "Z Dreptusiem Traktem Królewskim",
-        link: "/odznaki/z-dreptusiem-traktem-krolewskim",
+        link: "/badges/z-dreptusiem-traktem-krolewskim",
       },
     ],
   },

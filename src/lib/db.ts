@@ -1,4 +1,4 @@
-import { Prisma, TripParticipant } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { log } from "next-axiom";
 import { PostResponse, TripDetails, TripsForMapResponse } from "src/types";
 import prisma from "./prisma";
