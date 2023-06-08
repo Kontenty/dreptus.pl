@@ -15,37 +15,33 @@ import { formatDate } from "lib/utils";
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const tripId = Number(params?.tripId);
-  if (typeof tripId === "number") {
-    const data = await getParticipantBySlug(tripId);
-    if (!data) {
-      return { notFound: true };
-    }
-    const list = data.map((el) => ({ ...el, ...el.participant }));
-    return {
-      props: {
-        params,
-        data: list ?? null,
-      },
-      revalidate: 60 * 60 * 12,
-    };
+  if (typeof tripId !== "number" || isNaN(tripId)) {
+    return { notFound: true };
   }
+  const data = await getParticipantBySlug(tripId);
+  if (!data || data.length === 0) {
+    return { notFound: true };
+  }
+  const list = data.map((el) => ({ ...el, ...el.participant }));
   return {
-    redirect: {
-      destination: "/",
-      permanent: false,
+    props: {
+      params,
+      data: list ?? null,
     },
+    revalidate: 60 * 60 * 12,
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await getParticipantSlugs();
   return {
-    paths:
-      slugs?.map((slug) => ({
-        params: {
-          tripId: `${slug?.trip_id}`,
-        },
-      })) || [],
+    paths: slugs?.length
+      ? slugs?.map((slug) => ({
+          params: {
+            tripId: `${slug?.trip_id}`,
+          },
+        }))
+      : [],
     fallback: "blocking",
   };
 };
