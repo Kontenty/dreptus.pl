@@ -41,7 +41,7 @@ const UsersOnTrip = ({ tripId }: Props) => {
         method: "DELETE",
       }
     )
-      .then((res) => {
+      .then(async (res) => {
         setDeleteDialog(false);
 
         if (res.ok) {
@@ -52,7 +52,7 @@ const UsersOnTrip = ({ tripId }: Props) => {
               detail: "usunięto uczestnika",
               life: 3000,
             });
-          mutate();
+          await mutate();
         } else {
           toast?.current &&
             toast.current.show({
@@ -76,7 +76,7 @@ const UsersOnTrip = ({ tripId }: Props) => {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => {
+      .then(async (res) => {
         setDeleteDialog(false);
 
         if (res.ok) {
@@ -87,7 +87,7 @@ const UsersOnTrip = ({ tripId }: Props) => {
               detail: "zapisano zmiany",
               life: 3000,
             });
-          mutate();
+          await mutate();
         } else {
           toast?.current &&
             toast.current.show({

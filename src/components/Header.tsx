@@ -46,6 +46,16 @@ const Header = () => {
     setShowNav((prev) => !prev);
   };
   const hideNav = () => setShowNav(false);
+  const getLinkClass = (link?: string, defaultClass = css.link) => {
+    if (router.pathname === link) {
+      return css.activeLink;
+    }
+    if (router.pathname.includes(link + "/")) {
+      return css.activeLink;
+    }
+    return defaultClass;
+  };
+
   return (
     <header className={css.header}>
       <Link className={css.logoBox} href="/">
@@ -60,22 +70,16 @@ const Header = () => {
         />
       </Link>
       <nav className={cl(css.nav, { [css.navHidden]: !showNav })}>
-        {links.map((link, i) => {
+        {links.map((link) => {
           if (link.children) {
             return (
               <div
                 className={`${css.navItem} ${css.dropdown}`}
-                key={i + "child"}
+                key={link.link ?? "link"}
               >
                 <Link
-                  className={
-                    router.pathname === link.link
-                      ? css.activeLink
-                      : router.pathname.includes(link.link + "/")
-                      ? css.activeLink
-                      : css.nonLink
-                  }
-                  href={link.link || ""}
+                  className={getLinkClass(link.link, css.noLink)}
+                  href={link.link ?? ""}
                 >
                   {link.name}
                   <ChevronDownIcon className={css.chevron} />
@@ -86,7 +90,7 @@ const Header = () => {
                       <Link
                         className={css.dropdownItem}
                         href={childLink.link}
-                        key={i + childLink.link}
+                        key={childLink.link}
                         onClick={hideNav}
                       >
                         {childLink.name}
@@ -98,18 +102,11 @@ const Header = () => {
             );
           }
           return (
-            <div className={css.navItem} key={i}>
+            <div className={css.navItem} key={link.link}>
               <Link
                 as={link.as}
-                className={
-                  router.pathname === link.link
-                    ? css.activeLink
-                    : router.pathname.includes(link.link + "/")
-                    ? css.activeLink
-                    : css.link
-                }
+                className={getLinkClass(link.link)}
                 href={link.link}
-                key={i}
                 onClick={hideNav}
               >
                 {link.name}
