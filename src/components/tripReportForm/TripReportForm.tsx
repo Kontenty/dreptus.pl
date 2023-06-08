@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Field, Form, Formik } from "formik";
 import { Messages } from "primereact/messages";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
+import { useMountEffect } from "primereact/hooks";
 import * as Yup from "yup";
 import cl from "classnames";
 
@@ -27,7 +28,7 @@ interface Props {
 }
 export default function TripReportForm({ trips, onSuccess }: Props) {
   const msg = useRef<Messages>(null);
-  useEffect(() => {
+  useMountEffect(() => {
     if (msg?.current) {
       msg.current?.show([
         {
@@ -40,7 +41,7 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
         },
       ]);
     }
-  }, []);
+  });
 
   return (
     <>
