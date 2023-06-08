@@ -56,6 +56,11 @@ const nextConfig = {
         destination: "/form",
         permanent: false,
       },
+      {
+        source: "/aktualnosci",
+        destination: "/news",
+        permanent: false,
+      },
     ];
   },
 };
