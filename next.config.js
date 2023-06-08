@@ -41,6 +41,21 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/uczestnicy-tras",
+        destination: "/participants",
+        permanent: false,
+      },
+      {
+        source: "/lista-tras",
+        destination: "/trips",
+        permanent: false,
+      },
+      {
+        source: "/karta-startowa",
+        destination: "/form",
+        permanent: false,
+      },
     ];
   },
 };
