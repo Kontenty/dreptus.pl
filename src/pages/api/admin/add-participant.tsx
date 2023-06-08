@@ -42,7 +42,7 @@ export default async function handler(
     const user =
       (await prismaClient.participant.findFirst({
         where: { name, origin },
-      })) ||
+      })) ??
       (await prismaClient.participant.create({
         data: {
           name,
@@ -57,6 +57,11 @@ export default async function handler(
         answers: body.answers,
       },
     });
+    await Promise.all([
+      res.revalidate("/"),
+      res.revalidate("/participants"),
+      res.revalidate("/participants/" + newPptOnTrip.trip_id),
+    ]);
 
     return res.status(200).send(newPptOnTrip);
   } catch (error) {

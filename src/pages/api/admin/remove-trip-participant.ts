@@ -16,7 +16,15 @@ export default async function handler(
   const id = Number(req.query.id);
   if (typeof id === "number") {
     try {
-      await prismaClient.tripParticipant.delete({ where: { id } });
+      const deleted = await prismaClient.tripParticipant.delete({
+        where: { id },
+      });
+
+      await Promise.all([
+        res.revalidate("/"),
+        res.revalidate("/participants"),
+        res.revalidate("/participants/" + deleted.trip_id),
+      ]);
 
       res.status(200).send("ok");
       return;
