@@ -9,13 +9,15 @@ import { ProgressSpinner } from "primereact/progressspinner";
 
 import { GoogleContext, GoogleProvider } from "context";
 import { SingleTripMap } from "components/map/SingleTripMap";
-import type { TripDetails, TripFormMap } from "src/types";
+import type { TripDetails } from "src/types";
 import { getIcon } from "lib/utils";
 import { getTripBySlug, getTripsForMap, getTripSlugs } from "lib/db";
 import css from "styles/Trip.module.css";
 import MainLayout from "components/layout/MainLayout";
 import SlickArrow from "components/SlickArrow";
 import ModalGallery from "components/ModalGallery";
+
+import type { TripsForMap } from "./index";
 
 const formatDistance = (d: number) => {
   const precision = d < 10000 ? 1 : 0;
@@ -25,7 +27,7 @@ const formatDistance = (d: number) => {
 };
 interface Props {
   trip: TripDetails;
-  tripsList: TripFormMap[];
+  tripsList: TripsForMap;
 }
 
 const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
@@ -62,10 +64,9 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
     const fileName = url.split("/").at(-1);
     const res = await fetch(url, { method: "GET" });
     const blob = await res.blob();
-    linkUrl =
-      window.URL && window.URL.createObjectURL
-        ? window.URL.createObjectURL(blob)
-        : window.webkitURL.createObjectURL(blob);
+    linkUrl = window?.URL?.createObjectURL
+      ? window.URL.createObjectURL(blob)
+      : window.webkitURL.createObjectURL(blob);
     const tempLink = document.createElement("a");
     tempLink.style.display = "none";
     tempLink.href = linkUrl;

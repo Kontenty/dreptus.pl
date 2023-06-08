@@ -39,6 +39,7 @@ export const getStaticProps = async () => {
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
+export type TripsForMap = Props["trips"];
 
 export default function Trips({ count, locations, trips }: Props) {
   const router = useRouter();
@@ -61,7 +62,7 @@ export default function Trips({ count, locations, trips }: Props) {
   return (
     <>
       <GoogleProvider>
-        <TripsMap trips={data || trips} />
+        <TripsMap trips={data ?? trips} />
         <div className={css.lists}>
           <div className="lg:pt-4" data-aos="fade-right">
             <TripListFilter count={count} locationsList={locations} />
@@ -70,7 +71,7 @@ export default function Trips({ count, locations, trips }: Props) {
             className="bg-white rounded-md p-2 flex-grow"
             data-aos="fade-left"
           >
-            <TripsList trips={data || trips} />
+            <TripsList trips={data ?? trips} />
           </div>
         </div>
       </GoogleProvider>
