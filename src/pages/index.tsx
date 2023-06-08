@@ -8,15 +8,18 @@ import css from "../styles/Home.module.css";
 import trip from "public/image/trip.jpg";
 import odznaki from "public/image/odznaki.jpg";
 import { getTrips, getTripsCount } from "lib/db";
+import prisma from "lib/prisma";
 import Hero from "components/hero";
 
 export const getStaticProps = async () => {
   const trips = await getTrips(10);
-  const tripsCount = (await getTripsCount()) || 158;
+  const tripsCount = (await getTripsCount()) || 180;
+  const participantsCount = (await prisma.tripParticipant.count()) || 2000;
   return {
     props: {
       trips: trips ?? [],
       tripsCount,
+      participantsCount,
       revalidate: 60 * 60 * 12,
     },
   };
@@ -24,7 +27,7 @@ export const getStaticProps = async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Home: NextPage<Props> = ({ trips, tripsCount }) => {
+const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
   return (
     <>
       <Hero />
@@ -129,19 +132,42 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
                 nowe, nigdy wcześniej nie publikowane. Z kolei trasy starsze
                 zostały w większości sprawdzone i uaktualnione.
                 <br />
-                Mamy&nbsp;37 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 4
-                w stopniu żółtym (50 tras),&nbsp;15 “Z Dreptusiem Traktem
-                Królewskim”&nbsp;i&nbsp;2 “Z Dreptusiem po Dolinie Bugu”.&nbsp;Z
-                tras spłynęło ponad 1600 zgłoszeń!&nbsp;Przy przesyłaniu
-                odpowiedzi prosimy korzystać z formularza, odznaki czekają:
+                Mamy&nbsp;43 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 4
+                w stopniu żółtym (50 tras),&nbsp;17 “Z Dreptusiem Traktem
+                Królewskim”&nbsp;i&nbsp;4 “Z Dreptusiem po Dolinie Bugu”.
+                Z&nbsp;tras spłynęło {participantsCount} zgłoszeń! Przy
+                przesyłaniu odpowiedzi prosimy korzystać z{" "}
+                <Link className={css.link} href="/form">
+                  formularza
+                </Link>{" "}
+                , odznaki czekają:
               </p>
               <ol>
-                <li>1. „Z Dreptusiem po Dolinie Bugu” (dostępna)</li>
                 <li>
-                  2. „Z Dreptusiem po Polsce” – w stopniu zielonym i żółtym
-                  (dostępna)
+                  <Link
+                    className={css.link}
+                    href="badges/z-dreptusiem-po-dolinie-bugu"
+                  >
+                    1. „Z Dreptusiem po Dolinie Bugu” (dostępna)
+                  </Link>
                 </li>
-                <li>3. „Z Dreptusiem Traktem Królewskim” (dostępna)</li>
+                <li>
+                  <Link
+                    className={css.link}
+                    href="badges/z-dreptusiem-po-polsce"
+                  >
+                    2. „Z Dreptusiem po Polsce” – w stopniu zielonym i żółtym
+                    (dostępna)
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={css.link}
+                    href="badges/z-dreptusiem-traktem-krolewskim"
+                  >
+                    3. „Z Dreptusiem Traktem Królewskim” (dostępna)
+                  </Link>
+                </li>
               </ol>
               <p className="text-right">Do zobaczenia na trasach 😀</p>
             </article>
@@ -152,7 +178,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount }) => {
           <div className="flex flex-col">
             {trips.map((trip) => (
               <div key={trip.ID}>
-                <Link href={`/trips/${trip.post_name}`}>
+                <Link className={css.link} href={`/trips/${trip.post_name}`}>
                   {trip.wp_postmeta[0].meta_value}.{" "}
                   {trip.post_title.replace("<br>", " / ")} (
                   {new Intl.DateTimeFormat("pl-PL", {

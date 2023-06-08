@@ -26,3 +26,7 @@
 .aboutSection {
   @apply flex flex-wrap md:flex-nowrap justify-center gap-2 md:gap-6;
 }
+
+.link {
+  @apply font-semibold hover:text-brand-primary hover:underline hover:underline-offset-2;
+}
