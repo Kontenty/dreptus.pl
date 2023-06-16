@@ -127,7 +127,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
                 <br />
                 <strong>Obecnie jest ich {tripsCount} 😀</strong>
                 , z czego jedna trzecia w samej Warszawie. Już tylko na terenie
-                5 województw nie ma jeszcze ani jednej trasy, ale pracujemy nad
+                4 województw nie ma jeszcze ani jednej trasy, ale pracujemy nad
                 tym, aby ten stan nie potrwał zbyt długo. Większość to trasy
                 nowe, nigdy wcześniej nie publikowane. Z kolei trasy starsze
                 zostały w większości sprawdzone i uaktualnione.

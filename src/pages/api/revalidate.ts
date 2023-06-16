@@ -43,7 +43,7 @@ export default async function handler(
     } else if (req.query?.new === "packet") {
       await res.revalidate("/news");
     } else if (req.query?.new === "scorer" && slug) {
-      await res.revalidate(`/odznaki/${slug}`);
+      await res.revalidate(`/badges/${slug}`);
     }
 
     return res.json({ revalidated: true });
