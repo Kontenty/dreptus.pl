@@ -5,8 +5,8 @@ import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import ParticipantsOnTrip from "components/admin/ParticipantsOnTrip";
 import AddParticipantOnTrip from "components/admin/AddParticipantOnTrip";
+import { getTrips } from "lib/db";
 import { sortTrips } from "lib/utils";
-import prismaClient from "src/lib/prisma";
 import Main from "components/layout/MainLayout";
 
 type Props = {
@@ -60,15 +60,16 @@ const AdminPage: NextPage<Props> = ({ tripsParticipants }) => {
 export default AdminPage;
 
 export const getServerSideProps = async () => {
-  const tripsParticipantsData = await prismaClient.wp_posts.findMany({
-    where: { post_status: "publish", post_type: "post" },
-  });
+  const tripsParticipantsData = await getTrips();
   const tripsParticipants = tripsParticipantsData
     .map((t) => ({
       ...t,
-      number: t.post_title.split(" ").at(0),
+      number: t.wp_postmeta[0].meta_value,
       value: t.ID,
-      label: `${t.post_title.replace(/,?<br> ?/, ", ")}`,
+      label: `${t.wp_postmeta[0].meta_value} ${t.post_title.replace(
+        /,?<br> ?/,
+        ", "
+      )}`,
     }))
     .sort(sortTrips);
   return {

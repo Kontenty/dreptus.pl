@@ -7,7 +7,7 @@ import {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
-import { getParticipantBySlug, getParticipantSlugs } from "lib/db";
+import { getParticipantById, getParticipantSlugs } from "lib/db";
 import MainLayout from "components/layout/MainLayout";
 import { useRouter } from "next/router";
 import { ProgressSpinner } from "primereact/progressspinner";
@@ -18,7 +18,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   if (typeof tripId !== "number" || isNaN(tripId)) {
     return { notFound: true };
   }
-  const data = await getParticipantBySlug(tripId);
+  const data = await getParticipantById(tripId);
   if (!data || data.length === 0) {
     return { notFound: true };
   }

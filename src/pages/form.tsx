@@ -30,13 +30,13 @@ export default function StartForm({ trips }: Props) {
 }
 
 export const getStaticProps = async () => {
-  const tripsData = await getTrips(10000);
+  const tripsData = await getTrips();
   const trips = tripsData
     .map((t) => ({ ...t, number: t.wp_postmeta[0].meta_value }))
     .sort(sortTrips)
     .map((t) => ({
-      label: `${t.number} ${t.post_title.replace("<br>", ", ")}`,
-      value: `${t.number} ${t.post_title.replace("<br>", ", ")}`,
+      label: `${t.number} ${t.post_title.replace(/,?<br> ?/, ", ")}`,
+      value: `${t.number} ${t.post_title.replace(/,?<br> ?/, ", ")}`,
     }));
   return {
     props: {

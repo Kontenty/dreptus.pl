@@ -3,7 +3,7 @@ import { log } from "next-axiom";
 import { PostResponse, TripDetails, TripsForMapResponse } from "src/types";
 import prisma from "./prisma";
 
-export const getTrips = async (limit = 10) =>
+export const getTrips = async (limit?: number) =>
   prisma.wp_posts.findMany({
     where: { post_type: "listing", post_status: "publish" },
     select: {
@@ -147,17 +147,19 @@ export const getTripsParticipants = () =>
       report_date: Date | null;
       pptCount: bigint | null;
       post_title: string;
+      number: string;
     }[]
-  >`SELECT tp.id,  tp.trip_id, p.post_title, MAX(tp.report_date) as report_date, COUNT(tp.trip_id) as pptCount  FROM TripParticipant tp
-  JOIN wp_posts p ON p.ID = tp.trip_id
-  GROUP  BY tp.trip_id ORDER BY p.post_title;`;
+  >`SELECT tp.id,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) as report_date, COUNT(tp.trip_id) as pptCount  FROM back_trip_participant tp
+    JOIN wp_posts p ON p.ID = tp.trip_id
+    JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_cth_cus_field_zxr0feyjz'
+    GROUP  BY tp.trip_id ORDER BY p.post_title;`;
 
 export const getParticipantSlugs = () =>
   prisma.tripParticipant.groupBy({
     by: ["trip_id"],
   });
 
-export const getParticipantBySlug = (id: number) =>
+export const getParticipantById = (id: number) =>
   prisma.tripParticipant.findMany({
     where: {
       trip_id: id,

@@ -1,17 +1,18 @@
 import { InferGetStaticPropsType } from "next";
+import { useRouter } from "next/router";
 import { DataTable, DataTableSelectionChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import Main from "components/layout/MainLayout";
 import { getTripsParticipants } from "lib/db";
+import { formatDate, sortTrips } from "lib/utils";
 import { PostResponse } from "src/types";
-import { useRouter } from "next/router";
-import { formatDate } from "lib/utils";
 
 const dummyListEl = {
   id: 0,
   trip_id: 0,
   report_date: null,
   pptCount: null,
+  number: "",
 };
 
 export const getStaticProps = async () => {
@@ -19,12 +20,12 @@ export const getStaticProps = async () => {
   if (!trips) {
     throw new Error("lists of participants - fetch data error");
   }
-  const chunked = trips.reduce((result, current) => {
-    if (/^[A-Z][0-9]{2}/.test(current.post_title)) {
+  const chunked = [...trips].sort(sortTrips).reduce((result, current) => {
+    if (/^[A-Z][0-9]{2}/.test(current.number)) {
       result[0] ? result[0].push(current) : (result[0] = [current]);
-    } else if (/^[0-9]{3}/.test(current.post_title)) {
+    } else if (/^[0-9]{3}/.test(current.number)) {
       result[1] ? result[1].push(current) : (result[1] = [current]);
-    } else if (/^#[0-9]{2}/.test(current.post_title)) {
+    } else if (/^#[0-9]{2}/.test(current.number)) {
       result[2] ? result[2].push(current) : (result[2] = [current]);
     }
     return result;
@@ -47,7 +48,7 @@ const titleTmpl = (row: PostResponse) =>
   /^Z Dreptusiem/i.test(row.post_title) ? (
     <span className="font-bold text-lg">{row.post_title}</span>
   ) : (
-    row.post_title.replace(/,{0,1}<br>/, ", ")
+    row.post_title.replace(/,? ?<br>/, ", ")
   );
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
@@ -86,6 +87,7 @@ export default function Participants({ trips }: Props) {
             // size={isMd ? "normal" : "small"}
             value={trips}
           >
+            <Column field="number" header="Numer"></Column>
             <Column body={titleTmpl} header="Nazwa Trasy"></Column>
             <Column
               align="center"
