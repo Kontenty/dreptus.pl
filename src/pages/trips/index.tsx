@@ -12,9 +12,11 @@ import { sortTrips } from "lib/utils";
 import css from "src/styles/Trip.module.css";
 
 export const getStaticProps = async () => {
-  const count = await getTripsCount();
-  const locations = await getLocations();
-  const tripsData = await getTripsForMap();
+  const [count, locations, tripsData] = await Promise.all([
+    getTripsCount(),
+    getLocations(),
+    getTripsForMap(),
+  ]);
   const trips = tripsData
     .map((trip) => ({
       ...trip,
