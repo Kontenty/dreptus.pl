@@ -13,6 +13,7 @@ const FullWidthLayout = ({ children }: Props) => {
   const csp = `
     default-src 'self' localhost:* https://wp.xn--dreptu-8ib.pl https://maps.googleapis.com; 
     base-uri 'none';
+    connect-src 'self' https://vitals.vercel-insights.com https://maps.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
     img-src * data: w3.org/svg/2000;
     object-src 'none';
