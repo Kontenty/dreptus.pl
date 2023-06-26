@@ -13,7 +13,6 @@ import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import { addLocale, locale } from "primereact/api";
 import Layout from "components/layout/CommonLayout";
-import { Analytics } from "@vercel/analytics/react";
 import "src/styles/customized-aos.css";
 
 const nunito = Nunito({ subsets: ["latin", "latin-ext"] });
@@ -100,7 +99,6 @@ export default function App({
         <Layout>
           <Component {...pageProps} />;
         </Layout>
-        <Analytics />
       </SWRConfig>
     </SessionProvider>
   );
