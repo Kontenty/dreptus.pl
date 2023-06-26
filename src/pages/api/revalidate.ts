@@ -12,9 +12,8 @@ export default async function handler(
     return res.status(401).json({ message: "Invalid token" });
   }
   if (req.headers.host?.includes("dreptus.vercel.app")) {
-    const response = await fetch(`https://xn--dreptu-8ib.pl${req?.url}`);
-    const data = await response.json();
-    return res.json(data);
+    await fetch(`https://xn--dreptu-8ib.pl${req?.url}`);
+    return res.json({ revalidated: true });
   }
 
   const slug = req.query?.slug;
@@ -50,7 +49,11 @@ export default async function handler(
   } catch (err) {
     // If there was an error, Next.js will continue
     // to show the last successfully generated page
-    log.error("Revalidation error", { error: err });
+    if (err instanceof Error) {
+      log.error("Revalidation error", { name: err.name, error: err.message });
+    } else {
+      log.error("Revalidation error", { error: JSON.stringify(err) });
+    }
     return res.status(500).send("Error revalidating");
   }
 }
