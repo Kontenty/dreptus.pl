@@ -10,21 +10,10 @@ type Props = {
 };
 
 const FullWidthLayout = ({ children }: Props) => {
-  const csp = `
-    default-src 'self' localhost:* https://wp.xn--dreptu-8ib.pl https://maps.googleapis.com; 
-    base-uri 'none';
-    connect-src 'self' https://vitals.vercel-insights.com https://maps.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com;
-    img-src * data: w3.org/svg/2000;
-    object-src 'none';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' localhost:* https://*.vercel-insights.com https://maps.googleapis.com;
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`;
-
   return (
     <>
       <Head>
         <title>Dreptuś</title>
-        <meta content={csp} httpEquiv="Content-Security-Policy" />
         <meta
           content="Dreptuś - Turystyczna Rodzinna Impreza Plenerowa"
           name="description"
