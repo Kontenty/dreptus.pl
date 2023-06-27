@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SWRConfig } from "swr";
 import AOS from "aos";
-import { Nunito } from "@next/font/google";
+import { Nunito } from "next/font/google";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "../styles/globals.css";
