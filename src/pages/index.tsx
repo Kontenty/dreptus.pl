@@ -132,15 +132,22 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
                 nowe, nigdy wcześniej nie publikowane. Z kolei trasy starsze
                 zostały w większości sprawdzone i uaktualnione.
                 <br />
-                Mamy&nbsp;43 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym 4
-                w stopniu żółtym (50 tras),&nbsp;17 “Z Dreptusiem Traktem
-                Królewskim”&nbsp;i&nbsp;4 “Z Dreptusiem po Dolinie Bugu”.
-                Z&nbsp;tras spłynęło {participantsCount} zgłoszeń! Przy
-                przesyłaniu odpowiedzi prosimy korzystać z{" "}
+                Mamy&nbsp;50 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym:
+                <br />
+                <p className="indent-4">
+                  2 w stopniu niebieskim (łącznie co najmniej 160 tras),
+                </p>
+                <p className="indent-4">
+                  7 w stopniu żółtym (łącznie ponad 60 tras),
+                </p>
+                18&nbsp;“Z&nbsp;Dreptusiem Traktem Królewskim”&nbsp;i&nbsp;5 “Z
+                Dreptusiem po Dolinie Bugu”.
+                <br />
+                <strong>Z&nbsp;tras spłynęło {participantsCount}</strong>{" "}
+                zgłoszeń! Przy przesyłaniu odpowiedzi prosimy korzystać z{" "}
                 <Link className={css.link} href="/form">
-                  formularza
-                </Link>{" "}
-                , odznaki czekają:
+                  formularza, odznaki czekają:
+                </Link>
               </p>
               <ol>
                 <li>
@@ -148,7 +155,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
                     className={css.link}
                     href="badges/z-dreptusiem-po-dolinie-bugu"
                   >
-                    1. „Z Dreptusiem po Dolinie Bugu” (dostępna)
+                    1. „Z Dreptusiem po Dolinie Bugu”
                   </Link>
                 </li>
                 <li>
@@ -156,8 +163,8 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
                     className={css.link}
                     href="badges/z-dreptusiem-po-polsce"
                   >
-                    2. „Z Dreptusiem po Polsce” – w stopniu zielonym i żółtym
-                    (dostępna)
+                    2. „Z Dreptusiem po Polsce” – w stopniu zielonym, żółtym i
+                    niebieskim
                   </Link>
                 </li>
                 <li>
@@ -165,7 +172,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
                     className={css.link}
                     href="badges/z-dreptusiem-traktem-krolewskim"
                   >
-                    3. „Z Dreptusiem Traktem Królewskim” (dostępna)
+                    3. „Z Dreptusiem Traktem Królewskim”
                   </Link>
                 </li>
               </ol>
