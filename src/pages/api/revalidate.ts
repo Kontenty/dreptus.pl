@@ -17,9 +17,10 @@ export default async function handler(
   }
 
   const slug = req.query?.slug;
+  const newElement = req.query?.new;
 
   try {
-    if (req.query?.new === "trip") {
+    if (newElement === "trip") {
       const promises = [
         res.revalidate("/"),
         res.revalidate("/news"),
@@ -30,7 +31,7 @@ export default async function handler(
         promises.push(res.revalidate(`/trips/${slug}`));
       }
       await Promise.all(promises);
-    } else if (req.query?.new === "participant") {
+    } else if (newElement === "participant") {
       if (slug) {
         await Promise.all([
           res.revalidate("/participants"),
@@ -39,9 +40,9 @@ export default async function handler(
       } else {
         await res.revalidate("/participants");
       }
-    } else if (req.query?.new === "packet") {
+    } else if (newElement === "packet") {
       await res.revalidate("/news");
-    } else if (req.query?.new === "scorer" && slug) {
+    } else if (newElement === "scorer" && slug) {
       await res.revalidate(`/badges/${slug}`);
     }
 

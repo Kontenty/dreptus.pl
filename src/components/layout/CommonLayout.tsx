@@ -19,7 +19,7 @@ const FullWidthLayout = ({ children }: Props) => {
           name="description"
         />
         <meta content="Konrad Górski" name="author" />
-        <link ref="https://xn--dereptu-8ib.pl" rel="canonical" />
+        <link ref="https://xn--dreptu-8ib.pl" rel="canonical" />
         <link href="/favicon.ico" rel="icon" />
 
         <meta content="pl_PL" property="og:locale" />
@@ -29,7 +29,7 @@ const FullWidthLayout = ({ children }: Props) => {
           content="Dreptuś - Turystyczna Rodzinna Impreza Plenerowa"
           property="og:description"
         />
-        <meta content="https://xn--dereptu-8ib.pl" property="og:url" />
+        <meta content="https://xn--dreptu-8ib.pl" property="og:url" />
       </Head>
       <div
         className="flex flex-col min-h-screen overflow-x-auto pt-[76px] md:pt-[90px]"

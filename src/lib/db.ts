@@ -134,11 +134,6 @@ export const getTripsCount = () =>
     where: { post_type: "listing", post_status: "publish" },
   });
 
-export const getParticipantsPostsList = () =>
-  prisma.$queryRaw<
-    PostResponse[]
-  >`SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE p.post_type = "post" AND p.post_status = "publish" AND m.meta_key = "liczba_uczestnikow" ORDER BY p.post_title;`;
-
 export const getTripsParticipants = () =>
   prisma.$queryRaw<
     {
@@ -146,17 +141,21 @@ export const getTripsParticipants = () =>
       trip_id: number;
       report_date: Date | null;
       pptCount: bigint | null;
+      post_name: string;
       post_title: string;
       number: string;
     }[]
-  >`SELECT tp.id,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) as report_date, COUNT(tp.trip_id) as pptCount  FROM TripParticipant tp
+  >`SELECT tp.id,  tp.trip_id, m.meta_value AS number, p.post_title, p.post_name, MAX(tp.report_date) as report_date, COUNT(tp.trip_id) as pptCount  FROM TripParticipant tp
     JOIN wp_posts p ON p.ID = tp.trip_id
     JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_cth_cus_field_zxr0feyjz'
-    GROUP  BY tp.trip_id ORDER BY p.post_title;`;
+    GROUP  BY tp.trip_id;`;
 
 export const getParticipantSlugs = () =>
-  prisma.tripParticipant.groupBy({
-    by: ["trip_id"],
+  prisma.wp_posts.findMany({
+    select: {
+      post_name: true,
+    },
+    where: { post_type: "listing", post_status: "publish" },
   });
 
 export const getParticipantById = (id: number) =>
@@ -170,6 +169,20 @@ export const getParticipantById = (id: number) =>
         select: {
           post_title: true,
         },
+      },
+    },
+  });
+export const getParticipantBySlug = (slug: string) =>
+  prisma.tripParticipant.findMany({
+    where: {
+      trip: {
+        post_name: slug,
+      },
+    },
+    include: {
+      participant: true,
+      trip: {
+        select: { post_title: true },
       },
     },
   });

@@ -11,6 +11,7 @@ const dummyListEl = {
   id: 0,
   trip_id: 0,
   report_date: null,
+  post_name: "",
   pptCount: null,
   number: "",
 };
@@ -61,7 +62,7 @@ export default function Participants({ trips }: Props) {
     const value = ev.value as Trip;
     if (value.trip_id) {
       setTimeout(() => {
-        router.push(`/participants/${value.trip_id}`);
+        router.push(`/participants/${value.post_name}`);
       }, 300);
     }
   };

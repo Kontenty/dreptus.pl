@@ -1,24 +1,24 @@
 import React from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-
 import {
   GetStaticPaths,
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
-import { getParticipantById, getParticipantSlugs } from "lib/db";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+
+import { getParticipantBySlug, getParticipantSlugs } from "lib/db";
 import MainLayout from "components/layout/MainLayout";
 import { useRouter } from "next/router";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { formatDate } from "lib/utils";
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
-  const tripId = Number(params?.tripId);
-  if (typeof tripId !== "number" || isNaN(tripId)) {
+  const tripName = params?.tripName;
+  if (typeof tripName !== "string" || !tripName) {
     return { notFound: true };
   }
-  const data = await getParticipantById(tripId);
+  const data = await getParticipantBySlug(tripName);
   if (!data || data.length === 0) {
     return { notFound: true };
   }
@@ -38,7 +38,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths: slugs?.length
       ? slugs?.map((slug) => ({
           params: {
-            tripId: `${slug?.trip_id}`,
+            tripName: `${slug?.post_name}`,
           },
         }))
       : [],
@@ -61,7 +61,7 @@ const TripParticipants = ({ data }: Props) => {
   ) : (
     <MainLayout>
       <header>
-        <h2 className="text-xl text-slate-700">Lista uczestników</h2>
+        <h2 className="text-xl text-slate-500">Lista uczestników trasy</h2>
         <h1 className="text-2xl">{cleantitle(data[0].trip.post_title)}</h1>
       </header>
       <DataTable
