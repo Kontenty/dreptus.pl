@@ -39,7 +39,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
             </div>
             <article>
               <h1 className={css.title} data-aos="slide-up">
-                Kim jest Dreptuś?
+                Kim jest <span className="text-bg">Dreptuś?</span>
               </h1>
               <p className="p-justify">
                 Dreptuś to wesoły, przemiły emotikon, który przyszedł na świat w
@@ -110,7 +110,8 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
         <Hr length={18} />
         <section data-aos="fade-up">
           <h2 className={css.title}>
-            Dreptuś zaprasza do wspólnego zwiedzania
+            <span className="text-bg">Dreptuś</span> zaprasza do wspólnego
+            zwiedzania
           </h2>
           <div className="md:flex gap-6">
             <aside
@@ -125,37 +126,35 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
                 Rekreacyjnej Imprezy Plenerowej. Powstała strona internetowa,
                 sukcesywnie przybywa tras.
                 <br />
-                <strong>Obecnie jest ich {tripsCount} 😀</strong>
-                , z czego jedna trzecia w samej Warszawie. Już tylko na terenie
-                4 województw nie ma jeszcze ani jednej trasy, ale pracujemy nad
-                tym, aby ten stan nie potrwał zbyt długo. Większość to trasy
-                nowe, nigdy wcześniej nie publikowane. Z kolei trasy starsze
-                zostały w większości sprawdzone i uaktualnione.
-                <br />
-                Mamy&nbsp;50 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym:
-                <br />
-                <p className="indent-4">
-                  2 w stopniu niebieskim (łącznie co najmniej 160 tras),
-                </p>
-                <p className="indent-4">
-                  7 w stopniu żółtym (łącznie ponad 60 tras),
-                </p>
-                18&nbsp;“Z&nbsp;Dreptusiem Traktem Królewskim”&nbsp;i&nbsp;5 “Z
-                Dreptusiem po Dolinie Bugu”.
-                <br />
+                <strong>Obecnie jest ich {tripsCount} 😀</strong>, z czego jedna
+                trzecia w samej Warszawie. Już tylko na terenie 4 województw nie
+                ma jeszcze ani jednej trasy, ale pracujemy nad tym, aby ten stan
+                nie potrwał zbyt długo. Większość to trasy nowe, nigdy wcześniej
+                nie publikowane. Z kolei trasy starsze zostały w większości
+                sprawdzone i uaktualnione.
+              </p>
+              Mamy&nbsp;50 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym:
+              <ul className="list-disc list-inside ml-6">
+                <li>2 w stopniu niebieskim (łącznie co najmniej 160 tras),</li>
+                <li>7 w stopniu żółtym (łącznie ponad 60 tras),</li>
+              </ul>
+              18&nbsp;“Z&nbsp;Dreptusiem Traktem Królewskim”&nbsp;i&nbsp;5 “Z
+              Dreptusiem po Dolinie Bugu”.
+              <br />
+              <p>
                 <strong>Z&nbsp;tras spłynęło {participantsCount}</strong>{" "}
                 zgłoszeń! Przy przesyłaniu odpowiedzi prosimy korzystać z{" "}
                 <Link className={css.link} href="/form">
                   formularza, odznaki czekają:
                 </Link>
               </p>
-              <ol>
+              <ol className="list-decimal list-inside ml-6">
                 <li>
                   <Link
                     className={css.link}
                     href="badges/z-dreptusiem-po-dolinie-bugu"
                   >
-                    1. „Z Dreptusiem po Dolinie Bugu”
+                    „Z Dreptusiem po Dolinie Bugu”
                   </Link>
                 </li>
                 <li>
@@ -163,7 +162,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
                     className={css.link}
                     href="badges/z-dreptusiem-po-polsce"
                   >
-                    2. „Z Dreptusiem po Polsce” – w stopniu zielonym, żółtym i
+                    „Z Dreptusiem po Polsce” – w stopniu zielonym, żółtym i
                     niebieskim
                   </Link>
                 </li>
@@ -172,7 +171,7 @@ const Home: NextPage<Props> = ({ trips, tripsCount, participantsCount }) => {
                     className={css.link}
                     href="badges/z-dreptusiem-traktem-krolewskim"
                   >
-                    3. „Z Dreptusiem Traktem Królewskim”
+                    „Z Dreptusiem Traktem Królewskim”
                   </Link>
                 </li>
               </ol>

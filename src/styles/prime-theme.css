@@ -861,7 +861,7 @@
   background: transparent;
   transition: box-shadow 0.2s;
   border-radius: 0;
-  font-family: var(--nunito-font), sans-serif;
+  font-family: var(--text-font), sans-serif;
   text-overflow: ellipsis;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {

@@ -51,7 +51,7 @@ const mapElementor = (node: ElementorElement) => {
   if (node?.settings?.title) {
     return (
       <h1
-        className="text-4xl text-center mb-4"
+        className="page-title text-center"
         dangerouslySetInnerHTML={{ __html: node.settings.title }}
         key={node.id}
       ></h1>
@@ -76,11 +76,15 @@ export default function Odznaki({ rulesPageContent, scorersContent }: Props) {
     <Main>
       <TabView>
         <TabPanel header="Regulamin">
-          <article className="pl-4 w-[1000px]">
+          <article className="pl-4 w-[1000px] elementor post-article">
             {rulesPageContent
               ? rulesPageContent?.[0].elements.map((el) => {
                   if (el.settings.title) {
-                    return <h1 key={el.id}>{el.settings.title}</h1>;
+                    return (
+                      <h1 className="page-title" key={el.id}>
+                        {el.settings.title}
+                      </h1>
+                    );
                   }
                   if (el.settings.editor) {
                     return <section key={el.id}>{el.settings.editor}</section>;

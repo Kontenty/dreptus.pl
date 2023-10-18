@@ -15,7 +15,7 @@ export default function StartForm({ trips }: Props) {
       {formSent ? (
         <div className="m-auto">
           <PaperAirplaneIcon className="w-12 h-12 text-brand-green-dark -rotate-45" />
-          <h1 className="text-4xl text-brand-green-dark my-8">
+          <h1 className="page-title my-8">
             Dziękujemy za przesłanie zgłoszenia
           </h1>
           <p>

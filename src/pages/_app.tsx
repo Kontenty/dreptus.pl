@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SWRConfig } from "swr";
 import AOS from "aos";
-import { Nunito } from "next/font/google";
+import { Nunito, Open_Sans } from "next/font/google";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "../styles/globals.css";
@@ -16,6 +16,7 @@ import Layout from "components/layout/CommonLayout";
 import "src/styles/customized-aos.css";
 
 const nunito = Nunito({ subsets: ["latin", "latin-ext"] });
+const openSans = Open_Sans({ subsets: ["latin", "latin-ext"] });
 
 addLocale("pl", {
   accept: "Tak",
@@ -86,7 +87,8 @@ export default function App({
       <style global jsx>
         {`
           :root {
-            --nunito-font: ${nunito.style.fontFamily};
+            --heading-font: ${nunito.style.fontFamily};
+            --text-font: ${openSans.style.fontFamily};
           }
         `}
       </style>

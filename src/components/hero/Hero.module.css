@@ -28,7 +28,7 @@
 }
 
 .banerText:first-letter {
-  color: #ff3a2d;
+  @apply text-accent-dark;
   font-size: 3.25rem;
 }
 .banerText:nth-child(2n) {

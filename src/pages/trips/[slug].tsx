@@ -99,27 +99,27 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
             </div>
             <MainLayout spacing="S">
               <div className="flex items-center pb-2">
-                <div className="flex flex-col px-4 md:px-10 border-r-2 border-teal-800">
+                <div className="flex flex-col px-4 md:px-10 border-r-2 border-brand-green-dark">
                   <h3 className="text-2xl mb-4">{trip.number}</h3>
                   {getIcon(trip.type)}
                 </div>
                 <div className="px-10">
                   <h1
-                    className="text-3xl text-teal-800"
+                    className="text-3xl"
                     dangerouslySetInnerHTML={{ __html: trip.post_title }}
                   ></h1>
                 </div>
               </div>
-              <section className="md:flex md:justify-between items-center border-b-2 border-teal-800 pb-4">
+              <section className="md:flex md:justify-between items-center border-b-2 border-primary-dark pb-4">
                 <div className={css.adnotations}>
                   <span className="text-bolder">Opracowanie trasy</span>
-                  <span className="text-indigo-800">{trip.author}</span>
+                  <span className="text-accent-dark">{trip.author}</span>
                   <span className="text-bolder">Długość trasy</span>
-                  <span className="text-indigo-800">{trip.length}</span>
+                  <span className="text-accent-dark">{trip.length}</span>
                   <span className="text-700">Do odwiedzenia</span>
-                  <span className="text-indigo-800">{trip.pk}</span>
+                  <span className="text-accent-dark">{trip.pk}</span>
                   <span className="text-bolder">Finansowanie</span>
-                  <span className="text-indigo-800">{trip.founding}</span>
+                  <span className="text-accent-dark">{trip.founding}</span>
                 </div>
                 <div className="px-2 pt-2">
                   <button

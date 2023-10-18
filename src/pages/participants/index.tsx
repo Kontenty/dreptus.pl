@@ -72,7 +72,7 @@ export default function Participants({ trips }: Props) {
         data-aos="fade-up"
       >
         <div>
-          <h2 className="text-3xl">Lista uczestników tras</h2>
+          <h1 className="page-title">Lista uczestników tras</h1>
           <DataTable
             className="min-w-[450px]"
             currentPageReportTemplate="{first} do {last} z {totalRecords}"

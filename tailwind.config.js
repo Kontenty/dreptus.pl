@@ -9,18 +9,29 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        accent: {
+          light: "#ffe8e6",
+          dark: "#ed422b",
+        },
+        primary: {
+          dark: "#0E2B2F",
+          light: "#97C44B",
+        },
         brand: {
-          text: "#344979",
+          text: "#566A6D",
           brown: "#784940",
           primary: "#4168C4",
+          accent: "#D89365",
           green: {
-            dark: "#5A7828",
+            dark: "#0E2B2F",
             light: "#97C44B",
           },
         },
       },
       fontFamily: {
-        sans: ["var(--nunito-font)", ...fontFamily.sans],
+        sans: ["var(--text-font)", ...fontFamily.sans],
+        body: ["var(--text-font)", ...fontFamily.sans],
+        heading: ["var(--text-font)", ...fontFamily.sans],
       },
     },
     plugins: [],
