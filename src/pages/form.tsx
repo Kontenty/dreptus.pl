@@ -8,7 +8,7 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 interface Props {
   trips: { value: string; label: string }[];
 }
-export default function StartForm({ trips }: Props) {
+export default function StartForm({ trips }: Readonly<Props>) {
   const [formSent, setFormSent] = useState(false);
   return (
     <Main>

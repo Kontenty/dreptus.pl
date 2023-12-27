@@ -42,9 +42,10 @@ const AdminPage: NextPage<Props> = ({ tripsParticipants }) => {
       <div>
         <h2 className="text-2xl mb-2">Zarządzaj uczestnikami</h2>
         <div className="flex flex-col mb-4 w-[600px]">
-          <label>Trasa</label>
+          <label htmlFor="trip-select">Trasa</label>
           <Dropdown
             filter
+            id="trip-select"
             onChange={(e) => setSelectedTripId(e.value)}
             options={tripsParticipants}
             placeholder="Wybierz trasę"

@@ -85,6 +85,12 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
     }, 200);
   };
 
+  const handleImgClick = (id: number) => {
+    setSelectedImage(id);
+    setCurrentImageSet(trip.images);
+    setIsFullGallery(false);
+  };
+
   return (
     <GoogleProvider>
       <div>
@@ -112,20 +118,23 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
               </div>
               <section className="md:flex md:justify-between items-center border-b-2 border-primary-dark pb-4">
                 <div className={css.adnotations}>
+                  <i className="pi pi-user"></i>
                   <span className="text-bolder">Opracowanie trasy</span>
-                  <span className="text-accent-dark">{trip.author}</span>
+                  <span className="text-brand-primary">{trip.author}</span>
+                  <i className="pi pi-arrows-h"></i>
                   <span className="text-bolder">Długość trasy</span>
-                  <span className="text-accent-dark">{trip.length}</span>
+                  <span className="text-brand-primary">{trip.length}</span>
+                  <i className="pi pi-sort-numeric-up"></i>
                   <span className="text-700">Do odwiedzenia</span>
-                  <span className="text-accent-dark">{trip.pk}</span>
+                  <span className="text-brand-primary">{trip.pk}</span>
+                  <i className="pi pi-dollar"></i>
                   <span className="text-bolder">Finansowanie</span>
-                  <span className="text-accent-dark">{trip.founding}</span>
+                  <span className="text-brand-primary">{trip.founding}</span>
                 </div>
                 <div className="px-2 pt-2">
                   <button
                     className="flex justify-center items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-2 md:py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
                     onClick={() => handleDownload(trip.pdf)}
-                    role="button"
                   >
                     <span>Pobierz&nbsp;mapę</span>
                     <MapIcon className="w-6 h-6" />
@@ -145,26 +154,21 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                 >
                   {trip.images.map((img, i) => (
                     <div className="px-2" key={img.guid + "div"}>
-                      <div
-                        className={css.imgBox}
-                        onClick={() => {
-                          setSelectedImage(i);
-                          setCurrentImageSet(trip.images);
-                          setIsFullGallery(false);
-                        }}
-                      >
-                        <Image
-                          alt="trip photo"
-                          className={css.img}
-                          height={200}
-                          src={img.guid}
-                          unoptimized
-                          width={300}
-                        />
-                        <div className={css.imgOverlay}>
-                          <EyeIcon className={css.imgIcon} />
+                      <button onClick={() => handleImgClick(i)}>
+                        <div className={css.imgBox}>
+                          <Image
+                            alt="trip photo"
+                            className={css.img}
+                            height={200}
+                            src={img.guid}
+                            unoptimized
+                            width={300}
+                          />
+                          <div className={css.imgOverlay}>
+                            <EyeIcon className={css.imgIcon} />
+                          </div>
                         </div>
-                      </div>
+                      </button>
                     </div>
                   ))}
                 </Slider>
@@ -183,8 +187,7 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                 </div>
                 <aside className="md:w-1/3 relative flex flex-col gap-1">
                   {trip.pdfImages.map((pdf, i) => (
-                    <div
-                      className="relative hover:scale-110 hover:z-10 transition-all duration-500 cursor-pointer"
+                    <button
                       key={pdf.post_title}
                       onClick={() => {
                         setSelectedImage(i);
@@ -192,20 +195,22 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
                         setIsFullGallery(true);
                       }}
                     >
-                      <Image
-                        alt={pdf.post_title}
-                        height={400}
-                        key={pdf.post_title}
-                        src={pdf.guid}
-                        style={{
-                          objectFit: "contain",
-                          width: "100%",
-                          height: "auto",
-                        }}
-                        unoptimized
-                        width={400}
-                      />
-                    </div>
+                      <div className="relative hover:scale-110 hover:z-10 transition-all duration-500 cursor-pointer">
+                        <Image
+                          alt={pdf.post_title}
+                          height={400}
+                          key={pdf.post_title}
+                          src={pdf.guid}
+                          style={{
+                            objectFit: "contain",
+                            width: "100%",
+                            height: "auto",
+                          }}
+                          unoptimized
+                          width={400}
+                        />
+                      </div>
+                    </button>
                   ))}
                 </aside>
               </section>
@@ -259,7 +264,7 @@ const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({
     </GoogleProvider>
   );
 };
-export default function TripDetailsPage(props: Props) {
+export default function TripDetailsPage(props: Readonly<Props>) {
   return (
     <GoogleProvider>
       <GoogleContext.Consumer>
