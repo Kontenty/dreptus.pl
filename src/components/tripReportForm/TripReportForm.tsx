@@ -26,7 +26,7 @@ interface Props {
   trips: { value: string; label: string }[];
   onSuccess: () => void;
 }
-export default function TripReportForm({ trips, onSuccess }: Props) {
+export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
   const msg = useRef<Messages>(null);
   useMountEffect(() => {
     if (msg?.current) {
@@ -48,6 +48,9 @@ export default function TripReportForm({ trips, onSuccess }: Props) {
       <div className="w-full">
         <Messages ref={msg} />
       </div>
+      <h2 className="text-4xl mb-6 text-brand-green-dark">
+        Formularz zgłoszenia
+      </h2>
       <Formik
         initialValues={{
           trip: "",

@@ -33,7 +33,7 @@ const links = [
       },
     ],
   },
-  { name: "Karta startowa", link: "/form", as: "/karta-startowa" },
+  { name: "Formularz", link: "/form", as: "/formularz" },
   { name: "Kontakt", link: "/contact", as: "/kontakt" },
 ];
 
