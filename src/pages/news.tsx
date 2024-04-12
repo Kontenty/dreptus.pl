@@ -103,7 +103,7 @@ const NewsPage: NextPage<Props> = ({ posts, packets }) => {
               długopis lub coś na słodko (wg życzenia uczestnika). Pakiety można
               zamawiać pisząc na adres trip.poczta(małpka)onet.pl, a odbierać
               np. podczas kolejnych TRIP z Dreptusiem lub osobiście, po
-              wcześniejszym uzgodnieniu z organizatorem. Koszt pakietu to 10 zł,
+              wcześniejszym uzgodnieniu z organizatorem. Koszt pakietu to 12 zł,
               najlepiej płatne na konto (mBank 18 1140 2004 0000 3502 8088
               6768), z dopiskiem „pakiet startowy” i podaniem numeru trasy.
               Proponowane trasy znajdziecie poniżej. Oczywiście liczba
