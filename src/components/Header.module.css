@@ -4,7 +4,7 @@
   width: 100%;
   display: flex;
   font-family: var(--heading-font);
-  @apply h-[76px] md:h-[90px] justify-between md:justify-start md:gap-12 px-2 md:px-5 bg-brand-green-dark text-white;
+  @apply h-[52px] md:h-[90px] justify-between md:justify-start md:gap-12 px-2 md:px-5 bg-brand-green-dark text-white;
   z-index: 2;
 }
 
@@ -23,7 +23,7 @@
 
 @media screen and (max-width: 768px) {
   .nav {
-    @apply absolute mx-auto left-0 right-0 p-4;
+    @apply absolute bg-primary-dark mx-auto left-0 right-0 p-4;
     padding-left: 130px;
   }
   .navHidden {

@@ -32,7 +32,7 @@ const FullWidthLayout = ({ children }: Props) => {
         <meta content="https://xn--dereptu-8ib.pl" property="og:url" />
       </Head>
       <div
-        className="flex flex-col min-h-screen overflow-x-auto pt-[76px] md:pt-[90px]"
+        className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
         id="root"
       >
         <Header />

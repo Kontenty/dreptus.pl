@@ -132,8 +132,14 @@ const Header = () => {
           ></i>
         </Link>
       </div>
-      <div className="block md:hidden pt-4 pr-2 ml-auto">
-        <Button className="p-button-sm" icon="pi pi-bars" onClick={toggleNav} />
+      <div className="block md:hidden ml-auto self-center">
+        <Button
+          className="bg-white p-button-sm "
+          icon={`pi pi-${showNav ? "times" : "bars"}`}
+          onClick={toggleNav}
+          outlined
+          severity="success"
+        />
       </div>
     </header>
   );
