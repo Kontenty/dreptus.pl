@@ -28,7 +28,7 @@ interface Props extends GoogleMapProps {
   };
 }
 
-const Map = ({
+const MapComponent = ({
   center = defaultCenter,
   containerStyle = defaultContainerStyle,
   zoom = 10,
@@ -36,7 +36,7 @@ const Map = ({
   children,
 }: Props) => {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY ?? "",
   });
   function markerRender() {
     const icon = marker?.icon ?? "/image/icons/footman-circle.svg";
@@ -58,7 +58,7 @@ const Map = ({
         disableDefaultUI: true,
         fullscreenControl: true,
         zoomControl: true,
-        mapTypeId: "terrain",
+        mapTypeId: "roadmap",
       }}
       zoom={zoom}
     >
@@ -73,4 +73,4 @@ const Map = ({
     </div>
   );
 };
-export default React.memo(Map);
+export default React.memo(MapComponent);
