@@ -14,7 +14,7 @@ export const GoogleProvider = ({ children }: Props) => {
   useEffect(() => {
     const loadGoogle = async () => {
       const loader = new Loader({
-        apiKey: "AIzaSyB1XwgwHr9tgBinodv48WPifH4euSOn9CA",
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY ?? "",
         version: "weekly",
         libraries: ["marker", "geometry"],
       });
