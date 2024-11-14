@@ -2,10 +2,10 @@ import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import { DataTable, DataTableSelectionChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
-import Main from "components/layout/MainLayout";
-import { getTripsParticipants } from "lib/db";
-import { formatDate, sortTrips } from "lib/utils";
-import { PostResponse } from "src/types";
+import Main from "@/components/layout/MainLayout";
+import { getTripsParticipants } from "@/lib/db";
+import { formatDate, sortTrips } from "@/lib/utils";
+import { PostResponse } from "@/types";
 
 const dummyListEl = {
   id: 0,

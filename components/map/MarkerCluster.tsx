@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MarkerClusterer as gMarkerclusterer } from "@googlemaps/markerclusterer";
-import { GmapContext } from "context";
-import { getIconUrl } from "lib/utils";
-import { TripFormMap } from "src/types";
+import { GmapContext } from "@/lib/context";
+import { getIconUrl } from "@/lib/utils";
+import { TripFormMap } from "@/types";
 
 interface Props {
   locations: TripFormMap[];

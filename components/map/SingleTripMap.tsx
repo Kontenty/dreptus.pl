@@ -1,5 +1,5 @@
-import { getIconUrl } from "lib/utils";
-import { TripDetails } from "src/types";
+import { getIconUrl } from "@/lib/utils";
+import { TripDetails } from "@/types";
 import Map from "./Map";
 import Marker from "./Marker";
 

@@ -3,11 +3,11 @@ import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
-import ParticipantsOnTrip from "components/admin/ParticipantsOnTrip";
-import AddParticipantOnTrip from "components/admin/AddParticipantOnTrip";
-import { getTrips } from "lib/db";
-import { sortTrips } from "lib/utils";
-import Main from "components/layout/MainLayout";
+import ParticipantsOnTrip from "@/components/admin/ParticipantsOnTrip";
+import AddParticipantOnTrip from "@/components/admin/AddParticipantOnTrip";
+import { getTrips } from "@/lib/db";
+import { sortTrips } from "@/lib/utils";
+import Main from "@/components/layout/MainLayout";
 
 type Props = {
   tripsParticipants: {

@@ -1,7 +1,7 @@
 import { EyeIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { TripFormMap } from "src/types";
+import { TripFormMap } from "@/types";
 import css from "./Map.module.css";
 
 interface PopupProps {

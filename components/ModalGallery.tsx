@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Slider from "react-slick";
-import SlickArrow from "components/SlickArrow";
+import SlickArrow from "@/components/SlickArrow";
 import css from "./ModalGallery.module.css";
 
 const ModalGallery = ({

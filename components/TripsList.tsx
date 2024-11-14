@@ -2,8 +2,8 @@ import React from "react";
 import { useRouter } from "next/router";
 import { DataTable, DataTableSelectionChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { TripFormMap } from "src/types";
-import { getIcon, useMediaQuery } from "lib/index";
+import { TripFormMap } from "@/types";
+import { getIcon, useMediaQuery } from "@/lib/index";
 
 type Props = {
   trips: TripFormMap[];

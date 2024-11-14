@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Formik } from "formik";
-import FormikInput from "components/FormikInput";
+import FormikInput from "@/components/FormikInput";
 import { Button } from "primereact/button";
 
 type FField = {

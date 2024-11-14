@@ -1,4 +1,5 @@
-import { CyclistPinIcon, FootmanPinIcon } from "components/icons";
+import { JSX } from "react";
+import { CyclistPinIcon, FootmanPinIcon } from "@/components/icons";
 import { activityCode } from "./data";
 
 type Props = {
@@ -28,8 +29,8 @@ export const sortTrips = (
   if (typeof a.number !== "string" || typeof b.number !== "string") {
     return 0;
   }
-  const is1Hash = a.number.charAt(0) === "#";
-  const is2Hash = b.number.charAt(0) === "#";
+  const is1Hash = a.number.startsWith("#");
+  const is2Hash = b.number.startsWith("#");
   if (is1Hash && is2Hash) {
     return Number(a.number.replace("#", "")) < Number(b.number.replace("#", ""))
       ? -1

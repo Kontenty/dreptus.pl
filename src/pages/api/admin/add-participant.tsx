@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 
-import prismaClient from "src/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import * as Yup from "yup";
 
 const schema = Yup.object({
@@ -33,23 +33,23 @@ export default async function handler(
   try {
     await schema.validate(req.body);
   } catch (error) {
-    return res.status(406).send("Inapriopriate data");
+    return res.status(406).send("Inappropriate data");
   }
 
   try {
     const body = req.body as Body;
     const { name, origin } = body;
     const user =
-      (await prismaClient.participant.findFirst({
+      (await prisma.participant.findFirst({
         where: { name, origin },
       })) ??
-      (await prismaClient.participant.create({
+      (await prisma.participant.create({
         data: {
           name,
           origin,
         },
       }));
-    const newPptOnTrip = await prismaClient.tripParticipant.create({
+    const newPptOnTrip = await prisma.tripParticipant.create({
       data: {
         participant_id: user.id,
         report_date: body.date,

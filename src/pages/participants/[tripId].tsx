@@ -7,11 +7,11 @@ import {
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next";
-import { getParticipantById, getParticipantSlugs } from "lib/db";
-import MainLayout from "components/layout/MainLayout";
+import { getParticipantById, getParticipantSlugs } from "@/lib/db";
+import MainLayout from "@/components/layout/MainLayout";
 import { useRouter } from "next/router";
 import { ProgressSpinner } from "primereact/progressspinner";
-import { formatDate } from "lib/utils";
+import { formatDate } from "@/lib/utils";
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const tripId = Number(params?.tripId);

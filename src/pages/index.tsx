@@ -1,15 +1,15 @@
 import type { InferGetStaticPropsType, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import DCarousel from "components/carousel/DreptusCarousel";
-import Main from "components/layout/MainLayout";
-import Hr from "components/hr";
+import DCarousel from "@/components/carousel/DreptusCarousel";
+import Main from "@/components/layout/MainLayout";
+import Hr from "@/components/hr";
 import css from "../styles/Home.module.css";
 import trip from "public/image/trip.jpg";
 import odznaki from "public/image/odznaki.jpg";
-import { getTrips, getTripsCount } from "lib/db";
-import prisma from "lib/prisma";
-import Hero from "components/hero";
+import { getTrips, getTripsCount } from "@/lib/db";
+import prisma from "@/lib/prisma";
+import Hero from "@/components/hero";
 
 export const getStaticProps = async () => {
   const trips = await getTrips(10);

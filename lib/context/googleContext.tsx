@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
-import { GoogleMapsT } from "../types";
+import { GoogleMapsT } from "../../src/types";
 
 export const GoogleContext = createContext<{ googlemaps: GoogleMapsT | null }>({
   googlemaps: null,

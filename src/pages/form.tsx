@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-import Main from "components/layout/MainLayout";
-import TripReportForm from "components/tripReportForm";
-import { getTrips } from "lib/db";
-import { sortTrips } from "lib/utils";
+import Main from "@/components/layout/MainLayout";
+import TripReportForm from "@/components/tripReportForm";
+import { getTrips } from "@/lib/db";
+import { sortTrips } from "@/lib/utils";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 interface Props {
   trips: { value: string; label: string }[];

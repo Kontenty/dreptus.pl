@@ -1,9 +1,9 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
-import { config } from "src/lib/config";
-import prisma from "lib/prisma";
-import { getAdmins } from "lib/db";
+import { config } from "@/lib/config";
+import prisma from "@/lib/prisma";
+import { getAdmins } from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,

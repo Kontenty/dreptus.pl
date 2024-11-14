@@ -8,7 +8,7 @@ import { useMountEffect } from "primereact/hooks";
 import * as Yup from "yup";
 import cl from "classnames";
 
-import FormikInput from "components/FormikInput";
+import FormikInput from "@/components/FormikInput";
 
 type FField = {
   name: string;

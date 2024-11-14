@@ -4,8 +4,8 @@ import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
 import { Accordion, AccordionTab } from "primereact/accordion";
 
-import Main from "components/layout/MainLayout";
-import { getPage, getPostsWithThumb } from "lib/db";
+import Main from "@/components/layout/MainLayout";
+import { getPage, getPostsWithThumb } from "@/lib/db";
 import css from "styles/News.module.css";
 import packImg from "public/image/pakiety-startowe2.jpg";
 

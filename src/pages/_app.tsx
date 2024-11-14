@@ -12,7 +12,7 @@ export { reportWebVitals } from "next-axiom";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import { addLocale, locale } from "primereact/api";
-import Layout from "components/layout/CommonLayout";
+import Layout from "@/components/layout/CommonLayout";
 import "src/styles/customized-aos.css";
 
 const nunito = Nunito({ subsets: ["latin", "latin-ext"] });

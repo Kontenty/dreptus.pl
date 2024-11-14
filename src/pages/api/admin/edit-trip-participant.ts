@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 
-import prismaClient from "src/lib/prisma";
+import prismaClient from "@/lib/prisma";
 import * as Yup from "yup";
 
 const schema = Yup.object({

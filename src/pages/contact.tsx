@@ -3,7 +3,7 @@ import {
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
-import Main from "components/layout/MainLayout";
+import Main from "@/components/layout/MainLayout";
 
 export default function Contact() {
   return (

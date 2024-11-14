@@ -7,15 +7,15 @@ import Slider from "react-slick";
 import { EyeIcon, MapIcon } from "@heroicons/react/24/outline";
 import { ProgressSpinner } from "primereact/progressspinner";
 
-import { GoogleContext, GoogleProvider } from "context";
-import { SingleTripMap } from "components/map/SingleTripMap";
-import type { TripDetails } from "src/types";
-import { getIcon } from "lib/utils";
-import { getTripBySlug, getTripsForMap, getTripSlugs } from "lib/db";
+import { GoogleContext, GoogleProvider } from "@/lib/context";
+import { SingleTripMap } from "@/components/map/SingleTripMap";
+import type { TripDetails } from "@/types";
+import { getIcon } from "@/lib/utils";
+import { getTripBySlug, getTripsForMap, getTripSlugs } from "@/lib/db";
 import css from "styles/Trip.module.css";
-import MainLayout from "components/layout/MainLayout";
-import SlickArrow from "components/SlickArrow";
-import ModalGallery from "components/ModalGallery";
+import MainLayout from "@/components/layout/MainLayout";
+import SlickArrow from "@/components/SlickArrow";
+import ModalGallery from "@/components/ModalGallery";
 
 import type { TripsForMap } from "./index";
 

@@ -1,9 +1,9 @@
 import { GetStaticPaths, GetStaticPropsContext } from "next";
 import { TabPanel, TabView } from "primereact/tabview";
 
-import Main from "components/layout/MainLayout";
-import { getElementorPage, getPage } from "lib/db";
-import { ElementorData, ElementorElement, PostResponse } from "src/types";
+import Main from "@/components/layout/MainLayout";
+import { getElementorPage, getPage } from "@/lib/db";
+import { ElementorData, ElementorElement, PostResponse } from "@/types";
 
 const dict: Record<string, { rules: number; scorers: number }> = {
   "z-dreptusiem-po-polsce": { rules: 11620, scorers: 21255 },

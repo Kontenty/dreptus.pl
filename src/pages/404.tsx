@@ -1,4 +1,4 @@
-import MainLayout from "components/layout/MainLayout";
+import MainLayout from "@/components/layout/MainLayout";
 import Link from "next/link";
 
 export default function FourOhFour() {

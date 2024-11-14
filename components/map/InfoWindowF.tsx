@@ -11,7 +11,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
-import { GmapContext } from "context";
+import { GmapContext } from "@/lib/context";
 
 export interface InfoWindowProps {
   children?: ReactNode | undefined;

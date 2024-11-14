@@ -2,8 +2,8 @@
 import Head from "next/head";
 import type { ReactNode } from "react";
 import { ScrollTop } from "primereact/scrolltop";
-import Header from "components/Header";
-import Footer from "components/Footer";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 type Props = {
   children: ReactNode;

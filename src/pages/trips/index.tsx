@@ -1,15 +1,15 @@
 import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { GoogleProvider } from "context";
 
-import TripListFilter from "components/TripListFilter";
-import { getLocations, getTripsCount, getTripsForMap } from "lib/db";
-import TripsList from "components/TripsList";
-import { TripsMap } from "components/map/TripsMap";
-import { locationsList } from "lib/data";
-import { sortTrips } from "lib/utils";
-import css from "src/styles/Trip.module.css";
+import TripListFilter from "@/components/TripListFilter";
+import { GoogleProvider } from "@/lib/context";
+import { getLocations, getTripsCount, getTripsForMap } from "@/lib/db";
+import TripsList from "@/components/TripsList";
+import { TripsMap } from "@/components/map/TripsMap";
+import { locationsList } from "@/lib/data";
+import { sortTrips } from "@/lib/utils";
+import css from "@/styles/Trip.module.css";
 
 export const getStaticProps = async () => {
   const [count, locations, tripsData] = await Promise.all([

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from "nodemailer";
 import * as Yup from "yup";
-import { config } from "src/lib/config";
+import { config } from "@/lib/config";
 
 const schema = Yup.object({
   fullName: Yup.string().min(4, "Min 4 znaki").required("Pole jest wymagane"),
