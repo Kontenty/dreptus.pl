@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import cl from "classnames";
 
-import logo from "public/image/logo200.png";
+import logo from "@/public/image/logo200.png";
 import css from "./Header.module.css";
 
 const links = [

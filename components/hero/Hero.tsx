@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import css from "./Hero.module.css";
-import familyImg from "public/image/main-page/family.png";
-import familyCyclingImg from "public/image/main-page/family-cycling.png";
-import coverImg from "public/image/main-page/landscape.jpg";
+import familyImg from "@/public/image/main-page/family.png";
+import familyCyclingImg from "@/public/image/main-page/family-cycling.png";
+import coverImg from "@/public/image/main-page/landscape.jpg";
 import HeroCarousel from "@/components/carousel/HeroCarousel";
 
 const Hero = () => {

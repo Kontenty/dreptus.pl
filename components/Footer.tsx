@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import css from "./Footer.module.css";
-import footerImg from "public/image/footer-bg.jpg";
+import footerImg from "@/public/image/footer-bg.jpg";
 
 const Footer = () => {
   return (

@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Slider, { Settings } from "react-slick";
 
-import crs0 from "public/image/main-page/crs-0.png";
-import crs1 from "public/image/main-page/crs-1.jpg";
-import crs2 from "public/image/main-page/crs-2.jpg";
-import crs3 from "public/image/main-page/crs-3.jpg";
-import crs4 from "public/image/main-page/crs-4.jpg";
+import crs0 from "@/public/image/main-page/crs-0.png";
+import crs1 from "@/public/image/main-page/crs-1.jpg";
+import crs2 from "@/public/image/main-page/crs-2.jpg";
+import crs3 from "@/public/image/main-page/crs-3.jpg";
+import crs4 from "@/public/image/main-page/crs-4.jpg";
 
 const settings: Settings = {
   dots: false,

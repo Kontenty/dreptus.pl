@@ -7,7 +7,7 @@ import { Accordion, AccordionTab } from "primereact/accordion";
 import Main from "@/components/layout/MainLayout";
 import { getPage, getPostsWithThumb } from "@/lib/db";
 import css from "styles/News.module.css";
-import packImg from "public/image/pakiety-startowe2.jpg";
+import packImg from "@/public/image/pakiety-startowe2.jpg";
 
 export const getStaticProps = async () => {
   const postsData = await getPostsWithThumb(6);

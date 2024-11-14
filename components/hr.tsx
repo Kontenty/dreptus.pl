@@ -1,5 +1,5 @@
 import Image from "next/image";
-import foot from "public/image/foot-print.png";
+import foot from "@/public/image/foot-print.png";
 
 type Props = {
   length?: number;

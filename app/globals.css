@@ -1,7 +1,7 @@
+@import "slick-carousel/slick/slick.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import "slick-carousel/slick/slick.css"; */
 
 html {
   font-size: 15px;

@@ -1,14 +1,15 @@
+"use client";
 import Image from "next/image";
 import Slider, { Settings } from "react-slick";
-import img1 from "public/image/carousel/dreptus-ver-1.jpg";
-import img2 from "public/image/carousel/dreptus-ver-2.jpg";
-import img3 from "public/image/carousel/dreptus-ver-3.jpg";
-import img4 from "public/image/carousel/dreptus-ver-4.jpg";
-import img5 from "public/image/carousel/dreptus-ver-5.jpg";
-import img6 from "public/image/carousel/dreptus-ver-6.jpg";
-import img7 from "public/image/carousel/dreptus-ver-7.jpg";
-import img8 from "public/image/carousel/dreptus-ver-8.jpg";
-import img9 from "public/image/carousel/dreptus-ver-9.jpg";
+import img1 from "@/public/image/carousel/dreptus-ver-1.jpg";
+import img2 from "@/public/image/carousel/dreptus-ver-2.jpg";
+import img3 from "@/public/image/carousel/dreptus-ver-3.jpg";
+import img4 from "@/public/image/carousel/dreptus-ver-4.jpg";
+import img5 from "@/public/image/carousel/dreptus-ver-5.jpg";
+import img6 from "@/public/image/carousel/dreptus-ver-6.jpg";
+import img7 from "@/public/image/carousel/dreptus-ver-7.jpg";
+import img8 from "@/public/image/carousel/dreptus-ver-8.jpg";
+import img9 from "@/public/image/carousel/dreptus-ver-9.jpg";
 
 type Props = { width?: number };
 
