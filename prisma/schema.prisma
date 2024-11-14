@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Participant {
-  id               Int      @id @default(autoincrement())
+  id               Int               @id @default(autoincrement())
   name             String
   origin           String
   trip_participant TripParticipant[]
@@ -18,11 +18,11 @@ model Participant {
 }
 
 model TripParticipant {
-  id             Int      @id @default(autoincrement())
+  id             Int         @id @default(autoincrement())
   participant_id Int
   trip_id        Int
   answers        String
-  report_date    DateTime @default(now())
+  report_date    DateTime    @default(now())
   participant    Participant @relation(fields: [participant_id], references: [id])
   trip           wp_posts    @relation(fields: [trip_id], references: [ID])
 }
@@ -319,29 +319,29 @@ model wp_postmeta {
 }
 
 model wp_posts {
-  ID                    Int           @id @default(autoincrement())
-  post_author           Int           @default(0)
-  post_date             DateTime      @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
-  post_date_gmt         DateTime      @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
-  post_content          String        @db.LongText
-  post_title            String        @db.Text
-  post_excerpt          String        @db.Text
-  post_status           String        @default("publish") @db.VarChar(20)
-  comment_status        String        @default("open") @db.VarChar(20)
-  ping_status           String        @default("open") @db.VarChar(20)
-  post_password         String        @default("") @db.VarChar(255)
-  post_name             String        @default("") @db.VarChar(200)
-  to_ping               String        @db.Text
-  pinged                String        @db.Text
-  post_modified         DateTime      @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
-  post_modified_gmt     DateTime      @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
-  post_content_filtered String        @db.LongText
-  post_parent           Int           @default(0)
-  guid                  String        @default("") @db.VarChar(255)
-  menu_order            Int           @default(0)
-  post_type             String        @default("post") @db.VarChar(20)
-  post_mime_type        String        @default("") @db.VarChar(100)
-  comment_count         Int           @default(0)
+  ID                    Int               @id @default(autoincrement())
+  post_author           Int               @default(0)
+  post_date             DateTime          @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  post_date_gmt         DateTime          @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  post_content          String            @db.LongText
+  post_title            String            @db.Text
+  post_excerpt          String            @db.Text
+  post_status           String            @default("publish") @db.VarChar(20)
+  comment_status        String            @default("open") @db.VarChar(20)
+  ping_status           String            @default("open") @db.VarChar(20)
+  post_password         String            @default("") @db.VarChar(255)
+  post_name             String            @default("") @db.VarChar(200)
+  to_ping               String            @db.Text
+  pinged                String            @db.Text
+  post_modified         DateTime          @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  post_modified_gmt     DateTime          @default(dbgenerated("('0000-00-00 00:00:00')")) @db.DateTime(0)
+  post_content_filtered String            @db.LongText
+  post_parent           Int               @default(0)
+  guid                  String            @default("") @db.VarChar(255)
+  menu_order            Int               @default(0)
+  post_type             String            @default("post") @db.VarChar(20)
+  post_mime_type        String            @default("") @db.VarChar(100)
+  comment_count         Int               @default(0)
   wp_postmeta           wp_postmeta[]
   trip_participant      TripParticipant[]
 
