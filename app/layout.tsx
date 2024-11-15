@@ -1,4 +1,18 @@
-import "./globals.css";
+import Header from "@/components/Header";
+import "./global.css";
+import { Nunito, Open_Sans } from "next/font/google";
+import Footer from "@/components/Footer";
+
+const nunito = Nunito({
+  subsets: ["latin", "latin-ext"],
+  variable: "--heading-font",
+  display: "swap",
+});
+const openSans = Open_Sans({
+  subsets: ["latin", "latin-ext"],
+  variable: "--text-font",
+  display: "swap",
+});
 
 interface Props {
   children: React.ReactNode;
@@ -6,7 +20,7 @@ interface Props {
 
 export default function Layout({ children }: Readonly<Props>) {
   return (
-    <html lang="pl">
+    <html lang="pl" className={`${nunito.variable} ${openSans.variable}`}>
       <head>
         <title>Dreptuś</title>
         <meta
@@ -31,9 +45,9 @@ export default function Layout({ children }: Readonly<Props>) {
           className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
           id="root"
         >
-          {/* <Header /> */}
+          <Header />
           <div className="flex flex-col flex-grow">{children}</div>
-          {/* <Footer /> */}
+          <Footer />
         </div>
       </body>
     </html>
