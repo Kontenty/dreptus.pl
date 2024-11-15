@@ -1,14 +1,15 @@
+"use client";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+// import { signOut, useSession } from "next-auth/react";
 import { Button } from "primereact/button";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import cl from "classnames";
 
 import logo from "@/public/image/logo200.png";
 import css from "./Header.module.css";
+import { usePathname } from "next/navigation";
 
 const links = [
   { name: "Strona główna", link: "/" },
@@ -38,8 +39,8 @@ const links = [
 ];
 
 const Header = () => {
-  const router = useRouter();
-  const { status } = useSession();
+  const pathname = usePathname();
+  // const { status } = useSession();
 
   const [showNav, setShowNav] = useState(false);
   const toggleNav = () => {
@@ -47,10 +48,10 @@ const Header = () => {
   };
   const hideNav = () => setShowNav(false);
   const getLinkClass = (link?: string, defaultClass = css.link) => {
-    if (router.pathname === link) {
+    if (pathname === link) {
       return css.activeLink;
     }
-    if (router.pathname.includes(link + "/")) {
+    if (pathname?.includes(link + "/")) {
       return css.activeLink;
     }
     return defaultClass;
@@ -116,14 +117,14 @@ const Header = () => {
         })}
       </nav>
       <div className="ml-auto center-hv gap-4">
-        {status === "authenticated" && (
+        {/* {status === "authenticated" && (
           <button
             className="border-white border py-2 px-4 rounded-md text-slate-300 hover:text-slate-50 transition-colors"
             onClick={() => signOut()}
           >
             Wyloguj się
           </button>
-        )}
+        )} */}
 
         <Link href="https://www.facebook.com/trip.wycieczki">
           <i
