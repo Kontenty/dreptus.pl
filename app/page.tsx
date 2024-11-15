@@ -36,7 +36,7 @@ const query = graphql(`
 `);
 
 export default async function Home() {
-  const { data } = await getClient().query(query, {});
+  const { data } = await getClient().query(query, { limit: 10 });
   const trips = data?.trips;
   return (
     <>

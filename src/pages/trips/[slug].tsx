@@ -1,3 +1,4 @@
+"use client";
 import React, { useMemo, useState } from "react";
 import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
