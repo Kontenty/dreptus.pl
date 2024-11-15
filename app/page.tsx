@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { cacheExchange, createClient, fetchExchange } from "@urql/core";
-import { registerUrql } from "@urql/next/rsc";
 import css from "./style.module.css";
 import odznaki from "./odznaki.jpg";
 import Link from "next/link";
@@ -10,15 +8,8 @@ import Main from "@/components/Main";
 import Hr from "@/components/hr";
 import trip from "@/public/image/trip.jpg";
 import DreptusCarousel from "@/components/carousel/DreptusCarousel";
+import { ssrClient } from "@/lib/graphql/urqlClient";
 
-const makeClient = () => {
-  return createClient({
-    url: "http://localhost:3000/api/graphql",
-    exchanges: [cacheExchange, fetchExchange],
-  });
-};
-
-const { getClient } = registerUrql(makeClient);
 const query = graphql(`
   query GetTrips($limit: Int) {
     trips(limit: $limit) {
@@ -36,7 +27,7 @@ const query = graphql(`
 `);
 
 export default async function Home() {
-  const { data } = await getClient().query(query, { limit: 10 });
+  const { data } = await ssrClient.query(query, { limit: 10 });
   const trips = data?.trips;
   return (
     <>
