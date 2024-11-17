@@ -1,5 +1,6 @@
 import { cacheExchange, createClient, fetchExchange } from "@urql/core";
 import { registerUrql } from "@urql/next/rsc";
+import { graphql } from "@/types/gql";
 
 const makeClient = () => {
   return createClient({
@@ -9,4 +10,6 @@ const makeClient = () => {
 };
 const { getClient } = registerUrql(makeClient);
 
-export const ssrClient = getClient();
+const ssrClient = getClient();
+
+export { ssrClient, graphql };

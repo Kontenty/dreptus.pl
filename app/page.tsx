@@ -2,13 +2,12 @@ import Image from "next/image";
 import css from "./style.module.css";
 import odznaki from "./odznaki.jpg";
 import Link from "next/link";
-import { graphql } from "@/types/gql";
 import Hero from "@/components/hero";
 import Main from "@/components/Main";
 import Hr from "@/components/hr";
 import trip from "@/public/image/trip.jpg";
 import DreptusCarousel from "@/components/carousel/DreptusCarousel";
-import { ssrClient } from "@/lib/graphql/urqlClient";
+import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
 
 const query = graphql(`
   query GetTrips($limit: Int) {
