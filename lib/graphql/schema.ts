@@ -1,13 +1,14 @@
-import { DateTimeTypeDefinition } from "graphql-scalars";
+import { BigIntTypeDefinition, DateTimeTypeDefinition } from "graphql-scalars";
 import { createSchema } from "graphql-yoga";
 import { resolvers } from "./resolvers";
 
 export const schema = createSchema({
   typeDefs: /* GraphQL */ `
+    ${BigIntTypeDefinition}
     ${DateTimeTypeDefinition}
 
     type wp_posts {
-      ID: ID!
+      ID: Int!
       post_author: Int!
       post_date: DateTime!
       post_date_gmt: DateTime!
@@ -34,10 +35,34 @@ export const schema = createSchema({
     }
 
     type wp_postmeta {
-      meta_id: ID!
-      post_id: ID!
+      meta_id: Int!
+      post_id: Int!
       meta_key: String
       meta_value: String
+    }
+
+    type tripShort {
+      ID: BigInt!
+      post_date: DateTime!
+      post_title: String!
+      post_name: String!
+      thumb_id: Int
+      thumb_url: String
+    }
+
+    type tripsDetailList {
+      ID: Int!
+      title: String
+      slug: String
+      length: String
+      pk: String
+      lat: Int
+      lng: Int
+      type: String
+      number: String
+      category_names: String
+      category_slugs: String
+      thumb_url: String
     }
 
     type Query {
@@ -45,6 +70,9 @@ export const schema = createSchema({
       trips(limit: Int): [wp_posts!]
       tripsCount: Int
       participantsCount: Int
+      tripShorts(limit: Int): [tripShort!]
+      tripsDetailList(location: String): [tripsDetailList!]
+      page(id: Int!): wp_posts
     }
   `,
   resolvers,

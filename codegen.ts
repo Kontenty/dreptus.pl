@@ -13,6 +13,7 @@ const config: CodegenConfig = {
         declarationKind: "interface",
         scalars: {
           DateTime: "string",
+          BigInt: { input: "BigInt", output: "string" },
         },
       },
     },
