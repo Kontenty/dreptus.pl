@@ -12,6 +12,7 @@ const { handleRequest } = createYoga({
   // Yoga needs to know how to create a valid Next response
   fetchAPI: { Response },
   context: createYogaContext,
+  logging: "debug",
 });
 
 export {
