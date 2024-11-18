@@ -7,7 +7,7 @@ import "primeicons/primeicons.css";
 import "../styles/globals.css";
 import "../styles/prime-theme.css";
 import type { AppProps } from "next/app";
-export { reportWebVitals } from "next-axiom";
+// export { reportWebVitals } from "next-axiom";
 
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";

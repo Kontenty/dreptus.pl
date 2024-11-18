@@ -1,49 +1,51 @@
-import type { InferGetStaticPropsType, NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
 import { Accordion, AccordionTab } from "primereact/accordion";
+import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
 
 import Main from "@/components/layout/MainLayout";
-import { getPage, getPostsWithThumb } from "@/lib/db";
-import css from "styles/News.module.css";
+import css from "./news.module.css";
 import packImg from "@/public/image/pakiety-startowe2.jpg";
 
-export const getStaticProps = async () => {
-  const postsData = await getPostsWithThumb(6);
-  if (!postsData) {
-    return {
-      props: { posts: [] },
-      revalidate: 60 * 60 * 12,
-    };
+const query = graphql(`
+  query GetTripShorts($id: Int!, $limit: Int) {
+    tripShorts(limit: $limit) {
+      ID
+      post_name
+      post_title
+      thumb_url
+      post_date
+    }
+    page(id: $id) {
+      post_content
+    }
   }
-  const posts = await Promise.all(
-    postsData.map(async (p) => {
-      const {
-        base64,
-        img: { src, type },
-      } = await getPlaiceholder(p?.thumb_url || "");
-      return {
-        ...p,
-        post_date: p.post_date.toString(),
-        image: {
-          src,
-          type,
-          title: p.post_name,
-          blurDataURL: base64,
-        },
-      };
-    })
-  );
-  const packets = await getPage(20167);
-  return {
-    props: { posts: posts || [], packets, revalidate: 60 * 60 * 12 },
-  };
-};
+`);
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+const NewsPage = async () => {
+  const { data } = await ssrClient.query(query, { id: 20167, limit: 6 });
+  const posts = data?.tripShorts
+    ? await Promise.all(
+        data.tripShorts.map(async (p) => {
+          const {
+            base64,
+            img: { src, type },
+          } = await getPlaiceholder(p?.thumb_url ?? "");
+          return {
+            ...p,
+            post_date: p.post_date.toString(),
+            image: {
+              src,
+              type,
+              title: p?.post_name ?? "",
+              blurDataURL: base64,
+            },
+          };
+        })
+      )
+    : [];
 
-const NewsPage: NextPage<Props> = ({ posts, packets }) => {
   return (
     <Main>
       <section>
@@ -116,11 +118,11 @@ const NewsPage: NextPage<Props> = ({ posts, packets }) => {
       <div className="card clear-both">
         <Accordion>
           <AccordionTab header="Pakiety">
-            {packets && (
+            {data?.page && (
               <div
                 className="format-table"
                 dangerouslySetInnerHTML={{
-                  __html: packets.post_content,
+                  __html: data?.page.post_content ?? "",
                 }}
               />
             )}

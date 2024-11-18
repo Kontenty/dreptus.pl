@@ -1,6 +1,5 @@
 import React from "react";
 import cl from "classnames";
-import css from "styles/Home.module.css";
 
 type Props = {
   children: React.ReactNode;
@@ -8,7 +7,7 @@ type Props = {
 };
 
 const MainLayout = ({ children, spacing = "L" }: Props) => {
-  const mainClass = cl(css.main, {
+  const mainClass = cl("p-4 md:p-8 flex flex-col mx-auto grow max-w-[1100px]", {
     "gap-4 md:gap-10": spacing === "L",
     "gap-2 md:gap-4": spacing === "S",
   });
