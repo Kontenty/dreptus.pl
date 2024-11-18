@@ -6,8 +6,6 @@ const fontFamily = [
   "BlinkMacSystemFont",
   "Segoe UI",
   "Roboto",
-  "Helvetica Neue",
-  "Noto Sans",
   "sans-serif",
 ];
 
@@ -42,7 +40,7 @@ const config: Config = {
       fontFamily: {
         sans: fontFamily,
         body: fontFamily,
-        heading: fontFamily,
+        heading: ["var(--heading-font)", ...fontFamily],
       },
     },
   },
