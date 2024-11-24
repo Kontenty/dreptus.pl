@@ -17,7 +17,7 @@ type Props = {
 };
 
 const TripMarkerCluster = ({ trips }: Props) => {
-  const [popupData, setPopup] = useState<TripFormMap | null>(null);
+  const [popupData, setPopupData] = useState<TripFormMap | null>(null);
   const gMap = useGoogleMap();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const TripMarkerCluster = ({ trips }: Props) => {
     <>
       {popupData && (
         <InfoWindow
-          onCloseClick={() => setPopup(null)}
+          onCloseClick={() => setPopupData(null)}
           options={{ pixelOffset: new google.maps.Size(0, -50) }}
           position={popupData.position}
         >
@@ -47,10 +47,10 @@ const TripMarkerCluster = ({ trips }: Props) => {
                 icon={
                   trip.dolinaBugu
                     ? "/image/pieszo-dolina.png"
-                    : getIconUrl(trip.type)
+                    : getIconUrl(trip?.type)
                 }
                 key={trip.ID}
-                onClick={() => setPopup(trip)}
+                onClick={() => setPopupData(trip)}
                 options={{ animation: google.maps.Animation.DROP }}
                 position={trip.position}
               />
@@ -67,7 +67,7 @@ export default TripMarkerCluster;
 interface PopupProps {
   trip: TripFormMap;
 }
-function Popup({ trip }: PopupProps) {
+function Popup({ trip }: Readonly<PopupProps>) {
   return (
     <div className="relative bg-white w-[300px] min-h-[200px]">
       <Link href={trip.slug ? `/trips/${trip.slug}` : "/trips"}>
@@ -75,7 +75,7 @@ function Popup({ trip }: PopupProps) {
           <Image
             alt="trip thumb image"
             fill
-            src={trip.thumb_url}
+            src={trip?.thumb_url ?? ""}
             style={{ objectFit: "cover" }}
             unoptimized
           />
@@ -87,12 +87,12 @@ function Popup({ trip }: PopupProps) {
       <div className="p-4">
         <p
           className="text-sm leading-tight font-semibold mb-1 text-slate-600"
-          dangerouslySetInnerHTML={{ __html: trip.title }}
+          dangerouslySetInnerHTML={{ __html: trip?.title }}
         ></p>
         {trip.lat && (
           <small>
             <MapPinIcon className="w-3 h-3 mr-1 inline-block" />
-            {trip.lat.toFixed(4)} {trip.lng.toFixed(4)}
+            {Number(trip?.lat)?.toFixed(4)} {Number(trip?.lng)?.toFixed(4)}
           </small>
         )}
       </div>

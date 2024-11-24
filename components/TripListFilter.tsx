@@ -1,9 +1,11 @@
+"use client";
 import React, { useState } from "react";
 import Link from "next/link";
 import { Sidebar } from "primereact/sidebar";
 
 import css from "./TripListFilter.module.css";
 import { Button } from "primereact/button";
+import { Location } from "@/types/gql/graphql";
 
 const categories = [
   { name: "Piesze", slug: "pieszo" },
@@ -12,7 +14,7 @@ const categories = [
 ];
 type Props = {
   count: number;
-  locationsList: { name: string; count: number; slug: string }[];
+  locationsList?: Location[];
 };
 
 const TripListFilter = ({ count, locationsList }: Props) => {
@@ -44,15 +46,14 @@ const TripListFilter = ({ count, locationsList }: Props) => {
             ))}
           </div>
           <div className={css.buttonsMobile}>
-            {locationsList.map((loc) =>
-              loc.count > 0 ? (
+            {locationsList?.map((loc) =>
+              Number(loc.count) > 0 ? (
                 <Link
                   as={`/trips/${loc.slug}`}
                   className={css.btnDiv}
                   href={{ pathname: "/trips", query: { slug: loc.slug } }}
                   key={loc.slug}
                   onClick={() => setShowMenu(false)}
-                  role="button"
                 >
                   {loc.name} ({loc.count})
                 </Link>
@@ -80,8 +81,8 @@ const TripListFilter = ({ count, locationsList }: Props) => {
           ))}
         </div>
         <div className={css.buttons}>
-          {locationsList.map((loc) =>
-            loc.count > 0 ? (
+          {locationsList?.map((loc) =>
+            loc.count !== "0" ? (
               <Link
                 href={{ pathname: "/trips", query: { slug: loc.slug } }}
                 key={loc.slug}

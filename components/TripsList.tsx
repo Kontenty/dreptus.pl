@@ -1,9 +1,11 @@
+"use client";
 import React from "react";
-import { useRouter } from "next/router";
-import { DataTable, DataTableSelectionChangeEvent } from "primereact/datatable";
+import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TripFormMap } from "@/types";
-import { getIcon, useMediaQuery } from "@/lib/index";
+import { getIcon } from "@/lib/utils";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import { useRouter } from "next/navigation";
 
 type Props = {
   trips: TripFormMap[];
@@ -20,7 +22,7 @@ const tripTitleBodyTemplate = (trip: TripFormMap) => {
 const tripNumBodyTemplate = (trip: TripFormMap) => {
   return (
     <div className="flex flex-col items-center">
-      {trip.number} {getIcon(trip.type, { height: 30 })}
+      {trip.number} {getIcon(trip?.type, { height: 30 })}
     </div>
   );
 };
@@ -29,9 +31,7 @@ const TripsList = ({ trips }: Props) => {
   const router = useRouter();
   const isMd = useMediaQuery("min-width: 768px");
 
-  const handleTripSelect = (
-    ev: DataTableSelectionChangeEvent<TripFormMap[]>
-  ) => {
+  const handleTripSelect = (ev: any) => {
     const value = ev.value as TripFormMap;
     setTimeout(() => {
       router.push(`/trips/${value.slug}`);
@@ -46,7 +46,6 @@ const TripsList = ({ trips }: Props) => {
       onSelectionChange={handleTripSelect}
       paginator
       paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      responsiveLayout="scroll"
       rows={50}
       rowsPerPageOptions={[20, 50, 100, 200]}
       selectionMode="single"

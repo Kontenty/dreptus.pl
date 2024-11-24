@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { GmapContext, GoogleContext } from "@/lib/context";
+import { GoogleMapContext, GoogleContext } from "@/lib/context";
 import { cva } from "class-variance-authority";
 import css from "./Map.module.css";
 
@@ -51,11 +51,11 @@ const Map = ({ children, size = "lg", ...mapProps }: Props) => {
   }, [gmap, mapProps]);
 
   return googlemaps ? (
-    <GmapContext.Provider value={{ map: gmap }}>
+    <GoogleMapContext.Provider value={{ map: gmap }}>
       <div className={mapdiv({ size })} ref={mapRef}>
         {children}
       </div>
-    </GmapContext.Provider>
+    </GoogleMapContext.Provider>
   ) : null;
 };
 

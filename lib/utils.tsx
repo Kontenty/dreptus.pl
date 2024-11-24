@@ -7,14 +7,20 @@ type Props = {
   color?: string;
   onClick?: () => void;
 };
-export function getIcon(code: string, props?: Props) {
+export function getIcon(code: string | null | undefined, props?: Props) {
   const dict: Record<string, JSX.Element> = {
     bike: <CyclistPinIcon {...props} />,
     foot: <FootmanPinIcon {...props} />,
   };
-  return dict[activityCode[code]] || <FootmanPinIcon {...props} />;
+  if (!code) {
+    return dict.foot;
+  }
+  return dict[activityCode[code]] || dict.foot;
 }
-export function getIconUrl(code: string) {
+export function getIconUrl(code: string | null | undefined) {
+  if (!code) {
+    return "/image/icons/footman-circle.svg";
+  }
   const dict: Record<string, string> = {
     bike: "/image/icons/cyclist-circle.svg",
     foot: "/image/icons/footman-circle.svg",
@@ -23,8 +29,8 @@ export function getIconUrl(code: string) {
 }
 
 export const sortTrips = (
-  a: { number: string | null | undefined },
-  b: { number: string | null | undefined }
+  a: { number?: string | null },
+  b: { number?: string | null }
 ) => {
   if (typeof a.number !== "string" || typeof b.number !== "string") {
     return 0;

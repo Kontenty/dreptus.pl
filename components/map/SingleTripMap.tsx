@@ -5,7 +5,7 @@ import Marker from "./Marker";
 
 type Props = { trip: TripDetails };
 
-export function SingleTripMap({ trip }: Props) {
+export function SingleTripMap({ trip }: Readonly<Props>) {
   return (
     <Map center={trip.position} mapTypeId="terrain" size="sm" zoom={14}>
       <Marker

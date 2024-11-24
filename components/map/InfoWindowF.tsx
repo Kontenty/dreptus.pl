@@ -11,7 +11,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
-import { GmapContext } from "@/lib/context";
+import { GoogleMapContext } from "@/lib/context";
 
 export interface InfoWindowProps {
   children?: ReactNode | undefined;
@@ -52,7 +52,7 @@ function InfoWindowFunctional({
   onLoad,
   onUnmount,
 }: InfoWindowProps): ReactPortal | null {
-  const map = useContext(GmapContext);
+  const map = useContext(GoogleMapContext);
 
   const [instance, setInstance] = useState<google.maps.InfoWindow | null>(null);
 

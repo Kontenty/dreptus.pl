@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { GoogleMapsT } from "../../src/types";

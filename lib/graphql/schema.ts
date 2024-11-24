@@ -50,19 +50,25 @@ export const schema = createSchema({
       thumb_url: String
     }
 
-    type tripsDetailList {
-      ID: Int!
-      title: String
-      slug: String
+    type tripsDetail {
+      ID: BigInt!
+      title: String!
+      slug: String!
       length: String
       pk: String
-      lat: Int
-      lng: Int
+      lat: String
+      lng: String
       type: String
       number: String
       category_names: String
       category_slugs: String
       thumb_url: String
+    }
+
+    type location {
+      name: String
+      count: BigInt!
+      slug: String
     }
 
     type Query {
@@ -71,8 +77,9 @@ export const schema = createSchema({
       tripsCount: Int
       participantsCount: Int
       tripShorts(limit: Int): [tripShort!]
-      tripsDetailList(location: String): [tripsDetailList!]
+      tripsDetailList(location: String): [tripsDetail!]
       page(id: Int!): wp_posts
+      locations: [location!]!
     }
   `,
   resolvers,

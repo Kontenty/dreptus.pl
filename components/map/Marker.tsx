@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { GmapContext } from "@/lib/context";
+import { GoogleMapContext } from "@/lib/context";
 
 type Props = google.maps.MarkerOptions & {
   onClick?: () => void;
 };
 
 const Marker = ({ icon, position, onClick }: Props) => {
-  const { map } = useContext(GmapContext);
+  const { map } = useContext(GoogleMapContext);
 
   useEffect(() => {
     if (map) {

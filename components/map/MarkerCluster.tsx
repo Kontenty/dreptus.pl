@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MarkerClusterer as gMarkerclusterer } from "@googlemaps/markerclusterer";
-import { GmapContext } from "@/lib/context";
+import { GoogleMapContext } from "@/lib/context";
 import { getIconUrl } from "@/lib/utils";
 import { TripFormMap } from "@/types";
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const MarkerCluster = ({ locations, onClick }: Props) => {
-  const { map } = useContext(GmapContext);
+  const { map } = useContext(GoogleMapContext);
   const [cluster, setCluster] = useState<gMarkerclusterer | null>(null);
 
   useEffect(() => {

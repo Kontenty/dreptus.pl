@@ -16,6 +16,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n  query GetTripShorts($id: Int!, $limit: Int) {\n    tripShorts(limit: $limit) {\n      ID\n      post_name\n      post_title\n      thumb_url\n      post_date\n    }\n    page(id: $id) {\n      post_content\n    }\n  }\n": types.GetTripShortsDocument,
     "\n  query GetTrips($limit: Int) {\n    trips(limit: $limit) {\n      ID\n      post_name\n      post_date\n      post_title\n      wp_postmeta {\n        meta_value\n      }\n    }\n    tripsCount\n    participantsCount\n  }\n": types.GetTripsDocument,
+    "\n  query GetTripDetailedList($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n": types.GetTripDetailedListDocument,
 };
 
 /**
@@ -40,6 +41,10 @@ export function graphql(source: "\n  query GetTripShorts($id: Int!, $limit: Int)
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetTrips($limit: Int) {\n    trips(limit: $limit) {\n      ID\n      post_name\n      post_date\n      post_title\n      wp_postmeta {\n        meta_value\n      }\n    }\n    tripsCount\n    participantsCount\n  }\n"): (typeof documents)["\n  query GetTrips($limit: Int) {\n    trips(limit: $limit) {\n      ID\n      post_name\n      post_date\n      post_title\n      wp_postmeta {\n        meta_value\n      }\n    }\n    tripsCount\n    participantsCount\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetTripDetailedList($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n"): (typeof documents)["\n  query GetTripDetailedList($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
