@@ -1,5 +1,7 @@
-import Header from "@/components/Header";
 import "./global.css";
+import "./prime-theme.css";
+import { PrimeReactProvider } from "primereact/api";
+import Header from "@/components/Header";
 import { Nunito, Open_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
 
@@ -41,14 +43,16 @@ export default function Layout({ children }: Readonly<Props>) {
         <meta content="https://xn--dereptu-8ib.pl" property="og:url" />
       </head>
       <body>
-        <div
-          className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
-          id="root"
-        >
-          <Header />
-          <div className="flex flex-col flex-grow">{children}</div>
-          <Footer />
-        </div>
+        <PrimeReactProvider>
+          <div
+            className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
+            id="root"
+          >
+            <Header />
+            <div className="flex flex-col flex-grow">{children}</div>
+            <Footer />
+          </div>
+        </PrimeReactProvider>
       </body>
     </html>
   );
