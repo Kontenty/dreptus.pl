@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import prismaClient from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const participants = await prismaClient.participant.findMany();
+    const participants = await prisma.participant.findMany();
 
     return res.status(200).send(participants);
   } catch (error) {

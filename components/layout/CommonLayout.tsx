@@ -1,4 +1,3 @@
-/* eslint-disable react/no-string-refs */
 import Head from "next/head";
 import type { ReactNode } from "react";
 import { ScrollTop } from "primereact/scrolltop";
@@ -19,7 +18,7 @@ const FullWidthLayout = ({ children }: Props) => {
           name="description"
         />
         <meta content="Konrad Górski" name="author" />
-        <link ref="https://xn--dereptu-8ib.pl" rel="canonical" />
+        <link href="https://xn--dereptu-8ib.pl" rel="canonical" />
         <link href="/favicon.ico" rel="icon" />
 
         <meta content="pl_PL" property="og:locale" />

@@ -245,7 +245,6 @@ function InfoWindowFunctional({
     } else if (infoWindow.getPosition()) {
       infoWindow.open(map);
     } else {
-      // eslint-disable-next-line no-console
       console.log(
         "❌ You must provide either an anchor (typically render it inside a <Marker>) or a position props for <InfoWindow>."
       );

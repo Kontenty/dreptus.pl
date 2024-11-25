@@ -3,7 +3,8 @@ import { createYogaContext } from "@/lib/graphql/context";
 import { schema } from "@/lib/graphql/schema";
 import { createYoga } from "graphql-yoga";
 
-const { handleRequest } = createYoga({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const { handleRequest } = createYoga<any>({
   schema,
 
   // While using Next.js file convention for routing, we need to configure Yoga to use the correct endpoint
@@ -14,6 +15,8 @@ const { handleRequest } = createYoga({
   context: createYogaContext,
   logging: "debug",
 });
+
+// export const GET = handleRequest;
 
 export {
   handleRequest as GET,

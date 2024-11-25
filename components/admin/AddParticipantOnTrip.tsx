@@ -13,7 +13,7 @@ import { InputText } from "primereact/inputtext";
 import { Nullable } from "primereact/ts-helpers";
 import { Toast } from "primereact/toast";
 
-type ExtParticpant = {
+type ExtParticipant = {
   nameExt: string;
   id: number;
   name: string;
@@ -28,7 +28,7 @@ type State = {
   participantName: string;
   origin: string;
   answers: string;
-  date: Nullable<string | Date | Date[]>;
+  date: Nullable<Date>;
 };
 const initialState: State = {
   selectedTrip: null,
@@ -97,7 +97,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
     setSuggestions(filteredList ?? []);
   };
 
-  const onParticipantSelect = ({ name, origin }: ExtParticpant) => {
+  const onParticipantSelect = ({ name, origin }: ExtParticipant) => {
     dispatch({
       type: "selectParticipant",
       value: { origin, participant: name },
@@ -142,7 +142,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
           return showSuccess();
         }
         if (res.status === 406) {
-          showWrongData();
+          return showWrongData();
         }
       })
       .catch((error) =>

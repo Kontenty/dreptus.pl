@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 
-import prismaClient from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,7 +16,7 @@ export default async function handler(
   const id = Number(req.query.id);
   if (typeof id === "number") {
     try {
-      const deleted = await prismaClient.tripParticipant.delete({
+      const deleted = await prisma.tripParticipant.delete({
         where: { id },
       });
 

@@ -13,12 +13,11 @@ import { SingleTripMap } from "@/components/map/SingleTripMap";
 import type { TripDetails } from "@/types";
 import { getIcon } from "@/lib/utils";
 import { getTripBySlug, getTripsForMap, getTripSlugs } from "@/lib/db";
-import css from "styles/Trip.module.css";
+import css from "../../../app/trips/Trip.module.css";
 import MainLayout from "@/components/layout/MainLayout";
 import SlickArrow from "@/components/SlickArrow";
 import ModalGallery from "@/components/ModalGallery";
-
-import type { TripsForMap } from "./index";
+import { TripFormMap } from "@/src/types";
 
 const formatDistance = (d: number) => {
   const precision = d < 10000 ? 1 : 0;
@@ -28,7 +27,7 @@ const formatDistance = (d: number) => {
 };
 interface Props {
   trip: TripDetails;
-  tripsList: TripsForMap;
+  tripsList: TripFormMap[];
 }
 
 const TripPost: NextPage<Props & { googlemaps: typeof google.maps | null }> = ({

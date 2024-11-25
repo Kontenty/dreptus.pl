@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import prismaClient from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,7 +9,7 @@ export default async function handler(
   const id = Number(req.query.id);
   if (typeof id === "number") {
     try {
-      const data = await prismaClient.wp_posts.findUnique({
+      const data = await prisma.wp_posts.findUnique({
         include: {
           trip_participant: {
             include: { participant: true },

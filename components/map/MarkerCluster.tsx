@@ -26,7 +26,7 @@ const MarkerCluster = ({ locations, onClick }: Props) => {
             : getIconUrl(trip.type),
         });
         marker.addListener("click", () => {
-          onClick && onClick(trip);
+          onClick?.(trip);
         });
         bounds.extend(position);
         return marker;

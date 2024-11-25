@@ -40,8 +40,11 @@ const ModalGallery = ({
       return () => {
         document.removeEventListener("keydown", keyDownHandler);
       };
+    } else {
+      return;
     }
   }, [onClose]);
+
   return (
     <div className={css.modalWrapper} onClick={onClose}>
       <div className="flex justify-between p-4">

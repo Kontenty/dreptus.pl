@@ -68,6 +68,7 @@ const mapElementor = (node: ElementorElement) => {
       ></section>
     );
   }
+  return;
 };
 
 type Props = { rulesPageContent: ElementorData; scorersContent: PostResponse };
@@ -92,6 +93,7 @@ export default function Odznaki({ rulesPageContent, scorersContent }: Props) {
                   if (el?.elements?.length) {
                     return el.elements.map(mapElementor);
                   }
+                  return;
                 })
               : null}
           </article>

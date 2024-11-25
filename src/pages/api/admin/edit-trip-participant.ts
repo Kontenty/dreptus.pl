@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 
-import prismaClient from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import * as Yup from "yup";
 
 const schema = Yup.object({
@@ -41,11 +41,11 @@ export default async function handler(
   try {
     const body = req.body as Body;
     const { name, origin } = body;
-    const user = await prismaClient.participant.findUnique({
+    const user = await prisma.participant.findUnique({
       where: { id: body.participant_id },
     });
     if (user?.name !== name || user.origin !== origin) {
-      await prismaClient.participant.update({
+      await prisma.participant.update({
         where: {
           id: body.participant_id,
         },
@@ -55,7 +55,7 @@ export default async function handler(
         },
       });
     }
-    const updatedPptOnTrip = await prismaClient.tripParticipant.update({
+    const updatedPptOnTrip = await prisma.tripParticipant.update({
       where: {
         id: body.id,
       },

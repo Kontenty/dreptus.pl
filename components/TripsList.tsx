@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
-import { DataTable } from "primereact/datatable";
+import {
+  DataTable,
+  type DataTableSelectionSingleChangeEvent,
+} from "primereact/datatable";
 import { Column } from "primereact/column";
 import { TripFormMap } from "@/types";
 import { getIcon } from "@/lib/utils";
@@ -31,8 +34,10 @@ const TripsList = ({ trips }: Props) => {
   const router = useRouter();
   const isMd = useMediaQuery("min-width: 768px");
 
-  const handleTripSelect = (ev: any) => {
-    const value = ev.value as TripFormMap;
+  const handleTripSelect = (
+    ev: DataTableSelectionSingleChangeEvent<TripFormMap[]>
+  ) => {
+    const value = ev.value;
     setTimeout(() => {
       router.push(`/trips/${value.slug}`);
     }, 300);

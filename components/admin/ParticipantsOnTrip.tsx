@@ -45,22 +45,20 @@ const UsersOnTrip = ({ tripId }: Props) => {
         setDeleteDialog(false);
 
         if (res.ok) {
-          toast?.current &&
-            toast.current.show({
-              severity: "success",
-              summary: "Pomyślnie",
-              detail: "usunięto uczestnika",
-              life: 3000,
-            });
+          toast?.current?.show({
+            severity: "success",
+            summary: "Pomyślnie",
+            detail: "usunięto uczestnika",
+            life: 3000,
+          });
           await mutate();
         } else {
-          toast?.current &&
-            toast.current.show({
-              severity: "error",
-              summary: "Błąd",
-              detail: "uczestnik nie został usunięty",
-              life: 3000,
-            });
+          toast?.current?.show({
+            severity: "error",
+            summary: "Błąd",
+            detail: "uczestnik nie został usunięty",
+            life: 3000,
+          });
         }
       })
       .catch((error) =>
@@ -80,22 +78,20 @@ const UsersOnTrip = ({ tripId }: Props) => {
         setDeleteDialog(false);
 
         if (res.ok) {
-          toast?.current &&
-            toast.current.show({
-              severity: "success",
-              summary: "Pomyślnie",
-              detail: "zapisano zmiany",
-              life: 3000,
-            });
+          toast?.current?.show({
+            severity: "success",
+            summary: "Pomyślnie",
+            detail: "zapisano zmiany",
+            life: 3000,
+          });
           await mutate();
         } else {
-          toast?.current &&
-            toast.current.show({
-              severity: "error",
-              summary: "Błąd",
-              detail: "zmiany nie zostały zapisane",
-              life: 3000,
-            });
+          toast?.current?.show({
+            severity: "error",
+            summary: "Błąd",
+            detail: "zmiany nie zostały zapisane",
+            life: 3000,
+          });
         }
       })
       .catch((error) =>
