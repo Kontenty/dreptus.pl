@@ -71,6 +71,31 @@ export const schema = createSchema({
       slug: String
     }
 
+    type TripWithParticipants {
+      id: Int!
+      trip_id: Int
+      report_date: DateTime
+      pptCount: BigInt
+      post_title: String
+      number: String
+    }
+
+    type Participant {
+      id: Int
+      name: String
+      origin: String
+    }
+
+    type TripParticipant {
+      id: Int
+      participant_id: Int
+      trip_id: Int
+      answers: String
+      report_date: DateTime
+      participant: Participant
+      trip: wp_posts
+    }
+
     type Query {
       hello: String
       trips(limit: Int): [wp_posts!]
@@ -80,6 +105,8 @@ export const schema = createSchema({
       tripsDetailList(location: String): [tripsDetail!]
       page(id: Int!): wp_posts
       locations: [location!]!
+      tripsWithParticipants: [TripWithParticipants!]
+      participantsOnTrip(id: Int!): [TripParticipant]
     }
   `,
   resolvers,
