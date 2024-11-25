@@ -4,6 +4,7 @@ import { PrimeReactProvider } from "primereact/api";
 import Header from "@/components/Header";
 import { Nunito, Open_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
+import AosProvider from "@/components/aos/AosProvider";
 
 const nunito = Nunito({
   subsets: ["latin", "latin-ext"],
@@ -43,6 +44,7 @@ export default function Layout({ children }: Readonly<Props>) {
         <meta content="https://xn--dereptu-8ib.pl" property="og:url" />
       </head>
       <body>
+        <AosProvider />
         <PrimeReactProvider>
           <div
             className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
