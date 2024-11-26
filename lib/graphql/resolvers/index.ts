@@ -55,6 +55,17 @@ export const resolvers = {
       { id }: { id: number },
       { prisma }: GraphQLContext
     ) => prisma.wp_posts.findUnique({ where: { ID: id } }),
+    elementorPage: (
+      _parent: unknown,
+      { id }: { id: number },
+      { prisma }: GraphQLContext
+    ) =>
+      prisma.wp_postmeta
+        .findFirst({
+          select: { meta_value: true },
+          where: { post_id: id, meta_key: "_elementor_data" },
+        })
+        .then((data) => data?.meta_value),
     locations: (_parent: unknown, _args: unknown, { prisma }: GraphQLContext) =>
       prisma.$queryRaw<
         { name: string; count: number; slug: string }[]

@@ -104,6 +104,7 @@ export const schema = createSchema({
       tripShorts(limit: Int): [tripShort!]
       tripsDetailList(location: String): [tripsDetail!]
       page(id: Int!): wp_posts
+      elementorPage(id: Int!): String
       locations: [location!]!
       tripsWithParticipants: [TripWithParticipants!]
       participantsOnTrip(id: Int!): [TripParticipant]
