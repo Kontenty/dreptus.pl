@@ -1,5 +1,8 @@
 import "./global.css";
 import "./prime-theme.css";
+// import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "primeicons/primeicons.css";
+
 import { PrimeReactProvider } from "primereact/api";
 import Header from "@/components/Header";
 import { Nunito, Open_Sans } from "next/font/google";
