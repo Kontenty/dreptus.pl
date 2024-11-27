@@ -1,4 +1,4 @@
-import { TripsDetail } from "./gql/graphql";
+import { TripsDetail } from "./gql/types";
 
 export type GoogleMapsT = typeof google.maps;
 

@@ -1,5 +1,10 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
 
+const scalars = {
+  DateTime: "string",
+  BigInt: { input: "bigint", output: "string" },
+};
+
 const config: CodegenConfig = {
   schema: "http://localhost:3000/api/graphql",
   overwrite: true,
@@ -8,13 +13,15 @@ const config: CodegenConfig = {
   generates: {
     "./types/gql/": {
       preset: "client",
+      config: {
+        scalars,
+      },
+    },
+    "./types/gql/types.ts": {
       plugins: ["typescript"],
       config: {
         declarationKind: "interface",
-        scalars: {
-          DateTime: "string",
-          BigInt: { input: "BigInt", output: "string" },
-        },
+        scalars,
       },
     },
   },

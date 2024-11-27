@@ -1,5 +1,5 @@
 "use client";
-import { TripWithParticipants } from "@/types/gql/graphql";
+import { TripWithParticipants } from "@/types/gql/types";
 import { useRouter } from "next/navigation";
 import { Column } from "primereact/column";
 import {
