@@ -17,13 +17,6 @@ const config: CodegenConfig = {
         scalars,
       },
     },
-    "./types/gql/types.ts": {
-      plugins: ["typescript"],
-      config: {
-        declarationKind: "interface",
-        scalars,
-      },
-    },
   },
 };
 
