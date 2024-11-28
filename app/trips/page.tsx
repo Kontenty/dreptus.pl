@@ -9,8 +9,8 @@ import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
 import { TripFormMap } from "@/types";
 
 const query = graphql(`
-  query GetTripDetailedList($location: String) {
-    tripsDetailList(location: $location) {
+  query GetTripsPageData($location: String) {
+    tripsDetailsList(location: $location) {
       ID
       title
       slug
@@ -42,7 +42,7 @@ export default async function Trips({ searchParams }: Readonly<Props>) {
   const slug = (await searchParams)?.slug ?? "all";
   const { data } = await ssrClient.query(query, { location: slug });
   const trips: TripFormMap[] =
-    data?.tripsDetailList
+    data?.tripsDetailsList
       ?.map((trip) => ({
         ...trip,
         position: { lat: Number(trip.lat), lng: Number(trip.lng) },

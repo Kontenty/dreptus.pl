@@ -62,7 +62,7 @@ type Props = {
     badge_name: string;
   }>;
 };
-export default async function Badges({ params }: Props) {
+export default async function Badges({ params }: Readonly<Props>) {
   const resParams = await params;
   const data = await getData(resParams);
   return (

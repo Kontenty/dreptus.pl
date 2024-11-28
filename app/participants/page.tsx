@@ -1,7 +1,7 @@
 import Main from "@/components/layout/MainLayout";
 import { sortTrips } from "@/lib/utils";
 import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
-import { TripWithParticipants } from "@/types/gql/types";
+import { TripWithParticipants } from "@/types/gql/graphql";
 import TripsWithParticipantsList from "@/components/TripsWithParticipantsList";
 
 const query = graphql(`

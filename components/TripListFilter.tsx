@@ -5,7 +5,7 @@ import { Sidebar } from "primereact/sidebar";
 
 import css from "./TripListFilter.module.css";
 import { Button } from "primereact/button";
-import { Location } from "@/types/gql/types";
+import { Location } from "@/types/gql/graphql";
 
 const categories = [
   { name: "Piesze", slug: "pieszo" },
