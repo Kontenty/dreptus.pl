@@ -19,7 +19,7 @@ const documents = {
     "\n  query GetTrips($limit: Int) {\n    trips(limit: $limit) {\n      ID\n      post_name\n      post_date\n      post_title\n      wp_postmeta {\n        meta_value\n      }\n    }\n    tripsCount\n    participantsCount\n  }\n": types.GetTripsDocument,
     "\n  query GetParticipantsOnTrip($trip_id: Int!) {\n    participantsOnTrip(id: $trip_id) {\n      id\n      report_date\n      answers\n      participant {\n        name\n        origin\n      }\n      trip {\n        post_title\n      }\n    }\n  }\n": types.GetParticipantsOnTripDocument,
     "\n  query GetTripsWithParticipants {\n    tripsWithParticipants {\n      id\n      trip_id\n      report_date\n      pptCount\n      post_title\n      number\n    }\n  }\n": types.GetTripsWithParticipantsDocument,
-    "\n  query GetTripDetailedList($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n": types.GetTripDetailedListDocument,
+    "\n  query GetTripsPageData($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n": types.GetTripsPageDataDocument,
 };
 
 /**
@@ -59,7 +59,7 @@ export function graphql(source: "\n  query GetTripsWithParticipants {\n    trips
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetTripDetailedList($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n"): (typeof documents)["\n  query GetTripDetailedList($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n"];
+export function graphql(source: "\n  query GetTripsPageData($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n"): (typeof documents)["\n  query GetTripsPageData($location: String) {\n    tripsDetailList(location: $location) {\n      ID\n      title\n      slug\n      length\n      pk\n      lat\n      lng\n      type\n      number\n      category_names\n      category_slugs\n      thumb_url\n    }\n    locations {\n      name\n      count\n      slug\n    }\n    tripsCount\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

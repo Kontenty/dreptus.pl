@@ -52,23 +52,6 @@ export interface PostResponse {
   thumb_url: string;
 }
 
-export interface TripDetails extends Post {
-  images_str: string;
-  images: { guid: string; post_title: string }[];
-  pdf: string;
-  pdf_images: string;
-  pdfImages: { guid: string; post_title: string }[];
-  author: string;
-  length: string;
-  pk: string;
-  lat: string;
-  lng: string;
-  founding: string;
-  type: string;
-  number: string;
-  position: google.maps.LatLngLiteral;
-}
-
 export interface TripFormMap extends TripsForMapResponse {
   locations: string;
   dolinaBugu: boolean;

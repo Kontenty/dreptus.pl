@@ -1,4 +1,4 @@
-import { TripsDetail } from "./gql/types";
+import { TripListItem } from "./gql/graphql";
 
 export type GoogleMapsT = typeof google.maps;
 
@@ -71,7 +71,7 @@ export interface TripDetails extends Post {
   position: google.maps.LatLngLiteral;
 }
 
-export interface TripFormMap extends TripsDetail {
+export interface TripFormMap extends TripListItem {
   locations?: string;
   dolinaBugu: boolean;
   position: google.maps.LatLngLiteral;
