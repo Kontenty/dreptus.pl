@@ -7,7 +7,7 @@ export const schema = createSchema({
     ${BigIntTypeDefinition}
     ${DateTimeTypeDefinition}
 
-    type wp_posts {
+    type WP_Post {
       ID: Int!
       post_author: Int!
       post_date: DateTime!
@@ -41,7 +41,7 @@ export const schema = createSchema({
       meta_value: String
     }
 
-    type tripShort {
+    type TripPreview {
       ID: BigInt!
       post_date: DateTime!
       post_title: String!
@@ -50,7 +50,7 @@ export const schema = createSchema({
       thumb_url: String
     }
 
-    type tripsDetail {
+    type tripListItem {
       ID: BigInt!
       title: String!
       slug: String!
@@ -63,6 +63,33 @@ export const schema = createSchema({
       category_names: String
       category_slugs: String
       thumb_url: String
+    }
+
+    type ImageData {
+      guid: String!
+      post_title: String!
+    }
+
+    type TripDetails {
+      ID: BigInt!
+      post_title: String!
+      post_content: String!
+      author: String
+      category_names: String
+      category_slugs: String
+      founding: String
+      images_str: String
+      images: [ImageData!]!
+      lat: String
+      length: String
+      lng: String
+      number: String
+      pdf_images_str: String
+      pdf: String
+      pdfImages: [ImageData!]!
+      pk: String
+      thumb_url: String
+      type: String
     }
 
     type location {
@@ -93,17 +120,18 @@ export const schema = createSchema({
       answers: String
       report_date: DateTime
       participant: Participant
-      trip: wp_posts
+      trip: WP_Post
     }
 
     type Query {
       hello: String
-      trips(limit: Int): [wp_posts!]
+      trips(limit: Int): [WP_Post!]
       tripsCount: Int
       participantsCount: Int
-      tripShorts(limit: Int): [tripShort!]
-      tripsDetailList(location: String): [tripsDetail!]
-      page(id: Int!): wp_posts
+      tripShorts(limit: Int): [TripPreview!]
+      tripsDetailsList(location: String): [tripListItem!]
+      tripDetails(trip_name: String!): TripDetails
+      page(id: Int!): WP_Post
       elementorPage(id: Int!): String
       locations: [location!]!
       tripsWithParticipants: [TripWithParticipants!]

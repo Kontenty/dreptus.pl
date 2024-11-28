@@ -35,7 +35,7 @@ const links = [
     ],
   },
   { name: "Formularz", link: "/form", as: "/formularz" },
-  { name: "Kontakt", link: "/contact", as: "/kontakt" },
+  { name: "Kontakt", link: "/contact" },
 ];
 
 const Header = () => {

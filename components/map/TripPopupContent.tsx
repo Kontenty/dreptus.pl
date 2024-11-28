@@ -2,10 +2,10 @@ import { EyeIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import css from "./Map.module.css";
-import { TripsDetail } from "@/types/gql/types";
+import { TripListItem } from "@/types/gql/graphql";
 
 interface PopupProps {
-  trip: TripsDetail | null;
+  trip: TripListItem | null;
 }
 export function PopupContent({ trip }: PopupProps) {
   return trip ? (

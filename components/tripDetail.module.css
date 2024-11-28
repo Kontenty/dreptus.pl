@@ -1,0 +1,55 @@
+.lists {
+  @apply md:flex gap-10 w-screen xl:w-[1100px] mx-auto py-4 overflow-x-auto;
+}
+
+.adnotations {
+  align-items: center;
+  display: grid;
+  grid-row-gap: 0.125rem;
+  grid-template-columns: auto auto 1fr;
+  @apply gap-x-2 md:gap-x-4 text-sm md:text-base md:px-6 py-1;
+}
+
+.imgBox {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.img {
+  object-fit: cover;
+  object-position: 50% 50%;
+  height: 100%;
+  width: auto;
+}
+
+.arrow {
+  @apply w-6 h-6;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  top: 50%;
+  display: block;
+  cursor: pointer;
+}
+
+.fitImg {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+}
+
+.imgOverlay {
+  @apply absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 bg-black/60 transition-opacity duration-300;
+}
+
+.imgIcon {
+  @apply w-7 h-7 text-white transition-transform translate-y-2 delay-75;
+}
+
+.imgOverlay:hover .imgIcon {
+  @apply translate-y-0;
+}

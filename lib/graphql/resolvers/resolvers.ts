@@ -71,8 +71,8 @@ export const resolvers = {
       prisma.$queryRaw<
         { name: string; count: number; slug: string }[]
       >`SELECT a.name, b.count, a.slug from wp_term_taxonomy b LEFT JOIN wp_terms a ON a.term_id = b.term_id WHERE b.taxonomy like "%listing_location%" ORDER BY b.count DESC;`,
-    tripsDetailList: getTripDetailList,
-    TripDetails: getTripBySlug,
+    tripsDetailsList: getTripDetailList,
+    tripDetails: getTripBySlug,
     ...participantResolvers,
   },
 };
