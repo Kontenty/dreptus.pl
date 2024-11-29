@@ -1,5 +1,4 @@
 "use client";
-import { TripWithParticipants } from "@/types/gql/graphql";
 import { useRouter } from "next/navigation";
 import { Column } from "primereact/column";
 import {
@@ -7,8 +6,9 @@ import {
   type DataTableSelectionSingleChangeEvent,
 } from "primereact/datatable";
 import { formatDate } from "@/lib/utils";
+import { ParticipantOnTrip } from "@/types";
 
-const titleTmpl = (row: TripWithParticipants) =>
+const titleTmpl = (row: ParticipantOnTrip) =>
   row.post_title &&
   (/^Z Dreptusiem/i.test(row.post_title) ? (
     <span className="font-bold text-lg">{row.post_title}</span>
@@ -17,14 +17,14 @@ const titleTmpl = (row: TripWithParticipants) =>
   ));
 
 interface Props {
-  trips: TripWithParticipants[];
+  trips: ParticipantOnTrip[];
 }
 
 const TripsWithParticipantsList = ({ trips }: Readonly<Props>) => {
   const router = useRouter();
 
   const handleSelect = (
-    ev: DataTableSelectionSingleChangeEvent<TripWithParticipants[]>
+    ev: DataTableSelectionSingleChangeEvent<ParticipantOnTrip[]>
   ) => {
     const value = ev.value;
     if (value.trip_id) {

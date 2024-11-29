@@ -1,5 +1,10 @@
 import { Prisma } from "@prisma/client";
-import { PostResponse, TripDetails, TripsForMapResponse } from "@/types";
+import {
+  ParticipantOnTrip,
+  PostResponse,
+  TripDetails,
+  TripsForMapResponse,
+} from "@/types";
 import { prisma } from "./prisma";
 
 export const getTrips = async (limit?: number) =>
@@ -139,14 +144,7 @@ export const getParticipantsPostsList = () =>
 
 export const getTripsParticipants = () =>
   prisma.$queryRaw<
-    {
-      id: number;
-      trip_id: number;
-      report_date: Date | null;
-      pptCount: bigint | null;
-      post_title: string;
-      number: string;
-    }[]
+    ParticipantOnTrip[]
   >`SELECT tp.id,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) as report_date, COUNT(tp.trip_id) as pptCount  FROM TripParticipant tp
     JOIN wp_posts p ON p.ID = tp.trip_id
     JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_cth_cus_field_zxr0feyjz'

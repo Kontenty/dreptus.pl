@@ -7,26 +7,22 @@ import Main from "@/components/Main";
 import Hr from "@/components/hr";
 import trip from "@/public/image/trip.jpg";
 import DreptusCarousel from "@/components/carousel/DreptusCarousel";
-import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
+import { getTrips, getTripsCount } from "@/lib/db";
+import { prisma } from "@/lib/prisma";
 
-const query = graphql(`
-  query GetTrips($limit: Int) {
-    trips(limit: $limit) {
-      ID
-      post_name
-      post_date
-      post_title
-      wp_postmeta {
-        meta_value
-      }
-    }
-    tripsCount
-    participantsCount
-  }
-`);
+const getData = async () => {
+  const trips = await getTrips(10);
+  const tripsCount = (await getTripsCount()) || 180;
+  const participantsCount = (await prisma.tripParticipant.count()) || 2000;
+  return {
+    trips,
+    tripsCount,
+    participantsCount,
+  };
+};
 
 export default async function Home() {
-  const { data } = await ssrClient.query(query, { limit: 10 });
+  const data = await getData();
   const trips = data?.trips;
   return (
     <>

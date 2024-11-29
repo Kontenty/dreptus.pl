@@ -1,21 +1,8 @@
 import Main from "@/components/layout/MainLayout";
 import { sortTrips } from "@/lib/utils";
-import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
-import { TripWithParticipants } from "@/types/gql/graphql";
 import TripsWithParticipantsList from "@/components/TripsWithParticipantsList";
-
-const query = graphql(`
-  query GetTripsWithParticipants {
-    tripsWithParticipants {
-      id
-      trip_id
-      report_date
-      pptCount
-      post_title
-      number
-    }
-  }
-`);
+import { getTripsParticipants } from "@/lib/db";
+import { ParticipantOnTrip } from "@/types";
 
 const dummyListEl = {
   id: 0,
@@ -25,7 +12,7 @@ const dummyListEl = {
   number: "",
 };
 
-const chunkData = (trips: TripWithParticipants[] | null | undefined) => {
+const chunkData = (trips: ParticipantOnTrip[] | null | undefined) => {
   if (!trips) {
     return null;
   }
@@ -58,9 +45,17 @@ const chunkData = (trips: TripWithParticipants[] | null | undefined) => {
   return chunked.flat() || null;
 };
 
+const getData = async () => {
+  const tripsData = await getTripsParticipants();
+  if (!tripsData) {
+    return null;
+  }
+  const trips = chunkData(tripsData);
+  return trips;
+};
+
 export default async function Participants() {
-  const { data } = await ssrClient.query(query, {});
-  const trips = chunkData(data?.tripsWithParticipants);
+  const trips = await getData();
 
   return (
     <Main>

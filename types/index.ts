@@ -117,3 +117,12 @@ export type ElementorData = {
   id: string;
   elements: ElementorElement[];
 }[];
+
+export type ParticipantOnTrip = {
+  id: number;
+  trip_id: number;
+  report_date: Date | null;
+  pptCount: bigint | null;
+  post_title: string;
+  number: string;
+};
