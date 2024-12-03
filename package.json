@@ -36,7 +36,7 @@
     "nodemailer": "^6.9.3",
     "plaiceholder": "^2.5.0",
     "primeicons": "^7.0.0",
-    "primereact": "^10.8.4",
+    "primereact": "^10.8.5",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-slick": "^0.30.2",
