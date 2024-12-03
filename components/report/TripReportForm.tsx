@@ -7,8 +7,8 @@ import { Button } from "primereact/button";
 import { useMountEffect } from "primereact/hooks";
 import * as Yup from "yup";
 import cl from "classnames";
-
 import FormikInput from "@/components/FormikInput";
+import { sendReport } from "./sendReport";
 
 type FField = {
   name: string;
@@ -84,7 +84,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
         })}
       >
         {(formik) => (
-          <Form className="max-w-[1000px] ">
+          <Form className="max-w-[1000px]" action={sendReport}>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 md:gap-y-6 p-fluid">
               <div className="md:col-span-2">
                 <Dropdown
@@ -123,6 +123,8 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
             />
             <div>
               <div className="flex items-center gap-2">
+                <Checkbox checked />
+                <Checkbox checked={false} />
                 <Checkbox
                   inputId="cb1"
                   {...formik.getFieldProps("checked")}
