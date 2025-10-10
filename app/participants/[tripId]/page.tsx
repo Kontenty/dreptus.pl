@@ -1,39 +1,19 @@
 import React from "react";
 
 import MainLayout from "@/components/layout/MainLayout";
-import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
+import { getParticipantById } from "@/lib/db";
 import { notFound } from "next/navigation";
 import ParticipantsOnTrip from "@/components/ParticipantsOnTrip";
-
-const query = graphql(`
-  query GetParticipantsOnTrip($trip_id: Int!) {
-    participantsOnTrip(id: $trip_id) {
-      id
-      report_date
-      answers
-      participant {
-        name
-        origin
-      }
-      trip {
-        post_title
-      }
-    }
-  }
-`);
 
 const cleanTitle = (title: string | undefined) =>
   title ? title.replace("<br>", " ").replaceAll("  ", " ") : "";
 
 const getData = async (id: string) => {
   const tripId = Number(id);
-  if (typeof tripId !== "number" || isNaN(tripId)) {
-    return null;
-  }
-  const { data } = await ssrClient.query(query, { trip_id: tripId });
-
-  if (!data?.participantsOnTrip) return null;
-  return data.participantsOnTrip.map((el) => ({ ...el, ...el?.participant }));
+  if (isNaN(tripId)) return null;
+  const participants = await getParticipantById(tripId);
+  if (!participants?.length) return null;
+  return participants.map((el) => ({ ...el, ...el.participant }));
 };
 
 type Props = {

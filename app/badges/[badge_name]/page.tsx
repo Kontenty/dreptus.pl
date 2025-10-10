@@ -2,16 +2,7 @@ import { TabPanel, TabView } from "primereact/tabview";
 
 import Main from "@/components/layout/MainLayout";
 import { ElementorData, ElementorElement } from "@/types";
-import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
-
-const query = graphql(`
-  query GetBadgePages($rulesPageId: Int!, $scorersPageId: Int!) {
-    elementorPage(id: $rulesPageId)
-    page(id: $scorersPageId) {
-      post_content
-    }
-  }
-`);
+import { getElementorPage, getPage } from "@/lib/db";
 
 const dict: Record<string, { rules: number; scorers: number }> = {
   "z-dreptusiem-po-polsce": { rules: 11620, scorers: 21255 },
@@ -23,13 +14,18 @@ const getData = async (params: { badge_name?: string }) => {
   if (!params?.badge_name || typeof params.badge_name !== "string") {
     return;
   }
-  const rulesPageId = dict[params.badge_name].rules || 11620;
-  const scorersPageId = dict[params.badge_name].scorers || 21255;
-  const { data } = await ssrClient.query(query, { rulesPageId, scorersPageId });
+  const { rules: rulesPageId, scorers: scorersPageId } = dict[
+    params.badge_name
+  ] || {
+    rules: 11620,
+    scorers: 21255,
+  };
+  const elementorData = await getElementorPage(rulesPageId);
+  const pageData = await getPage(scorersPageId);
 
   return {
-    rulesPageContent: JSON.parse(data?.elementorPage ?? "") as ElementorData,
-    scorersContent: data?.page?.post_content,
+    rulesPageContent: JSON.parse(elementorData ?? "[]") as ElementorData,
+    scorersContent: pageData?.post_content ?? "",
   };
 };
 

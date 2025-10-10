@@ -2,32 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
 import { Accordion, AccordionTab } from "primereact/accordion";
-import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
+import { getPostsWithThumb, getPage } from "@/lib/db";
 
 import Main from "@/components/layout/MainLayout";
 import css from "./news.module.css";
 import packImg from "@/public/image/pakiety-startowe2.jpg";
 
-const query = graphql(`
-  query GetTripShorts($id: Int!, $limit: Int) {
-    tripShorts(limit: $limit) {
-      ID
-      post_name
-      post_title
-      thumb_url
-      post_date
-    }
-    page(id: $id) {
-      post_content
-    }
-  }
-`);
-
 const NewsPage = async () => {
-  const { data } = await ssrClient.query(query, { id: 20167, limit: 6 });
-  const posts = data?.tripShorts
+  const tripShorts = await getPostsWithThumb(6);
+  const posts = tripShorts
     ? await Promise.all(
-        data.tripShorts.map(async (p) => {
+        tripShorts.map(async (p) => {
           const {
             base64,
             img: { src, type },
@@ -45,6 +30,7 @@ const NewsPage = async () => {
         })
       )
     : [];
+  const pageData = await getPage(20167);
 
   return (
     <Main>
@@ -118,11 +104,11 @@ const NewsPage = async () => {
       <div className="card clear-both">
         <Accordion>
           <AccordionTab header="Pakiety">
-            {data?.page && (
+            {pageData?.post_content && (
               <div
                 className="format-table"
                 dangerouslySetInnerHTML={{
-                  __html: data?.page.post_content ?? "",
+                  __html: pageData.post_content ?? "",
                 }}
               />
             )}

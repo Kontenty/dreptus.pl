@@ -5,63 +5,53 @@ import { TripsMap } from "@/components/map/TripsMap";
 import { locationsList } from "@/lib/data";
 import { sortTrips } from "@/lib/utils";
 import css from "./Trip.module.css";
-import { ssrClient, graphql } from "@/lib/graphql/urqlClient";
+import { getTripsForMap, getLocations, getTripsCount } from "@/lib/db";
 import { TripFormMap } from "@/types";
 
-const query = graphql(`
-  query GetTripsPageData($location: String) {
-    tripsDetailsList(location: $location) {
-      ID
-      title
-      slug
-      length
-      pk
-      lat
-      lng
-      type
-      number
-      category_names
-      category_slugs
-      thumb_url
-    }
-    locations {
-      name
-      count
-      slug
-    }
-    tripsCount
-  }
-`);
-type Props = {
-  searchParams: Promise<{
-    slug?: string;
-  }>;
-};
-
-export default async function Trips({ searchParams }: Readonly<Props>) {
+export default async function Trips({
+  searchParams,
+}: Readonly<{ searchParams: Promise<{ slug?: string }> }>) {
   const slug = (await searchParams)?.slug ?? "all";
-  const { data } = await ssrClient.query(query, { location: slug });
+  const rawTrips = await getTripsForMap(slug);
+  const rawLocations = await getLocations();
+  const tripsCount = await getTripsCount();
+  // Prepare locations list matching GraphQL Location type (count as string)
+  const locationsListForFilter = rawLocations.map((l) => ({
+    ...l,
+    count: l.count.toString(),
+  }));
+  // Map rawTrips to TripFormMap, converting ID and lat/lng to strings
   const trips: TripFormMap[] =
-    data?.tripsDetailsList
+    rawTrips
       ?.map((trip) => ({
-        ...trip,
+        ID: trip.ID.toString(),
+        title: trip.title,
+        slug: trip.slug,
+        length: trip.length,
+        pk: trip.pk,
+        lat: trip.lat.toString(),
+        lng: trip.lng.toString(),
+        type: trip.type,
+        number: trip.number,
+        category_names: trip.category_names,
+        category_slugs: trip.category_slugs,
+        thumb_url: trip.thumb_url,
         position: { lat: Number(trip.lat), lng: Number(trip.lng) },
-        locations: trip?.category_names
+        locations: trip.category_names
           ?.split(",")
           .filter((name) => locationsList.includes(name.toLowerCase()))
           .toString(),
-        dolinaBugu: !!trip?.category_slugs?.includes("dolina-bugu"),
+        dolinaBugu: !!trip.category_slugs?.includes("dolina-bugu"),
       }))
       .sort(sortTrips) ?? [];
-
   return (
     <GoogleProvider>
       <TripsMap trips={trips} />
       <div className={css.lists}>
         <div className="lg:pt-4" data-aos="fade-right">
           <TripListFilter
-            count={data?.tripsCount ?? 230}
-            locationsList={data?.locations}
+            count={tripsCount}
+            locationsList={locationsListForFilter}
           />
         </div>
         <div className="bg-white rounded-md p-2 flex-grow" data-aos="fade-left">
