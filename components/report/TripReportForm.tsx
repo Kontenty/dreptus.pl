@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FieldArray } from "formik";
 import { Messages } from "primereact/messages";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
@@ -8,7 +8,7 @@ import { useMountEffect } from "primereact/hooks";
 import * as Yup from "yup";
 import cl from "classnames";
 import FormikInput from "@/components/FormikInput";
-import { sendReport } from "./sendReport";
+import { sendReport, type ReportValues } from "./sendReport";
 
 type FField = {
   name: string;
@@ -26,7 +26,10 @@ interface Props {
   trips: { value: string; label: string }[];
   onSuccess: () => void;
 }
-export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
+export default function TripReportForm({
+  trips,
+  onSuccess: _onSuccess,
+}: Readonly<Props>) {
   const msg = useRef<Messages>(null);
   useMountEffect(() => {
     if (msg?.current) {
@@ -60,15 +63,39 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
           location: "",
           checked: false,
           add: "null",
+          questions: Array(30).fill({ answer: "", annotation: "" }),
         }}
-        onSubmit={(data) => {
-          fetch("/api/trip-report", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((res) => res.ok && onSuccess());
+        onSubmit={async (_values: ReportValues, helpers) => {
+          try {
+            // call server action directly with serializable values
+            const result = await sendReport(_values);
+            if (result?.success) {
+              // onSuccess();
+              // helpers.resetForm();
+            } else {
+              msg.current?.show?.([
+                {
+                  severity: "error",
+                  summary: "",
+                  detail: result?.error || "Nie udało się wysłać formularza",
+                  sticky: false,
+                  life: 6000,
+                },
+              ]);
+            }
+          } catch (e) {
+            msg.current?.show?.([
+              {
+                severity: "error",
+                summary: "",
+                detail: "Wystąpił błąd podczas wysyłania",
+                sticky: false,
+                life: 6000,
+              },
+            ]);
+          } finally {
+            helpers.setSubmitting(false);
+          }
         }}
         validationSchema={Yup.object({
           fullName: Yup.string()
@@ -81,40 +108,59 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
             .email("Nieprawidłowy adres")
             .required("Pole jest wymagane"),
           checked: Yup.boolean().oneOf([true], "Wymagane jest wyrażenie zgody"),
+          questions: Yup.array()
+            .of(
+              Yup.object({
+                answer: Yup.string(),
+                annotation: Yup.string(),
+              })
+            )
+            .length(5, "Wymagane jest min. 5 odpowiedzi"),
         })}
       >
-        {(formik) => (
-          <Form className="max-w-[1000px]" action={sendReport}>
+        {({ errors, touched, ...formik }) => (
+          <Form className="max-w-[1000px]">
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 md:gap-y-6 p-fluid">
               <div className="md:col-span-2">
                 <Dropdown
                   {...formik.getFieldProps("trip")}
                   className={cl({
-                    "p-invalid": formik.errors.trip && formik.touched.trip,
+                    "p-invalid": errors.trip && touched.trip,
                   })}
                   filter
                   options={trips}
                   placeholder="Wybierz przebytą trasę"
                 />
-                {formik.touched.trip && formik.errors.trip ? (
-                  <small className="p-error">{formik.errors.trip}</small>
+                {touched.trip && errors.trip ? (
+                  <small className="p-error">{errors.trip}</small>
                 ) : null}
               </div>
               {fields1.map((f, i) => (
                 <FormikInput key={i + f.name} {...f} />
               ))}
-              {Array.from(Array(30).keys()).map((num) => (
-                <React.Fragment key={"question" + num}>
-                  <FormikInput
-                    label={`Odpowiedź ${num + 1}`}
-                    name={`answer-${num + 1}`}
-                  />
-                  <FormikInput
-                    label={`Uwagi ${num + 1}`}
-                    name={`adnotations-${num + 1}`}
-                  />
-                </React.Fragment>
-              ))}
+              <FieldArray
+                name="questions"
+                render={() => (
+                  <>
+                    {formik.values.questions.map((_question, index) => (
+                      <React.Fragment key={`question-${index}`}>
+                        <FormikInput
+                          label={`Odpowiedź ${index + 1}`}
+                          name={`questions[${index}].answer`}
+                        />
+                        <FormikInput
+                          label={`Uwagi ${index + 1}`}
+                          name={`questions[${index}].annotation`}
+                        />
+                      </React.Fragment>
+                    ))}
+                    {typeof errors.questions === "string" &&
+                    errors.questions ? (
+                      <small className="p-error">{errors.questions}</small>
+                    ) : null}
+                  </>
+                )}
+              />
             </div>
             <Field
               className="h-6 opacity-0 pointer-events-none"
@@ -123,15 +169,12 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
             />
             <div>
               <div className="flex items-center gap-2">
-                <Checkbox checked />
-                <Checkbox checked={false} />
                 <Checkbox
                   inputId="cb1"
                   {...formik.getFieldProps("checked")}
                   checked={formik.values.checked}
                   className={cl({
-                    "p-invalid":
-                      formik.errors.checked && formik.touched.checked,
+                    "p-invalid": errors.checked && touched.checked,
                   })}
                 ></Checkbox>
                 <label className="p-checkbox-label" htmlFor="cb1">
@@ -140,9 +183,9 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
                     dreptuś.pl w celu weryfikacji zgłoszenia *
                   </small>
                 </label>
-              </div>
-              {formik.errors.checked && formik.touched.checked ? (
-                <small className="p-error">{formik.errors.checked}</small>
+              </div>{" "}
+              {errors.checked && touched.checked ? (
+                <small className="p-error">{errors.checked}</small>
               ) : null}
             </div>
             {/* <div>
@@ -153,7 +196,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
                   checked={formik.values.checked}
                   className={cl({
                     "p-invalid":
-                      formik.errors.checked && formik.touched.checked,
+                      errors.checked && touched.checked,
                   })}
                 ></Checkbox>
                 <label htmlFor="cb1" className="p-checkbox-label">

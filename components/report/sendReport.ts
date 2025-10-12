@@ -13,20 +13,16 @@ const schema = Yup.object({
     .required("Pole jest wymagane"),
   checked: Yup.boolean().oneOf([true], "Wymagane jest wyrażenie zgody"),
   add: Yup.string().oneOf(["null"]),
+  questions: Yup.array()
+    .of(
+      Yup.object({
+        answer: Yup.string(),
+        annotation: Yup.string().nullable(),
+      })
+    )
+    .length(5, "Wymagane jest min. 5 odpowiedzi"),
 });
 
-/* interface Request {
-  body: {
-    trip: string;
-    fullName: string;
-    email: string;
-    date: string;
-    location: string;
-    checked: boolean;
-    add: string;
-    [x: string]: string | boolean;
-  };
-} */
 type TData = { field: string; value: FormDataEntryValue | null }[];
 
 const serialize = (data: FormData) => {
@@ -37,97 +33,143 @@ const serialize = (data: FormData) => {
     date: "Data",
     location: "Klub / miejscowość",
   };
-  const serialized = Object.keys(data)
-    .filter((k) => !["checked", "add"].includes(k))
-    .reduce((array: TData, key) => {
-      if (key.match(/^answer-/g)) {
-        array.push({
-          field: key.replace("answer-", "Odpowiedź "),
-          value: data.get(key),
-        });
-      } else if (key.match(/^adnotations-/g)) {
-        array.push({
-          field: key.replace("adnotations-", "Uwagi "),
-          value: data.get(key),
-        });
-      } else {
-        array.push({
-          field: dict[key] || key,
-          value: data.get(key),
+  const serialized: TData = [];
+
+  for (const [key, value] of data.entries()) {
+    if (["checked", "add"].includes(key)) continue;
+
+    // Handle questions array fields (questions[0].answer, questions[0].annotation, etc.)
+    if (key.startsWith("questions[")) {
+      const match = key.match(/questions\[(\d+)\]\.(answer|annotation)/);
+      if (match) {
+        const [, index, fieldType] = match;
+        const fieldLabel = fieldType === "answer" ? "Odpowiedź" : "Uwagi";
+        serialized.push({
+          field: `${fieldLabel} ${parseInt(index) + 1}`,
+          value,
         });
       }
-      return array;
-    }, []);
+    } else {
+      serialized.push({ field: dict[key] || key, value });
+    }
+  }
   return serialized;
 };
 
-export async function sendReport(formData: FormData) {
-  "use server";
-  /* try {
-    await schema.validate(req.body);
-  } catch (error) {
-    res.status(406).send("Inapriopriate data");
-  } */
+export type ReportValues = {
+  trip: string | null;
+  fullName: string;
+  email: string;
+  date: string | null;
+  location: string;
+  checked: boolean;
+  add: string;
+  questions: { answer: string; annotation: string }[];
+};
 
-  const data = serialize(formData);
+export async function sendReport(
+  values: ReportValues
+): Promise<{ success: boolean; error?: string }> {
+  "use server";
+  // Validate essential fields
+  const body = {
+    trip: values.trip ?? "",
+    fullName: values.fullName ?? "",
+    email: values.email ?? "",
+    date: values.date ?? "",
+    location: values.location ?? "",
+    checked: Boolean(values.checked),
+    add: String(values.add ?? ""),
+  };
+  try {
+    await schema.validate(body);
+  } catch (error) {
+    return { success: false, error: "Inappropriate data" };
+  }
+
+  // Reconstruct FormData for templating and serialization from values
+  const fd = new FormData();
+  for (const [k, v] of Object.entries(values)) {
+    if (v === undefined || v === null) continue;
+    fd.append(k, String(v));
+  }
+  const data = serialize(fd);
+
+  // Group answers and annotations by question number for better readability
+  const questionData = data.filter(
+    (d) => d.field.startsWith("Odpowiedź") || d.field.startsWith("Uwagi")
+  );
+  const otherData = data.filter(
+    (d) => !d.field.startsWith("Odpowiedź") && !d.field.startsWith("Uwagi")
+  );
 
   const html = `
       <div style="color: #344979">
       <h2>Przesłane odpowiedzi</h2>
       <br>
       <table>
-      ${data.map(
-        (d) => `<tr>
-      <td>${d.field}</td>
+      ${otherData
+        .map(
+          (d) => `<tr>
+      <td><strong>${d.field}</strong></td>
       <td>${d.value}</td>
       </tr>`
-      )}
+        )
+        .join("")}
+      </table>
+      <br>
+      <h3>Odpowiedzi na pytania:</h3>
+      <table>
+      ${questionData
+        .map(
+          (d) => `<tr>
+      <td><strong>${d.field}</strong></td>
+      <td>${d.value || "(brak odpowiedzi)"}</td>
+      </tr>`
+        )
+        .join("")}
       </table>
       </div>
     `;
   const text = `
-      Przesłane odpowiedzi /n
-      ${data.map(
-        (d) => `
-      ${d.field} - ${d.value} \n
-      `
-      )}
+      Przesłane odpowiedzi \n
+      ${otherData.map((d) => `${d.field} - ${d.value}`).join("\n")}
+      \nOdpowiedzi na pytania:
+      ${questionData
+        .map((d) => `${d.field} - ${d.value || "(brak odpowiedzi)"}`)
+        .join("\n")}
     `;
-
-  const messageToAdmin = {
-    from: '"Dreptuś.pl - zgłoszenia" <zgloszenia@dreptuś.pl>', // sender address
-    to: config.mail.receiver, // list of receivers
-    subject: "Zgłoszenie udziału w Dreptuś.pl 👣", // Subject line
-    text, // plain text body
-    html, // html body
-  };
 
   const transporter = nodemailer.createTransport({
     ...config.mail.nodemailer,
     secure: true, // true for 465, false for other ports
   });
   try {
-    /*  await transporter.sendMail(messageToAdmin);
-    const userMail = formData.get("email");
+    const messageToAdmin = {
+      from: '"Dreptuś.pl - zgłoszenia" <zgloszenia@dreptuś.pl>', // sender address
+      to: config.mail.receiver, // list of receivers
+      subject: "Zgłoszenie udziału w Dreptuś.pl 👣", // Subject line
+      text, // plain text body
+      html, // html body
+    };
+
+    await transporter.sendMail(messageToAdmin);
+    const userMail = values.email;
     if (typeof userMail === "string") {
       await transporter.sendMail({
         from: '"Dreptuś.pl - zgłoszenia" <zgloszenia@dreptuś.pl>', // sender address
         to: userMail, // list of receivers
         subject: "Zgłoszenie udziału w Dreptuś.pl 👣", // Subject line
-        text: `Dziękujemy za zgłoszenie udziału w Dreptuś /n
-        Po rozpatrzeniu odpowiedzi prześlemy wyniki
-        `, // plain text body
+        text: `Dziękujemy za zgłoszenie udziału w Dreptuś\nPo rozpatrzeniu odpowiedzi prześlemy wyniki`, // plain text body
         html: `<div style="color: #344979">
         <h2>Dziękujemy za zgłoszenie udziału w Dreptuś,</h2>
-        <p>na trasie ${formData.get("trip")}</p>
+        <p>na trasie ${values.trip}</p>
         Po rozpatrzeniu odpowiedzi prześlemy wyniki</div>`, // html body
       });
-    } */
-    console.log(data);
-
-    return "ok";
+    }
+    return { success: true };
   } catch (error) {
-    return "Could not send email";
+    return { success: false, error: "Could not send email" };
   } finally {
     transporter.close();
   }
