@@ -12,7 +12,7 @@ import { SingleTripMap } from "./map/SingleTripMap";
 import ModalGallery from "./ModalGallery";
 import SlickArrow from "./SlickArrow";
 import Image from "next/image";
-import { TripDetails } from "@/types/gql/graphql";
+import { TripDetails } from "@/types";
 
 const formatDistance = (d?: number) => {
   if (!d) return;

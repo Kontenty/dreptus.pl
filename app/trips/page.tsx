@@ -15,12 +15,10 @@ export default async function Trips({
   const rawTrips = await getTripsForMap(slug);
   const rawLocations = await getLocations();
   const tripsCount = await getTripsCount();
-  // Prepare locations list matching GraphQL Location type (count as string)
   const locationsListForFilter = rawLocations.map((l) => ({
     ...l,
     count: l.count.toString(),
   }));
-  // Map rawTrips to TripFormMap, converting ID and lat/lng to strings
   const trips: TripFormMap[] =
     rawTrips
       ?.map((trip) => ({

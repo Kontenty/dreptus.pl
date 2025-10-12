@@ -7,9 +7,9 @@ import { ParticipantOnTrip } from "@/types";
 const dummyListEl = {
   id: 0,
   trip_id: 0,
-  report_date: null,
   pptCount: null,
   number: "",
+  report_date: new Date(),
 };
 
 const chunkData = (trips: ParticipantOnTrip[] | null | undefined) => {

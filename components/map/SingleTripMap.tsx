@@ -2,7 +2,7 @@ import { getIconUrl } from "@/lib/utils";
 
 import Map from "./Map";
 import Marker from "./Marker";
-import { TripDetails } from "@/types/gql/graphql";
+import { TripDetails } from "@/types";
 
 type Props = { trip: TripDetails };
 export function SingleTripMap({ trip }: Readonly<Props>) {

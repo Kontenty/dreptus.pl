@@ -1,4 +1,4 @@
-import { TripListItem } from "./gql/graphql";
+import { TripParticipant } from "@prisma/client";
 
 export type GoogleMapsT = typeof google.maps;
 
@@ -72,9 +72,16 @@ export interface TripDetails extends Post {
 }
 
 export interface TripFormMap extends TripListItem {
+  ID: string;
   locations?: string;
   dolinaBugu: boolean;
   position: google.maps.LatLngLiteral;
+  lat: string;
+  lng: string;
+  type: string;
+  number: string;
+  category_names?: string;
+  category_slugs?: string;
 }
 
 export interface TripsForMapResponse {
@@ -118,10 +125,23 @@ export type ElementorData = {
   elements: ElementorElement[];
 }[];
 
-export type ParticipantOnTrip = {
-  id: number;
-  trip_id: number;
-  report_date: Date | null;
+// GraphQL-compatible types for migration
+export interface TripListItem {
+  slug: string;
+  thumb_url: string;
+  title: string;
+}
+
+export interface Location {
+  name: string;
+  slug: string;
+  count: string;
+}
+
+export type ParticipantOnTrip = Pick<
+  TripParticipant,
+  "id" | "trip_id" | "report_date"
+> & {
   pptCount: bigint | null;
   post_title: string;
   number: string;
