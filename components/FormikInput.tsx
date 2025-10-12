@@ -12,7 +12,11 @@ type FField = {
 
 const FormikInput = ({ label, type, ...props }: FField) => {
   const [field, meta] = useField(props);
+
   if (type === "date") {
+    // Set locale based on environment - "en" for SSR, "pl" for client-side
+    const isServer = typeof window === "undefined";
+    const locale = isServer ? "en" : "pl";
     return (
       <div>
         <span className="p-float-label">
@@ -21,7 +25,7 @@ const FormikInput = ({ label, type, ...props }: FField) => {
             {...field}
             {...props}
             dateFormat="dd-mm-yy"
-            locale="pl"
+            locale={locale}
           />
           <label htmlFor={field.name}>{label}</label>
         </span>
