@@ -16,7 +16,7 @@
     "@heroicons/react": "^2.0.18",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@plaiceholder/next": "^2.5.0",
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "^6.17.1",
     "@react-google-maps/api": "^2.18.1",
     "@tailwindcss/typography": "^0.5.9",
     "aos": "^3.0.0-beta.6",
@@ -25,7 +25,7 @@
     "dotenv": "^16.3.1",
     "formik": "^2.4.2",
     "next": "15.0.3",
-    "next-auth": "^4.22.1",
+    "next-auth": "5.0.0-beta.29",
     "next-axiom": "^1.5.1",
     "nodemailer": "^6.9.3",
     "plaiceholder": "^2.5.0",
@@ -54,7 +54,7 @@
     "eslint-config-next": "^15.0.3",
     "node-html-parser": "^6.1.5",
     "postcss": "^8.4.49",
-    "prisma": "^5.22.0",
+    "prisma": "^6.17.1",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3"
   },
@@ -62,6 +62,11 @@
     "overrides": {
       "@types/react": "npm:types-react@19.0.0-rc.1",
       "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma"
+    ]
   }
 }
