@@ -5,13 +5,10 @@ import Report from "@/components/report";
 
 const getData = async () => {
   const tripsData = await getTrips();
-  const trips = tripsData
-    .map((t) => ({ ...t, number: t.wp_postmeta[0].meta_value }))
-    .sort(sortTrips)
-    .map((t) => ({
-      label: `${t.number} ${t.post_title.replace(/,?<br> ?/, ", ")}`,
-      value: `${t.number} ${t.post_title.replace(/,?<br> ?/, ", ")}`,
-    }));
+  const trips = tripsData.sort(sortTrips).map((t) => ({
+    label: `${t.number} ${t.post_title.replace(/,?<br> ?/, ", ")}`,
+    value: `${t.number} ${t.post_title.replace(/,?<br> ?/, ", ")}`,
+  }));
   return trips;
 };
 

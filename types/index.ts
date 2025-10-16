@@ -54,6 +54,11 @@ export interface PostResponse {
   thumb_url: string;
 }
 
+export interface TripListResponse
+  extends Pick<Post, "ID" | "post_title" | "post_name" | "post_date"> {
+  number: string;
+}
+
 export interface TripDetails extends Post {
   images_str: string;
   images: { guid: string; post_title: string }[];

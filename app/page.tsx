@@ -181,8 +181,7 @@ export default async function Home() {
             {trips?.map((trip) => (
               <div key={trip.ID}>
                 <Link className={css.link} href={`/trips/${trip.post_name}`}>
-                  {trip?.wp_postmeta[0].meta_value}.{" "}
-                  {trip?.post_title?.replace("<br>", " / ")} (
+                  {trip?.number}. {trip?.post_title?.replace("<br>", " / ")} (
                   {new Intl.DateTimeFormat("pl-PL", {
                     dateStyle: "short",
                   }).format(new Date(trip.post_date))}

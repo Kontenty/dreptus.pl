@@ -3,26 +3,23 @@ import {
   ParticipantOnTrip,
   PostResponse,
   TripDetails,
+  TripListResponse,
   TripsForMapResponse,
 } from "@/types";
 import { prisma } from "./prisma";
 
-export const getTrips = async (limit?: number) =>
-  prisma.wp_posts.findMany({
-    where: { post_type: "listing", post_status: "publish" },
-    select: {
-      ID: true,
-      post_date: true,
-      post_title: true,
-      post_name: true,
-      wp_postmeta: {
-        where: { meta_key: "_cth_cus_field_zxr0feyjz" },
-        select: { meta_value: true },
-      },
-    },
-    orderBy: { post_date: "desc" },
-    take: limit,
-  });
+export const getTrips = async (limit?: number) => {
+  const limitPart =
+    typeof limit === "number" ? Prisma.sql`LIMIT ${limit}` : Prisma.empty;
+  const query = Prisma.sql`SELECT p.ID, p.post_title, p.post_name, p.post_date, pm.meta_value AS number FROM wp_posts p
+  JOIN wp_postmeta pm ON p.ID = pm.post_id
+  WHERE post_type = 'listing' AND post_status = 'publish' AND post_type = 'listing' AND pm.meta_key = '_cth_cus_field_zxr0feyjz'
+  ORDER BY p.post_date DESC
+  ${limitPart}`;
+
+  const trips = await prisma.$queryRaw<TripListResponse[]>`${query}`;
+  return trips;
+};
 
 export const getTripSlugs = () =>
   prisma.wp_posts.findMany({
@@ -54,7 +51,7 @@ export const getTripBySlug = async (
       (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_latitude' ) 'lat',
       (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_longitude' ) 'lng',
       (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_i5t95ytae' ) 'pdf_images'
-  FROM wp_posts WHERE ID = ${id}`;
+      FROM wp_posts WHERE ID = ${id}`;
     const [trip] = await prisma.$queryRaw<TripDetails[]>`${query}`;
 
     const images = await prisma.wp_posts.findMany({
@@ -118,9 +115,11 @@ export const getLocations = async () => {
 };
 
 export const getPostsWithThumb = async (limit = 10): Promise<PostResponse[]> =>
-  prisma.$queryRaw<
-    PostResponse[]
-  >`SELECT p.ID, p.post_title,p.post_name, p.post_date, pm.meta_value as 'thumb_id', (SELECT p2.guid  FROM wp_posts p2 WHERE p2.ID=pm.meta_value) 'thumb_url' FROM wp_posts p JOIN wp_postmeta pm ON pm.post_id = p.ID WHERE pm.meta_key = '_thumbnail_id' AND p.post_status = 'publish' ORDER BY p.ID DESC LIMIT ${limit}`;
+  prisma.$queryRaw<PostResponse[]>(Prisma.sql`
+  SELECT p.ID, p.post_title,p.post_name, p.post_date, pm.meta_value as 'thumb_id', 
+    (SELECT p2.guid  FROM wp_posts p2 WHERE p2.ID=pm.meta_value) 'thumb_url' FROM wp_posts p 
+    JOIN wp_postmeta pm ON pm.post_id = p.ID 
+  WHERE pm.meta_key = '_thumbnail_id' AND p.post_status = 'publish' ORDER BY p.ID DESC LIMIT ${limit}`);
 
 export const getPage = (id: number) =>
   prisma.wp_posts.findUnique({ where: { ID: id } });
@@ -140,15 +139,18 @@ export const getTripsCount = () =>
 export const getParticipantsPostsList = () =>
   prisma.$queryRaw<
     PostResponse[]
-  >`SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p JOIN wp_postmeta m ON m.post_id = p.ID WHERE p.post_type = "post" AND p.post_status = "publish" AND m.meta_key = "liczba_uczestnikow" ORDER BY p.post_title;`;
+  >`SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p 
+    JOIN wp_postmeta m ON m.post_id = p.ID 
+    WHERE p.post_type = "post" AND p.post_status = "publish" AND m.meta_key = "liczba_uczestnikow" ORDER BY p.post_title;`;
 
 export const getTripsParticipants = () =>
   prisma.$queryRaw<
     ParticipantOnTrip[]
-  >`SELECT tp.id,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) as report_date, COUNT(tp.trip_id) as pptCount  FROM TripParticipant tp
-    JOIN wp_posts p ON p.ID = tp.trip_id
-    JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_cth_cus_field_zxr0feyjz'
-    GROUP  BY tp.trip_id ORDER BY p.post_title;`;
+  >(Prisma.sql`SELECT tp.id,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) AS report_date, COUNT(tp.trip_id) AS pptCount 
+    FROM TripParticipant tp
+      JOIN wp_posts p ON p.ID = tp.trip_id
+      JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_cth_cus_field_zxr0feyjz'
+    GROUP  BY tp.trip_id ORDER BY p.post_title;`);
 
 export const getParticipantSlugs = () =>
   prisma.tripParticipant.groupBy({
@@ -173,4 +175,5 @@ export const getParticipantById = (id: number) =>
 export const getAdmins = () =>
   prisma.$queryRaw<
     { user_email: string }[]
-  >`SELECT user_email FROM wp_users u JOIN wp_usermeta m ON m.user_id = u.ID WHERE m.meta_key = "wp_user_level" AND m.meta_value  > 6;`;
+  >`SELECT user_email FROM wp_users u JOIN wp_usermeta m ON m.user_id = u.ID 
+      WHERE m.meta_key = "wp_user_level" AND m.meta_value  > 6;`;

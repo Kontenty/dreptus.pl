@@ -6,7 +6,7 @@ import { ParticipantOnTrip } from "@/types";
 
 const dummyListEl = {
   id: 0,
-  trip_id: 0,
+  trip_id: BigInt(0),
   pptCount: null,
   number: "",
   report_date: new Date(),
