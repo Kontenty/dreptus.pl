@@ -15,38 +15,57 @@ const dummyListEl = {
   number: "",
 };
 
+const sectionTitles = [
+  "Z Dreptusiem po Dolinie Bugu:",
+  "Z Dreptusiem na Szlaku Jabłkowym:",
+  "Z Dreptusiem po Polsce:",
+  "Z Dreptusiem po Europie:",
+];
+
 export const getStaticProps = async () => {
   const trips = await getTripsParticipants();
   if (!trips) {
     throw new Error("lists of participants - fetch data error");
   }
-  const chunked = [...trips].sort(sortTrips).reduce((result, current) => {
-    if (/^[A-Z][0-9]{2}/.test(current.number)) {
-      result[0] ? result[0].push(current) : (result[0] = [current]);
-    } else if (/^[0-9]{3}/.test(current.number)) {
-      result[1] ? result[1].push(current) : (result[1] = [current]);
-    } else if (/^#[0-9]{2}/.test(current.number)) {
-      result[2] ? result[2].push(current) : (result[2] = [current]);
+  // safer chunking: initialize explicit section arrays and coerce number to string
+  const sections = [[], [], [], []] as (typeof trips)[];
+  const sorted = [...trips].sort(sortTrips);
+
+  for (const current of sorted) {
+    const num = String(current.number || "");
+    if (/^A[0-9]{2}/i.test(num)) {
+      sections[0].push(current);
+    } else if (/^B[0-9]{2}/i.test(num)) {
+      sections[1].push(current);
+    } else if (/^[0-9]{3}/.test(num)) {
+      sections[2].push(current);
+    } else if (/^#[0-9]{2}/.test(num)) {
+      sections[3].push(current);
     }
-    return result;
-  }, [] as (typeof trips)[]);
-  chunked.unshift([
-    { ...dummyListEl, post_title: "Z Dreptusiem po Dolinie Bugu:", id: 100001 },
-  ]);
-  chunked.splice(2, 0, [
-    { ...dummyListEl, post_title: "Z Dreptusiem po Polsce:", id: 100002 },
-  ]);
+  }
+
+  const chunked = [] as (typeof trips)[0][];
+  // inject section headers and concatenate
+  chunked.push({ ...dummyListEl, post_title: sectionTitles[0], id: 100001 });
+  chunked.push(...sections[0]);
+  chunked.push({ ...dummyListEl, post_title: sectionTitles[1], id: 100002 });
+  chunked.push(...sections[1]);
+  chunked.push({ ...dummyListEl, post_title: sectionTitles[2], id: 100003 });
+  chunked.push(...sections[2]);
+  chunked.push({ ...dummyListEl, post_title: sectionTitles[3], id: 100004 });
+  chunked.push(...sections[3]);
+
   return {
     props: {
-      trips: chunked.flat() || null,
-      revalidate: 60 * 60 * 12,
+      trips: chunked || null,
     },
+    revalidate: 60 * 60 * 12,
   };
 };
 
 const titleTmpl = (row: PostResponse) =>
-  /^Z Dreptusiem/i.test(row.post_title) ? (
-    <span className="font-bold text-lg">{row.post_title}</span>
+  sectionTitles.includes(row.post_title) ? (
+    <span className="font-semibold text-lg">{row.post_title}</span>
   ) : (
     row.post_title.replace(/,? ?<br>/, ", ")
   );
