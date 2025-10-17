@@ -1,28 +1,8 @@
 "use server";
 import nodemailer from "nodemailer";
 import * as v from "valibot";
+import { reportSchema, ReportValues } from "@/lib/schemas/reportSchema";
 import { config } from "@/lib/config";
-
-export const schema = v.object({
-  fullName: v.pipe(v.string(), v.minLength(4)),
-  date: v.pipe(v.string(), v.minLength(1)),
-  trip: v.pipe(v.string(), v.minLength(1)),
-  location: v.pipe(v.string(), v.minLength(1)),
-  email: v.pipe(v.string(), v.email()),
-  checked: v.pipe(
-    v.boolean(),
-    v.custom((val) => val === true)
-  ),
-  add: v.literal("null"),
-  questions: v.array(
-    v.object({
-      answer: v.string(),
-      annotation: v.nullable(v.string()),
-    })
-  ),
-});
-
-export type ReportValues = v.InferOutput<typeof schema>;
 
 const serialize = (data: ReportValues) => {
   const dict: Record<string, string> = {
@@ -48,7 +28,7 @@ const serialize = (data: ReportValues) => {
 export async function sendReport(values: ReportValues) {
   // Validate essential fields
   try {
-    v.parse(schema, values);
+    v.parse(reportSchema, values);
   } catch (error) {
     return { success: false, error: "Inappropriate data" };
   }

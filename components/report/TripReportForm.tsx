@@ -8,8 +8,9 @@ import cl from "classnames";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import * as v from "valibot";
+import { reportSchema } from "@/lib/schemas/reportSchema";
 import RHFInput, { type RHFField } from "@/components/RHFInput";
-import { sendReport, schema } from "@/lib/actions/sendReport";
+import { sendReport } from "@/lib/actions/sendReport";
 
 interface Props {
   trips: { value: string; label: string }[];
@@ -26,13 +27,13 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
           detail:
             "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (ogólne rozporządzenie o ochronie danych, tzw. RODO), przesyłający odpowiedzi wyraża zgodę na publikację na liście osób, które przebyły trasę na stronie internetowej https://dreptuś.pl/.",
           sticky: false,
-          life: 6000,
+          // life: 6000,
         },
       ]);
     }
   });
 
-  type FormData = v.InferOutput<typeof schema>;
+  type FormData = v.InferOutput<typeof reportSchema>;
 
   const fields1: RHFField[] = [
     { name: "fullName", label: "Imię i nazwisko" },
@@ -53,7 +54,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
   };
 
   const methods = useForm<FormData>({
-    resolver: valibotResolver(schema),
+    resolver: valibotResolver(reportSchema),
     defaultValues,
     mode: "onTouched",
   });
@@ -120,7 +121,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
                       value={field.value}
                     />
                     {errors.trip ? (
-                      <small className="p-error">Wymagane jest pole</small>
+                      <small className="p-error">{errors.trip.message}</small>
                     ) : null}
                   </>
                 )}

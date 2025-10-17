@@ -35,7 +35,7 @@ const RHFInput = ({ label, ...props }: RHFField) => {
           />
           <label htmlFor={field.name}>{label}</label>
         </span>
-        {fieldState.isTouched && fieldState.error ? (
+        {fieldState.error ? (
           <small className="p-error">
             {fieldState.error.message || "Pole jest wymagane"}
           </small>
@@ -53,12 +53,12 @@ const RHFInput = ({ label, ...props }: RHFField) => {
           onChange={(e) => field.onChange((e.target as HTMLInputElement).value)}
           onBlur={field.onBlur}
           className={cl({
-            "p-invalid": fieldState.isTouched && fieldState.error,
+            "p-invalid": fieldState.error,
           })}
         />
         <label htmlFor={field.name}>{label}</label>
       </span>
-      {fieldState.isTouched && fieldState.error ? (
+      {fieldState.error ? (
         <small className="p-error">
           {fieldState.error.message || "Pole jest wymagane"}
         </small>
