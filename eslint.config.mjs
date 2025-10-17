@@ -10,7 +10,7 @@ const compat = new FlatCompat({
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 });
-export default [
+const config = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     rules: {
@@ -22,3 +22,4 @@ export default [
     },
   },
 ];
+export default config;
