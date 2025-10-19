@@ -20,21 +20,34 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
-        <h1 className="text-2xl font-bold">Sign In</h1>
-        <label htmlFor="email">Adres email</label>
-        <InputText
-          id="email"
-          name="email"
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <Button type="submit" disabled={loading}>
-          Zaloguj się przez email
-        </Button>
-      </form>
-    </div>
+    <section className="center-hv flex-grow">
+      <div className="border-slate-200 rounded shadow-lg p-6 mx-auto w-[500px]">
+        <h1 className="text-3xl mb-4">Logowanie</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+          <label className="text-sm" htmlFor="email">
+            Adres email
+          </label>
+          <InputText
+            id="email"
+            name="email"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Button type="submit" className="block" disabled={loading}>
+            <span>Zaloguj się przez email</span>
+          </Button>
+        </form>
+        <hr className="my-8" />
+        <div className="center-hv">
+          <Button
+            outlined
+            rounded
+            icon="pi pi-github"
+            onClick={() => signIn("github", { callbackUrl: "/admin" })}
+          />
+        </div>
+      </div>
+    </section>
   );
 }

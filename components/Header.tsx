@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
+import { Session } from "next-auth";
 import Link from "next/link";
 import Image from "next/image";
-// import { signOut, useSession } from "next-auth/react";
 import { Button } from "primereact/button";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import cl from "classnames";
@@ -10,6 +10,7 @@ import cl from "classnames";
 import logo from "@/public/image/logo200.png";
 import css from "./Header.module.css";
 import { usePathname } from "next/navigation";
+import { LogOutButton } from "./auth/LogOutButton";
 
 const links = [
   { name: "Strona główna", link: "/" },
@@ -38,9 +39,11 @@ const links = [
   { name: "Kontakt", link: "/contact" },
 ];
 
-const Header = () => {
+const Header = ({ session }: { session: Session | null }) => {
   const pathname = usePathname();
-  // const { status } = useSession();
+  const isLoggedIn = !!session;
+  console.log("🚀 ~ Header ~ session:", session);
+  console.log("🚀 ~ Header ~ isLoggedIn:", isLoggedIn);
 
   const [showNav, setShowNav] = useState(false);
   const toggleNav = () => {
@@ -117,14 +120,7 @@ const Header = () => {
         })}
       </nav>
       <div className="ml-auto center-hv gap-4">
-        {/* {status === "authenticated" && (
-          <button
-            className="border-white border py-2 px-4 rounded-md text-slate-300 hover:text-slate-50 transition-colors"
-            onClick={() => signOut()}
-          >
-            Wyloguj się
-          </button>
-        )} */}
+        {isLoggedIn && <LogOutButton />}
 
         <Link href="https://www.facebook.com/trip.wycieczki">
           <i

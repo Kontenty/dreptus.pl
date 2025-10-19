@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import { Nunito, Open_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
 import AosProvider from "@/components/aos/AosProvider";
+import { auth } from "@/lib/auth";
 
 const nunito = Nunito({
   subsets: ["latin", "latin-ext"],
@@ -25,7 +26,9 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: Readonly<Props>) {
+export default async function Layout({ children }: Readonly<Props>) {
+  const session = await auth();
+
   return (
     <html lang="pl" className={`${nunito.variable} ${openSans.variable}`}>
       <head>
@@ -54,7 +57,7 @@ export default function Layout({ children }: Readonly<Props>) {
             className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
             id="root"
           >
-            <Header />
+            <Header session={session} />
             <div className="flex flex-col flex-grow">{children}</div>
             <Footer />
           </div>
