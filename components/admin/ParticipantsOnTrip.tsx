@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef, useState } from "react";
 import { log } from "next-axiom";
 import useSWR from "swr";
@@ -7,6 +9,9 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
 import EditParticipantOnTrip from "./EditParticipantOnTrip";
+import { getTripParticipants } from "@/lib/actions/get-trip-participants";
+import { removeTripParticipant } from "@/lib/actions/remove-trip-participant";
+import { editTripParticipant } from "@/lib/actions/edit-trip-participant";
 
 type Props = { tripId: number | null };
 type TripParticipant = {
@@ -19,10 +24,17 @@ type TripParticipant = {
   report_date: Date;
 };
 
-const UsersOnTrip = ({ tripId }: Props) => {
+const ParticipantsOnTrip = ({ tripId }: Props) => {
   const toast = useRef<Toast>(null);
+
+  // Fetcher function for SWR that uses the server action
+  const fetchParticipants = async (tripId: number) => {
+    return await getTripParticipants(tripId);
+  };
+
   const { data, isLoading, mutate } = useSWR(
-    tripId ? `/api/admin/get-trip-participants?id=${tripId}` : null
+    tripId ? { tripId } : null,
+    ({ tripId }) => fetchParticipants(tripId)
   );
   const [selectedTripParticipant, setSelectedTripParticipant] =
     useState<TripParticipant | null>(null);
@@ -34,70 +46,73 @@ const UsersOnTrip = ({ tripId }: Props) => {
     setDeleteDialog(true);
   };
 
-  const deleteParticipant = () => {
-    fetch(
-      `/api/admin/remove-trip-participant?id=${selectedTripParticipant?.id}`,
-      {
-        method: "DELETE",
-      }
-    )
-      .then(async (res) => {
-        setDeleteDialog(false);
+  const deleteParticipant = async () => {
+    if (!selectedTripParticipant?.id) return;
 
-        if (res.ok) {
-          toast?.current?.show({
-            severity: "success",
-            summary: "Pomyślnie",
-            detail: "usunięto uczestnika",
-            life: 3000,
-          });
-          await mutate();
-        } else {
-          toast?.current?.show({
-            severity: "error",
-            summary: "Błąd",
-            detail: "uczestnik nie został usunięty",
-            life: 3000,
-          });
-        }
-      })
-      .catch((error) =>
-        log.error("admin: delete participant error", { message: error })
-      );
+    try {
+      await removeTripParticipant(selectedTripParticipant.id);
+      setDeleteDialog(false);
+
+      toast?.current?.show({
+        severity: "success",
+        summary: "Pomyślnie",
+        detail: "usunięto uczestnika",
+        life: 3000,
+      });
+
+      await mutate();
+    } catch (error) {
+      setDeleteDialog(false);
+      log.error("admin: delete participant error", { message: error });
+
+      toast?.current?.show({
+        severity: "error",
+        summary: "Błąd",
+        detail:
+          error instanceof Error
+            ? error.message
+            : "uczestnik nie został usunięty",
+        life: 3000,
+      });
+    }
   };
 
-  const saveParticipant = (participant: TripParticipant) => {
-    fetch("/api/admin/edit-trip-participant", {
-      method: "POST",
-      body: JSON.stringify(participant),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (res) => {
-        setDeleteDialog(false);
+  const saveParticipant = async (participant: TripParticipant) => {
+    try {
+      await editTripParticipant({
+        id: participant.id,
+        participant_id: participant.participant_id,
+        trip_id: participant.trip_id,
+        answers: participant.answers,
+        report_date: participant.report_date.toISOString(),
+        name: participant.name,
+        origin: participant.origin,
+      });
 
-        if (res.ok) {
-          toast?.current?.show({
-            severity: "success",
-            summary: "Pomyślnie",
-            detail: "zapisano zmiany",
-            life: 3000,
-          });
-          await mutate();
-        } else {
-          toast?.current?.show({
-            severity: "error",
-            summary: "Błąd",
-            detail: "zmiany nie zostały zapisane",
-            life: 3000,
-          });
-        }
-      })
-      .catch((error) =>
-        log.error("admin: add participant error", { message: error })
-      )
-      .finally(() => setEditDialog(false));
+      setEditDialog(false);
+
+      toast?.current?.show({
+        severity: "success",
+        summary: "Pomyślnie",
+        detail: "zapisano zmiany",
+        life: 3000,
+      });
+
+      await mutate();
+    } catch (error) {
+      setEditDialog(false);
+      log.error("admin: edit participant error", { message: error });
+
+      toast?.current?.show({
+        severity: "error",
+        summary: "Błąd",
+        detail:
+          error instanceof Error
+            ? error.message
+            : "zmiany nie zostały zapisane",
+        life: 3000,
+      });
+    }
   };
 
   const editParticipant = (participant: TripParticipant) => {
@@ -132,7 +147,7 @@ const UsersOnTrip = ({ tripId }: Props) => {
         <DataTable
           emptyMessage="Nie znaleziono uczestników"
           loading={isLoading}
-          value={data?.participants}
+          value={data?.tripParticipants?.participants}
         >
           <Column field="name" header="Imię i Nazwisko" />
           <Column field="origin" header="Klub / miejscowość" />
@@ -210,4 +225,4 @@ const UsersOnTrip = ({ tripId }: Props) => {
   );
 };
 
-export default UsersOnTrip;
+export default ParticipantsOnTrip;
