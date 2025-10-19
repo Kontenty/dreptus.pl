@@ -1,4 +1,4 @@
-import Main from "@/components/layout/MainLayout";
+import Main from "@/components/ui/Main";
 import { sortTrips } from "@/lib/utils";
 import TripsWithParticipantsList from "@/components/TripsWithParticipantsList";
 import { getTripsParticipants } from "@/lib/db";

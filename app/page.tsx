@@ -3,7 +3,7 @@ import css from "./style.module.css";
 import odznaki from "./odznaki.jpg";
 import Link from "next/link";
 import Hero from "@/components/hero";
-import Main from "@/components/Main";
+import Main from "@/components/ui/Main";
 import Hr from "@/components/hr";
 import trip from "@/public/image/trip.jpg";
 import DreptusCarousel from "@/components/carousel/DreptusCarousel";

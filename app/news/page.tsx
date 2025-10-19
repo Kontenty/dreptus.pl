@@ -4,7 +4,7 @@ import { getPlaiceholder } from "plaiceholder";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { getPostsWithThumb, getPage } from "@/lib/db";
 
-import Main from "@/components/layout/MainLayout";
+import Main from "@/components/ui/Main";
 import css from "./news.module.css";
 import packImg from "@/public/image/pakiety-startowe2.jpg";
 

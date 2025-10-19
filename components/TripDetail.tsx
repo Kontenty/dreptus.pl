@@ -1,18 +1,18 @@
 "use client";
 import css from "./tripDetail.module.css";
-import { GoogleContext } from "@/lib/context";
-import { getIcon } from "@/lib/utils";
-import { TripFormMap } from "@/types";
-import { MapIcon, EyeIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import { useContext, useMemo, useState } from "react";
+import { MapIcon, EyeIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import Link from "next/link";
 import Slider from "react-slick";
-import MainLayout from "./layout/MainLayout";
+
+import Main from "@/components/ui/Main";
 import { SingleTripMap } from "./map/SingleTripMap";
 import ModalGallery from "./ModalGallery";
 import SlickArrow from "./SlickArrow";
-import Image from "next/image";
-import { TripDetails } from "@/types";
+import { GoogleContext } from "@/lib/context";
+import { getIcon } from "@/lib/utils";
+import type { TripDetails, TripFormMap } from "@/types";
 
 const formatDistance = (d?: number) => {
   if (!d) return;
@@ -93,7 +93,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
         <div className="p-2 md:p-6">
           <SingleTripMap trip={trip} />
         </div>
-        <MainLayout spacing="S">
+        <Main spacing="S">
           <div className="flex items-center pb-2">
             <div className="flex flex-col px-4 md:px-10 border-r-2 border-brand-green-dark">
               <h3 className="text-2xl mb-4">{trip.number}</h3>
@@ -235,7 +235,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
               ))}
             </section>
           )}
-        </MainLayout>
+        </Main>
         {selectedImage !== null && currentImageSet && (
           <ModalGallery
             full={isFullGallery}

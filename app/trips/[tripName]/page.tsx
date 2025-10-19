@@ -15,27 +15,46 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
   // Fetch main trip details
   const rawDetails = await getTripBySlug(tripName);
   if (!rawDetails) return notFound();
-  // Convert raw details to GraphQL TripDetails shape
   const tripDetails = {
-    ID: rawDetails.ID.toString(),
-    author: rawDetails.author,
-    post_title: rawDetails.post_title,
+    ID: rawDetails.ID,
+    post_author: 0, // Default value since we don't have this from rawDetails
+    post_date: "", // Default value since we don't have this from rawDetails
+    post_date_gmt: "", // Default value since we don't have this from rawDetails
     post_content: rawDetails.post_content,
-    category_names: null,
-    category_slugs: null,
-    founding: rawDetails.founding,
-    images_str: rawDetails.images_str,
+    post_title: rawDetails.post_title,
+    post_excerpt: "", // Default value since we don't have this from rawDetails
+    post_status: "publish", // Default value
+    comment_status: "open", // Default value
+    ping_status: "open", // Default value
+    post_password: "", // Default value
+    post_name: tripName, // Use the tripName as post_name
+    post_modified: "", // Default value since we don't have this from rawDetails
+    post_modified_gmt: "", // Default value since we don't have this from rawDetails
+    post_parent: 0, // Default value
+    guid: "", // Default value since we don't have this from rawDetails
+    menu_order: 0, // Default value
+    post_type: "post", // Default value
+    post_mime_type: "", // Default value
+    comment_count: 0, // Default value
+    meta_value: undefined, // Default value
+    thumb_id: undefined, // Default value
+    thumb_url: undefined,
+    number: rawDetails.number,
+    author: rawDetails.author,
+    length: rawDetails.length,
+    pk: rawDetails.pk,
     lat: rawDetails.lat,
     lng: rawDetails.lng,
-    length: rawDetails.length,
-    number: rawDetails.number,
-    pdf_images_str: rawDetails.pdf_images,
-    pdf: rawDetails.pdf,
-    images: rawDetails.images,
-    pdfImages: rawDetails.pdfImages,
-    pk: rawDetails.pk,
-    thumb_url: null,
+    founding: rawDetails.founding,
     type: rawDetails.type,
+    images_str: rawDetails.images_str,
+    images: rawDetails.images,
+    pdf: rawDetails.pdf,
+    pdf_images: rawDetails.pdf_images,
+    pdfImages: rawDetails.pdfImages,
+    position: { lat: Number(rawDetails.lat), lng: Number(rawDetails.lng) },
+    category_names: null,
+    category_slugs: null,
   };
   // Fetch list of all trips for sidebar
   const rawTrips = await getTripsForMap();

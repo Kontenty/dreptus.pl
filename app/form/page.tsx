@@ -1,4 +1,4 @@
-import Main from "@/components/layout/MainLayout";
+import Main from "@/components/ui/Main";
 import { getTrips } from "@/lib/db";
 import { sortTrips } from "@/lib/utils";
 import Report from "@/components/report";

@@ -1,9 +1,9 @@
-import MainLayout from "@/components/layout/MainLayout";
+import Main from "@/components/ui/Main";
 import Link from "next/link";
 
 export default function FourOhFour() {
   return (
-    <MainLayout>
+    <Main>
       <div className="justify-self-center" data-aos="fade-up">
         <h1 className="text-3xl mb-10">
           <span className="animate-pulse">404</span>
@@ -13,6 +13,6 @@ export default function FourOhFour() {
           Wróć do początku
         </Link>
       </div>
-    </MainLayout>
+    </Main>
   );
 }

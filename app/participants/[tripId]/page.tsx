@@ -1,6 +1,6 @@
 import React from "react";
 
-import MainLayout from "@/components/layout/MainLayout";
+import Main from "@/components/ui/Main";
 import { getParticipantById } from "@/lib/db";
 import { notFound } from "next/navigation";
 import ParticipantsOnTrip from "@/components/ParticipantsOnTrip";
@@ -30,7 +30,7 @@ const TripParticipants = async ({ params }: Props) => {
   }
 
   return (
-    <MainLayout>
+    <Main>
       <header>
         <h2 className="text-xl text-slate-700">Lista uczestników</h2>
         <h1 className="text-2xl">
@@ -38,7 +38,7 @@ const TripParticipants = async ({ params }: Props) => {
         </h1>
       </header>
       <ParticipantsOnTrip participantsList={participantsList} />
-    </MainLayout>
+    </Main>
   );
 };
 

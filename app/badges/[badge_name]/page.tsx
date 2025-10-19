@@ -1,6 +1,6 @@
 import { TabPanel, TabView } from "primereact/tabview";
 
-import Main from "@/components/layout/MainLayout";
+import Main from "@/components/ui/Main";
 import { ElementorData, ElementorElement } from "@/types";
 import { getElementorPage, getPage } from "@/lib/db";
 
