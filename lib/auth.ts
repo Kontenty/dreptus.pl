@@ -3,11 +3,13 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import type { NextAuthConfig } from "next-auth";
 import Nodemailer from "next-auth/providers/nodemailer";
+import Github from "next-auth/providers/github";
 import { config } from "@/lib/config";
 import { getAdmins } from "./db";
 
 export const authConfig: NextAuthConfig = {
   providers: [
+    Github,
     Nodemailer({
       server: config.mail.nodemailer,
       from: config.mail.sender,
