@@ -6,7 +6,7 @@ import "primeicons/primeicons.css";
 import "@/lib/initLocale";
 import { Nunito, Open_Sans } from "next/font/google";
 import { PrimeReactProvider } from "primereact/api";
-import AosProvider from "@/components/aos/AosProvider";
+import { AosProvider } from "@/components/aos/AosProvider";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { auth } from "@/lib/auth";
