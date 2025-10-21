@@ -4,37 +4,37 @@
 
 @layer tailwind-base {
   @tailwind base;
-}
-@layer tailwind-utilities {
-  @tailwind components;
-  @tailwind utilities;
-}
 
-html {
-  font-size: 15px;
-}
-
-@media screen and (min-width: 1200px) {
   html {
-    font-size: 16px;
+    font-size: 15px;
   }
-}
-@layer base {
+
+  @media screen and (min-width: 1200px) {
+    html {
+      font-size: 16px;
+    }
+  }
+
   body {
     @apply text-brand-text;
     background-color: #fcfdfd;
     font-weight: 500;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500;
+    @apply font-heading text-primary-dark;
+  }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 500;
-  @apply font-heading text-primary-dark;
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
 }
 
 .p-justify {
