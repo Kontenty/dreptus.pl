@@ -27,9 +27,8 @@ const serialize = (data: ReportValues) => {
 
 export async function sendReport(values: ReportValues) {
   // Validate essential fields
-  try {
-    v.parse(reportSchema, values);
-  } catch (error) {
+  const result = v.safeParse(reportSchema, values);
+  if (!result.success) {
     return { success: false, error: "Inappropriate data" };
   }
 

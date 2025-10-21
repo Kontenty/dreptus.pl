@@ -1,17 +1,19 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
+import * as v from "valibot";
+
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import * as Yup from "yup";
 
-const schema = Yup.object({
-  name: Yup.string().required(),
-  origin: Yup.string().required(),
-  answers: Yup.string().required(),
-  id: Yup.number().required(),
-  participant_id: Yup.number().required(),
-  report_date: Yup.string().required(),
+const schema = v.object({
+  name: v.pipe(v.string(), v.nonEmpty()),
+  origin: v.pipe(v.string(), v.nonEmpty()),
+  answers: v.pipe(v.string(), v.nonEmpty()),
+  id: v.number(),
+  participant_id: v.number(),
+  report_date: v.pipe(v.string(), v.nonEmpty()),
 });
 
 type EditTripParticipantData = {
@@ -31,14 +33,13 @@ export async function editTripParticipant(data: EditTripParticipantData) {
     throw new Error("Unauthorized: Admin access required");
   }
 
-  try {
-    // Validate input data
-    await schema.validate(data);
-  } catch (error) {
-    if (error instanceof Yup.ValidationError) {
-      throw new Error("Nieprawidłowe dane: " + error.message);
-    }
-    throw new Error("Błąd walidacji danych");
+  // Validate input data
+  const result = v.safeParse(schema, data);
+  if (!result.success) {
+    const errorMessages = result.issues
+      .map((issue) => issue.message)
+      .join(", ");
+    throw new Error("Nieprawidłowe dane: " + errorMessages);
   }
 
   try {
