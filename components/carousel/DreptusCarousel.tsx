@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Slider, { Settings } from "react-slick";
+import Slider, { type Settings } from "react-slick";
 import img1 from "@/public/image/carousel/dreptus-ver-1.jpg";
 import img2 from "@/public/image/carousel/dreptus-ver-2.jpg";
 import img3 from "@/public/image/carousel/dreptus-ver-3.jpg";
@@ -35,7 +35,7 @@ const DreptusCarousel = ({ width }: Props) => {
     slidesToScroll: 1,
   };
   return (
-    <div style={{ width: width ? width + "px" : "auto" }}>
+    <div style={{ width: width ? `${width}px` : "auto" }}>
       <Slider {...settings}>
         {imgNum.map((img) => (
           <div key={img.src}>

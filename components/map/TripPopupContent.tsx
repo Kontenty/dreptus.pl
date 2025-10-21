@@ -1,8 +1,8 @@
 import { EyeIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
+import type { TripListItem } from "@/types";
 import css from "./Map.module.css";
-import { TripListItem } from "@/types";
 
 interface PopupProps {
   trip: TripListItem | null;

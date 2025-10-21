@@ -39,7 +39,7 @@ export async function editTripParticipant(data: EditTripParticipantData) {
     const errorMessages = result.issues
       .map((issue) => issue.message)
       .join(", ");
-    throw new Error("Nieprawidłowe dane: " + errorMessages);
+    throw new Error(`Nieprawidłowe dane: ${errorMessages}`);
   }
 
   try {

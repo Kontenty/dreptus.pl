@@ -1,16 +1,16 @@
-import React, { useRef } from "react";
-import { Messages } from "primereact/messages";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import cl from "classnames";
+import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
-import { Button } from "primereact/button";
 import { useMountEffect } from "primereact/hooks";
-import cl from "classnames";
-import { useForm, Controller, FormProvider } from "react-hook-form";
-import { valibotResolver } from "@hookform/resolvers/valibot";
-import * as v from "valibot";
-import { reportSchema } from "@/lib/schemas/reportSchema";
+import { Messages } from "primereact/messages";
+import React, { useRef } from "react";
+import { Controller, FormProvider, useForm } from "react-hook-form";
+import type * as v from "valibot";
 import RHFInput, { type RHFField } from "@/components/RHFInput";
 import { sendReport } from "@/lib/actions/sendReport";
+import { reportSchema } from "@/lib/schemas/reportSchema";
 
 interface Props {
   trips: { value: string; label: string }[];
@@ -81,7 +81,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
           },
         ]);
       }
-    } catch (e) {
+    } catch (_e) {
       msg.current?.show?.([
         {
           severity: "error",

@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useRef, useState } from "react";
 import { log } from "next-axiom";
-import useSWR from "swr";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
-import EditParticipantOnTrip from "./EditParticipantOnTrip";
+import React, { useRef, useState } from "react";
+import useSWR from "swr";
+import { editTripParticipant } from "@/lib/actions/edit-trip-participant";
 import { getTripParticipants } from "@/lib/actions/get-trip-participants";
 import { removeTripParticipant } from "@/lib/actions/remove-trip-participant";
-import { editTripParticipant } from "@/lib/actions/edit-trip-participant";
+import EditParticipantOnTrip from "./EditParticipantOnTrip";
 
 type Props = { tripId: number | null };
 type TripParticipant = {
@@ -34,7 +34,7 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
 
   const { data, isLoading, mutate } = useSWR(
     tripId ? { tripId } : null,
-    ({ tripId }) => fetchParticipants(tripId)
+    ({ tripId }) => fetchParticipants(tripId),
   );
   const [selectedTripParticipant, setSelectedTripParticipant] =
     useState<TripParticipant | null>(null);

@@ -1,7 +1,6 @@
-import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import RHFInput, { type RHFField } from "@/components/RHFInput";
 import { Button } from "primereact/button";
+import { FormProvider, useForm } from "react-hook-form";
+import RHFInput, { type RHFField } from "@/components/RHFInput";
 
 type TripParticipant = {
   name: string;
@@ -43,7 +42,7 @@ const EditParticipantOnTrip = ({ participant, onSubmit, onAbort }: Props) => {
         className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 md:gap-y-6 pt-6 p-fluid"
       >
         {fields.map((f, i) => (
-          <RHFInput key={i + "_" + f.name} {...f} />
+          <RHFInput key={`${i}_${f.name}`} {...f} />
         ))}
         <div className="flex gap-4 items-start">
           <Button type="submit">Zapisz</Button>

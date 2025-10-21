@@ -1,18 +1,17 @@
 "use client";
-import css from "./tripDetail.module.css";
-import { useContext, useMemo, useState } from "react";
-import { MapIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, MapIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
+import { useContext, useMemo, useState } from "react";
 import Slider from "react-slick";
-
 import Main from "@/components/ui/Main";
-import { SingleTripMap } from "./map/SingleTripMap";
-import ModalGallery from "./ModalGallery";
-import SlickArrow from "./SlickArrow";
 import { GoogleContext } from "@/lib/context";
 import { getIcon } from "@/lib/utils";
 import type { TripDetails, TripFormMap } from "@/types";
+import ModalGallery from "./ModalGallery";
+import { SingleTripMap } from "./map/SingleTripMap";
+import SlickArrow from "./SlickArrow";
+import css from "./tripDetail.module.css";
 
 const formatDistance = (d?: number) => {
   if (!d) return;
@@ -43,16 +42,16 @@ const TripDetail = ({ trip, tripsList }: Props) => {
       tripsList &&
       googlemaps &&
       tripsList
-        .map(function (curr) {
+        .map((curr) => {
           const distance = googlemaps.geometry.spherical.computeDistanceBetween(
             { lat: Number(trip.lat), lng: Number(trip.lng) },
-            { lat: Number(curr.lat), lng: Number(curr.lng) }
+            { lat: Number(curr.lat), lng: Number(curr.lng) },
           );
           return { ...curr, distance };
         })
         .sort((a, b) => (a.distance > b.distance ? 1 : -1))
         .slice(1, 4),
-    [trip, tripsList, googlemaps]
+    [trip, tripsList, googlemaps],
   );
 
   const handleDownload = async (url: string) => {
@@ -143,7 +142,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
               variableWidth
             >
               {trip?.images?.map((img, i) => (
-                <div className="px-2" key={img?.guid + "div"}>
+                <div className="px-2" key={`${img?.guid}div`}>
                   <button onClick={() => handleImgClick(i)}>
                     <div className={css.imgBox}>
                       <Image
@@ -170,7 +169,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
                 dangerouslySetInnerHTML={{
                   __html: trip.post_content.replaceAll(
                     'style="color: #000080;',
-                    ""
+                    "",
                   ),
                 }}
               ></article>

@@ -1,8 +1,8 @@
 import { TabPanel, TabView } from "primereact/tabview";
 
 import Main from "@/components/ui/Main";
-import { ElementorData, ElementorElement } from "@/types";
 import { getElementorPage, getPage } from "@/lib/db";
+import type { ElementorData, ElementorElement } from "@/types";
 
 const dict: Record<string, { rules: number; scorers: number }> = {
   "z-dreptusiem-po-polsce": { rules: 11620, scorers: 21255 },

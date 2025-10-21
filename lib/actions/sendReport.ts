@@ -1,8 +1,8 @@
 "use server";
 import nodemailer from "nodemailer";
 import * as v from "valibot";
-import { reportSchema, ReportValues } from "@/lib/schemas/reportSchema";
 import { config } from "@/lib/config";
+import { type ReportValues, reportSchema } from "@/lib/schemas/reportSchema";
 
 const serialize = (data: ReportValues) => {
   const dict: Record<string, string> = {
@@ -44,7 +44,7 @@ export async function sendReport(values: ReportValues) {
           (d) => `<tr>
       <td><strong>${d.field}</strong></td>
       <td>${d.value}</td>
-      </tr>`
+      </tr>`,
         )
         .join("")}
       </table>
@@ -61,7 +61,7 @@ export async function sendReport(values: ReportValues) {
           <tr>
             <td><strong>${d.answer}</strong></td>
             <td>${d.annotation}</td>
-          </tr>`
+          </tr>`,
           )
           .join("")}
       </table>
@@ -104,7 +104,7 @@ export async function sendReport(values: ReportValues) {
       });
     }
     return { success: true };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, error: "Could not send email" };
   } finally {
     transporter.close();

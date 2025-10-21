@@ -1,5 +1,5 @@
-import Main from "@/components/ui/Main";
 import Link from "next/link";
+import Main from "@/components/ui/Main";
 
 export default function FourOhFour() {
   return (

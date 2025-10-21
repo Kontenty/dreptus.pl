@@ -4,7 +4,7 @@
   /* width: fit-content; */
 }
 .heroRoot > * {
-  grid-area: 1 / 1/1/1;
+  grid-area: 1 / 1 / 1 / 1;
 }
 
 .heroContent {

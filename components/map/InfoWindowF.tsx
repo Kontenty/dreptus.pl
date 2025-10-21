@@ -109,7 +109,7 @@ function InfoWindowFunctional({
       }
 
       setCloseClickListener(
-        google.maps.event.addListener(instance, "closeclick", onCloseClick)
+        google.maps.event.addListener(instance, "closeclick", onCloseClick),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,7 +122,7 @@ function InfoWindowFunctional({
       }
 
       setDomReadyClickListener(
-        google.maps.event.addListener(instance, "domready", onDomReady)
+        google.maps.event.addListener(instance, "domready", onDomReady),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,8 +138,8 @@ function InfoWindowFunctional({
         google.maps.event.addListener(
           instance,
           "content_changed",
-          onContentChanged
-        )
+          onContentChanged,
+        ),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -155,8 +155,8 @@ function InfoWindowFunctional({
         google.maps.event.addListener(
           instance,
           "position_changed",
-          onPositionChanged
-        )
+          onPositionChanged,
+        ),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,8 +172,8 @@ function InfoWindowFunctional({
         google.maps.event.addListener(
           instance,
           "zindex_changed",
-          onZindexChanged
-        )
+          onZindexChanged,
+        ),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -190,13 +190,13 @@ function InfoWindowFunctional({
 
     if (onCloseClick) {
       setCloseClickListener(
-        google.maps.event.addListener(infoWindow, "closeclick", onCloseClick)
+        google.maps.event.addListener(infoWindow, "closeclick", onCloseClick),
       );
     }
 
     if (onDomReady) {
       setDomReadyClickListener(
-        google.maps.event.addListener(infoWindow, "domready", onDomReady)
+        google.maps.event.addListener(infoWindow, "domready", onDomReady),
       );
     }
 
@@ -205,8 +205,8 @@ function InfoWindowFunctional({
         google.maps.event.addListener(
           infoWindow,
           "content_changed",
-          onContentChanged
-        )
+          onContentChanged,
+        ),
       );
     }
 
@@ -215,8 +215,8 @@ function InfoWindowFunctional({
         google.maps.event.addListener(
           infoWindow,
           "position_changed",
-          onPositionChanged
-        )
+          onPositionChanged,
+        ),
       );
     }
 
@@ -225,8 +225,8 @@ function InfoWindowFunctional({
         google.maps.event.addListener(
           infoWindow,
           "zindex_changed",
-          onZindexChanged
-        )
+          onZindexChanged,
+        ),
       );
     }
 
@@ -246,7 +246,7 @@ function InfoWindowFunctional({
       infoWindow.open(map);
     } else {
       console.log(
-        "❌ You must provide either an anchor (typically render it inside a <Marker>) or a position props for <InfoWindow>."
+        "❌ You must provide either an anchor (typically render it inside a <Marker>) or a position props for <InfoWindow>.",
       );
     }
 

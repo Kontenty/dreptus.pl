@@ -1,6 +1,6 @@
 "use client";
-import { useEffect } from "react";
 import AOS from "aos";
+import { useEffect } from "react";
 import "./customized-aos.css";
 
 const AosProvider = () => {

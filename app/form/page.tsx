@@ -1,7 +1,7 @@
+import Report from "@/components/report";
 import Main from "@/components/ui/Main";
 import { getTrips } from "@/lib/db";
 import { sortTrips } from "@/lib/utils";
-import Report from "@/components/report";
 
 const getData = async () => {
   const tripsData = await getTrips();

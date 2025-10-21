@@ -1,16 +1,15 @@
 "use client";
-import { useState } from "react";
-import { Session } from "next-auth";
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "primereact/button";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import cl from "classnames";
-
-import logo from "@/public/image/logo200.png";
-import css from "./Header.module.css";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { Session } from "next-auth";
+import { Button } from "primereact/button";
+import { useState } from "react";
+import logo from "@/public/image/logo200.png";
 import { LogOutButton } from "./auth/LogOutButton";
+import css from "./Header.module.css";
 
 const links = [
   { name: "Strona główna", link: "/" },
@@ -54,7 +53,7 @@ const Header = ({ session }: { session: Session | null }) => {
     if (pathname === link) {
       return css.activeLink;
     }
-    if (pathname?.includes(link + "/")) {
+    if (pathname?.includes(`${link}/`)) {
       return css.activeLink;
     }
     return defaultClass;

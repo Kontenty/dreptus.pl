@@ -6,7 +6,7 @@ import {
   type DataTableSelectionSingleChangeEvent,
 } from "primereact/datatable";
 import { formatDate } from "@/lib/utils";
-import { ParticipantOnTrip } from "@/types";
+import type { ParticipantOnTrip } from "@/types";
 
 const titleTmpl = (row: ParticipantOnTrip) =>
   row.post_title &&
@@ -24,7 +24,7 @@ const TripsWithParticipantsList = ({ trips }: Readonly<Props>) => {
   const router = useRouter();
 
   const handleSelect = (
-    ev: DataTableSelectionSingleChangeEvent<ParticipantOnTrip[]>
+    ev: DataTableSelectionSingleChangeEvent<ParticipantOnTrip[]>,
   ) => {
     const value = ev.value;
     if (value.trip_id) {

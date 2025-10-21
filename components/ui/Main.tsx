@@ -1,5 +1,5 @@
-import React from "react";
 import cl from "classnames";
+import type React from "react";
 
 type Props = {
   children: React.ReactNode;

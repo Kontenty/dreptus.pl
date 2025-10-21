@@ -1,7 +1,8 @@
 "use client";
-import React, { createContext, useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
-import { GoogleMapsT } from "@/types";
+import type React from "react";
+import { createContext, useEffect, useState } from "react";
+import type { GoogleMapsT } from "@/types";
 
 export const GoogleContext = createContext<{ googlemaps: GoogleMapsT | null }>({
   googlemaps: null,

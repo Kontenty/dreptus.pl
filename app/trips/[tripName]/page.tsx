@@ -1,7 +1,7 @@
+import { notFound } from "next/navigation";
 import TripDetail from "@/components/TripDetail";
 import { GoogleProvider } from "@/lib/context";
 import { getTripBySlug, getTripsForMap } from "@/lib/db";
-import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{

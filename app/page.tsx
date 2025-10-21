@@ -1,14 +1,14 @@
 import Image from "next/image";
-import css from "./style.module.css";
-import odznaki from "./odznaki.jpg";
 import Link from "next/link";
-import Hero from "@/components/hero";
-import Main from "@/components/ui/Main";
-import Hr from "@/components/hr";
-import trip from "@/public/image/trip.jpg";
 import DreptusCarousel from "@/components/carousel/DreptusCarousel";
+import Hero from "@/components/hero";
+import Hr from "@/components/hr";
+import Main from "@/components/ui/Main";
 import { getTrips, getTripsCount } from "@/lib/db";
 import { prisma } from "@/lib/prisma";
+import trip from "@/public/image/trip.jpg";
+import odznaki from "./odznaki.jpg";
+import css from "./style.module.css";
 
 const getData = async () => {
   const trips = await getTrips(10);

@@ -1,12 +1,12 @@
-import TripListFilter from "@/components/TripListFilter";
-import { GoogleProvider } from "@/lib/context";
-import TripsList from "@/components/TripsList";
 import { TripsMap } from "@/components/map/TripsMap";
+import TripListFilter from "@/components/TripListFilter";
+import TripsList from "@/components/TripsList";
+import { GoogleProvider } from "@/lib/context";
 import { locationsList } from "@/lib/data";
+import { getLocations, getTripsCount, getTripsForMap } from "@/lib/db";
 import { sortTrips } from "@/lib/utils";
+import type { TripFormMap } from "@/types";
 import css from "./Trip.module.css";
-import { getTripsForMap, getLocations, getTripsCount } from "@/lib/db";
-import { TripFormMap } from "@/types";
 
 export default async function Trips({
   searchParams,

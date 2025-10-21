@@ -1,11 +1,10 @@
 "use client";
-import React, { useState } from "react";
 import Link from "next/link";
-import { Sidebar } from "primereact/sidebar";
-
-import css from "./TripListFilter.module.css";
 import { Button } from "primereact/button";
-import { Location } from "@/types";
+import { Sidebar } from "primereact/sidebar";
+import { useState } from "react";
+import type { Location } from "@/types";
+import css from "./TripListFilter.module.css";
 
 const categories = [
   { name: "Piesze", slug: "pieszo" },
@@ -57,7 +56,7 @@ const TripListFilter = ({ count, locationsList }: Props) => {
                 >
                   {loc.name} ({loc.count})
                 </Link>
-              ) : null
+              ) : null,
             )}
             <Link href="/trips">
               <div className={css.allBtnDiv} role="button">
@@ -91,7 +90,7 @@ const TripListFilter = ({ count, locationsList }: Props) => {
                   {loc.name} ({loc.count})
                 </div>
               </Link>
-            ) : null
+            ) : null,
           )}
           <Link href="/trips">
             <div className={css.allBtnDiv} role="button">

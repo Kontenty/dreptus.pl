@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import { EyeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import {
   InfoWindow,
   Marker,
   MarkerClusterer,
   useGoogleMap,
 } from "@react-google-maps/api";
-import { getIconUrl } from "@/lib/utils";
-import { TripFormMap } from "@/types";
 import Image from "next/image";
-import { EyeIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { getIconUrl } from "@/lib/utils";
+import type { TripFormMap } from "@/types";
 import css from "./map.module.css";
 
 type Props = {

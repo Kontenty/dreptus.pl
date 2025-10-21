@@ -36,7 +36,7 @@ export async function addParticipant(data: AddParticipantData) {
     const errorMessages = result.issues
       .map((issue) => issue.message)
       .join(", ");
-    throw new Error("Nieprawidłowe dane: " + errorMessages);
+    throw new Error(`Nieprawidłowe dane: ${errorMessages}`);
   }
 
   try {

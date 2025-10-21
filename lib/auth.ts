@@ -1,10 +1,10 @@
-import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
 import type { NextAuthConfig } from "next-auth";
-import Nodemailer from "next-auth/providers/nodemailer";
+import NextAuth from "next-auth";
 import Github from "next-auth/providers/github";
+import Nodemailer from "next-auth/providers/nodemailer";
 import { config } from "@/lib/config";
+import { prisma } from "@/lib/prisma";
 import { getAdmins } from "./db";
 
 export const authConfig: NextAuthConfig = {

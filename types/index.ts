@@ -1,4 +1,4 @@
-import { TripParticipant } from "@prisma/client";
+import type { TripParticipant } from "@prisma/client";
 
 export type GoogleMapsT = typeof google.maps;
 

@@ -2,11 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
 import { Accordion, AccordionTab } from "primereact/accordion";
-import { getPostsWithThumb, getPage } from "@/lib/db";
-
 import Main from "@/components/ui/Main";
-import css from "./news.module.css";
+import { getPage, getPostsWithThumb } from "@/lib/db";
 import packImg from "@/public/image/pakiety-startowe2.jpg";
+import css from "./news.module.css";
 
 const NewsPage = async () => {
   const tripShorts = await getPostsWithThumb(6);
@@ -27,7 +26,7 @@ const NewsPage = async () => {
               blurDataURL: base64,
             },
           };
-        })
+        }),
       )
     : [];
   const pageData = await getPage(20167);

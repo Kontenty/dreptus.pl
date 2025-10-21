@@ -1,7 +1,7 @@
 "use client";
-import ParticipantsOnTrip from "@/components/admin/ParticipantsOnTrip";
 import { Dropdown } from "primereact/dropdown";
 import { useState } from "react";
+import ParticipantsOnTrip from "@/components/admin/ParticipantsOnTrip";
 
 export default function TripParticipantsManager({
   tripsParticipants,

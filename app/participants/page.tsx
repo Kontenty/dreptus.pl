@@ -1,8 +1,8 @@
-import Main from "@/components/ui/Main";
-import { sortTrips } from "@/lib/utils";
 import TripsWithParticipantsList from "@/components/TripsWithParticipantsList";
+import Main from "@/components/ui/Main";
 import { getTripsParticipants } from "@/lib/db";
-import { ParticipantOnTrip } from "@/types";
+import { sortTrips } from "@/lib/utils";
+import type { ParticipantOnTrip } from "@/types";
 
 const dummyListEl = {
   id: 0,
@@ -16,26 +16,29 @@ const chunkData = (trips: ParticipantOnTrip[] | null | undefined) => {
   if (!trips) {
     return null;
   }
-  const chunked = [...trips].sort(sortTrips).reduce((result, current) => {
-    const extendArray = (position: number) => {
-      if (!result[position]) {
-        result[position] = [];
+  const chunked = [...trips].sort(sortTrips).reduce(
+    (result, current) => {
+      const extendArray = (position: number) => {
+        if (!result[position]) {
+          result[position] = [];
+        }
+        result[position].push(current);
+      };
+      const { number } = current;
+      if (typeof number !== "string") {
+        return result;
       }
-      result[position].push(current);
-    };
-    const { number } = current;
-    if (typeof number !== "string") {
+      if (/^[A-Z]\d{2}/.test(number)) {
+        extendArray(0);
+      } else if (/^\d{3}/.test(number)) {
+        extendArray(1);
+      } else if (/^#\d{2}/.test(number)) {
+        extendArray(2);
+      }
       return result;
-    }
-    if (/^[A-Z]\d{2}/.test(number)) {
-      extendArray(0);
-    } else if (/^\d{3}/.test(number)) {
-      extendArray(1);
-    } else if (/^#\d{2}/.test(number)) {
-      extendArray(2);
-    }
-    return result;
-  }, [] as (typeof trips)[]);
+    },
+    [] as (typeof trips)[],
+  );
   chunked.unshift([
     { ...dummyListEl, post_title: "Z Dreptusiem po Dolinie Bugu:", id: 100001 },
   ]);

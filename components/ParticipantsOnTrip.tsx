@@ -1,9 +1,9 @@
 "use client";
-import React from "react";
-import { DataTable, type DataTableValue } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { DataTable, type DataTableValue } from "primereact/datatable";
 
 import { formatDate } from "@/lib/utils";
+
 interface Props {
   participantsList: DataTableValue[];
 }

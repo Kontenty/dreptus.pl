@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import {
+import type {
   ParticipantOnTrip,
   PostResponse,
   TripDetails,
@@ -28,7 +28,7 @@ export const getTripSlugs = () =>
   });
 
 export const getTripBySlug = async (
-  slug: string
+  slug: string,
 ): Promise<TripDetails | null> => {
   try {
     const idData = await prisma.wp_posts.findFirst({
@@ -69,13 +69,13 @@ export const getTripBySlug = async (
     });
 
     return { ...trip, images, pdfImages };
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 };
 
 export const getTripsForMap = async (
-  location = "all"
+  location = "all",
 ): Promise<TripsForMapResponse[]> => {
   const locationQuery = location === "all" ? "" : `AND t.slug = ${location}`;
 

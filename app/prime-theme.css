@@ -352,7 +352,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-datepicker .p-datepicker-header .p-datepicker-prev:enabled:hover,
 .p-datepicker .p-datepicker-header .p-datepicker-next:enabled:hover {
@@ -372,7 +375,10 @@
 .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year,
 .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month {
   color: #495057;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   font-weight: 600;
   padding: 0.5rem;
 }
@@ -446,7 +452,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-datepicker .p-timepicker button:enabled:hover {
   color: #343a40;
@@ -556,7 +565,10 @@
 .p-cascadeselect {
   background: #ffffff;
   border: 1px solid #ced4da;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 6px;
 }
@@ -693,7 +705,10 @@
   height: 22px;
   color: #4b5563;
   border-radius: 6px;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   outline-color: transparent;
 }
@@ -713,7 +728,10 @@
   height: 22px;
   color: #4b5563;
   border-radius: 6px;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   outline-color: transparent;
 }
@@ -870,7 +888,10 @@
 .p-dropdown {
   background: #ffffff;
   border: 1px solid #ced4da;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 6px;
 }
@@ -1221,7 +1242,10 @@
 }
 .p-inputswitch .p-inputswitch-slider {
   background: #ced4da;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 30px;
 }
@@ -1265,7 +1289,10 @@
   background: #ffffff;
   padding: 0.75rem 0.75rem;
   border: 1px solid #ced4da;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   appearance: none;
   border-radius: 6px;
@@ -1457,7 +1484,10 @@
 .p-multiselect {
   background: #ffffff;
   border: 1px solid #ced4da;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 6px;
 }
@@ -1475,7 +1505,10 @@
 }
 .p-multiselect .p-multiselect-label {
   padding: 0.75rem 0.75rem;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .p-multiselect .p-multiselect-label.p-placeholder {
@@ -1559,7 +1592,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-multiselect-panel .p-multiselect-header .p-multiselect-close:enabled:hover {
   color: #343a40;
@@ -1670,7 +1706,10 @@
   height: 22px;
   color: #495057;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .p-radiobutton .p-radiobutton-box:not(.p-disabled):not(.p-highlight):hover {
@@ -1724,7 +1763,10 @@
 }
 .p-rating .p-rating-item .p-rating-icon {
   color: #495057;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   font-size: 1.143rem;
 }
@@ -1754,7 +1796,10 @@
   background: #ffffff;
   border: 1px solid #ced4da;
   color: #495057;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .p-selectbutton .p-button .p-button-icon-left,
@@ -1821,7 +1866,10 @@
   background: #ffffff;
   border: 2px solid var(--primary-color);
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .p-slider .p-slider-handle:focus {
@@ -1840,7 +1888,10 @@
 .p-treeselect {
   background: #ffffff;
   border: 1px solid #ced4da;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 6px;
 }
@@ -1855,7 +1906,10 @@
 }
 .p-treeselect .p-treeselect-label {
   padding: 0.75rem 0.75rem;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .p-treeselect .p-treeselect-label.p-placeholder {
@@ -1934,7 +1988,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-treeselect-panel .p-treeselect-header .p-treeselect-close:enabled:hover {
   color: #343a40;
@@ -1969,7 +2026,10 @@
   background: #ffffff;
   border: 1px solid #ced4da;
   color: #495057;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .p-togglebutton.p-button .p-button-icon-left,
@@ -2015,7 +2075,10 @@
   border: 1px solid var(--primary-color);
   padding: 0.75rem 1.25rem;
   font-size: 1rem;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 6px;
 }
@@ -2126,7 +2189,9 @@
   background-color: #ffffff;
 }
 .p-button.p-button-raised {
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  box-shadow:
+    0 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 .p-button.p-button-rounded {
@@ -3125,7 +3190,9 @@
   color: #6c757d;
 }
 .p-splitbutton.p-button-raised {
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  box-shadow:
+    0 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 .p-splitbutton.p-button-rounded {
@@ -3444,7 +3511,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   margin: 0.5rem;
 }
 .p-carousel .p-carousel-content .p-carousel-prev:enabled:hover,
@@ -3470,7 +3540,10 @@
   background-color: #ced4da;
   width: 2rem;
   height: 0.5rem;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   border-radius: 0;
 }
 .p-carousel .p-carousel-indicators .p-carousel-indicator button:hover {
@@ -3588,7 +3661,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-datatable .p-datatable-tbody > tr > td .p-row-toggler:enabled:hover,
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-init:enabled:hover,
@@ -3861,7 +3937,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-column-filter-menu-button:hover {
   color: #343a40;
@@ -3891,7 +3970,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-column-filter-clear-button:hover {
   color: #343a40;
@@ -4013,7 +4095,10 @@
   background: var(--primary-color);
   border: 1px solid var(--primary-color);
   font-size: 1rem;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 6px;
   display: flex;
@@ -4040,7 +4125,7 @@
   font-size: 1rem;
 }
 .fc.fc-unthemed .fc-toolbar .fc-button .fc-icon-chevron-left:before {
-  content: "\e900";
+  content: "e900";
 }
 .fc.fc-unthemed .fc-toolbar .fc-button .fc-icon-chevron-right {
   font-family: "PrimeIcons" !important;
@@ -4048,7 +4133,7 @@
   font-size: 1rem;
 }
 .fc.fc-unthemed .fc-toolbar .fc-button .fc-icon-chevron-right:before {
-  content: "\e901";
+  content: "e901";
 }
 .fc.fc-unthemed .fc-toolbar .fc-button:focus {
   outline: 0 none;
@@ -4061,7 +4146,10 @@
   background: #ffffff;
   border: 1px solid #ced4da;
   color: #495057;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .fc.fc-unthemed .fc-toolbar .fc-button.fc-dayGridMonth-button:hover,
@@ -4153,14 +4241,17 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .fc.fc-theme-standard
   .fc-view-harness
   .fc-popover
   .fc-popover-header
   .fc-popover-close:before {
-  content: "\e90b";
+  content: "e90b";
 }
 .fc.fc-theme-standard
   .fc-view-harness
@@ -4217,7 +4308,10 @@
   background: var(--primary-color);
   border: 1px solid var(--primary-color);
   font-size: 1rem;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 6px;
 }
@@ -4248,7 +4342,7 @@
   font-size: 1rem;
 }
 .fc.fc-theme-standard .fc-toolbar .fc-button .fc-icon-chevron-left:before {
-  content: "\e900";
+  content: "e900";
 }
 .fc.fc-theme-standard .fc-toolbar .fc-button .fc-icon-chevron-right {
   font-family: "PrimeIcons" !important;
@@ -4256,7 +4350,7 @@
   font-size: 1rem;
 }
 .fc.fc-theme-standard .fc-toolbar .fc-button .fc-icon-chevron-right:before {
-  content: "\e901";
+  content: "e901";
 }
 .fc.fc-theme-standard .fc-toolbar .fc-button:focus {
   outline: 0 none;
@@ -4269,7 +4363,10 @@
   background: #ffffff;
   border: 1px solid #ced4da;
   color: #495057;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button:hover,
@@ -4378,7 +4475,9 @@
   border: 0 none;
   color: #495057;
   background: transparent;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 .p-orderlist .p-orderlist-list .p-orderlist-item:not(.p-highlight):hover {
   background: #e9ecef;
@@ -4589,7 +4688,9 @@
   border: 0 none;
   color: #495057;
   background: transparent;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 .p-picklist .p-picklist-list .p-picklist-item:not(.p-highlight):hover {
   background: #e9ecef;
@@ -4621,16 +4722,16 @@
     margin-right: 0;
   }
   .p-picklist .p-picklist-transfer-buttons .pi-angle-right:before {
-    content: "\e930";
+    content: "e930";
   }
   .p-picklist .p-picklist-transfer-buttons .pi-angle-double-right:before {
-    content: "\e92c";
+    content: "e92c";
   }
   .p-picklist .p-picklist-transfer-buttons .pi-angle-left:before {
-    content: "\e933";
+    content: "e933";
   }
   .p-picklist .p-picklist-transfer-buttons .pi-angle-double-left:before {
-    content: "\e92f";
+    content: "e92f";
   }
 }
 .p-tree {
@@ -4656,7 +4757,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-tree
   .p-tree-container
@@ -4853,7 +4957,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   margin-right: 0.5rem;
 }
 .p-treetable .p-treetable-tbody > tr > td .p-treetable-toggler:enabled:hover {
@@ -5062,7 +5169,9 @@
 .p-card {
   background: #ffffff;
   color: #495057;
-  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+  box-shadow:
+    0 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14),
     0 1px 3px 0 rgba(0, 0, 0, 0.12);
   border-radius: 6px;
 }
@@ -5102,7 +5211,10 @@
 }
 .p-fieldset.p-fieldset-toggleable .p-fieldset-legend {
   padding: 0;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-fieldset.p-fieldset-toggleable .p-fieldset-legend a {
   padding: 1.25rem;
@@ -5169,7 +5281,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-panel .p-panel-header .p-panel-header-icon:enabled:hover {
   color: #343a40;
@@ -5208,7 +5323,10 @@
   color: #495057;
 }
 .p-splitter .p-splitter-gutter {
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   background: #f8f9fa;
 }
 .p-splitter .p-splitter-gutter .p-splitter-gutter-handle {
@@ -5269,7 +5387,9 @@
   background: #ffffff;
   color: var(--primary-color);
   width: 3rem;
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  box-shadow:
+    0 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
   border-radius: 0;
 }
@@ -5365,7 +5485,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   margin-right: 0.5rem;
 }
 .p-dialog .p-dialog-header .p-dialog-header-icon:enabled:hover {
@@ -5425,7 +5548,10 @@
   color: #ffffff;
   width: 2rem;
   height: 2rem;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   border-radius: 50%;
   position: absolute;
   top: -1rem;
@@ -5469,7 +5595,10 @@
   border: 0 none;
   background: transparent;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-sidebar .p-sidebar-header .p-sidebar-close:enabled:hover,
 .p-sidebar .p-sidebar-header .p-sidebar-icon:enabled:hover {
@@ -6170,7 +6299,10 @@
     height: 2rem;
     color: #6c757d;
     border-radius: 50%;
-    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      box-shadow 0.2s;
   }
   .p-menubar .p-menubar-button:hover {
     color: #6c757d;
@@ -6760,7 +6892,10 @@
   height: 2rem;
   border-radius: 50%;
   background: transparent;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-message .p-message-close:hover {
   background: rgba(255, 255, 255, 0.3);
@@ -6856,7 +6991,10 @@
   height: 2rem;
   border-radius: 50%;
   background: transparent;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-toast .p-toast-message .p-toast-icon-close:hover {
   background: rgba(255, 255, 255, 0.3);
@@ -6913,7 +7051,10 @@
   color: #f8f9fa;
   width: 4rem;
   height: 4rem;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   border-radius: 50%;
 }
 .p-galleria .p-galleria-close .p-galleria-close-icon {
@@ -6928,7 +7069,10 @@
   color: #f8f9fa;
   width: 4rem;
   height: 4rem;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   border-radius: 6px;
   margin: 0 0.5rem;
 }
@@ -6952,7 +7096,10 @@
   background-color: #ced4da;
   width: 1rem;
   height: 1rem;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   border-radius: 50%;
 }
 .p-galleria .p-galleria-indicators .p-galleria-indicator button:hover {
@@ -7003,7 +7150,10 @@
   color: #f8f9fa;
   width: 2rem;
   height: 2rem;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   border-radius: 50%;
 }
 .p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-prev:hover,
@@ -7033,7 +7183,10 @@
 .p-image-preview-indicator {
   background-color: transparent;
   color: #f8f9fa;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 
 .p-image-preview-container:hover > .p-image-preview-indicator {
@@ -7050,7 +7203,10 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   margin-right: 0.5rem;
 }
 .p-image-action.p-link:last-child {
@@ -7111,7 +7267,10 @@
 }
 .p-chip .p-chip-remove-icon {
   border-radius: 6px;
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
   margin-left: 0.5rem;
 }
 .p-chip .p-chip-remove-icon:focus {
@@ -7125,7 +7284,10 @@
   height: 3rem;
   border-radius: 50%;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
 }
 .p-scrolltop.p-link {
   background: rgba(0, 0, 0, 0.7);
@@ -7183,7 +7345,10 @@
 .p-inplace .p-inplace-display {
   padding: 0.75rem 0.75rem;
   border-radius: 6px;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s,
     box-shadow 0.2s;
 }
 .p-inplace .p-inplace-display:not(.p-disabled):hover {
@@ -7294,11 +7459,17 @@
 }
 
 .p-accordion .p-accordion-header .p-accordion-header-link {
-  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 .p-tabview .p-tabview-nav .p-tabview-ink-bar {
   z-index: 1;
@@ -7319,25 +7490,46 @@
 }
 
 .p-button:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #9dc1fb, 0 1px 2px 0 black;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #9dc1fb,
+    0 1px 2px 0 black;
 }
 .p-button.p-button-secondary:enabled:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #b0b9c6, 0 1px 2px 0 black;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #b0b9c6,
+    0 1px 2px 0 black;
 }
 .p-button.p-button-success:enabled:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #88eaac, 0 1px 2px 0 black;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #88eaac,
+    0 1px 2px 0 black;
 }
 .p-button.p-button-info:enabled:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #9dc1fb, 0 1px 2px 0 black;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #9dc1fb,
+    0 1px 2px 0 black;
 }
 .p-button.p-button-warning:enabled:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #facf85, 0 1px 2px 0 black;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #facf85,
+    0 1px 2px 0 black;
 }
 .p-button.p-button-help:enabled:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #d4aafb, 0 1px 2px 0 black;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #d4aafb,
+    0 1px 2px 0 black;
 }
 .p-button.p-button-danger:enabled:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #f7a2a2, 0 1px 2px 0 black;
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px #f7a2a2,
+    0 1px 2px 0 black;
 }
 
 .p-datatable .p-datatable-tbody > tr.p-datatable-dragpoint-top > td {

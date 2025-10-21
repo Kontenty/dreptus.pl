@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import type { JSX } from "react";
 import { CyclistPinIcon, FootmanPinIcon } from "@/components/icons";
 import { activityCode } from "./data";
 
@@ -30,7 +30,7 @@ export function getIconUrl(code: string | null | undefined) {
 
 export const sortTrips = (
   a: { number?: string | null },
-  b: { number?: string | null }
+  b: { number?: string | null },
 ) => {
   if (typeof a.number !== "string" || typeof b.number !== "string") {
     return 0;
@@ -78,7 +78,7 @@ export const formatDate = (date: string | Date) => {
     return "";
   }
   const dateObject = typeof date === "string" ? new Date(date) : date;
-  if (isNaN(dateObject.getTime())) {
+  if (Number.isNaN(dateObject.getTime())) {
     return "";
   }
   return new Intl.DateTimeFormat("pl-PL", {

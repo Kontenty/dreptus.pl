@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Slider, { Settings } from "react-slick";
+import Slider, { type Settings } from "react-slick";
 
 import crs0 from "@/public/image/main-page/crs-0.png";
 import crs1 from "@/public/image/main-page/crs-1.jpg";

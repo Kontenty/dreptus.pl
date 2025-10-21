@@ -1,7 +1,5 @@
-import React, { useReducer, useRef, useState } from "react";
-import { log } from "next-axiom";
-import useSWR, { useSWRConfig } from "swr";
 import type { Participant } from "@prisma/client";
+import { log } from "next-axiom";
 import {
   AutoComplete,
   type AutoCompleteCompleteEvent,
@@ -10,8 +8,10 @@ import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
-import { Nullable } from "primereact/ts-helpers";
 import { Toast } from "primereact/toast";
+import type { Nullable } from "primereact/ts-helpers";
+import { useReducer, useRef, useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
 
 type ExtParticipant = {
   nameExt: string;
@@ -81,7 +81,7 @@ function reducer(state: State, action: Action) {
 const AddParticipantOnTrip = ({ tripsList }: Props) => {
   const { mutate } = useSWRConfig();
   const { data: participantsList } = useSWR<Participant[]>(
-    "/api/admin/get-participants"
+    "/api/admin/get-participants",
   );
   const toast = useRef<Toast>(null);
   const [suggestions, setSuggestions] = useState<
@@ -146,7 +146,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
         }
       })
       .catch((error) =>
-        log.error("admin: add participant error", { message: error })
+        log.error("admin: add participant error", { message: error }),
       );
   };
 

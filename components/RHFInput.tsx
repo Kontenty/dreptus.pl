@@ -1,9 +1,8 @@
 "use client";
-import React from "react";
-import { useFormContext, useController } from "react-hook-form";
-import { InputText } from "primereact/inputtext";
-import { Calendar } from "primereact/calendar";
 import cl from "classnames";
+import { Calendar } from "primereact/calendar";
+import { InputText } from "primereact/inputtext";
+import { useController, useFormContext } from "react-hook-form";
 
 export type RHFField = {
   name: string;

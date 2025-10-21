@@ -19,7 +19,7 @@ const btn = cva(
     defaultVariants: {
       side: "left",
     },
-  }
+  },
 );
 const svgClass = cva(["w-9 h-9"], {
   variants: {

@@ -4,11 +4,11 @@ import "./prime-theme.css";
 import "primeicons/primeicons.css";
 
 import "@/lib/initLocale";
-import { PrimeReactProvider } from "primereact/api";
-import Header from "@/components/Header";
 import { Nunito, Open_Sans } from "next/font/google";
-import Footer from "@/components/Footer";
+import { PrimeReactProvider } from "primereact/api";
 import AosProvider from "@/components/aos/AosProvider";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { auth } from "@/lib/auth";
 
 const nunito = Nunito({

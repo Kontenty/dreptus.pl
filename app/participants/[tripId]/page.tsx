@@ -1,16 +1,14 @@
-import React from "react";
-
-import Main from "@/components/ui/Main";
-import { getParticipantById } from "@/lib/db";
 import { notFound } from "next/navigation";
 import ParticipantsOnTrip from "@/components/ParticipantsOnTrip";
+import Main from "@/components/ui/Main";
+import { getParticipantById } from "@/lib/db";
 
 const cleanTitle = (title: string | undefined) =>
   title ? title.replace("<br>", " ").replaceAll("  ", " ") : "";
 
 const getData = async (id: string) => {
   const tripId = Number(id);
-  if (isNaN(tripId)) return null;
+  if (Number.isNaN(tripId)) return null;
   const participants = await getParticipantById(tripId);
   if (!participants?.length) return null;
   return participants.map((el) => ({ ...el, ...el.participant }));

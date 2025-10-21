@@ -1,11 +1,11 @@
 "use client";
 import { useContext, useState } from "react";
-import { TripFormMap } from "@/types";
+import { GoogleContext } from "@/lib/context";
+import type { TripFormMap } from "@/types";
+import { InfoWindowF } from "./InfoWindowF";
 import Map from "./Map";
 import MarkerCluster from "./MarkerCluster";
-import { InfoWindowF } from "./InfoWindowF";
 import { PopupContent } from "./TripPopupContent";
-import { GoogleContext } from "@/lib/context";
 
 type Props = { trips: TripFormMap[] };
 
