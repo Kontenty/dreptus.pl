@@ -8,6 +8,7 @@ import { AosProvider } from "@/components/aos/AosProvider";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { auth } from "@/lib/auth";
+import { InitLocale } from "@/lib/initLocale";
 
 const nunito = Nunito({
   subsets: ["latin", "latin-ext"],
@@ -49,8 +50,9 @@ export default async function Layout({ children }: Readonly<Props>) {
         <meta content="https://xn--dereptu-8ib.pl" property="og:url" />
       </head>
       <body>
-        <AosProvider />
-        <PrimeReactProvider>
+        <InitLocale />
+        <PrimeReactProvider value={{ locale: "pl" }}>
+          <AosProvider />
           <div
             className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
             id="root"
