@@ -41,8 +41,6 @@ const links = [
 const Header = ({ session }: { session: Session | null }) => {
   const pathname = usePathname();
   const isLoggedIn = !!session;
-  console.log("🚀 ~ Header ~ session:", session);
-  console.log("🚀 ~ Header ~ isLoggedIn:", isLoggedIn);
 
   const [showNav, setShowNav] = useState(false);
   const toggleNav = () => {
