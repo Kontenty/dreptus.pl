@@ -1,36 +1,45 @@
 import { loadEnvConfig } from "@next/env";
+import * as V from "valibot";
 
 const projectDir = process.cwd();
 loadEnvConfig(projectDir);
 
-const requiredEnvs = [
-  "MAIL_HOST",
-  "MAIL_USER",
-  "MAIL_PASS",
-  "MAIL_TO",
-  "MAIL_FROM",
-];
+const serverEnvSchema = V.object({
+  MAIL_HOST: V.pipe(V.string(), V.minLength(3, "MAIL_HOST is required.")),
+  MAIL_PORT: V.fallback(
+    V.pipe(V.string(), V.transform(Number), V.number()),
+    587,
+  ),
+  MAIL_USER: V.pipe(V.string(), V.minLength(1, "MAIL_USER is required.")),
+  MAIL_PASS: V.pipe(V.string(), V.minLength(1, "MAIL_PASS is required.")),
+  MAIL_TO: V.pipe(V.string(), V.nonEmpty("MAIL_TO is required.")),
+  MAIL_FROM: V.pipe(V.string(), V.minLength(1, "MAIL_FROM is required.")),
+});
 
-for (const env of requiredEnvs) {
-  if (process.env[env])
-    throw new Error(`Missing required environment variable: ${env}`);
+const parsedServerEnv = V.safeParse(serverEnvSchema, process.env);
+
+if (!parsedServerEnv.success) {
+  console.error(
+    "❌ Invalid environment variables:",
+    parsedServerEnv.issues.map((i) => i.message),
+  );
+  throw new Error("Invalid environment variables. Check the logs above.");
 }
+
+const env = parsedServerEnv.output;
 
 export const config = {
   mail: {
     nodemailer: {
-      host: process.env.MAIL_HOST ?? "",
-      port: process.env.MAIL_PORT ? Number(process.env.MAIL_PORT) : 587,
+      host: env.MAIL_HOST,
+      port: env.MAIL_PORT,
+      secure: true,
       auth: {
-        user: process.env.MAIL_USER ?? "",
-        pass: process.env.MAIL_PASS ?? "",
+        user: env.MAIL_USER,
+        pass: env.MAIL_PASS,
       },
     },
-    user: process.env.MAIL_USER ?? "",
-    password: process.env.MAIL_PASS ?? "",
-    port: process.env.MAIL_PORT ? Number(process.env.MAIL_PORT) : 587,
-    host: process.env.MAIL_HOST ?? "",
-    receiver: process.env.MAIL_TO ?? "",
-    sender: process.env.MAIL_FROM ?? "",
+    receiver: env.MAIL_TO,
+    sender: env.MAIL_FROM,
   },
 };
