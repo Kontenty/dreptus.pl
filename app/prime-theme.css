@@ -4120,7 +4120,7 @@
   box-shadow: 0 0 0 0.2rem #bfdbfe;
 }
 .fc.fc-unthemed .fc-toolbar .fc-button .fc-icon-chevron-left {
-  font-family: "PrimeIcons" !important;
+  font-family: "PrimeIcons", sans-serif !important;
   text-indent: 0;
   font-size: 1rem;
 }
@@ -4128,7 +4128,7 @@
   content: "e900";
 }
 .fc.fc-unthemed .fc-toolbar .fc-button .fc-icon-chevron-right {
-  font-family: "PrimeIcons" !important;
+  font-family: "PrimeIcons", sans-serif !important;
   text-indent: 0;
   font-size: 1rem;
 }
@@ -4233,7 +4233,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  font-family: "PrimeIcons" !important;
+  font-family: "PrimeIcons", sans-serif !important;
   font-size: 1rem;
   width: 2rem;
   height: 2rem;
@@ -4337,7 +4337,7 @@
   border: 1px solid var(--primary-color);
 }
 .fc.fc-theme-standard .fc-toolbar .fc-button .fc-icon-chevron-left {
-  font-family: "PrimeIcons" !important;
+  font-family: "PrimeIcons", sans-serif !important;
   text-indent: 0;
   font-size: 1rem;
 }
@@ -4345,7 +4345,7 @@
   content: "e900";
 }
 .fc.fc-theme-standard .fc-toolbar .fc-button .fc-icon-chevron-right {
-  font-family: "PrimeIcons" !important;
+  font-family: "PrimeIcons", sans-serif !important;
   text-indent: 0;
   font-size: 1rem;
 }
@@ -6663,7 +6663,6 @@
 }
 
 .p-steps .p-steps-item .p-menuitem-link {
-  background: transparent;
   transition: box-shadow 0.2s;
   border-radius: 6px;
   background: #ffffff;

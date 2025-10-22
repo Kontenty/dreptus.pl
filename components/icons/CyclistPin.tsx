@@ -8,6 +8,8 @@ type Props = {
 const Icon = ({ color = colors.sky[700], height = 50 }: Props) => {
   return (
     <svg
+      role="img"
+      aria-label="Cyclist pin"
       fill="none"
       height={height}
       viewBox="0 0 40 50"

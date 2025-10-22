@@ -18,10 +18,3 @@
 .btnAnimated {
   width: 0;
 }
-
-@keyframes hideBtn {
-  from {
-  }
-  to {
-  }
-}

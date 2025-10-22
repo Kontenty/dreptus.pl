@@ -81,7 +81,7 @@ function reducer(state: State, action: Action) {
 const AddParticipantOnTrip = ({ tripsList }: Props) => {
   const { mutate } = useSWRConfig();
   const { data: participantsList } = useSWR<Participant[]>(
-    "/api/admin/get-participants",
+    "/api/admin/get-participants"
   );
   const toast = useRef<Toast>(null);
   const [suggestions, setSuggestions] = useState<
@@ -146,7 +146,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
         }
       })
       .catch((error) =>
-        log.error("admin: add participant error", { message: error }),
+        log.error("admin: add participant error", { message: error })
       );
   };
 
@@ -208,7 +208,6 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
           <Calendar
             dateFormat="dd-mm-yy"
             id="ppt-date"
-            locale="pl"
             maxDate={new Date()}
             onChange={(e) => dispatch({ value: e.value, type: "date" })}
             value={state.date}

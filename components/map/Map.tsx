@@ -20,11 +20,12 @@ interface Props extends google.maps.MapOptions {
   size?: "sm" | "lg";
 }
 
-const Map = ({ children, size = "lg", ...mapProps }: Props) => {
+const MapComponent = ({ children, size = "lg", ...mapProps }: Props) => {
   const [gmap, setGmap] = useState<google.maps.Map | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const { googlemaps } = useContext(GoogleContext);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <loop>
   useEffect(() => {
     const loadGmap = async () => {
       if (googlemaps && mapRef?.current) {
@@ -48,6 +49,7 @@ const Map = ({ children, size = "lg", ...mapProps }: Props) => {
     if (gmap && mapProps) {
       gmap.setOptions(mapProps);
     }
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <need this>
   }, [gmap, mapProps]);
 
   return googlemaps ? (
@@ -59,4 +61,4 @@ const Map = ({ children, size = "lg", ...mapProps }: Props) => {
   ) : null;
 };
 
-export default React.memo(Map);
+export default React.memo(MapComponent);

@@ -38,9 +38,9 @@ const TripListFilter = ({ count, locationsList }: Props) => {
                 key={loc.slug}
                 onClick={() => setShowMenu(false)}
               >
-                <div className={css.btnDiv} role="button">
+                <button className={css.btnDiv} type="button">
                   {loc.name}
-                </div>
+                </button>
               </Link>
             ))}
           </div>
@@ -59,9 +59,9 @@ const TripListFilter = ({ count, locationsList }: Props) => {
               ) : null,
             )}
             <Link href="/trips">
-              <div className={css.allBtnDiv} role="button">
+              <button className={css.allBtnDiv} type="button">
                 Wszystkie ({count})
-              </div>
+              </button>
             </Link>
           </div>
         </div>
@@ -73,9 +73,9 @@ const TripListFilter = ({ count, locationsList }: Props) => {
               href={{ pathname: "/trips", query: { slug: loc.slug } }}
               key={loc.slug}
             >
-              <div className={css.btnDiv} role="button">
+              <button className={css.btnDiv} type="button">
                 {loc.name}
-              </div>
+              </button>
             </Link>
           ))}
         </div>
@@ -86,16 +86,16 @@ const TripListFilter = ({ count, locationsList }: Props) => {
                 href={{ pathname: "/trips", query: { slug: loc.slug } }}
                 key={loc.slug}
               >
-                <div className={css.btnDiv} role="button">
+                <button className={css.btnDiv} type="button">
                   {loc.name} ({loc.count})
-                </div>
+                </button>
               </Link>
             ) : null,
           )}
           <Link href="/trips">
-            <div className={css.allBtnDiv} role="button">
+            <button className={css.allBtnDiv} type="button">
               Wszystkie ({count})
-            </div>
+            </button>
           </Link>
         </div>
       </div>

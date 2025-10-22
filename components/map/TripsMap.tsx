@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { GoogleContext } from "@/lib/context";
 import type { TripFormMap } from "@/types";
 import { InfoWindowF } from "./InfoWindowF";
-import Map from "./Map";
+import MapComponent from "./Map";
 import MarkerCluster from "./MarkerCluster";
 import { PopupContent } from "./TripPopupContent";
 
@@ -13,7 +13,7 @@ export function TripsMap({ trips }: Props) {
   const [tripInfo, setTripInfo] = useState<TripFormMap | null>(null);
   const { googlemaps } = useContext(GoogleContext);
   return googlemaps ? (
-    <Map size="lg">
+    <MapComponent size="lg">
       <MarkerCluster locations={trips} onClick={(t) => setTripInfo(t)} />
       {tripInfo && (
         <InfoWindowF
@@ -24,6 +24,6 @@ export function TripsMap({ trips }: Props) {
           <PopupContent trip={tripInfo} />
         </InfoWindowF>
       )}
-    </Map>
+    </MapComponent>
   ) : null;
 }

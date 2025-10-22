@@ -13,6 +13,7 @@ const MarkerCluster = ({ locations, onClick }: Props) => {
   const { map } = useContext(GoogleMapContext);
   const [cluster, setCluster] = useState<gMarkerclusterer | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <causes loop>
   useEffect(() => {
     if (map && locations?.length) {
       const bounds = new google.maps.LatLngBounds();
@@ -46,10 +47,9 @@ const MarkerCluster = ({ locations, onClick }: Props) => {
       cluster?.setMap(null);
       setCluster(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locations, map]);
 
-  return <></>;
+  return null;
 };
 
 export default React.memo(MarkerCluster);

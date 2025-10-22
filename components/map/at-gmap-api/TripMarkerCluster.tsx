@@ -23,7 +23,9 @@ const TripMarkerCluster = ({ trips }: Props) => {
   useEffect(() => {
     if (trips && gMap) {
       const bounds = new google.maps.LatLngBounds();
-      trips.forEach((d) => bounds.extend(d.position));
+      trips.forEach((d) => {
+        bounds.extend(d.position);
+      });
       gMap.fitBounds(bounds);
     }
   }, [gMap, trips]);

@@ -1,8 +1,12 @@
 .btnDiv {
   @apply flex md:block items-center bg-brand-primary text-white p-3 rounded cursor-pointer hover:bg-brand-primary/90;
+  width: 100%;
+  text-align: left;
 }
 .allBtnDiv {
   @apply bg-brand-green-dark text-white p-3 mt-2 rounded cursor-pointer hover:bg-brand-green-dark/90;
+  width: 100%;
+  text-align: left;
 }
 
 .buttons {

@@ -1,10 +1,10 @@
+/** biome-ignore-all lint/complexity/noUselessFragments: <iy has to be> */
 import {
   GoogleMap,
   type GoogleMapProps,
   MarkerF,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import React from "react";
 
 const defaultContainerStyle = {
   width: "900px",

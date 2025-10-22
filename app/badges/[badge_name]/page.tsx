@@ -84,7 +84,7 @@ export default async function Badges({ params }: Readonly<Props>) {
                     if (el?.elements?.length) {
                       return el.elements.map(mapElementor);
                     }
-                    return;
+                    return null;
                   })
                 : null}
             </article>

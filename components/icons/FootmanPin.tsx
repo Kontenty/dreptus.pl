@@ -8,6 +8,8 @@ type Props = {
 const FootmanPin = ({ color = colors.green[700], height = 50 }: Props) => {
   return (
     <svg
+      role="img"
+      aria-label="Footman pin"
       fill="none"
       height={height}
       viewBox="0 0 40 50"
