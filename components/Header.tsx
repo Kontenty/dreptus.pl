@@ -38,9 +38,24 @@ const links = [
   { name: "Kontakt", link: "/contact" },
 ];
 
-const Header = ({ session }: { session: Session | null }) => {
+import { useEffect } from "react";
+import { getSessionAction } from "@/lib/actions/getSessionAction";
+
+const Header = () => {
   const pathname = usePathname();
+  const [session, setSession] = useState<Session | null>(null);
   const isLoggedIn = !!session;
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const currentSession = await getSessionAction();
+      if (mounted) setSession(currentSession ?? null);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const [showNav, setShowNav] = useState(false);
   const toggleNav = () => {

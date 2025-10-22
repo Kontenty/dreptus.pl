@@ -7,7 +7,6 @@ import { PrimeReactProvider } from "primereact/api";
 import { AosProvider } from "@/components/aos/AosProvider";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { auth } from "@/lib/auth";
 import { InitLocale } from "@/lib/initLocale";
 
 const nunito = Nunito({
@@ -25,9 +24,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default async function Layout({ children }: Readonly<Props>) {
-  const session = await auth();
-
+export default function Layout({ children }: Readonly<Props>) {
   return (
     <html lang="pl" className={`${nunito.variable} ${openSans.variable}`}>
       <head>
@@ -57,7 +54,7 @@ export default async function Layout({ children }: Readonly<Props>) {
             className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
             id="root"
           >
-            <Header session={session} />
+            <Header />
             <div className="flex flex-col flex-grow">{children}</div>
             <Footer />
           </div>
