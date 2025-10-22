@@ -1,9 +1,7 @@
 import "./global.css";
 import "./prime-theme.css";
-// import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
 
-import "@/lib/initLocale";
 import { Nunito, Open_Sans } from "next/font/google";
 import { PrimeReactProvider } from "primereact/api";
 import { AosProvider } from "@/components/aos/AosProvider";
@@ -52,7 +50,7 @@ export default async function Layout({ children }: Readonly<Props>) {
       </head>
       <body>
         <AosProvider />
-        <PrimeReactProvider value={{ locale: "pl" }}>
+        <PrimeReactProvider>
           <div
             className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
             id="root"

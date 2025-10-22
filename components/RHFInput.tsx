@@ -15,8 +15,6 @@ const RHFInput = ({ label, ...props }: RHFField) => {
   const { field, fieldState } = useController({ name: props.name, control });
 
   if (props.type === "date") {
-    const isServer = typeof window === "undefined";
-    const locale = isServer ? "en" : "pl";
     return (
       <div>
         <span className="p-float-label">
@@ -30,7 +28,6 @@ const RHFInput = ({ label, ...props }: RHFField) => {
               field.onChange(val);
             }}
             dateFormat="dd-mm-yy"
-            locale={locale}
           />
           <label htmlFor={field.name}>{label}</label>
         </span>
