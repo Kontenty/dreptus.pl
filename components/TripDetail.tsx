@@ -122,6 +122,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
             </div>
             <div className="px-2 pt-2">
               <button
+                type="button"
                 className="flex justify-center items-center gap-4 border-2 border-slate-400 rounded-lg px-6 py-2 md:py-3 hover:shadow-md hover:border-teal-800 hover:text-teal-800 transition-all"
                 onClick={() => handleDownload(trip?.pdf ?? "")}
               >
@@ -143,7 +144,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
             >
               {trip?.images?.map((img, i) => (
                 <div className="px-2" key={`${img?.guid}div`}>
-                  <button onClick={() => handleImgClick(i)}>
+                  <button type="button" onClick={() => handleImgClick(i)}>
                     <div className={css.imgBox}>
                       <Image
                         alt="trip photo"
@@ -177,6 +178,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
             <aside className="md:w-1/3 relative flex flex-col gap-1">
               {trip.pdfImages.map((pdf, i) => (
                 <button
+                  type="button"
                   key={pdf.post_title}
                   onClick={() => {
                     setSelectedImage(i);
@@ -235,18 +237,17 @@ const TripDetail = ({ trip, tripsList }: Props) => {
             </section>
           )}
         </Main>
-        {selectedImage !== null && currentImageSet && (
-          <ModalGallery
-            full={isFullGallery}
-            images={currentImageSet}
-            initial={selectedImage}
-            onClose={() => {
-              setSelectedImage(null);
-              setCurrentImageSet(null);
-              setIsFullGallery(false);
-            }}
-          />
-        )}
+        <ModalGallery
+          full={isFullGallery}
+          images={currentImageSet || []}
+          initial={selectedImage || 0}
+          isOpen={!!(selectedImage !== null && currentImageSet)}
+          onClose={() => {
+            setSelectedImage(null);
+            setCurrentImageSet(null);
+            setIsFullGallery(false);
+          }}
+        />
       </div>
     </div>
   );

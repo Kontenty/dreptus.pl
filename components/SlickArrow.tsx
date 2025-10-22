@@ -33,13 +33,21 @@ const svgClass = cva(["w-9 h-9"], {
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function SlickArrow(props: any) {
-  const { className, onClick, theme = "light" } = props;
-  const isLeft: boolean = className.includes("slick-prev");
-  const side = className.includes("slick-prev") ? "left" : "right";
+interface SlickArrowProps {
+  className?: string;
+  onClick?: () => void;
+  theme?: "light" | "dark";
+}
+
+export default function SlickArrow({
+  className,
+  onClick,
+  theme = "light",
+}: SlickArrowProps) {
+  const isLeft = className?.includes("slick-prev") ?? false;
+  const side = className?.includes("slick-prev") ? "left" : "right";
   return (
-    <button className={btn({ side })}>
+    <button type="button" className={btn({ side })}>
       {isLeft ? (
         <ArrowLeftCircleIcon
           className={svgClass({ theme })}
