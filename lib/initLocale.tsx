@@ -7,7 +7,6 @@ import { useEffect } from "react";
 addLocale("pl", pl);
 
 export const InitLocale = () => {
-  console.log("InitLocale");
   useEffect(() => {
     addLocale("pl", pl);
     locale("pl");
