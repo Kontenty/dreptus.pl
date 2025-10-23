@@ -1,3 +1,5 @@
+"use client";
+
 import type { Participant } from "@prisma/client";
 import { log } from "next-axiom";
 import {
@@ -12,6 +14,8 @@ import { Toast } from "primereact/toast";
 import type { Nullable } from "primereact/ts-helpers";
 import { useReducer, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
+import { addParticipant } from "@/lib/actions/add-participant";
+import { getParticipants } from "@/lib/actions/get-participants";
 
 type ExtParticipant = {
   nameExt: string;
@@ -81,7 +85,8 @@ function reducer(state: State, action: Action) {
 const AddParticipantOnTrip = ({ tripsList }: Props) => {
   const { mutate } = useSWRConfig();
   const { data: participantsList } = useSWR<Participant[]>(
-    "/api/admin/get-participants"
+    "get-participants",
+    () => getParticipants(),
   );
   const toast = useRef<Toast>(null);
   const [suggestions, setSuggestions] = useState<
@@ -119,35 +124,30 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
       detail: "Pomyślnie dodano nowego użytkownika",
       life: 3000,
     });
-    await mutate(`/api/admin/get-trip-participants?id=${state.selectedTrip}`);
+    await mutate({ tripId: state.selectedTrip });
     dispatch({ type: "reset" });
   };
 
-  const onSubmit = () => {
-    fetch("/api/admin/add-participant", {
-      method: "POST",
-      body: JSON.stringify({
+  const onSubmit = async () => {
+    try {
+      await addParticipant({
         name: state.participantName,
         origin: state.origin,
-        date: state.date,
-        tripId: state.selectedTrip,
+        date: state.date as unknown as string,
+        tripId: state.selectedTrip as number,
         answers: state.answers,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return showSuccess();
-        }
-        if (res.status === 406) {
-          return showWrongData();
-        }
-      })
-      .catch((error) =>
-        log.error("admin: add participant error", { message: error })
-      );
+      });
+
+      await showSuccess();
+    } catch (error) {
+      log.error("admin: add participant error", { message: error });
+      if (
+        error instanceof Error &&
+        error.message.includes("Nieprawidłowe dane")
+      ) {
+        showWrongData();
+      }
+    }
   };
 
   return (

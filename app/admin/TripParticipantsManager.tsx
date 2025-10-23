@@ -1,6 +1,7 @@
 "use client";
 import { Dropdown } from "primereact/dropdown";
 import { useState } from "react";
+import AddParticipantOnTrip from "@/components/admin/AddParticipantOnTrip";
 import ParticipantsOnTrip from "@/components/admin/ParticipantsOnTrip";
 
 export default function TripParticipantsManager({
@@ -15,6 +16,7 @@ export default function TripParticipantsManager({
 
   return (
     <div>
+      <AddParticipantOnTrip tripsList={tripsParticipants} />
       <div>
         <h2 className="text-2xl mb-2">Zarządzaj uczestnikami</h2>
         <div className="flex flex-col mb-4 w-[600px]">
