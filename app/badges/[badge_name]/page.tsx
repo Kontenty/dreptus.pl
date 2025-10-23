@@ -1,3 +1,5 @@
+export const revalidate = 86400; // 24 hours
+
 import { TabPanel, TabView } from "primereact/tabview";
 
 import Main from "@/components/ui/Main";

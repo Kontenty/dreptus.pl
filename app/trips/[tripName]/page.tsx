@@ -1,3 +1,5 @@
+export const revalidate = 86400; // 24 hours
+
 import { notFound } from "next/navigation";
 import TripDetail from "@/components/TripDetail";
 import { GoogleProvider } from "@/lib/context";

@@ -1,3 +1,5 @@
+export const revalidate = 86400; // 24 hours
+
 import { notFound } from "next/navigation";
 import ParticipantsOnTrip from "@/components/ParticipantsOnTrip";
 import Main from "@/components/ui/Main";

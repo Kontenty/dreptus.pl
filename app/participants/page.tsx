@@ -1,3 +1,5 @@
+export const revalidate = 86400; // 24 hours
+
 import TripsWithParticipantsList from "@/components/TripsWithParticipantsList";
 import Main from "@/components/ui/Main";
 import { getTripsParticipants } from "@/lib/db";
