@@ -1,4 +1,4 @@
-import { Button } from "primereact/button";
+import { Button } from "@heroui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import RHFInput, { type RHFField } from "@/components/RHFInput";
 
@@ -7,7 +7,7 @@ type TripParticipant = {
   origin: string;
   id: number;
   participant_id: number;
-  trip_id: number;
+  trip_id: number | bigint;
   answers: string;
   report_date: Date;
 };
@@ -47,9 +47,9 @@ const EditParticipantOnTrip = ({ participant, onSubmit, onAbort }: Props) => {
         <div className="flex gap-4 items-start">
           <Button type="submit">Zapisz</Button>
           <Button
-            onClick={() => onAbort()}
-            outlined
-            severity="secondary"
+            onPress={() => onAbort()}
+            variant="bordered"
+            color="default"
             type="button"
           >
             Anuluj

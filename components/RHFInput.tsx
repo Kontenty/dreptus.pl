@@ -1,65 +1,64 @@
 "use client";
-import cl from "classnames";
-import { Calendar } from "primereact/calendar";
-import { InputText } from "primereact/inputtext";
+import { DatePicker, Input } from "@heroui/react";
+import { CalendarDate } from "@internationalized/date";
+import { I18nProvider } from "@react-aria/i18n";
 import { useController, useFormContext } from "react-hook-form";
+
+function toCalendarDate(value: string | Date | null): CalendarDate | null {
+  if (!value) return null;
+  const date = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(date.getTime())) return null;
+  return new CalendarDate(
+    date.getFullYear(),
+    date.getMonth() + 1,
+    date.getDate(),
+  );
+}
 
 export type RHFField = {
   name: string;
   label: string;
   type?: "date";
+  required?: boolean;
 };
 
-const RHFInput = ({ label, ...props }: RHFField) => {
+const RHFInput = ({ label, required, ...props }: RHFField) => {
   const { control } = useFormContext();
   const { field, fieldState } = useController({ name: props.name, control });
 
   if (props.type === "date") {
     return (
-      <div>
-        <span className="p-float-label">
-          <Calendar
-            id={field.name}
-            value={field.value ? new Date(String(field.value)) : null}
-            onChange={(e) => {
-              const val = e.value
-                ? (e.value as Date).toISOString().split("T")[0]
-                : "";
-              field.onChange(val);
-            }}
-            dateFormat="dd-mm-yy"
-          />
-          <label htmlFor={field.name}>{label}</label>
-        </span>
-        {fieldState.error ? (
-          <small className="p-error">
-            {fieldState.error.message || "Pole jest wymagane"}
-          </small>
-        ) : null}
-      </div>
+      <I18nProvider locale="pl-PL">
+        <DatePicker
+          id={field.name}
+          label={label}
+          value={toCalendarDate(field.value ?? null)}
+          onChange={(date) => {
+            const val = date
+              ? `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`
+              : "";
+            field.onChange(val);
+          }}
+          onBlur={field.onBlur}
+          isInvalid={!!fieldState.error}
+          errorMessage={fieldState.error?.message || "Pole jest wymagane"}
+          isRequired={required}
+        />
+      </I18nProvider>
     );
   }
 
   return (
-    <div>
-      <span className="p-float-label">
-        <InputText
-          id={field.name}
-          value={String(field.value ?? "")}
-          onChange={(e) => field.onChange((e.target as HTMLInputElement).value)}
-          onBlur={field.onBlur}
-          className={cl({
-            "p-invalid": fieldState.error,
-          })}
-        />
-        <label htmlFor={field.name}>{label}</label>
-      </span>
-      {fieldState.error ? (
-        <small className="p-error">
-          {fieldState.error.message || "Pole jest wymagane"}
-        </small>
-      ) : null}
-    </div>
+    <Input
+      id={field.name}
+      label={label}
+      value={String(field.value ?? "")}
+      onValueChange={field.onChange}
+      onBlur={field.onBlur}
+      isInvalid={!!fieldState.error}
+      errorMessage={fieldState.error?.message || "Pole jest wymagane"}
+      isRequired={required}
+    />
   );
 };
 

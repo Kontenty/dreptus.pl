@@ -1,5 +1,13 @@
 "use client";
-import { EyeIcon, MapIcon } from "@heroicons/react/24/outline";
+
+import {
+  ArrowsRightLeftIcon,
+  BarsArrowUpIcon,
+  CurrencyDollarIcon,
+  EyeIcon,
+  MapIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useMemo, useState } from "react";
@@ -107,16 +115,16 @@ const TripDetail = ({ trip, tripsList }: Props) => {
           </div>
           <section className="md:flex md:justify-between items-center border-b-2 border-primary-dark pb-4">
             <div className={css.adnotations}>
-              <i className="pi pi-user"></i>
+              <UserIcon className="w-4 h-4" />
               <span className="text-bolder">Opracowanie trasy</span>
               <span className="text-brand-primary">{trip.author}</span>
-              <i className="pi pi-arrows-h"></i>
+              <ArrowsRightLeftIcon className="w-4 h-4" />
               <span className="text-bolder">Długość trasy</span>
               <span className="text-brand-primary">{trip.length}</span>
-              <i className="pi pi-sort-numeric-up"></i>
+              <BarsArrowUpIcon className="w-4 h-4" />
               <span className="text-700">Do odwiedzenia</span>
               <span className="text-brand-primary">{trip.pk}</span>
-              <i className="pi pi-dollar"></i>
+              <CurrencyDollarIcon className="w-4 h-4" />
               <span className="text-bolder">Finansowanie</span>
               <span className="text-brand-primary">{trip.founding}</span>
             </div>
@@ -131,7 +139,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
               </button>
             </div>
           </section>
-          <div className="flex-grow" data-aos="fade-up">
+          <div className="grow" data-aos="fade-up">
             <Slider
               arrows
               infinite
@@ -215,7 +223,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
                   <div className="flex items-center gap-8 my-4 hover:bg-slate-50">
                     <Image
                       alt="w poblizu"
-                      className="rounded"
+                      className="rounded-sm"
                       height={100}
                       src={near?.thumb_url ?? ""}
                       unoptimized

@@ -7,37 +7,25 @@
   grid-area: 1 / 1 / 1 / 1;
 }
 
-.heroContent {
-  @apply relative md:flex md:justify-center p-6 md:p-10;
-}
-.background {
-  position: relative;
-}
-.baner {
-  @apply flex;
-}
-.banerInner {
-  @apply flex flex-col justify-around gap-4 py-8 px-16 ml-auto backdrop-blur-sm bg-white/30;
-}
+
 
 .banerText {
   font-size: 3rem;
   line-height: 3rem;
   font-weight: 700;
-  @apply text-slate-700;
+  color: var(--color-slate-700);
 }
 
 .banerText:first-letter {
-  @apply text-accent-dark;
-  font-size: 3.25rem;
-}
+  color: var(--color-accent-dark);
+    font-size: 3.25rem;
+} 
 .banerText:nth-child(2n) {
   margin-left: 1rem;
 }
 
 .aside {
   width: calc(640px + 3rem);
-  @apply hidden sm:block;
 }
 .imgBox {
   border: solid rgb(255 255 255 / 0.7);

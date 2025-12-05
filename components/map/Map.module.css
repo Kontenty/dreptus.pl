@@ -1,18 +1,29 @@
-.mapLg {
-  height: 550px;
-}
-.mapSm {
-  height: 300px;
-}
+
 
 .imgOverlay {
-  @apply absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 bg-black/60 transition-opacity duration-300;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s ease-in-out;
+}
+
+.imgOverlay:hover {
+  opacity: 1;
 }
 
 .imgIcon {
-  @apply w-7 h-7 text-white transition-transform translate-y-2 delay-75;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: white;
+  transition: transform 0.075s ease-in-out;
+  transform: translateY(0.5rem);
+  transition-delay: 75ms;
 }
 
 .imgOverlay:hover .imgIcon {
-  @apply translate-y-0;
+  transform: translateY(0);
 }

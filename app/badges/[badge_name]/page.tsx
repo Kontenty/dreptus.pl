@@ -1,10 +1,9 @@
 export const revalidate = 86400; // 24 hours
 
-import { TabPanel, TabView } from "primereact/tabview";
-
+import BadgeTabs from "@/components/badge/BadgeTabs";
 import Main from "@/components/ui/Main";
 import { getElementorPage, getPage } from "@/lib/db";
-import type { ElementorData, ElementorElement } from "@/types";
+import type { ElementorData } from "@/types";
 
 const dict: Record<string, { rules: number; scorers: number }> = {
   "z-dreptusiem-po-polsce": { rules: 11620, scorers: 21255 },
@@ -31,30 +30,6 @@ const getData = async (params: { badge_name?: string }) => {
   };
 };
 
-const mapElementor = (node: ElementorElement) => {
-  if (node?.settings?.title) {
-    return (
-      <h1
-        className="page-title text-center"
-        dangerouslySetInnerHTML={{ __html: node.settings.title }}
-        key={node.id}
-      ></h1>
-    );
-  }
-  if (node?.settings?.editor) {
-    return (
-      <section
-        className="elementor"
-        dangerouslySetInnerHTML={{
-          __html: node.settings.editor.replaceAll('style="color: #000080;', ""),
-        }}
-        key={node.id}
-      ></section>
-    );
-  }
-  return;
-};
-
 type Props = {
   params: Promise<{
     badge_name: string;
@@ -66,40 +41,10 @@ export default async function Badges({ params }: Readonly<Props>) {
   return (
     <Main>
       <div>
-        <TabView>
-          <TabPanel header="Regulamin">
-            <article className="pl-4 w-[1000px] elementor post-article">
-              {data?.rulesPageContent
-                ? data.rulesPageContent?.[0].elements.map((el) => {
-                    if (el.settings.title) {
-                      return (
-                        <h1 className="page-title" key={el.id}>
-                          {el.settings.title}
-                        </h1>
-                      );
-                    }
-                    if (el.settings.editor) {
-                      return (
-                        <section key={el.id}>{el.settings.editor}</section>
-                      );
-                    }
-                    if (el?.elements?.length) {
-                      return el.elements.map(mapElementor);
-                    }
-                    return null;
-                  })
-                : null}
-            </article>
-          </TabPanel>
-          <TabPanel header="Lista zdobywców">
-            <article
-              className="format-table w-[1000px]"
-              dangerouslySetInnerHTML={{
-                __html: data?.scorersContent ?? "",
-              }}
-            />
-          </TabPanel>
-        </TabView>
+        <BadgeTabs
+          rulesPageContent={data?.rulesPageContent}
+          scorersContent={data?.scorersContent}
+        />
       </div>
     </Main>
   );

@@ -1,9 +1,50 @@
-@import "slick-carousel/slick/slick.css";
+@import "tailwindcss";
+@import 'slick-carousel/slick/slick.css';
+@plugin './hero.ts';
+ @source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 
-@layer primereact, tailwind-base, tailwind-utilities;
+@theme {
+  --color-accent-light: #ffe8e6;
+  --color-accent-dark: #ed422b;
 
-@layer tailwind-base {
-  @tailwind base;
+  --color-primary-dark: #0e2b2f;
+  --color-primary-light: #97c44b;
+
+  --color-brand-text: #566a6d;
+  --color-brand-brown: #784940;
+  --color-brand-primary: #4168c4;
+  --color-brand-accent: #d89365;
+
+  --color-brand-green-dark: #0e2b2f;
+  --color-brand-green-light: #97c44b;
+
+  --font-sans:
+    var(--text-font), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    sans-serif;
+  --font-body:
+    var(--text-font), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    sans-serif;
+  --font-heading:
+    var(--heading-font), var(--text-font), -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, sans-serif;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 
   html {
     font-size: 15px;
@@ -32,9 +73,12 @@
   }
 }
 
-@layer tailwind-utilities {
-  @tailwind components;
-  @tailwind utilities;
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 .p-justify {
@@ -65,16 +109,6 @@
   @apply bg-accent-light;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-} */
-
 /* google maps */
 button.gm-control-active {
   opacity: 0.7;
@@ -90,7 +124,7 @@ button.gm-control-active {
 }
 .gm-style button.gm-ui-hover-effect {
   background: rgb(255 255 255 / 0.9) !important;
-  @apply shadow top-0 right-0 !important;
+  @apply shadow-sm! top-0! right-0!;
 }
 
 article p {

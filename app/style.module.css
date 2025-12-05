@@ -5,7 +5,17 @@
 .main {
   max-width: 1100px;
   flex-grow: 1;
-  @apply p-4 md:p-8 flex flex-col mx-auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding: 2rem;
+  }
 }
 
 .title a {
@@ -20,13 +30,38 @@
 }
 
 .title {
-  @apply text-4xl mb-2 md:mb-6 text-brand-green-dark;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-brand-green-dark);
+}
+
+@media (min-width: 768px) {
+  .title {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .aboutSection {
-  @apply flex flex-wrap md:flex-nowrap justify-center gap-2 md:gap-6;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .aboutSection {
+    flex-wrap: nowrap;
+    gap: 1.5rem;
+  }
 }
 
 .link {
-  @apply font-semibold hover:text-brand-primary hover:underline hover:underline-offset-2;
+  font-weight: 600;
+}
+
+.link:hover {
+  color: var(--color-brand-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }

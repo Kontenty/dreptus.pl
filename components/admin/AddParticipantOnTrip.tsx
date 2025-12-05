@@ -1,18 +1,21 @@
 "use client";
 
-import type { Participant } from "@prisma/client";
-import { log } from "next-axiom";
 import {
-  AutoComplete,
-  type AutoCompleteCompleteEvent,
-} from "primereact/autocomplete";
-import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { Toast } from "primereact/toast";
-import type { Nullable } from "primereact/ts-helpers";
-import { useReducer, useRef, useState } from "react";
+  Autocomplete,
+  AutocompleteItem,
+  addToast,
+  Button,
+  DateInput,
+  Input,
+} from "@heroui/react";
+import { CalendarDate } from "@internationalized/date";
+import type { Participant } from "@prisma/client";
+import { I18nProvider } from "@react-aria/i18n";
+import { log } from "next-axiom";
+
+type Nullable<T> = T | null;
+
+import { useReducer, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { addParticipant } from "@/lib/actions/add-participant";
 import { getParticipants } from "@/lib/actions/get-participants";
@@ -22,7 +25,6 @@ type ExtParticipant = {
   id: number;
   name: string;
   origin: string;
-  de: Nullable;
 };
 type TripOption = { label: string; value: number };
 type Props = { tripsList: TripOption[] };
@@ -88,14 +90,11 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
     "get-participants",
     () => getParticipants(),
   );
-  const toast = useRef<Toast>(null);
-  const [suggestions, setSuggestions] = useState<
-    { name: string; id: number }[]
-  >([]);
+  const [suggestions, setSuggestions] = useState<ExtParticipant[]>([]);
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const search = (event: AutoCompleteCompleteEvent) => {
-    const name = event.query.toLowerCase();
+  const search = (value: string) => {
+    const name = value.toLowerCase();
     const filteredList = participantsList
       ?.filter((pp) => pp.name.toLowerCase().includes(name))
       .map((pp) => ({ ...pp, nameExt: `${pp.name} - ${pp.origin}` }));
@@ -110,19 +109,17 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
   };
 
   const showWrongData = () => {
-    toast.current?.show({
-      severity: "error",
-      summary: "Błąd",
-      detail: "Wysłano nieprawidłowe dane",
-      life: 3000,
+    addToast({
+      color: "danger",
+      title: "Błąd",
+      description: "Wysłano nieprawidłowe dane",
     });
   };
   const showSuccess = async () => {
-    toast.current?.show({
+    addToast({
       severity: "success",
-      summary: "Sukces",
-      detail: "Pomyślnie dodano nowego użytkownika",
-      life: 3000,
+      title: "Sukces",
+      description: "Pomyślnie dodano nowego użytkownika",
     });
     await mutate({ tripId: state.selectedTrip });
     dispatch({ type: "reset" });
@@ -155,69 +152,109 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
       <h2 className="text-2xl">Dodaj uczestnika trasy</h2>
       <div className="w-[1000px] grid grid-cols-3 gap-4">
         <div>
-          <label htmlFor="ppt-trip">Trasa</label>
-          <Dropdown
+          <Autocomplete
             className="w-full"
-            filter
             id="ppt-trip"
-            onChange={(e) => dispatch({ type: "trip", value: e.value })}
-            options={tripsList}
+            label="Trasa"
             placeholder="Wybierz trasę"
-            value={state.selectedTrip}
-          />
+            selectedKey={state.selectedTrip ? String(state.selectedTrip) : null}
+            onSelectionChange={(key) => {
+              dispatch({
+                type: "trip",
+                value: key ? Number(key) : null,
+              });
+            }}
+          >
+            {tripsList.map((trip) => (
+              <AutocompleteItem key={String(trip.value)}>
+                {trip.label}
+              </AutocompleteItem>
+            ))}
+          </Autocomplete>
         </div>
         <div className="p-fluid">
-          <label htmlFor="ppt-name">Uczestnik</label>
-          <AutoComplete
-            completeMethod={search}
-            field="nameExt"
-            inputClassName="w-full"
-            inputId="ppt-name"
-            onChange={(e) => dispatch({ type: "participant", value: e.value })}
-            onSelect={(e) => onParticipantSelect(e.value)}
-            suggestions={suggestions}
-            value={state.participantName}
-          />
+          <Autocomplete
+            id="ppt-name"
+            label="Uczestnik"
+            className="w-full"
+            defaultItems={suggestions}
+            selectedKey={state.participantName ? state.participantName : null}
+            inputValue={state.participantName}
+            onInputChange={(value) => {
+              dispatch({ type: "participant", value });
+              search(value);
+            }}
+            onSelectionChange={(key) => {
+              if (key) {
+                const selected = suggestions.find(
+                  (s) => s.name === key || s.nameExt === key,
+                );
+                if (selected) {
+                  onParticipantSelect(selected);
+                }
+              }
+            }}
+          >
+            {(suggestion) => (
+              <AutocompleteItem key={suggestion.name}>
+                {suggestion.nameExt}
+              </AutocompleteItem>
+            )}
+          </Autocomplete>
         </div>
         <div className="flex flex-col">
-          <label htmlFor="ppt-origin">Klub / miasto</label>
-
-          <InputText
+          <Input
             id="ppt-origin"
-            onChange={(e) =>
-              dispatch({ value: e.target.value, type: "origin" })
-            }
+            label="Klub / miasto"
+            onValueChange={(value) => dispatch({ value, type: "origin" })}
             value={state.origin}
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="ppt-answers">Odpowiedzi</label>
-
-          <InputText
+          <Input
             id="ppt-answers"
-            onChange={(e) =>
-              dispatch({ value: e.target.value, type: "answers" })
-            }
-            required
+            label="Odpowiedzi"
+            onValueChange={(value) => dispatch({ value, type: "answers" })}
+            isRequired
             value={state.answers}
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="ppt-date">Data zgłoszenia</label>
-
-          <Calendar
-            dateFormat="dd-mm-yy"
-            id="ppt-date"
-            maxDate={new Date()}
-            onChange={(e) => dispatch({ value: e.value, type: "date" })}
-            value={state.date}
-          />
+          <I18nProvider locale="pl-PL">
+            <DateInput
+              id="ppt-date"
+              label="Data zgłoszenia"
+              maxValue={
+                new CalendarDate(
+                  new Date().getFullYear(),
+                  new Date().getMonth() + 1,
+                  new Date().getDate(),
+                )
+              }
+              value={
+                state.date
+                  ? new CalendarDate(
+                      state.date.getFullYear(),
+                      state.date.getMonth() + 1,
+                      state.date.getDate(),
+                    )
+                  : null
+              }
+              onChange={(date) => {
+                if (date) {
+                  const jsDate = new Date(date.year, date.month - 1, date.day);
+                  dispatch({ value: jsDate, type: "date" });
+                } else {
+                  dispatch({ value: null, type: "date" });
+                }
+              }}
+            />
+          </I18nProvider>
         </div>
         <div className="flex items-end">
-          <Button label="Zapisz" onClick={onSubmit} />
+          <Button onPress={onSubmit}>Zapisz</Button>
         </div>
       </div>
-      <Toast ref={toast} />
     </section>
   );
 };

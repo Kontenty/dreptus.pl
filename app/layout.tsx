@@ -1,13 +1,10 @@
 import "./global.css";
-import "./prime-theme.css";
-import "primeicons/primeicons.css";
 
 import { Nunito, Open_Sans } from "next/font/google";
-import { PrimeReactProvider } from "primereact/api";
 import { AosProvider } from "@/components/aos/AosProvider";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { InitLocale } from "@/lib/initLocale";
+import { Providers } from "@/components/Providers";
 
 const nunito = Nunito({
   subsets: ["latin", "latin-ext"],
@@ -47,18 +44,17 @@ export default function Layout({ children }: Readonly<Props>) {
         <meta content="https://xn--dereptu-8ib.pl" property="og:url" />
       </head>
       <body>
-        <InitLocale />
-        <PrimeReactProvider value={{ locale: "pl" }}>
+        <Providers>
           <AosProvider />
           <div
             className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
             id="root"
           >
             <Header />
-            <div className="flex flex-col flex-grow">{children}</div>
+            <div className="flex flex-col grow">{children}</div>
             <Footer />
           </div>
-        </PrimeReactProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
-import { Accordion, AccordionTab } from "primereact/accordion";
 import Main from "@/components/ui/Main";
 import { getPage, getPostsWithThumb } from "@/lib/db";
 import packImg from "@/public/image/pakiety-startowe2.jpg";
 import css from "./news.module.css";
+import StarterPack from "./StarterPack";
 
 const NewsPage = async () => {
   const tripShorts = await getPostsWithThumb(6);
@@ -35,7 +35,7 @@ const NewsPage = async () => {
     <Main>
       <section>
         <h2 className="text-4xl mb-6 text-brand-green-dark">Najnowsze trasy</h2>
-        <div className={css.newsGrid}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-12">
           {posts.map((p, i) => (
             <div data-aos="fade-up" data-aos-delay={i * 200} key={p.ID}>
               <div className={css.card} key={p.ID}>
@@ -100,19 +100,8 @@ const NewsPage = async () => {
           </article>
         </div>
       </section>
-      <div className="card clear-both">
-        <Accordion>
-          <AccordionTab header="Pakiety">
-            {pageData?.post_content && (
-              <div
-                className="format-table"
-                dangerouslySetInnerHTML={{
-                  __html: pageData.post_content ?? "",
-                }}
-              />
-            )}
-          </AccordionTab>
-        </Accordion>
+      <div className="w-full">
+        <StarterPack content={pageData?.post_content} />
       </div>
     </Main>
   );

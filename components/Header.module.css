@@ -1,29 +1,37 @@
-.header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  display: flex;
-  font-family: var(--heading-font);
-  @apply h-[52px] md:h-[90px] justify-between md:justify-start md:gap-12 px-2 md:px-5 bg-brand-green-dark text-white;
-  z-index: 2;
-}
-
-.logoBox {
-  z-index: 2;
-}
 
 .nav {
-  @apply flex flex-col md:flex-row gap-8 self-stretch transition-all;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
+  font-family: var(--font-heading); 
+  gap: 2rem;
+  transition-duration: 150ms;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  .nav {
+    flex-direction: row;
+  }
 }
 
 .navItem {
-  @apply relative flex items-center;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 @media screen and (max-width: 768px) {
   .nav {
-    @apply absolute bg-primary-dark mx-auto left-0 right-0 p-4;
+    position: absolute;
+    background-color: var(--color-primary-dark);
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    padding: 1rem;
     padding-left: 130px;
   }
   .navHidden {
@@ -34,15 +42,26 @@
 }
 
 .activeLink {
-  @apply link text-accent-light;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  position: relative;
+  font-weight: 600;
+  color: var(--color-accent-light);
 }
 .activeLink::after {
   width: 90%;
-  @apply bg-accent-light;
+  background-color: var(--color-accent-light);
 }
 
 .link {
-  @apply text-lg transition-colors;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
   position: relative;
   font-weight: 600;
 }
@@ -62,7 +81,9 @@
   transition: width 0.3s ease-in-out;
 }
 .nonLink {
-  @apply transition-colors;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
   position: relative;
   color: #ccc;
   font-weight: 600;
@@ -70,24 +91,45 @@
 
 /* Dropdown Content (Hidden by Default) */
 .dropdownContent {
-  @apply absolute -left-4 top-0 md:top-[90px];
+  position: absolute;
+  left: -1rem;
+  top: 0;
   background: none;
   opacity: 0;
   overflow: hidden;
   visibility: hidden;
   z-index: 1;
 }
+
+@media (min-width: 768px) {
+  .dropdownContent {
+    top: 90px;
+  }
+}
+
 .slided {
-  @apply border-t-2 bg-primary-dark border-gray-500 transition-all ease-out -translate-y-full;
+  border-top-width: 2px;
+  background-color: var(--color-primary-dark);
+  border-color: #6b7280;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transform: translateY(-100%);
   color: #fff;
 }
 
 .chevron {
-  @apply w-4 h-4 ml-1 inline-block transition-transform;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.25rem;
+  display: inline-block;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 .dropdown:hover .chevron {
-  @apply translate-y-2;
+  transform: translateY(0.25rem);
 }
 .dropdown:hover .dropdownContent,
 .dropdown:focus .dropdownContent {
@@ -95,13 +137,17 @@
   visibility: visible;
 }
 .dropdown:hover .slided {
-  @apply translate-y-0;
+  transform: translateY(0);
   opacity: 1;
   visibility: visible;
 }
 
 .dropdownItem {
-  @apply block px-4 py-3;
+  display: block;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
   font-size: 14px;
   min-width: 250px;
 }

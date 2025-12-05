@@ -1,4 +1,4 @@
-import { Button } from "primereact/button";
+import { Button } from "@heroui/react";
 import { logIn } from "@/lib/actions/auth.action";
 
 export function LogInButton() {

@@ -1,12 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Column } from "primereact/column";
-import {
-  DataTable,
-  type DataTableSelectionSingleChangeEvent,
-} from "primereact/datatable";
 import { formatDate } from "@/lib/utils";
 import type { ParticipantOnTrip } from "@/types";
+import PaginatedTable from "./PaginatedTable";
+
+interface Props {
+  trips: ParticipantOnTrip[];
+}
 
 const titleTmpl = (row: ParticipantOnTrip) =>
   row.post_title &&
@@ -16,50 +16,41 @@ const titleTmpl = (row: ParticipantOnTrip) =>
     row.post_title.replace(/,? ?<br>/, ", ")
   ));
 
-interface Props {
-  trips: ParticipantOnTrip[];
-}
-
 const TripsWithParticipantsList = ({ trips }: Readonly<Props>) => {
   const router = useRouter();
 
-  const handleSelect = (
-    ev: DataTableSelectionSingleChangeEvent<ParticipantOnTrip[]>,
-  ) => {
-    const value = ev.value;
-    if (value.trip_id) {
-      setTimeout(() => {
-        router.push(`/participants/${value.trip_id}`);
-      }, 300);
+  const handleSelect = (trip: ParticipantOnTrip) => {
+    if (trip.trip_id) {
+      router.push(`/participants/${trip.trip_id}`);
     }
   };
+
   return (
-    <DataTable
-      className="min-w-[450px]"
-      currentPageReportTemplate="{first} do {last} z {totalRecords}"
-      dataKey="id"
-      onSelectionChange={handleSelect}
-      paginator
-      paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      rows={50}
+    <PaginatedTable
+      items={trips ?? []}
+      keyExtractor={(trip) => trip.id}
+      onRowClick={handleSelect}
+      rowsPerPage={50}
       rowsPerPageOptions={[20, 50, 100, 200]}
-      selectionMode="single"
-      // size={isMd ? "normal" : "small"}
-      value={trips ?? undefined}
-    >
-      <Column field="number" header="Numer"></Column>
-      <Column body={titleTmpl} header="Nazwa Trasy"></Column>
-      <Column
-        align="center"
-        body={(d) => Number(d.pptCount) || ""}
-        field="pptCount"
-        header="Liczba Uczestników"
-      ></Column>
-      <Column
-        body={(d) => formatDate(d.report_date)}
-        header="Data Aktualizacji"
-      ></Column>
-    </DataTable>
+      columns={[
+        { key: "number", label: "Numer" },
+        {
+          key: "title",
+          label: "Nazwa Trasy",
+          render: titleTmpl,
+        },
+        {
+          key: "pptCount",
+          label: "Liczba Uczestników",
+          render: (trip) => Number(trip.pptCount) || "",
+        },
+        {
+          key: "report_date",
+          label: "Data Aktualizacji",
+          render: (trip) => formatDate(trip.report_date),
+        },
+      ]}
+    />
   );
 };
 

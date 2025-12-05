@@ -9,7 +9,7 @@ export default async function AdminPage() {
   const session = await auth();
   if (!session) {
     return (
-      <div className="center-hv flex-grow">
+      <div className="center-hv grow">
         <LogInButton />
       </div>
     );

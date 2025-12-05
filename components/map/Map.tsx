@@ -6,8 +6,8 @@ import css from "./Map.module.css";
 const mapdiv = cva(["w-full"], {
   variants: {
     size: {
-      sm: css.mapSm,
-      lg: css.mapLg,
+      sm: "h-[300px]",
+      lg: "h-[550px]",
     },
   },
   defaultVariants: {

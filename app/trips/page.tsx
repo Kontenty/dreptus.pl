@@ -54,7 +54,7 @@ export default async function Trips({
             locationsList={locationsListForFilter}
           />
         </div>
-        <div className="bg-white rounded-md p-2 flex-grow" data-aos="fade-left">
+        <div className="bg-white rounded-md p-2 grow" data-aos="fade-left">
           <TripsList trips={trips} />
         </div>
       </div>

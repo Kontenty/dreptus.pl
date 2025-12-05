@@ -111,7 +111,7 @@ const ModalGallery = ({
       role="presentation"
       aria-hidden="true"
       onClick={handleClickOutside}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm"
     >
       <div
         ref={dialogRef}
@@ -119,7 +119,7 @@ const ModalGallery = ({
         aria-modal="true"
         aria-label="Image gallery"
         onKeyDown={handleKeyDown}
-        className="bg-transparent shadow-none p-0 max-w-none w-full mx-0 focus:outline-none"
+        className="bg-transparent shadow-none p-0 max-w-none w-full mx-0 focus:outline-hidden"
         tabIndex={-1}
       >
         <div className="flex justify-between p-4">
@@ -128,14 +128,14 @@ const ModalGallery = ({
           </span>
           <button
             type="button"
-            className="text-gray-300 hover:text-white transition-colors p-2 focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
+            className="text-gray-300 hover:text-white transition-colors p-2 focus:outline-hidden focus:ring-2 focus:ring-white/50 rounded-sm"
             aria-label="Close gallery"
             onClick={onClose}
           >
             <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
-        <div className="flex flex-col justify-center flex-grow lg:px-16 pb-8">
+        <div className="flex flex-col justify-center grow lg:px-16 pb-8">
           <Slider
             afterChange={(i: number) => setCurrentSlide(i + 1)}
             arrows

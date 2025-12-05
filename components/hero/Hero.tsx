@@ -8,7 +8,7 @@ import css from "./Hero.module.css";
 const Hero = () => {
   return (
     <section className={css.heroRoot}>
-      <div className={css.background}>
+      <div className="relative">
         <Image
           alt="krajobraz"
           className="object-cover object-center"
@@ -19,9 +19,9 @@ const Hero = () => {
           src={coverImg}
         />
       </div>
-      <div className={css.heroContent}>
-        <div className={css.baner}>
-          <div className={css.banerInner}>
+      <div className="relative md:flex md:justify-center p-6 md:p-10">
+        <div className="flex">
+          <div className="flex flex-col justify-around gap-4 py-8 px-16 ml-auto backdrop-blur-sm bg-white/30">
             <div
               className="flex flex-col mx-auto 2xl:gap-2"
               data-aos="fade-right"
@@ -46,7 +46,11 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <aside className={css.aside} data-aos="fade-left" data-aos-delay="100">
+        <aside
+          className={`${css.aside} hidden sm:block`}
+          data-aos="fade-left"
+          data-aos-delay="100"
+        >
           <div className={css.imgBox}>
             <HeroCarousel />
           </div>

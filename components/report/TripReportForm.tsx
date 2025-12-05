@@ -1,11 +1,12 @@
+import {
+  Autocomplete,
+  AutocompleteItem,
+  addToast,
+  Button,
+  Checkbox,
+} from "@heroui/react";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import cl from "classnames";
-import { Button } from "primereact/button";
-import { Checkbox } from "primereact/checkbox";
-import { Dropdown } from "primereact/dropdown";
-import { useMountEffect } from "primereact/hooks";
-import { Messages } from "primereact/messages";
-import React, { useRef } from "react";
+import React, { useEffect } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import type * as v from "valibot";
 import RHFInput, { type RHFField } from "@/components/RHFInput";
@@ -17,21 +18,14 @@ interface Props {
   onSuccess: () => void;
 }
 export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
-  const msg = useRef<Messages>(null);
-  useMountEffect(() => {
-    if (msg?.current) {
-      msg.current?.show([
-        {
-          severity: "error",
-          summary: "",
-          detail:
-            "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE (ogólne rozporządzenie o ochronie danych, tzw. RODO), przesyłający odpowiedzi wyraża zgodę na publikację na liście osób, które przebyły trasę na stronie internetowej https://dreptuś.pl/.",
-          sticky: false,
-          // life: 6000,
-        },
-      ]);
-    }
-  });
+  useEffect(() => {
+    addToast({
+      color: "warning",
+      title: "RODO",
+      description:
+        "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych...",
+    });
+  }, []);
 
   type FormData = v.InferOutput<typeof reportSchema>;
 
@@ -71,34 +65,23 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
       if (result?.success) {
         onSuccess();
       } else {
-        msg.current?.show?.([
-          {
-            severity: "error",
-            summary: "",
-            detail: result?.error || "Nie udało się wysłać formularza",
-            sticky: false,
-            life: 6000,
-          },
-        ]);
+        addToast({
+          color: "danger",
+          title: "Błąd",
+          description: result?.error || "Nie udało się wysłać formularza",
+        });
       }
     } catch (_e) {
-      msg.current?.show?.([
-        {
-          severity: "error",
-          summary: "",
-          detail: "Wystąpił błąd podczas wysyłania",
-          sticky: false,
-          life: 6000,
-        },
-      ]);
+      addToast({
+        color: "danger",
+        title: "Błąd",
+        description: "Wystąpił błąd podczas wysyłania",
+      });
     }
   };
 
   return (
     <>
-      <div className="w-full">
-        <Messages ref={msg} />
-      </div>
       <h2 className="text-4xl mb-6 text-brand-green-dark">
         Formularz zgłoszenia
       </h2>
@@ -110,27 +93,35 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
                 control={control}
                 name="trip"
                 render={({ field }) => (
-                  <>
-                    <Dropdown
-                      {...field}
-                      className={cl({ "p-invalid": errors.trip })}
-                      filter
-                      options={trips}
-                      placeholder="Wybierz przebytą trasę"
-                      onChange={(e) => field.onChange(e.value)}
-                      value={field.value}
-                    />
-                    {errors.trip ? (
-                      <small className="p-error">{errors.trip.message}</small>
-                    ) : null}
-                  </>
+                  <Autocomplete
+                    label="Wybierz przebytą trasę"
+                    placeholder="Wybierz przebytą trasę"
+                    selectedKey={field.value || null}
+                    onSelectionChange={(key) => {
+                      field.onChange(key || "");
+                    }}
+                    isInvalid={!!errors.trip}
+                    errorMessage={errors.trip?.message}
+                    isRequired
+                  >
+                    {trips.map((trip) => (
+                      <AutocompleteItem key={trip.value}>
+                        {trip.label}
+                      </AutocompleteItem>
+                    ))}
+                  </Autocomplete>
                 )}
               />
             </div>
 
             {fields1.map((f, i) => (
               <div key={i + String(f.name)}>
-                <RHFInput name={String(f.name)} label={f.label} type={f.type} />
+                <RHFInput
+                  name={String(f.name)}
+                  label={f.label}
+                  type={f.type}
+                  required
+                />
               </div>
             ))}
 
@@ -160,38 +151,34 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
           />
 
           <div>
-            <div className="flex items-center gap-2">
-              <Controller
-                control={control}
-                name="checked"
-                render={({ field }) => (
-                  <Checkbox
-                    inputId="cb1"
-                    checked={field.value}
-                    onChange={(e) => field.onChange(e.checked)}
-                    className={cl({ "p-invalid": errors.checked })}
-                  />
-                )}
-              />
-              <label className="p-checkbox-label" htmlFor="cb1">
-                <small>
-                  Wyrażam zgodę na przetwarzanie danych osobowych przez
-                  dreptuś.pl w celu weryfikacji zgłoszenia *
-                </small>
-              </label>
-            </div>{" "}
-            {errors.checked ? (
-              <small className="p-error">Wymagane jest wyrażenie zgody</small>
-            ) : null}
+            <Controller
+              control={control}
+              name="checked"
+              render={({ field }) => (
+                <Checkbox
+                  isSelected={field.value}
+                  onValueChange={field.onChange}
+                  isInvalid={!!errors.checked}
+                  isRequired
+                >
+                  <small>
+                    Wyrażam zgodę na przetwarzanie danych osobowych przez
+                    dreptuś.pl w celu weryfikacji zgłoszenia{" "}
+                    <span className="text-red-500">*</span>
+                  </small>
+                </Checkbox>
+              )}
+            />
           </div>
 
           <Button
             aria-label="submit"
-            className="p-button-raised mt-6 w-44"
-            label="Wyślij"
+            className="mt-6 w-44"
             type="submit"
-            disabled={isSubmitting}
-          ></Button>
+            isDisabled={isSubmitting}
+          >
+            Wyślij
+          </Button>
         </form>
       </FormProvider>
     </>

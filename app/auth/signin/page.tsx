@@ -1,8 +1,8 @@
 "use client";
 
+import { CodeBracketIcon } from "@heroicons/react/24/outline";
+import { Button, Input } from "@heroui/react";
 import { signIn } from "next-auth/react";
-import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
 import { useState } from "react";
 
 export default function SignInPage() {
@@ -20,32 +20,33 @@ export default function SignInPage() {
   };
 
   return (
-    <section className="center-hv flex-grow">
-      <div className="border-slate-200 rounded shadow-lg p-6 mx-auto w-[500px]">
+    <section className="center-hv grow">
+      <div className="border-slate-200 rounded-sm shadow-lg p-6 mx-auto w-[500px]">
         <h1 className="text-3xl mb-4">Logowanie</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <label className="text-sm" htmlFor="email">
-            Adres email
-          </label>
-          <InputText
+          <Input
             id="email"
             name="email"
             type="email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            label="Adres email"
+            value={email}
+            onValueChange={setEmail}
+            isRequired
           />
-          <Button type="submit" className="block" disabled={loading}>
-            <span>Zaloguj się przez email</span>
+          <Button type="submit" className="block w-full" isDisabled={loading}>
+            Zaloguj się przez email
           </Button>
         </form>
         <hr className="my-8" />
         <div className="center-hv">
           <Button
-            outlined
-            rounded
-            icon="pi pi-github"
-            onClick={() => signIn("github", { callbackUrl: "/admin" })}
-          />
+            variant="bordered"
+            radius="full"
+            isIconOnly
+            onPress={() => signIn("github", { callbackUrl: "/admin" })}
+          >
+            <CodeBracketIcon className="w-5 h-5" />
+          </Button>
         </div>
       </div>
     </section>

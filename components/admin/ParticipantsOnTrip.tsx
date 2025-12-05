@@ -1,16 +1,29 @@
 "use client";
 
+import {
+  CheckIcon,
+  ExclamationTriangleIcon,
+  PencilIcon,
+  TrashIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import {
+  addToast,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from "@heroui/react";
 import { log } from "next-axiom";
-import { Button } from "primereact/button";
-import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
-import { Dialog } from "primereact/dialog";
-import { Toast } from "primereact/toast";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import { editTripParticipant } from "@/lib/actions/edit-trip-participant";
 import { getTripParticipants } from "@/lib/actions/get-trip-participants";
 import { removeTripParticipant } from "@/lib/actions/remove-trip-participant";
+import PaginatedTable from "../PaginatedTable";
 import EditParticipantOnTrip from "./EditParticipantOnTrip";
 
 type Props = { tripId: number | null };
@@ -19,14 +32,12 @@ type TripParticipant = {
   origin: string;
   id: number;
   participant_id: number;
-  trip_id: number;
+  trip_id: number | bigint;
   answers: string;
   report_date: Date;
 };
 
 const ParticipantsOnTrip = ({ tripId }: Props) => {
-  const toast = useRef<Toast>(null);
-
   // Fetcher function for SWR that uses the server action
   const fetchParticipants = async (tripId: number) => {
     return await getTripParticipants(tripId);
@@ -38,12 +49,21 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
   );
   const [selectedTripParticipant, setSelectedTripParticipant] =
     useState<TripParticipant | null>(null);
-  const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
-  const [editDialog, setEditDialog] = useState<boolean>(false);
+  const [_item] = useState(null);
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
 
   const confirmDeleteParticipant = (participant: TripParticipant) => {
     setSelectedTripParticipant(participant);
-    setDeleteDialog(true);
+    onDeleteOpen();
   };
 
   const deleteParticipant = async () => {
@@ -51,28 +71,26 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
 
     try {
       await removeTripParticipant(selectedTripParticipant.id);
-      setDeleteDialog(false);
+      onDeleteClose();
 
-      toast?.current?.show({
-        severity: "success",
-        summary: "Pomyślnie",
-        detail: "usunięto uczestnika",
-        life: 3000,
+      addToast({
+        color: "success",
+        title: "Pomyślnie",
+        description: "usunięto uczestnika",
       });
 
       await mutate();
     } catch (error) {
-      setDeleteDialog(false);
+      onDeleteClose();
       log.error("admin: delete participant error", { message: error });
 
-      toast?.current?.show({
-        severity: "error",
-        summary: "Błąd",
-        detail:
+      addToast({
+        color: "danger",
+        title: "Błąd",
+        description:
           error instanceof Error
             ? error.message
             : "uczestnik nie został usunięty",
-        life: 3000,
       });
     }
   };
@@ -82,41 +100,38 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
       await editTripParticipant({
         id: participant.id,
         participant_id: participant.participant_id,
-        trip_id: participant.trip_id,
+        trip_id: Number(participant.trip_id),
         answers: participant.answers,
         report_date: participant.report_date.toISOString(),
         name: participant.name,
         origin: participant.origin,
       });
 
-      setEditDialog(false);
+      onEditClose();
 
-      toast?.current?.show({
-        severity: "success",
-        summary: "Pomyślnie",
-        detail: "zapisano zmiany",
-        life: 3000,
+      addToast({
+        color: "success",
+        title: "Pomyślnie zapisano zmiany",
       });
 
       await mutate();
     } catch (error) {
-      setEditDialog(false);
+      onEditClose();
       log.error("admin: edit participant error", { message: error });
 
-      toast?.current?.show({
-        severity: "error",
-        summary: "Błąd",
-        detail:
+      addToast({
+        color: "danger",
+        title: "Błąd",
+        description:
           error instanceof Error
             ? error.message
             : "zmiany nie zostały zapisane",
-        life: 3000,
       });
     }
   };
 
   const editParticipant = (participant: TripParticipant) => {
-    setEditDialog(true);
+    onEditOpen();
     setSelectedTripParticipant(participant);
   };
 
@@ -125,102 +140,110 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
       <React.Fragment>
         <Button
           className="mr-2"
-          icon="pi pi-pencil"
-          onClick={() => editParticipant(participant)}
-          outlined
-          rounded
-        />
+          isIconOnly
+          onPress={() => editParticipant(participant)}
+          variant="bordered"
+          radius="full"
+        >
+          <PencilIcon className="w-4 h-4" />
+        </Button>
         <Button
-          icon="pi pi-trash"
-          onClick={() => confirmDeleteParticipant(participant)}
-          outlined
-          rounded
-          severity="danger"
-        />
+          isIconOnly
+          onPress={() => confirmDeleteParticipant(participant)}
+          variant="bordered"
+          radius="full"
+          color="danger"
+        >
+          <TrashIcon className="w-4 h-4" />
+        </Button>
       </React.Fragment>
     );
   };
 
   return (
     <div>
-      {data || isLoading ? (
-        <DataTable
-          emptyMessage="Nie znaleziono uczestników"
-          loading={isLoading}
-          value={data?.tripParticipants?.participants}
-        >
-          <Column field="name" header="Imię i Nazwisko" />
-          <Column field="origin" header="Klub / miejscowość" />
-          <Column field="answers" header="Odpowiedzi" />
-          <Column
-            body={(row) =>
-              new Intl.DateTimeFormat("pl-PL", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-              }).format(new Date(row.report_date))
-            }
-            field="report_date"
-            header="Data zgłoszenia"
+      {data?.tripParticipants?.participants || isLoading ? (
+        isLoading ? (
+          <div>Ładowanie...</div>
+        ) : (
+          <PaginatedTable
+            items={data?.tripParticipants?.participants || []}
+            keyExtractor={(item) => item.id}
+            emptyMessage="Nie znaleziono uczestników"
+            isLoading={isLoading}
+            columns={[
+              { key: "name", label: "Imię i Nazwisko" },
+              { key: "origin", label: "Klub / miejscowość" },
+              { key: "answers", label: "Odpowiedzi" },
+              {
+                key: "report_date",
+                label: "Data zgłoszenia",
+                render: (row) =>
+                  new Intl.DateTimeFormat("pl-PL", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  }).format(new Date(row.report_date)),
+              },
+              {
+                key: "actions",
+                label: "Akcje",
+                render: actionBodyTemplate,
+              },
+            ]}
           />
-          <Column
-            body={actionBodyTemplate}
-            exportable={false}
-            style={{ minWidth: "12rem" }}
-          ></Column>
-        </DataTable>
+        )
       ) : (
         <h2>Wybierz trasę aby zoabczyć uczestników</h2>
       )}
-      <Dialog
-        footer={
-          <>
-            <Button
-              icon="pi pi-times"
-              label="Nie"
-              onClick={() => setDeleteDialog(false)}
-              outlined
-            />
-            <Button
-              icon="pi pi-check"
-              label="Tak"
-              onClick={deleteParticipant}
-              severity="danger"
-            />
-          </>
-        }
-        header={
-          <>
-            <i className="pi pi-exclamation-triangle mr-2 text-red-300" />
-            Zatwierdź
-          </>
-        }
-        onHide={() => setDeleteDialog(false)}
-        style={{ width: "400px" }}
-        visible={deleteDialog}
-      >
-        <div className="confirmation-content">
-          <span>
-            Czy na pewno chcesz usunąć uczestnika
-            <br />
-            {selectedTripParticipant?.name} z trasy
-          </span>
-        </div>
-      </Dialog>
-      <Dialog
-        onHide={() => setEditDialog(false)}
-        style={{ width: "700px" }}
-        visible={editDialog}
-      >
-        {selectedTripParticipant && (
-          <EditParticipantOnTrip
-            onAbort={() => setEditDialog(false)}
-            onSubmit={saveParticipant}
-            participant={selectedTripParticipant}
-          />
-        )}
-      </Dialog>
-      <Toast ref={toast} />
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="md">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <ExclamationTriangleIcon className="w-5 h-5 text-red-300" />
+                  Zatwierdź
+                </div>
+              </ModalHeader>
+              <ModalBody>
+                <span>
+                  Czy na pewno chcesz usunąć uczestnika
+                  <br />
+                  {selectedTripParticipant?.name} z trasy
+                </span>
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="bordered" onPress={onClose}>
+                  <XMarkIcon className="w-4 h-4 mr-2" />
+                  Nie
+                </Button>
+                <Button color="danger" onPress={deleteParticipant}>
+                  <CheckIcon className="w-4 h-4 mr-2" />
+                  Tak
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isEditOpen} onClose={onEditClose} size="2xl">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                {selectedTripParticipant && (
+                  <EditParticipantOnTrip
+                    onAbort={onClose}
+                    onSubmit={saveParticipant}
+                    participant={selectedTripParticipant}
+                  />
+                )}
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

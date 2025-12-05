@@ -1,40 +1,39 @@
 "use client";
-import { Column } from "primereact/column";
-import { DataTable, type DataTableValue } from "primereact/datatable";
-
 import { formatDate } from "@/lib/utils";
+import PaginatedTable from "./PaginatedTable";
 
 interface Props {
-  participantsList: DataTableValue[];
+  participantsList: Array<{
+    id: string | number;
+    name: string;
+    origin: string;
+    report_date: string | Date;
+    answers: string | number;
+  }>;
 }
 
 const ParticipantsOnTrip = ({ participantsList }: Readonly<Props>) => {
   return (
-    <DataTable
-      className="min-w-[450px]"
-      currentPageReportTemplate="{first} do {last} z {totalRecords}"
-      dataKey="id"
-      paginator={participantsList.length > 50}
-      // paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-      rows={50}
-      // rowsPerPageOptions={[20, 50, 100, 200]}
-      // size={isMd ? "normal" : "small"}
-      value={participantsList}
-    >
-      <Column
-        body={(_, options) => options.rowIndex + 1}
-        header="L.p."
-        headerStyle={{ width: "3rem" }}
-      ></Column>
-      <Column field="name" header="Imię i nazwisko"></Column>
-      <Column field="origin" header="Nazwa zespołu / miejscowość"></Column>
-      <Column
-        body={(d) => formatDate(d.report_date)}
-        field="report_date"
-        header="Data zgłoszenia"
-      ></Column>
-      <Column field="answers" header="Liczba odpowiedzi"></Column>
-    </DataTable>
+    <PaginatedTable
+      items={participantsList}
+      keyExtractor={(item) => String(item.id)}
+      rowsPerPage={50}
+      columns={[
+        {
+          key: "index",
+          label: "L.p.",
+          render: (_, globalIndex) => globalIndex + 1,
+        },
+        { key: "name", label: "Imię i nazwisko" },
+        { key: "origin", label: "Nazwa zespołu / miejscowość" },
+        {
+          key: "report_date",
+          label: "Data zgłoszenia",
+          render: (item) => formatDate(item.report_date),
+        },
+        { key: "answers", label: "Liczba odpowiedzi" },
+      ]}
+    />
   );
 };
 

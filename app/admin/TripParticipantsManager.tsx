@@ -1,5 +1,5 @@
 "use client";
-import { Dropdown } from "primereact/dropdown";
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { useState } from "react";
 import AddParticipantOnTrip from "@/components/admin/AddParticipantOnTrip";
 import ParticipantsOnTrip from "@/components/admin/ParticipantsOnTrip";
@@ -20,15 +20,21 @@ export default function TripParticipantsManager({
       <div>
         <h2 className="text-2xl mb-2">Zarządzaj uczestnikami</h2>
         <div className="flex flex-col mb-4 w-[600px]">
-          <label htmlFor="trip-select">Trasa</label>
-          <Dropdown
-            filter
+          <Autocomplete
             id="trip-select"
-            onChange={(e) => setSelectedTripId(e.value)}
-            options={tripsParticipants}
+            label="Trasa"
             placeholder="Wybierz trasę"
-            value={selectedTripId}
-          />
+            selectedKey={selectedTripId ? String(selectedTripId) : null}
+            onSelectionChange={(key) => {
+              setSelectedTripId(key ? Number(key) : null);
+            }}
+          >
+            {tripsParticipants.map((trip) => (
+              <AutocompleteItem key={String(trip.value)}>
+                {trip.label}
+              </AutocompleteItem>
+            ))}
+          </Autocomplete>
         </div>
         <ParticipantsOnTrip tripId={selectedTripId} />
       </div>
