@@ -1,7 +1,6 @@
 import { cva } from "class-variance-authority";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { GoogleContext, GoogleMapContext } from "@/lib/context";
-import css from "./Map.module.css";
 
 const mapdiv = cva(["w-full"], {
   variants: {

@@ -1,10 +1,9 @@
-
 .nav {
   align-self: stretch;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  font-family: var(--font-heading); 
+  font-family: var(--font-heading);
   gap: 2rem;
   transition-duration: 150ms;
   transition-property: all;
@@ -44,7 +43,8 @@
 .activeLink {
   font-size: 1.125rem;
   line-height: 1.75rem;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
   position: relative;
@@ -59,7 +59,8 @@
 .link {
   font-size: 1.125rem;
   line-height: 1.75rem;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
   position: relative;
@@ -81,7 +82,8 @@
   transition: width 0.3s ease-in-out;
 }
 .nonLink {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
   position: relative;

@@ -7,8 +7,6 @@
   grid-area: 1 / 1 / 1 / 1;
 }
 
-
-
 .banerText {
   font-size: 3rem;
   line-height: 3rem;
@@ -18,8 +16,8 @@
 
 .banerText:first-letter {
   color: var(--color-accent-dark);
-    font-size: 3.25rem;
-} 
+  font-size: 3.25rem;
+}
 .banerText:nth-child(2n) {
   margin-left: 1rem;
 }
