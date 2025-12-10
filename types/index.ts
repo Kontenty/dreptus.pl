@@ -77,6 +77,7 @@ export interface TripDetails extends Post {
 }
 
 export interface TripFormMap extends TripListItem {
+  id: number;
   ID: string;
   locations?: string;
   dolinaBugu: boolean;

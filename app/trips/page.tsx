@@ -24,6 +24,7 @@ export default async function Trips({
   const trips: TripFormMap[] =
     rawTrips
       ?.map((trip) => ({
+        id: trip.ID,
         ID: trip.ID.toString(),
         title: trip.title,
         slug: trip.slug,
