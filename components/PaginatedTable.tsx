@@ -29,7 +29,12 @@ interface PaginatedTableProps<T> extends TableProps {
   isLoading?: boolean;
 }
 
-export default function PaginatedTable<T>({
+interface Item {
+  id?: number | string;
+  type?: string;
+}
+
+export default function PaginatedTable<T extends Item>({
   items,
   columns,
   keyExtractor,
@@ -56,6 +61,10 @@ export default function PaginatedTable<T>({
   const start = (page - 1) * rowsPerPage + 1;
   const end = Math.min(page * rowsPerPage, items.length);
 
+  const isSectionHeader = (item: T) => {
+    return item.type === "section" || Number(item?.id) >= 100001;
+  };
+
   return (
     <div className="min-w-[450px]">
       {header && <div className="mb-4 text-lg font-semibold">{header}</div>}
@@ -69,11 +78,19 @@ export default function PaginatedTable<T>({
                   ({ item }) => String(keyExtractor(item)) === String(key),
                 );
                 if (item?.item) {
-                  setTimeout(() => onRowClick(item.item), 300);
+                  // Only trigger click for non-section items
+                  const isSection = isSectionHeader(item.item);
+                  if (!isSection) {
+                    setTimeout(() => onRowClick(item.item), 300);
+                  }
                 }
               }
             : undefined
         }
+        classNames={{
+          tr: onRowClick ? "cursor-pointer" : "",
+          td: "data-[selected=true]:before:border-b-heroui-primary data-[selected=true]:after:bg-heroui-primary",
+        }}
       >
         <TableHeader>
           {columns.map((column) => (
@@ -82,9 +99,17 @@ export default function PaginatedTable<T>({
         </TableHeader>
         <TableBody emptyContent={emptyMessage} isLoading={isLoading}>
           {itemsOnPage.map(({ item, globalIndex }) => (
-            <TableRow key={keyExtractor(item)}>
+            <TableRow
+              key={keyExtractor(item)}
+              className={
+                isSectionHeader(item) ? "bg-gray-50 font-semibold" : ""
+              }
+            >
               {columns.map((column) => (
-                <TableCell key={String(column.key)}>
+                <TableCell
+                  key={String(column.key)}
+                  className={isSectionHeader(item) ? "py-3" : ""}
+                >
                   {column.render
                     ? column.render(item, globalIndex)
                     : ((item as Record<string, unknown>)[
