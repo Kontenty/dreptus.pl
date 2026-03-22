@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import TripDetail from "@/components/TripDetail";
 import { GoogleProvider } from "@/lib/context";
 import { getTripBySlug, getTripsForMap } from "@/lib/db";
+import type { TripDetails } from "@/types";
 
 type Props = {
   params: Promise<{
@@ -17,7 +18,8 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
   // Fetch main trip details
   const rawDetails = await getTripBySlug(tripName);
   if (!rawDetails) return notFound();
-  const tripDetails = {
+  const tripDetails: TripDetails = {
+    id: rawDetails.ID,
     ID: rawDetails.ID,
     post_author: 0, // Default value since we don't have this from rawDetails
     post_date: "", // Default value since we don't have this from rawDetails
@@ -55,13 +57,14 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
     pdf_images: rawDetails.pdf_images,
     pdfImages: rawDetails.pdfImages,
     position: { lat: Number(rawDetails.lat), lng: Number(rawDetails.lng) },
-    category_names: null,
-    category_slugs: null,
+    slug: rawDetails.post_name,
+    title: rawDetails.post_title,
+    dolinaBugu: rawDetails.category_slugs?.includes("dolina-bugu") ?? false,
   };
   // Fetch list of all trips for sidebar
   const rawTrips = await getTripsForMap();
   const tripsList = rawTrips.map((t) => ({
-    ID: t.ID.toString(),
+    ID: t.ID,
     slug: t.slug,
     title: t.title,
     thumb_url: t.thumb_url,

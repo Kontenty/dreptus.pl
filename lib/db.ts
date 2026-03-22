@@ -77,9 +77,12 @@ export const getTripBySlug = async (
 export const getTripsForMap = async (
   location = "all",
 ): Promise<TripsForMapResponse[]> => {
-  const locationQuery = location === "all" ? "" : `AND t.slug = ${location}`;
+  const locationQuery =
+    location && location !== "all"
+      ? Prisma.sql`AND t.slug = ${location}`
+      : Prisma.empty;
 
-  const query = `
+  const query = Prisma.sql`
       SELECT  p.ID, 
         p.post_title as title, 
         p.post_name as slug, 
@@ -100,7 +103,7 @@ export const getTripsForMap = async (
     WHERE p.post_type = 'listing' AND p.post_status = 'publish' ${locationQuery}
     GROUP BY p.ID,p.post_title;
   `;
-  const postData = await prisma.$queryRawUnsafe<TripsForMapResponse[]>(query);
+  const postData = await prisma.$queryRaw<TripsForMapResponse[]>(query);
   return postData;
 };
 

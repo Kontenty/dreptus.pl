@@ -51,7 +51,7 @@ export interface PostResponse {
   comment_count: number;
   meta_value?: string | number;
   thumb_id: number;
-  thumb_url: string;
+  thumb_url?: string;
 }
 
 export interface TripListResponse
@@ -60,6 +60,8 @@ export interface TripListResponse
 }
 
 export interface TripDetails extends Post {
+  id: number;
+  ID: number;
   images_str: string;
   images: { guid: string; post_title: string }[];
   pdf: string;
@@ -74,11 +76,15 @@ export interface TripDetails extends Post {
   type: string;
   number: string;
   position: google.maps.LatLngLiteral;
+  title: string;
+  slug: string;
+  category_slugs?: string;
+  dolinaBugu: boolean;
 }
 
 export interface TripFormMap extends TripListItem {
   id: number;
-  ID: string;
+  ID: number;
   locations?: string;
   dolinaBugu: boolean;
   position: google.maps.LatLngLiteral;
@@ -102,7 +108,7 @@ export interface TripsForMapResponse {
   number: string;
   category_names: string;
   category_slugs: string;
-  thumb_url: string;
+  thumb_url?: string;
 }
 
 export type ElementorElement = {
@@ -134,7 +140,7 @@ export type ElementorData = {
 // GraphQL-compatible types for migration
 export interface TripListItem {
   slug: string;
-  thumb_url: string;
+  thumb_url?: string;
   title: string;
 }
 

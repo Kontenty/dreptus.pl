@@ -25,7 +25,7 @@ export default async function Trips({
     rawTrips
       ?.map((trip) => ({
         id: trip.ID,
-        ID: trip.ID.toString(),
+        ID: trip.ID,
         title: trip.title,
         slug: trip.slug,
         length: trip.length,
