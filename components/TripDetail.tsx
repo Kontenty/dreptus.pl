@@ -17,7 +17,7 @@ import { GoogleContext } from "@/lib/context";
 import { getIcon } from "@/lib/utils";
 import type { TripDetails, TripFormMap } from "@/types";
 import ModalGallery from "./ModalGallery";
-import { SingleTripMap } from "./map/SingleTripMap";
+import { TripsMap } from "./new-map";
 import SlickArrow from "./SlickArrow";
 import css from "./tripDetail.module.css";
 
@@ -98,7 +98,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
     <div>
       <div>
         <div className="p-2 md:p-6">
-          <SingleTripMap trip={trip} />
+          <TripsMap trips={[trip]} mode="single" />
         </div>
         <Main spacing="S">
           <div className="flex items-center pb-2">

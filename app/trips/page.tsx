@@ -1,6 +1,6 @@
 export const revalidate = 86400; // 24 hours
 
-import { TripsMap } from "@/components/map/TripsMap";
+import { TripsMap } from "@/components/new-map/TripsMap";
 import TripListFilter from "@/components/TripListFilter";
 import TripsList from "@/components/TripsList";
 import { GoogleProvider } from "@/lib/context";

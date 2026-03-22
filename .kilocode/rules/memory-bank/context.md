@@ -9,6 +9,7 @@ The project is a mature, production-ready Polish outdoor tourism platform with a
 - Project foundation established with comprehensive memory bank
 - All core documentation files created successfully
 - Project architecture fully documented and analyzed
+- Added a new, modern Google Maps implementation module under `components/new-map/` (clustered markers + InfoWindow popup) without changing existing production map components
 
 ## Current Focus
 The platform appears to be in a stable, production state with all major features implemented:
