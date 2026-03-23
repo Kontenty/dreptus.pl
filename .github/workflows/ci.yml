@@ -9,6 +9,13 @@ on:
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
+    env:
+      MAIL_USER: ${{ secrets.MAIL_USER }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+      MAIL_FROM: ${{ secrets.MAIL_FROM }}
+      MAIL_PASS: ${{ secrets.MAIL_PASS }}
+      MAIL_PORT: ${{ secrets.MAIL_PORT }}
+      MAIL_HOST: ${{ secrets.MAIL_HOST }}
 
     steps:
       - name: Checkout repository
