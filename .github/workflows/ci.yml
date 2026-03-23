@@ -16,6 +16,10 @@ jobs:
       MAIL_PASS: ${{ secrets.MAIL_PASS }}
       MAIL_PORT: ${{ secrets.MAIL_PORT }}
       MAIL_HOST: ${{ secrets.MAIL_HOST }}
+      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
+      DATABASE_CON_URL_SHADOW: ${{ secrets.DATABASE_CON_URL_SHADOW }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
 
     steps:
       - name: Checkout repository
