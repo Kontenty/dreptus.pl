@@ -1,3 +1,5 @@
+export const revalidate = 86400; // 24 hours
+
 import Image from "next/image";
 import Link from "next/link";
 import { getPlaiceholder } from "plaiceholder";
