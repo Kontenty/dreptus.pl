@@ -13,6 +13,12 @@ const { loadEnvConfig } = nextEnv;
 // Load environment variables
 loadEnvConfig(cwd());
 
+const dbUrl = process.env.DATABASE_CON_URL;
+if (!dbUrl || !/^mysql:\/\/.+:.+@.+:.+$/.test(dbUrl)) {
+  console.error("❌ DATABASE_URL environment variable is not set or invalid!");
+  process.exit(1);
+}
+
 async function testDatabaseConnection() {
   console.log("🧪 Testing database connection...");
 
