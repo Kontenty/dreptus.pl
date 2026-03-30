@@ -14,8 +14,7 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.0",
-    "@googlemaps/js-api-loader": "^1.16.2",
-    "@googlemaps/markerclusterer": "^2.3.1",
+    "@googlemaps/markerclusterer": "^2.6.2",
     "@heroicons/react": "^2.0.18",
     "@heroui/accordion": "^2.2.24",
     "@heroui/alert": "^2.2.27",
@@ -44,6 +43,7 @@
     "@react-aria/i18n": "3.12.13",
     "@react-google-maps/api": "^2.20.7",
     "@tailwindcss/typography": "^0.5.9",
+    "@turf/distance": "^7.3.4",
     "@vis.gl/react-google-maps": "^1.7.1",
     "aos": "^3.0.0-beta.6",
     "class-variance-authority": "^0.7.0",

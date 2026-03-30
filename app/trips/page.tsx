@@ -3,7 +3,6 @@ export const revalidate = 86400; // 24 hours
 import { TripsMap } from "@/components/new-map/TripsMap";
 import TripListFilter from "@/components/TripListFilter";
 import TripsList from "@/components/TripsList";
-import { GoogleProvider } from "@/lib/context";
 import { locationsList } from "@/lib/data";
 import { getLocations, getTripsCount, getTripsForMap } from "@/lib/db";
 import { sortTrips } from "@/lib/utils";
@@ -46,7 +45,7 @@ export default async function Trips({
       }))
       .sort(sortTrips) ?? [];
   return (
-    <GoogleProvider>
+    <>
       <TripsMap trips={trips} />
       <div className={css.lists}>
         <div className="lg:pt-4" data-aos="fade-right">
@@ -59,6 +58,6 @@ export default async function Trips({
           <TripsList trips={trips} />
         </div>
       </div>
-    </GoogleProvider>
+    </>
   );
 }

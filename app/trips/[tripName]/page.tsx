@@ -2,7 +2,6 @@ export const revalidate = 86400; // 24 hours
 
 import { notFound } from "next/navigation";
 import TripDetail from "@/components/TripDetail";
-import { GoogleProvider } from "@/lib/context";
 import { getTripBySlug, getTripsForMap } from "@/lib/db";
 import type { TripDetails } from "@/types";
 
@@ -73,9 +72,5 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
     lng: t.lng.toString(),
   }));
 
-  return (
-    <GoogleProvider>
-      <TripDetail trip={tripDetails} tripsList={tripsList} />
-    </GoogleProvider>
-  );
+  return <TripDetail trip={tripDetails} tripsList={tripsList} />;
 }

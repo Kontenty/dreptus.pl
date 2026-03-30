@@ -8,12 +8,12 @@ import {
   MapIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import { distance as getDistance } from "@turf/distance";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Slider from "react-slick";
 import Main from "@/components/ui/Main";
-import { GoogleContext } from "@/lib/context";
 import { getIcon } from "@/lib/utils";
 import type { TripDetails, TripFormMap } from "@/types";
 import ModalGallery from "./ModalGallery";
@@ -38,7 +38,6 @@ interface Props {
 }
 
 const TripDetail = ({ trip, tripsList }: Props) => {
-  const { googlemaps } = useContext(GoogleContext);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [currentImageSet, setCurrentImageSet] = useState<
     TripDetails["images"] | null
@@ -47,19 +46,24 @@ const TripDetail = ({ trip, tripsList }: Props) => {
 
   const nearbyTrips = useMemo(
     () =>
-      tripsList &&
-      googlemaps &&
       tripsList
-        .map((curr) => {
-          const distance = googlemaps.geometry.spherical.computeDistanceBetween(
-            { lat: Number(trip.lat), lng: Number(trip.lng) },
-            { lat: Number(curr.lat), lng: Number(curr.lng) },
+        ?.map((curr) => {
+          const distance = getDistance(
+            {
+              type: "Point",
+              coordinates: [Number(trip.lng), Number(trip.lat)],
+            },
+            {
+              type: "Point",
+              coordinates: [Number(curr.lng), Number(curr.lat)],
+            },
+            { units: "meters" },
           );
           return { ...curr, distance };
         })
         .sort((a, b) => (a.distance > b.distance ? 1 : -1))
         .slice(1, 4),
-    [trip, tripsList, googlemaps],
+    [trip, tripsList],
   );
 
   const handleDownload = async (url: string) => {
