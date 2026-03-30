@@ -14,9 +14,9 @@ export function TripPopupContent({ trip }: TripPopupContentProps) {
   }
 
   return (
-    <div className="relative bg-white w-[300px] min-h-[200px]">
+    <div className="relative bg-white w-75 min-h-50">
       <Link href={trip.slug ? `/trips/${trip.slug}` : "/trips"}>
-        <div className="relative h-[200px]">
+        <div className="relative h-50">
           <Image
             alt="trip thumb image"
             fill
