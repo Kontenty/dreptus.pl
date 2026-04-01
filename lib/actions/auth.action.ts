@@ -1,11 +1,12 @@
 "use server";
 
-import { signIn, signOut } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { signOut } from "@/lib/auth";
 
 export async function logout() {
   await signOut({ redirectTo: "/" });
 }
 
 export async function logIn() {
-  await signIn();
+  redirect("/auth/signin");
 }

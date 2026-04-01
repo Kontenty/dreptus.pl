@@ -76,7 +76,7 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.72.0(react@19.2.3))
       '@internationalized/date':
-        specifier: ^3.10.0
+        specifier: 3.12.0
         version: 3.12.0
       '@next/env':
         specifier: 16.2.1
@@ -94,8 +94,8 @@ importers:
         specifier: ^6.17.1
         version: 6.19.2(prisma@6.19.2(typescript@5.9.3))(typescript@5.9.3)
       '@react-aria/i18n':
-        specifier: 3.12.13
-        version: 3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: 3.12.16
+        version: 3.12.16(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tailwindcss/typography':
         specifier: ^0.5.9
         version: 0.5.19(tailwindcss@4.2.2)
@@ -1365,12 +1365,6 @@ packages:
 
   '@react-aria/grid@3.14.8':
     resolution: {integrity: sha512-X6rRFKDu/Kh6Sv8FBap3vjcb+z4jXkSOwkYnexIJp5kMTo5/Dqo55cCBio5B70Tanfv32Ev/6SpzYG7ryxnM9w==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-      react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
-
-  '@react-aria/i18n@3.12.13':
-    resolution: {integrity: sha512-YTM2BPg0v1RvmP8keHenJBmlx8FXUKsdYIEX7x6QWRd1hKlcDwphfjzvt0InX9wiLiPHsT5EoBTpuUk8SXc0Mg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
       react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
@@ -4469,19 +4463,6 @@ snapshots:
       '@react-stately/selection': 3.20.9(react@19.2.3)
       '@react-types/checkbox': 3.10.4(react@19.2.3)
       '@react-types/grid': 3.3.8(react@19.2.3)
-      '@react-types/shared': 3.33.1(react@19.2.3)
-      '@swc/helpers': 0.5.19
-      react: 19.2.3
-      react-dom: 19.2.3(react@19.2.3)
-
-  '@react-aria/i18n@3.12.13(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
-    dependencies:
-      '@internationalized/date': 3.12.0
-      '@internationalized/message': 3.1.8
-      '@internationalized/number': 3.6.5
-      '@internationalized/string': 3.2.7
-      '@react-aria/ssr': 3.9.10(react@19.2.3)
-      '@react-aria/utils': 3.33.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@react-types/shared': 3.33.1(react@19.2.3)
       '@swc/helpers': 0.5.19
       react: 19.2.3
