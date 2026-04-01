@@ -9,7 +9,6 @@ import cl from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { Session } from "next-auth";
 import { useState } from "react";
 import logo from "@/public/image/logo200.png";
 import { LogOutButton } from "./auth/LogOutButton";
@@ -42,24 +41,8 @@ const links = [
   { name: "Kontakt", link: "/contact" },
 ];
 
-import { useEffect } from "react";
-import { getSessionAction } from "@/lib/actions/getSessionAction";
-
 const Header = () => {
   const pathname = usePathname();
-  const [session, setSession] = useState<Session | null>(null);
-  const isLoggedIn = !!session;
-
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const currentSession = await getSessionAction();
-      if (mounted) setSession(currentSession ?? null);
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   const [showNav, setShowNav] = useState(false);
   const toggleNav = () => {
@@ -136,7 +119,7 @@ const Header = () => {
         })}
       </nav>
       <div className="ml-auto center-hv gap-4">
-        {isLoggedIn && <LogOutButton />}
+        <LogOutButton />
 
         <Link href="https://www.facebook.com/trip.wycieczki">
           <svg

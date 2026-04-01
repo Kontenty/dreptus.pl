@@ -1,16 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export async function removeTripParticipant(participantId: number) {
-  // Check authentication using NextAuth v5
-  const session = await auth();
-  if (!session?.user?.role || session.user.role !== "admin") {
-    throw new Error("Unauthorized: Admin access required");
-  }
-
   try {
     // Get the trip_id before deleting for revalidation
     const tripParticipant = await prisma.tripParticipant.findUnique({

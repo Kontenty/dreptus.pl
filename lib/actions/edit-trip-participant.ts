@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 
 import * as v from "valibot";
 
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 const schema = v.object({
@@ -27,12 +26,6 @@ type EditTripParticipantData = {
 };
 
 export async function editTripParticipant(data: EditTripParticipantData) {
-  // Check authentication using NextAuth v5
-  const session = await auth();
-  if (!session?.user?.role || session.user.role !== "admin") {
-    throw new Error("Unauthorized: Admin access required");
-  }
-
   // Validate input data
   const result = v.safeParse(schema, data);
   if (!result.success) {
