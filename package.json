@@ -14,6 +14,8 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@clerk/localizations": "^4.3.0",
+    "@clerk/nextjs": "^7.0.8",
     "@googlemaps/markerclusterer": "^2.6.2",
     "@heroicons/react": "^2.0.18",
     "@heroui/accordion": "^2.2.24",
@@ -85,6 +87,7 @@
       "@types/react-dom": "19.2.2"
     },
     "onlyBuiltDependencies": [
+      "@clerk/shared",
       "@heroui/shared-utils",
       "@prisma/client",
       "@prisma/engines",

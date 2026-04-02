@@ -1,5 +1,7 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import "./global.css";
 
+import { plPL } from "@clerk/localizations";
 import { Nunito, Open_Sans } from "next/font/google";
 import { AosProvider } from "@/components/aos/AosProvider";
 import Footer from "@/components/Footer";
@@ -44,17 +46,19 @@ export default function Layout({ children }: Readonly<Props>) {
         <meta content="https://xn--dereptu-8ib.pl" property="og:url" />
       </head>
       <body>
-        <Providers>
-          <AosProvider />
-          <div
-            className="flex flex-col min-h-screen overflow-x-auto pt-[52px] md:pt-[90px]"
-            id="root"
-          >
-            <Header />
-            <div className="flex flex-col grow">{children}</div>
-            <Footer />
-          </div>
-        </Providers>
+        <ClerkProvider localization={plPL}>
+          <Providers>
+            <AosProvider />
+            <div
+              className="flex flex-col min-h-screen overflow-x-auto pt-13 md:pt-22"
+              id="root"
+            >
+              <Header />
+              <div className="flex flex-col grow">{children}</div>
+              <Footer />
+            </div>
+          </Providers>
+        </ClerkProvider>
       </body>
     </html>
   );

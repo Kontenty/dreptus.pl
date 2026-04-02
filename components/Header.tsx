@@ -1,4 +1,5 @@
 "use client";
+import { Show, UserButton } from "@clerk/nextjs";
 import {
   Bars3Icon,
   ChevronDownIcon,
@@ -11,7 +12,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import logo from "@/public/image/logo200.png";
-import { LogOutButton } from "./auth/LogOutButton";
 import css from "./Header.module.css";
 
 const links = [
@@ -119,8 +119,9 @@ const Header = () => {
         })}
       </nav>
       <div className="ml-auto center-hv gap-4">
-        <LogOutButton />
-
+        <Show when="signed-in">
+          <UserButton />
+        </Show>
         <Link href="https://www.facebook.com/trip.wycieczki">
           <svg
             className="hover:fill-blue-500"
