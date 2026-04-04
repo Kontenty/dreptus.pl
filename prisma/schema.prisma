@@ -109,6 +109,7 @@ model wp_postmeta {
 
   @@index([meta_key(length: 191)], map: "meta_key")
   @@index([post_id], map: "post_id")
+  @@index([post_id, meta_key(length: 191)], map: "post_id_meta_key")
 }
 
 model wp_posts {
@@ -149,6 +150,7 @@ model wp_term_relationships {
   term_order       Int    @default(0)
 
   @@id([object_id, term_taxonomy_id])
+  @@index([object_id], map: "object_id")
   @@index([term_taxonomy_id], map: "term_taxonomy_id")
 }
 
