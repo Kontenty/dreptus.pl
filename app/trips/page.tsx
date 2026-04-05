@@ -1,6 +1,7 @@
 export const revalidate = 86400; // 24 hours
 
-import { TripsMap } from "@/components/new-map/TripsMap";
+import { Suspense } from "react";
+import MapView from "@/components/map/MapView";
 import TripListFilter from "@/components/TripListFilter";
 import TripsList from "@/components/TripsList";
 import { locationsList } from "@/lib/data";
@@ -46,7 +47,15 @@ export default async function Trips({
       .sort(sortTrips) ?? [];
   return (
     <>
-      <TripsMap trips={trips} />
+      <Suspense
+        fallback={
+          <div className="h-[550px] w-full rounded-md bg-slate-100 text-slate-700 flex items-center justify-center animate-pulse">
+            Loading...
+          </div>
+        }
+      >
+        <MapView trips={trips} />
+      </Suspense>
       <div className={css.lists}>
         <div className="lg:pt-4" data-aos="fade-right">
           <TripListFilter
