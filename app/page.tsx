@@ -13,9 +13,13 @@ import trip from "@/public/image/trip.jpg";
 import css from "./style.module.css";
 
 const getData = async () => {
-  const trips = await getTrips(10);
-  const tripsCount = (await getTripsCount()) || 180;
-  const participantsCount = (await prisma.tripParticipant.count()) || 2000;
+  const data = await Promise.all([
+    getTrips(10),
+    getTripsCount(),
+    prisma.tripParticipant.count(),
+  ]);
+  const [trips, tripsCount, participantsCount] = data;
+
   return {
     trips,
     tripsCount,

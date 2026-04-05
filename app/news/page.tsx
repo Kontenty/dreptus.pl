@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 86400; // 24 hours
 
 import Image from "next/image";
 import Link from "next/link";
