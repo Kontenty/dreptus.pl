@@ -39,7 +39,23 @@ export function useMapInitialization({
         if (loadedImages.has(e.id)) return;
         loadedImages.add(e.id);
 
-        const response = await fetch(e.id);
+        // Prevent fetching remote "font/icon" resources that are not URLs.
+        // MapLibre may emit styleimagemissing for glyphs/fonts (e.g. via text-font).
+        if (
+          !e.id ||
+          e.id.includes("DIN") ||
+          e.id.includes("Offc") ||
+          e.id.includes("glyphs")
+        ) {
+          return;
+        }
+
+        // Your custom marker icons are served from /public as static files.
+        // If MapLibre is missing them, directly fetch the corresponding URL.
+        const maybeUrl = e.id.startsWith("/") ? e.id : e.id;
+
+        const response = await fetch(maybeUrl);
+        if (!response.ok) return;
         const svgText = await response.text();
         const svg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
 

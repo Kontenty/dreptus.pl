@@ -1,4 +1,4 @@
-import type maplibregl from "maplibre-gl";
+import type { ExpressionSpecification, Map as MaplibreMap } from "maplibre-gl";
 
 export const POLISH_TEXT_LAYERS = [
   "waterway_line_label",
@@ -35,8 +35,8 @@ export const CLUSTER_TEXT_LAYOUT = {
 };
 
 export const UNCLUSTERED_POINT_LAYOUT = {
-  "icon-image": ["get", "icon"],
-  "icon-size": 1,
+  "icon-image": ["get", "icon"] as unknown as ExpressionSpecification,
+  "icon-size": 0.8,
   "icon-allow-overlap": true,
 };
 
@@ -47,7 +47,7 @@ export const GEOJSON_SOURCE_OPTIONS = {
   clusterRadius: 50,
 };
 
-export function setPolishLanguage(map: maplibregl.Map): void {
+export function setPolishLanguage(map: MaplibreMap): void {
   const textField = [
     "case",
     ["has", "name:pl"],

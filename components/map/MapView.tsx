@@ -36,11 +36,13 @@ export default function MapView({
 }: MapViewProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
-  const popupContentRef = useRef<HTMLDivElement | null>(null);
   const tripsRef = useRef(trips);
   const onTripClickRef = useRef(onTripClick);
   const modeRef = useRef(mode);
   const [selectedTrip, setSelectedTrip] = useState<TripFormMap | null>(null);
+  const [popupContainer, setPopupContainer] = useState<HTMLDivElement | null>(
+    null,
+  );
 
   tripsRef.current = trips;
   onTripClickRef.current = onTripClick;
@@ -75,7 +77,6 @@ export default function MapView({
       type: "symbol",
       source: "markers",
       filter: ["!", ["has", "point_count"]],
-      // @ts-expect-error - maplibre types don't fully capture expression-based layout properties
       layout: UNCLUSTERED_POINT_LAYOUT,
     });
 
@@ -106,6 +107,14 @@ export default function MapView({
       const props = features[0].properties;
       if (!props) return;
 
+      if (popupRef.current) {
+        popupRef.current.remove();
+      }
+
+      if (popupRef.current) {
+        popupRef.current.remove();
+      }
+
       const currentTrips = tripsRef.current;
       const trip = currentTrips.find((t) => t.ID === Number(props.id));
       if (trip) {
@@ -113,23 +122,19 @@ export default function MapView({
         setSelectedTrip(trip);
       }
 
-      if (popupRef.current) {
-        popupRef.current.remove();
-      }
-
-      if (!popupContentRef.current) {
-        popupContentRef.current = document.createElement("div");
-      }
+      const popupContent = document.createElement("div");
+      setPopupContainer(popupContent);
 
       popupRef.current = new maplibregl.Popup({
         closeButton: false,
         closeOnClick: true,
-        offset: -30,
+        anchor: "left",
+        offset: 20,
         maxWidth: "none",
         padding: { top: 100, bottom: 0, left: 0, right: 0 },
       })
         .setLngLat(e.lngLat)
-        .setDOMContent(popupContentRef.current);
+        .setDOMContent(popupContent);
       popupRef.current.on("close", () => setSelectedTrip(null));
       popupRef.current.addTo(map);
     });
@@ -166,7 +171,6 @@ export default function MapView({
     mapRef,
     isMapReady,
     trips,
-    mode,
   });
 
   useEffect(() => {
@@ -185,13 +189,13 @@ export default function MapView({
     >
       <div ref={mapContainer} className="h-full w-full" />
       {selectedTrip &&
-        popupContentRef.current &&
+        popupContainer &&
         createPortal(
           <PopupContent
             trip={selectedTrip}
             onClose={() => popupRef.current?.remove()}
           />,
-          popupContentRef.current,
+          popupContainer,
         )}
     </div>
   );

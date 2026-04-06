@@ -8,15 +8,11 @@ import type { TripFormMap } from "@/types";
 import css from "./map.module.css";
 
 interface PopupContentProps {
-  trip: TripFormMap | null;
+  trip: TripFormMap;
   onClose?: () => void;
 }
 
 export function PopupContent({ trip, onClose }: PopupContentProps) {
-  if (!trip) {
-    return null;
-  }
-
   return (
     <div className="relative bg-white w-75 min-h-50">
       <button
