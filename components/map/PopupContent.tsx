@@ -1,33 +1,38 @@
 "use client";
 
 import { EyeIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import type { TripFormMap } from "@/types";
 import css from "./map.module.css";
 
 interface PopupContentProps {
   trip: TripFormMap | null;
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  onClose?: () => void;
 }
 
-export function PopupContent({ trip, containerRef }: PopupContentProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!trip || !mounted || !containerRef.current) {
+export function PopupContent({ trip, onClose }: PopupContentProps) {
+  if (!trip) {
     return null;
   }
 
-  return createPortal(
-    <div className="relative bg-white w-[300px] min-h-[200px]">
+  return (
+    <div className="relative bg-white w-75 min-h-50">
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onClose?.();
+        }}
+        className={css.closeButton}
+        aria-label="Close"
+      >
+        <XCircleIcon className="w-7 h-7" />
+      </button>
       <Link href={trip.slug ? `/trips/${trip.slug}` : "/trips"}>
-        <div className="relative h-[100px] overflow-hidden">
+        <div className="relative h-50 overflow-hidden">
           <Image
             alt="trip thumb image"
             fill
@@ -55,7 +60,6 @@ export function PopupContent({ trip, containerRef }: PopupContentProps) {
           </small>
         )}
       </div>
-    </div>,
-    containerRef.current,
+    </div>
   );
 }

@@ -212,3 +212,8 @@ article p:not(:last-child) {
 .format-table td.has-text-align-center {
   text-align: center;
 }
+
+.maplibregl-popup-content {
+  padding: 0.25rem !important;
+  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.3);
+}
