@@ -21,6 +21,8 @@ export const locationsList = [
   "warszawa",
 ];
 
+export const locationsSet = new Set(locationsList);
+
 export const activityCode: Record<string, string> = {
   "10550": "foot",
   "10898": "foot",
