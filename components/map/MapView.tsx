@@ -20,23 +20,32 @@ interface MapViewProps {
 function tripsToGeoJSON(trips: TripFormMap[]): GeoJSON.FeatureCollection {
   return {
     type: "FeatureCollection",
-    features: trips.map((trip) => ({
-      type: "Feature",
-      properties: {
-        id: trip.ID,
-        title: trip.title,
-        slug: trip.slug,
-        thumb_url: trip.thumb_url,
-        lat: trip.lat,
-        lng: trip.lng,
-        type: trip.type,
-        dolinaBugu: trip.dolinaBugu,
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [Number(trip.lng), Number(trip.lat)],
-      },
-    })),
+    features: trips.map((trip) => {
+      const icon = trip.dolinaBugu
+        ? "/image/pieszo-dolina.png"
+        : trip.type === "bike"
+          ? "/image/icons/cyclist-circle.svg"
+          : "/image/icons/footman-circle.svg";
+
+      return {
+        type: "Feature",
+        properties: {
+          id: trip.ID,
+          title: trip.title,
+          slug: trip.slug,
+          thumb_url: trip.thumb_url,
+          lat: trip.lat,
+          lng: trip.lng,
+          type: trip.type,
+          dolinaBugu: trip.dolinaBugu,
+          icon,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [Number(trip.lng), Number(trip.lat)],
+        },
+      };
+    }),
   };
 }
 
@@ -148,6 +157,25 @@ export default function MapView({
     const currentData = dataRef.current;
 
     map.on("load", () => {
+      const loadedImages = new Set<string>();
+
+      map.on("styleimagemissing", async (e) => {
+        if (loadedImages.has(e.id)) return;
+        loadedImages.add(e.id);
+
+        const response = await fetch(e.id);
+        const svgText = await response.text();
+        const svg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
+
+        const img = new Image();
+        await new Promise<void>((resolve) => {
+          img.onload = () => resolve();
+          img.src = svg;
+        });
+
+        map.addImage(e.id, img);
+      });
+
       map.addSource("markers", {
         type: "geojson",
         data: currentData,
@@ -181,14 +209,13 @@ export default function MapView({
 
       map.addLayer({
         id: "unclustered-point",
-        type: "circle",
+        type: "symbol",
         source: "markers",
         filter: ["!", ["has", "point_count"]],
-        paint: {
-          "circle-color": "#11b4da",
-          "circle-radius": 8,
-          "circle-stroke-width": 1,
-          "circle-stroke-color": "#fff",
+        layout: {
+          "icon-image": ["get", "icon"],
+          "icon-size": 1,
+          "icon-allow-overlap": true,
         },
       });
 
@@ -237,10 +264,11 @@ export default function MapView({
         }
 
         popupRef.current = new maplibregl.Popup({
-          closeButton: true,
+          closeButton: false,
           closeOnClick: true,
           offset: -30,
           maxWidth: "none",
+          padding: { top: 100, bottom: 0, left: 0, right: 0 },
         })
           .setLngLat(coordinates)
           .setDOMContent(popupContentRef.current);
@@ -296,15 +324,6 @@ export default function MapView({
     fitToTrips(map, trips, mode);
   }, [trips, mode]);
 
-  useEffect(() => {
-    if (popupContentRef.current) {
-      createPortal(
-        <PopupContent trip={selectedTrip} containerRef={popupContentRef} />,
-        popupContentRef.current,
-      );
-    }
-  }, [selectedTrip]);
-
   const heightClass = size === "sm" ? "h-[300px]" : "h-[550px]";
 
   return (
@@ -312,6 +331,15 @@ export default function MapView({
       className={`${heightClass} w-full rounded-md overflow-hidden ${className ?? ""}`}
     >
       <div ref={mapContainer} className="h-full w-full" />
+      {selectedTrip &&
+        popupContentRef.current &&
+        createPortal(
+          <PopupContent
+            trip={selectedTrip}
+            onClose={() => popupRef.current?.remove()}
+          />,
+          popupContentRef.current,
+        )}
     </div>
   );
 }
