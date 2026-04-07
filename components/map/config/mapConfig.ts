@@ -30,11 +30,11 @@ export const CLUSTER_PAINT = {
 
 export const CLUSTER_TEXT_LAYOUT = {
   "text-field": "{point_count_abbreviated}",
-  "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
   "text-size": 12,
+  "text-font": ["Noto Sans Regular"],
 };
 
-export const UNCLUSTERED_POINT_LAYOUT = {
+export const NON_CLUSTERED_POINT_LAYOUT = {
   "icon-image": ["get", "icon"] as unknown as ExpressionSpecification,
   "icon-size": 0.8,
   "icon-allow-overlap": true,

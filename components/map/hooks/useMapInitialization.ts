@@ -31,43 +31,60 @@ export function useMapInitialization({
     });
 
     const map = mapRef.current;
+    const loadedImages = new Set<string>();
 
-    map.on("load", () => {
-      const loadedImages = new Set<string>();
+    map.on("styleimagemissing", async (e) => {
+      if (loadedImages.has(e.id)) return;
+      loadedImages.add(e.id);
 
-      map.on("styleimagemissing", async (e) => {
-        if (loadedImages.has(e.id)) return;
-        loadedImages.add(e.id);
+      if (
+        !e.id ||
+        e.id.includes("DIN") ||
+        e.id.includes("Offc") ||
+        e.id.includes("glyphs")
+      ) {
+        return;
+      }
 
-        // Prevent fetching remote "font/icon" resources that are not URLs.
-        // MapLibre may emit styleimagemissing for glyphs/fonts (e.g. via text-font).
-        if (
-          !e.id ||
-          e.id.includes("DIN") ||
-          e.id.includes("Offc") ||
-          e.id.includes("glyphs")
-        ) {
-          return;
-        }
+      const maybeUrl = e.id.startsWith("/") ? e.id : e.id;
 
-        // Your custom marker icons are served from /public as static files.
-        // If MapLibre is missing them, directly fetch the corresponding URL.
-        const maybeUrl = e.id.startsWith("/") ? e.id : e.id;
-
+      try {
         const response = await fetch(maybeUrl);
         if (!response.ok) return;
-        const svgText = await response.text();
-        const svg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
+
+        const contentType = response.headers.get("content-type") || "";
+        let dataUrl: string;
+
+        if (contentType.includes("image/svg")) {
+          const svgText = await response.text();
+          dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
+        } else if (e.id.endsWith(".png")) {
+          const arrayBuffer = await response.arrayBuffer();
+          const base64 = btoa(
+            String.fromCharCode(...new Uint8Array(arrayBuffer)),
+          );
+          dataUrl = `data:image/png;base64,${base64}`;
+        } else {
+          const blob = await response.blob();
+          dataUrl = URL.createObjectURL(blob);
+        }
 
         const img = new Image();
         await new Promise<void>((resolve) => {
           img.onload = () => resolve();
-          img.src = svg;
+          img.onerror = () => resolve();
+          img.src = dataUrl;
         });
 
-        map.addImage(e.id, img);
-      });
+        if (map.style) {
+          map.addImage(e.id, img);
+        }
+      } catch {
+        // ignore fetch errors
+      }
+    });
 
+    map.on("load", () => {
       isMapReady.current = true;
       onReady?.(map);
     });

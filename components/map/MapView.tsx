@@ -9,8 +9,8 @@ import {
   CLUSTER_PAINT,
   CLUSTER_TEXT_LAYOUT,
   GEOJSON_SOURCE_OPTIONS,
+  NON_CLUSTERED_POINT_LAYOUT,
   setPolishLanguage,
-  UNCLUSTERED_POINT_LAYOUT,
 } from "./config/mapConfig";
 import { useMapInitialization } from "./hooks/useMapInitialization";
 import { useMapLayers } from "./hooks/useMapLayers";
@@ -77,7 +77,7 @@ export default function MapView({
       type: "symbol",
       source: "markers",
       filter: ["!", ["has", "point_count"]],
-      layout: UNCLUSTERED_POINT_LAYOUT,
+      layout: NON_CLUSTERED_POINT_LAYOUT,
     });
 
     map.on("click", "clusters", async (e) => {

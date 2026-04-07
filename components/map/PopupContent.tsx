@@ -14,7 +14,7 @@ interface PopupContentProps {
 
 export function PopupContent({ trip, onClose }: PopupContentProps) {
   return (
-    <div className="relative bg-white w-75 min-h-50">
+    <div className="relative bg-white w-75 min-h-50" data-aos="fade">
       <button
         type="button"
         onClick={(e) => {
