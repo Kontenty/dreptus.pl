@@ -95,7 +95,11 @@ const TripsWithParticipantsList = ({ trips }: Readonly<Props>) => {
       color="primary"
       selectionMode="single"
       columns={[
-        { key: "number", label: "Numer" },
+        {
+          key: "number",
+          label: "Numer",
+          render: (row) => (row.type === "trip" ? row.data.number : ""),
+        },
         {
           key: "title",
           label: "Nazwa Trasy",
