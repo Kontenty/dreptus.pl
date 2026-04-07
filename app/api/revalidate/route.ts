@@ -1,58 +1,52 @@
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
-
-const VALID_TAGS = ["trips", "trips-all", "locations", "trips-count"] as const;
-
-type ValidTag = (typeof VALID_TAGS)[number];
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { tags, tag } = body;
+    const { type, slug } = body;
 
-    const tagsToRevalidate: ValidTag[] = [];
+    const host = request.headers.get("host");
 
-    if (tag && typeof tag === "string") {
-      tagsToRevalidate.push(tag as ValidTag);
-    } else if (Array.isArray(tags)) {
-      tagsToRevalidate.push(...(tags as ValidTag[]));
+    if (host?.includes("dreptus.vercel.app")) {
+      await fetch(
+        `https://xn--dreptu-8ib.pl/api/revalidate?type=${type}&slug=${slug || ""}`,
+      );
+      return NextResponse.json({ revalidated: true });
+    }
+
+    const pathsToRevalidate: string[] = [];
+
+    if (type === "trip") {
+      pathsToRevalidate.push("/", "/news", "/trips", "/form");
+      if (slug) {
+        pathsToRevalidate.push(`/trips/${slug}`);
+      }
+    } else if (type === "participant") {
+      pathsToRevalidate.push("/participants");
+      if (slug) {
+        pathsToRevalidate.push(`/participants/${slug}`);
+      }
+    } else if (type === "packet") {
+      pathsToRevalidate.push("/news");
+    } else if (type === "scorer" && slug) {
+      pathsToRevalidate.push(`/badges/${slug}`);
     } else {
       return NextResponse.json(
         {
-          error:
-            'Invalid request body. Provide "tag" (string) or "tags" (array)',
+          error: "Invalid type. Valid types: trip, participant, packet, scorer",
         },
         { status: 400 },
       );
     }
 
-    const revalidated: string[] = [];
-    const invalid: string[] = [];
-
-    for (const t of tagsToRevalidate) {
-      if (VALID_TAGS.includes(t)) {
-        revalidateTag(t, "max");
-        revalidated.push(t);
-      } else {
-        invalid.push(t);
-      }
-    }
-
-    if (revalidated.length === 0) {
-      return NextResponse.json(
-        {
-          error: "No valid tags provided",
-          validTags: VALID_TAGS,
-          invalidTags: invalid,
-        },
-        { status: 400 },
-      );
+    for (const path of pathsToRevalidate) {
+      revalidatePath(path);
     }
 
     return NextResponse.json({
       revalidated: true,
-      tags: revalidated,
-      invalid: invalid.length > 0 ? invalid : undefined,
+      paths: pathsToRevalidate,
     });
   } catch (error) {
     console.error("Revalidation error:", error);
