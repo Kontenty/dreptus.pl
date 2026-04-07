@@ -18,7 +18,7 @@ export type TripMarkerProps = {
 export function TripMarker({ trip, onClick, setMarkerRef }: TripMarkerProps) {
   const iconUrl = trip.dolinaBugu
     ? "/image/pieszo-dolina.png"
-    : getIconUrl(trip.type);
+    : getIconUrl(trip);
 
   const ref = useCallback(
     (marker: google.maps.marker.AdvancedMarkerElement | null) =>

@@ -109,6 +109,7 @@ model wp_postmeta {
 
   @@index([meta_key(length: 191)], map: "meta_key")
   @@index([post_id], map: "post_id")
+  @@index([post_id, meta_key(length: 191)], map: "post_id_meta_key")
 }
 
 model wp_posts {
@@ -149,6 +150,7 @@ model wp_term_relationships {
   term_order       Int    @default(0)
 
   @@id([object_id, term_taxonomy_id])
+  @@index([object_id], map: "object_id")
   @@index([term_taxonomy_id], map: "term_taxonomy_id")
 }
 
@@ -222,7 +224,7 @@ model wp_aiowps_debug_log {
   level   String   @default("") @db.VarChar(25)
   message String   @default("") @db.Text
   type    String   @default("") @db.VarChar(25)
-  created DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
+  created DateTime @db.DateTime(0)
 }
 
 model wp_aiowps_events {
@@ -230,7 +232,7 @@ model wp_aiowps_events {
   event_type   String   @default("") @db.VarChar(150)
   username     String?  @db.VarChar(150)
   user_id      BigInt?
-  event_date   DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
+  event_date   DateTime @db.DateTime(0)
   ip_or_host   String?  @db.VarChar(100)
   referer_info String?  @db.VarChar(255)
   url          String?  @db.VarChar(255)
@@ -242,7 +244,7 @@ model wp_aiowps_failed_logins {
   id                BigInt   @id @default(autoincrement())
   user_id           BigInt
   user_login        String   @db.VarChar(150)
-  failed_login_date DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
+  failed_login_date DateTime @db.DateTime(0)
   login_attempt_ip  String   @default("") @db.VarChar(100)
 
   @@index([failed_login_date], map: "failed_login_date")
@@ -252,7 +254,7 @@ model wp_aiowps_failed_logins {
 
 model wp_aiowps_global_meta {
   meta_id     BigInt   @id @default(autoincrement())
-  date_time   DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
+  date_time   DateTime @db.DateTime(0)
   meta_key1   String   @db.VarChar(255)
   meta_key2   String   @db.VarChar(255)
   meta_key3   String   @db.VarChar(255)
@@ -269,8 +271,8 @@ model wp_aiowps_login_activity {
   id            BigInt   @id @default(autoincrement())
   user_id       BigInt
   user_login    String   @db.VarChar(150)
-  login_date    DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
-  logout_date   DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
+  login_date    DateTime @db.DateTime(0)
+  logout_date   DateTime @db.DateTime(0)
   login_ip      String   @default("") @db.VarChar(100)
   login_country String   @default("") @db.VarChar(150)
   browser_type  String   @default("") @db.VarChar(150)
@@ -280,8 +282,8 @@ model wp_aiowps_login_lockdown {
   id                    BigInt   @id @default(autoincrement())
   user_id               BigInt
   user_login            String   @db.VarChar(150)
-  lockdown_date         DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
-  release_date          DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
+  lockdown_date         DateTime @db.DateTime(0)
+  release_date          DateTime @db.DateTime(0)
   failed_login_ip       String   @default("") @db.VarChar(100)
   lock_reason           String   @default("") @db.VarChar(128)
   unlock_key            String   @default("") @db.VarChar(128)
@@ -298,7 +300,7 @@ model wp_aiowps_permanent_block {
   blocked_ip     String   @default("") @db.VarChar(100)
   block_reason   String   @default("") @db.VarChar(128)
   country_origin String   @default("") @db.VarChar(50)
-  blocked_date   DateTime @default(dbgenerated("('1000-10-10 10:00:00')")) @db.DateTime(0)
+  blocked_date   DateTime @db.DateTime(0)
   unblock        Boolean  @default(false)
 
   @@index([blocked_ip], map: "blocked_ip")

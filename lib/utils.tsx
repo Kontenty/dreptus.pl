@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { CyclistPinIcon, FootmanPinIcon } from "@/components/icons";
+import type { TripFormMap } from "@/types";
 import { activityCode } from "./data";
 
 type Props = {
@@ -17,7 +18,11 @@ export function getIcon(code: string | null | undefined, props?: Props) {
   }
   return dict[activityCode[code]] || dict.foot;
 }
-export function getIconUrl(code: string | null | undefined) {
+export function getIconUrl(data: TripFormMap) {
+  if (data?.category_slugs?.includes("dolina-bugu")) {
+    return "/image/pieszo-dolina.png";
+  }
+  const code = data?.type;
   if (!code) {
     return "/image/icons/footman-circle.svg";
   }

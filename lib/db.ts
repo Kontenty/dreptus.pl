@@ -3,17 +3,21 @@ import type {
   ParticipantOnTrip,
   PostResponse,
   TripDetails,
+  TripFormMap,
   TripListResponse,
   TripsForMapResponse,
 } from "@/types";
+import { locationsSet } from "./data";
 import { prisma } from "./prisma";
+
+import { sortTrips } from "./utils";
 
 export const getTrips = async (limit?: number) => {
   const limitPart =
     typeof limit === "number" ? Prisma.sql`LIMIT ${limit}` : Prisma.empty;
   const query = Prisma.sql`SELECT p.ID, p.post_title, p.post_name, p.post_date, pm.meta_value AS number FROM wp_posts p
   JOIN wp_postmeta pm ON p.ID = pm.post_id
-  WHERE post_type = 'listing' AND post_status = 'publish' AND post_type = 'listing' AND pm.meta_key = '_cth_cus_field_zxr0feyjz'
+  WHERE post_type = 'listing' AND post_status = 'publish' AND pm.meta_key = '_cth_cus_field_zxr0feyjz'
   ORDER BY p.post_date DESC
   ${limitPart}`;
 
@@ -39,34 +43,67 @@ export const getTripBySlug = async (
     if (!id) {
       return null;
     }
-    const query = Prisma.sql`SELECT ID, post_title, post_content,
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_images' ) as images_str,
-      (SELECT guid FROM wp_posts WHERE ID = (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key="_cth_menu_pdf") ) AS pdf,
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_zxr0feyjz' ) as number,
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_15kr29dj3' ) as author,
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_nv0mho3ts' ) as length,
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_yjar0aoq6' ) as pk,
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_boz3z5wv9' ) as founding,
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_0o5uhb4c9' ) as type,
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_latitude' ) 'lat',
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_longitude' ) 'lng',
-      (SELECT meta_value FROM wp_postmeta WHERE post_id=${id} AND meta_key='_cth_cus_field_i5t95ytae' ) 'pdf_images'
-      FROM wp_posts WHERE ID = ${id}`;
+
+    const metaKeys = [
+      "_cth_images",
+      "_cth_menu_pdf",
+      "_cth_cus_field_zxr0feyjz",
+      "_cth_cus_field_15kr29dj3",
+      "_cth_cus_field_nv0mho3ts",
+      "_cth_cus_field_yjar0aoq6",
+      "_cth_cus_field_boz3z5wv9",
+      "_cth_cus_field_0o5uhb4c9",
+      "_cth_latitude",
+      "_cth_longitude",
+      "_cth_cus_field_i5t95ytae",
+    ];
+
+    const query = Prisma.sql`
+      SELECT 
+        p.ID, 
+        p.post_title, 
+        p.post_content,
+        MAX(CASE WHEN pm.meta_key = '_cth_images' THEN pm.meta_value END) as images_str,
+        MAX(CASE WHEN pm.meta_key = '_cth_menu_pdf' THEN (
+          SELECT p2.guid FROM wp_posts p2 WHERE p2.ID = pm.meta_value
+        ) END) as pdf,
+        MAX(CASE WHEN pm.meta_key = '_cth_cus_field_zxr0feyjz' THEN pm.meta_value END) as number,
+        MAX(CASE WHEN pm.meta_key = '_cth_cus_field_15kr29dj3' THEN pm.meta_value END) as author,
+        MAX(CASE WHEN pm.meta_key = '_cth_cus_field_nv0mho3ts' THEN pm.meta_value END) as length,
+        MAX(CASE WHEN pm.meta_key = '_cth_cus_field_yjar0aoq6' THEN pm.meta_value END) as pk,
+        MAX(CASE WHEN pm.meta_key = '_cth_cus_field_boz3z5wv9' THEN pm.meta_value END) as founding,
+        MAX(CASE WHEN pm.meta_key = '_cth_cus_field_0o5uhb4c9' THEN pm.meta_value END) as type,
+        MAX(CASE WHEN pm.meta_key = '_cth_latitude' THEN pm.meta_value END) as lat,
+        MAX(CASE WHEN pm.meta_key = '_cth_longitude' THEN pm.meta_value END) as lng,
+        MAX(CASE WHEN pm.meta_key = '_cth_cus_field_i5t95ytae' THEN pm.meta_value END) as pdf_images
+      FROM wp_posts p
+      LEFT JOIN wp_postmeta pm ON pm.post_id = p.ID AND pm.meta_key IN (${Prisma.join(metaKeys)})
+      WHERE p.ID = ${id}
+      GROUP BY p.ID
+    `;
     const [trip] = await prisma.$queryRaw<TripDetails[]>`${query}`;
 
-    const images = await prisma.wp_posts.findMany({
-      select: { ID: true, guid: true, post_title: true },
-      where: {
-        ID: { in: trip?.images_str.split(",").map((n) => Number(n)) },
-      },
-    });
+    if (!trip) {
+      return null;
+    }
 
-    const pdfImages = await prisma.wp_posts.findMany({
-      select: { ID: true, guid: true, post_title: true },
-      where: {
-        ID: { in: trip?.pdf_images.split(",").map((n) => Number(n)) },
-      },
-    });
+    const images = trip?.images_str
+      ? await prisma.wp_posts.findMany({
+          select: { ID: true, guid: true, post_title: true },
+          where: {
+            ID: { in: trip.images_str.split(",").map((n) => Number(n)) },
+          },
+        })
+      : [];
+
+    const pdfImages = trip?.pdf_images
+      ? await prisma.wp_posts.findMany({
+          select: { ID: true, guid: true, post_title: true },
+          where: {
+            ID: { in: trip.pdf_images.split(",").map((n) => Number(n)) },
+          },
+        })
+      : [];
 
     return { ...trip, images, pdfImages };
   } catch (_error) {
@@ -76,7 +113,7 @@ export const getTripBySlug = async (
 
 export const getTripsForMap = async (
   location = "all",
-): Promise<TripsForMapResponse[]> => {
+): Promise<TripFormMap[]> => {
   const locationQuery =
     location && location !== "all"
       ? Prisma.sql`AND t.slug = ${location}`
@@ -97,14 +134,32 @@ export const getTripsForMap = async (
         MAX(CASE WHEN pm1.meta_key = '_thumbnail_id' then pm1.meta_value ELSE NULL END) as thumb_id,
         MAX(CASE WHEN pm1.meta_key = '_thumbnail_id' then p2.guid ELSE NULL END) as thumb_url
     FROM wp_posts as p 
-    LEFT JOIN wp_postmeta as pm1 ON ( pm1.post_id = p.ID)
+    LEFT JOIN wp_postmeta as pm1 ON pm1.post_id = p.ID AND pm1.meta_key IN ('_cth_cus_field_yjar0aoq6', '_cth_cus_field_zxr0feyjz', '_cth_cus_field_nv0mho3ts', '_cth_cus_field_0o5uhb4c9', '_cth_latitude', '_cth_longitude', '_thumbnail_id')
     LEFT JOIN wp_posts as p2 ON p2.ID = pm1.meta_value
-    JOIN wp_term_relationships AS tr ON tr.object_id=p.ID JOIN wp_terms AS t ON t.term_id =tr.term_taxonomy_id
+    JOIN wp_term_relationships AS tr ON tr.object_id=p.ID 
+    JOIN wp_terms AS t ON t.term_id = tr.term_taxonomy_id
     WHERE p.post_type = 'listing' AND p.post_status = 'publish' ${locationQuery}
-    GROUP BY p.ID,p.post_title;
+    GROUP BY p.ID, p.post_title;
   `;
   const postData = await prisma.$queryRaw<TripsForMapResponse[]>(query);
-  return postData;
+
+  return (
+    postData
+      ?.map((trip) => ({
+        ...trip,
+        id: trip.ID,
+        ID: Number(trip.ID),
+        lat: trip.lat.toString(),
+        lng: trip.lng.toString(),
+        position: { lat: Number(trip.lat), lng: Number(trip.lng) },
+        locations: trip.category_names
+          ?.split(",")
+          .filter((name: string) => locationsSet.has(name.toLowerCase()))
+          .toString(),
+        dolinaBugu: !!trip.category_slugs?.includes("dolina-bugu"),
+      }))
+      .sort(sortTrips) ?? []
+  );
 };
 
 export const getLocations = async () => {
@@ -112,7 +167,7 @@ export const getLocations = async () => {
     { name: string; count: number; slug: string }[]
   >`SELECT a.name, b.count, a.slug from wp_term_taxonomy b 
     LEFT JOIN wp_terms a ON a.term_id = b.term_id 
-    WHERE b.taxonomy like "%listing_location%" ORDER BY b.count DESC;`;
+    WHERE b.taxonomy = 'listing_location' ORDER BY b.count DESC;`;
 
   return postData?.map((l) => ({ ...l, count: Number(l.count) })) || [];
 };
