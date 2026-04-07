@@ -3,10 +3,14 @@ import type {
   ParticipantOnTrip,
   PostResponse,
   TripDetails,
+  TripFormMap,
   TripListResponse,
   TripsForMapResponse,
 } from "@/types";
+import { locationsSet } from "./data";
 import { prisma } from "./prisma";
+
+import { sortTrips } from "./utils";
 
 export const getTrips = async (limit?: number) => {
   const limitPart =
@@ -109,7 +113,7 @@ export const getTripBySlug = async (
 
 export const getTripsForMap = async (
   location = "all",
-): Promise<TripsForMapResponse[]> => {
+): Promise<TripFormMap[]> => {
   const locationQuery =
     location && location !== "all"
       ? Prisma.sql`AND t.slug = ${location}`
@@ -138,11 +142,23 @@ export const getTripsForMap = async (
     GROUP BY p.ID, p.post_title;
   `;
   const postData = await prisma.$queryRaw<TripsForMapResponse[]>(query);
+
   return (
-    postData?.map((trip) => ({
-      ...trip,
-      ID: Number(trip.ID),
-    })) ?? []
+    postData
+      ?.map((trip) => ({
+        ...trip,
+        id: trip.ID,
+        ID: Number(trip.ID),
+        lat: trip.lat.toString(),
+        lng: trip.lng.toString(),
+        position: { lat: Number(trip.lat), lng: Number(trip.lng) },
+        locations: trip.category_names
+          ?.split(",")
+          .filter((name: string) => locationsSet.has(name.toLowerCase()))
+          .toString(),
+        dolinaBugu: !!trip.category_slugs?.includes("dolina-bugu"),
+      }))
+      .sort(sortTrips) ?? []
   );
 };
 

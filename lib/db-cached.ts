@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import type { TripListResponse, TripsForMapResponse } from "@/types";
+import type { TripFormMap, TripListResponse } from "@/types";
 import {
   getLocations as _getLocations,
   getTrips as _getTrips,
@@ -19,7 +19,7 @@ export const getCachedTrips = unstable_cache(
 );
 
 export const getCachedTripsForMap = unstable_cache(
-  async (location = "all"): Promise<TripsForMapResponse[]> => {
+  async (location = "all"): Promise<TripFormMap[]> => {
     return _getTripsForMap(location);
   },
   ["trips-for-map"],
