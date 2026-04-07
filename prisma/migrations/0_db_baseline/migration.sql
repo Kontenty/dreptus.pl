@@ -93,8 +93,8 @@ CREATE TABLE `wp_comments` (
     `comment_author_email` VARCHAR(100) NOT NULL DEFAULT '',
     `comment_author_url` VARCHAR(200) NOT NULL DEFAULT '',
     `comment_author_IP` VARCHAR(100) NOT NULL DEFAULT '',
-    `comment_date` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `comment_date_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `comment_date` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `comment_date_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `comment_content` TEXT NOT NULL,
     `comment_karma` INTEGER NOT NULL DEFAULT 0,
     `comment_approved` VARCHAR(20) NOT NULL DEFAULT '1',
@@ -240,7 +240,7 @@ CREATE TABLE `wp_duplicator_packages` (
     `name` VARCHAR(250) NOT NULL,
     `hash` VARCHAR(50) NOT NULL,
     `status` INTEGER NOT NULL,
-    `created` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `created` DATETIME(0),
     `owner` VARCHAR(60) NOT NULL,
     `package` LONGTEXT NOT NULL,
 
@@ -325,7 +325,7 @@ CREATE TABLE `wp_links` (
     `link_visible` VARCHAR(20) NOT NULL DEFAULT 'Y',
     `link_owner` BIGINT UNSIGNED NOT NULL DEFAULT 1,
     `link_rating` INTEGER NOT NULL DEFAULT 0,
-    `link_updated` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `link_updated` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `link_rel` VARCHAR(255) NOT NULL DEFAULT '',
     `link_notes` MEDIUMTEXT NOT NULL,
     `link_rss` VARCHAR(255) NOT NULL DEFAULT '',
@@ -341,7 +341,7 @@ CREATE TABLE `wp_mo_openid_linked_user` (
     `linked_email` VARCHAR(55) NOT NULL,
     `user_id` BIGINT NOT NULL,
     `identifier` VARCHAR(100) NOT NULL,
-    `timestamp` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `timestamp` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -374,8 +374,8 @@ CREATE TABLE `wp_postmeta` (
 CREATE TABLE `wp_posts` (
     `ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `post_author` BIGINT UNSIGNED NOT NULL DEFAULT 0,
-    `post_date` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `post_date_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `post_date` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `post_date_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `post_content` LONGTEXT NOT NULL,
     `post_title` TEXT NOT NULL,
     `post_excerpt` TEXT NOT NULL,
@@ -386,8 +386,8 @@ CREATE TABLE `wp_posts` (
     `post_name` VARCHAR(200) NOT NULL DEFAULT '',
     `to_ping` TEXT NOT NULL,
     `pinged` TEXT NOT NULL,
-    `post_modified` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `post_modified_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `post_modified` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `post_modified_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `post_content_filtered` LONGTEXT NOT NULL,
     `post_parent` BIGINT UNSIGNED NOT NULL DEFAULT 0,
     `guid` VARCHAR(255) NOT NULL DEFAULT '',
@@ -471,7 +471,7 @@ CREATE TABLE `wp_users` (
     `user_nicename` VARCHAR(50) NOT NULL DEFAULT '',
     `user_email` VARCHAR(100) NOT NULL DEFAULT '',
     `user_url` VARCHAR(100) NOT NULL DEFAULT '',
-    `user_registered` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `user_registered` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `user_activation_key` VARCHAR(255) NOT NULL DEFAULT '',
     `user_status` INTEGER NOT NULL DEFAULT 0,
     `display_name` VARCHAR(250) NOT NULL DEFAULT '',
@@ -547,14 +547,14 @@ CREATE TABLE `wp_actionscheduler_actions` (
     `action_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `hook` VARCHAR(191) NOT NULL,
     `status` VARCHAR(20) NOT NULL,
-    `scheduled_date_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `scheduled_date_local` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `scheduled_date_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `scheduled_date_local` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `args` VARCHAR(191) NULL,
     `schedule` LONGTEXT NULL,
     `group_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
     `attempts` INTEGER NOT NULL DEFAULT 0,
-    `last_attempt_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `last_attempt_local` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `last_attempt_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `last_attempt_local` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `claim_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
     `extended_args` VARCHAR(8000) NULL,
 
@@ -571,7 +571,7 @@ CREATE TABLE `wp_actionscheduler_actions` (
 -- CreateTable
 CREATE TABLE `wp_actionscheduler_claims` (
     `claim_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `date_created_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `date_created_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
 
     INDEX `date_created_gmt`(`date_created_gmt`),
     PRIMARY KEY (`claim_id`)
@@ -591,8 +591,8 @@ CREATE TABLE `wp_actionscheduler_logs` (
     `log_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `action_id` BIGINT UNSIGNED NOT NULL,
     `message` TEXT NOT NULL,
-    `log_date_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `log_date_local` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `log_date_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `log_date_local` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
 
     INDEX `action_id`(`action_id`),
     INDEX `log_date_gmt`(`log_date_gmt`),
@@ -959,7 +959,7 @@ CREATE TABLE `wp_revslider_static_slides_bkp` (
 -- CreateTable
 CREATE TABLE `wp_rsssl_csp_log` (
     `id` MEDIUMINT NOT NULL AUTO_INCREMENT,
-    `time` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `time` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `documenturi` TEXT NOT NULL,
     `violateddirective` TEXT NOT NULL,
     `blockeduri` TEXT NOT NULL,
@@ -979,7 +979,7 @@ CREATE TABLE `wp_wc_admin_notes` (
     `content_data` LONGTEXT NULL,
     `status` VARCHAR(200) NOT NULL,
     `source` VARCHAR(200) NOT NULL,
-    `date_created` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `date_created` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `date_reminder` DATETIME(0) NULL,
     `is_snoozable` BOOLEAN NOT NULL DEFAULT false,
     `layout` VARCHAR(20) NOT NULL DEFAULT '',
@@ -1035,7 +1035,7 @@ CREATE TABLE `wp_wc_download_log` (
 CREATE TABLE `wp_wc_order_coupon_lookup` (
     `order_id` BIGINT UNSIGNED NOT NULL,
     `coupon_id` BIGINT NOT NULL,
-    `date_created` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `date_created` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `discount_amount` DOUBLE NOT NULL DEFAULT 0,
 
     INDEX `coupon_id`(`coupon_id`),
@@ -1050,7 +1050,7 @@ CREATE TABLE `wp_wc_order_product_lookup` (
     `product_id` BIGINT UNSIGNED NOT NULL,
     `variation_id` BIGINT UNSIGNED NOT NULL,
     `customer_id` BIGINT UNSIGNED NULL,
-    `date_created` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `date_created` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `product_qty` INTEGER NOT NULL,
     `product_net_revenue` DOUBLE NOT NULL DEFAULT 0,
     `product_gross_revenue` DOUBLE NOT NULL DEFAULT 0,
@@ -1070,8 +1070,8 @@ CREATE TABLE `wp_wc_order_product_lookup` (
 CREATE TABLE `wp_wc_order_stats` (
     `order_id` BIGINT UNSIGNED NOT NULL,
     `parent_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
-    `date_created` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `date_created_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `date_created` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `date_created_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `num_items_sold` INTEGER NOT NULL DEFAULT 0,
     `total_sales` DOUBLE NOT NULL DEFAULT 0,
     `tax_total` DOUBLE NOT NULL DEFAULT 0,
@@ -1091,7 +1091,7 @@ CREATE TABLE `wp_wc_order_stats` (
 CREATE TABLE `wp_wc_order_tax_lookup` (
     `order_id` BIGINT UNSIGNED NOT NULL,
     `tax_rate_id` BIGINT UNSIGNED NOT NULL,
-    `date_created` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `date_created` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `shipping_tax` DOUBLE NOT NULL DEFAULT 0,
     `order_tax` DOUBLE NOT NULL DEFAULT 0,
     `total_tax` DOUBLE NOT NULL DEFAULT 0,
@@ -1132,8 +1132,8 @@ CREATE TABLE `wp_wc_reserved_stock` (
     `order_id` BIGINT NOT NULL,
     `product_id` BIGINT NOT NULL,
     `stock_quantity` DOUBLE NOT NULL DEFAULT 0,
-    `timestamp` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `expires` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `timestamp` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `expires` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
 
     PRIMARY KEY (`order_id`, `product_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -1157,10 +1157,10 @@ CREATE TABLE `wp_wc_webhooks` (
     `delivery_url` TEXT NOT NULL,
     `secret` TEXT NOT NULL,
     `topic` VARCHAR(200) NOT NULL,
-    `date_created` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `date_created_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `date_modified` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
-    `date_modified_gmt` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `date_created` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `date_created_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `date_modified` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
+    `date_modified_gmt` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `api_version` SMALLINT NOT NULL,
     `failure_count` SMALLINT NOT NULL DEFAULT 0,
     `pending_delivery` BOOLEAN NOT NULL DEFAULT false,
@@ -1209,7 +1209,7 @@ CREATE TABLE `wp_woocommerce_downloadable_product_permissions` (
     `user_email` VARCHAR(200) NOT NULL,
     `user_id` BIGINT UNSIGNED NULL,
     `downloads_remaining` VARCHAR(9) NULL,
-    `access_granted` DATETIME(0) NOT NULL DEFAULT ('0000-00-00 00:00:00'),
+    `access_granted` DATETIME(0) NOT NULL DEFAULT ('2025-01-01 00:00:00'),
     `access_expires` DATETIME(0) NULL,
     `download_count` BIGINT UNSIGNED NOT NULL DEFAULT 0,
 

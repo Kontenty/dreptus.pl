@@ -20,25 +20,6 @@ ALTER TABLE `User` DROP COLUMN `role`,
     ADD COLUMN `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     ADD COLUMN `username` VARCHAR(191) NULL;
 
--- AlterTable
-ALTER TABLE `wp_comments` MODIFY `comment_date` datetime NOT NULL DEFAULT ('2025-01-01 00:00:00'),
-    MODIFY `comment_date_gmt` datetime NOT NULL DEFAULT ('2025-01-01 00:00:00');
-
--- AlterTable
-ALTER TABLE `wp_duplicator_packages` MODIFY `created` datetime NULL;
-
--- AlterTable
-ALTER TABLE `wp_links` MODIFY `link_updated` datetime NULL;
-
--- AlterTable
-ALTER TABLE `wp_posts` MODIFY `post_date` datetime NULL,
-    MODIFY `post_date_gmt` datetime NULL,
-    MODIFY `post_modified` datetime NULL,
-    MODIFY `post_modified_gmt` datetime NULL;
-
--- AlterTable
-ALTER TABLE `wp_users` MODIFY `user_registered` datetime NOT NULL DEFAULT ('2025-01-01 00:00:00');
-
 -- CreateIndex
 CREATE INDEX `TripParticipant_trip_id_fkey` ON `TripParticipant`(`trip_id` ASC);
 
