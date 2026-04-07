@@ -1,0 +1,86 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+    env:
+      MAIL_USER: ${{ secrets.MAIL_USER }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+      MAIL_FROM: ${{ secrets.MAIL_FROM }}
+      MAIL_PASS: ${{ secrets.MAIL_PASS }}
+      MAIL_PORT: ${{ secrets.MAIL_PORT }}
+      MAIL_HOST: ${{ secrets.MAIL_HOST }}
+      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
+      DATABASE_CON_URL_SHADOW: ${{ secrets.DATABASE_CON_URL_SHADOW }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Deploy to Vercel Production
+        run: npx --yes vercel deploy --prod --token=$VERCEL_TOKEN
+
+  deploy-preview:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    env:
+      MAIL_USER: ${{ secrets.MAIL_USER }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+      MAIL_FROM: ${{ secrets.MAIL_FROM }}
+      MAIL_PASS: ${{ secrets.MAIL_PASS }}
+      MAIL_PORT: ${{ secrets.MAIL_PORT }}
+      MAIL_HOST: ${{ secrets.MAIL_HOST }}
+      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
+      DATABASE_CON_URL_SHADOW: ${{ secrets.DATABASE_CON_URL_SHADOW }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Deploy to Vercel Preview
+        run: npx --yes vercel deploy --token=$VERCEL_TOKEN
