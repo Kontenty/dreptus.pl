@@ -29,6 +29,7 @@ model TripParticipant {
 
   @@index([participant_id], map: "TripParticipant_participant_id_fkey")
   @@index([trip_id], map: "TripParticipant_trip_id_fkey")
+  @@index([trip_id, report_date], map: "TripParticipant_trip_id_report_date")
 }
 
 model Account {
@@ -109,6 +110,7 @@ model wp_postmeta {
 
   @@index([meta_key(length: 191)], map: "meta_key")
   @@index([post_id], map: "post_id")
+  @@index([meta_key(length: 191), post_id], map: "meta_key_post_id")
 }
 
 model wp_posts {
@@ -192,6 +194,7 @@ model wp_usermeta {
 
   @@index([meta_key(length: 191)], map: "meta_key")
   @@index([user_id], map: "user_id")
+  @@index([meta_key(length: 191), user_id], map: "meta_key_user_id")
 }
 
 model wp_users {
