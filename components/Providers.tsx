@@ -10,7 +10,7 @@ interface Props {
 export function Providers({ children }: Props) {
   return (
     <HeroUIProvider>
-      <ToastProvider />
+      <ToastProvider placement="top-center" toastOffset={50} />
       {children}
     </HeroUIProvider>
   );

@@ -19,12 +19,19 @@ interface Props {
 }
 export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
   useEffect(() => {
-    addToast({
-      color: "warning",
-      title: "RODO",
-      description:
-        "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych...",
-    });
+    const hasShownToast = sessionStorage.getItem("gdprToastShown");
+    if (!hasShownToast) {
+      addToast({
+        color: "primary",
+        classNames: { title: "text-lg" },
+        title: "RODO",
+        variant: "solid",
+        timeout: 10000,
+        description:
+          "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych...",
+      });
+      sessionStorage.setItem("gdprToastShown", "true");
+    }
   }, []);
 
   type FormData = v.InferOutput<typeof reportSchema>;
