@@ -1,8 +1,8 @@
 # Technical Stack & Dependencies
 
 ## Core Framework
-- **Next.js**: 15.5.6 with App Router and server components
-- **React**: 19.2.0 with concurrent features
+- **Next.js**: 16.2.1 with App Router and server components
+- **React**: 19.2.3 with concurrent features
 - **TypeScript**: 5.6.3 with strict type checking
 - **Node.js**: Runtime environment (version as per deployment)
 
@@ -11,6 +11,8 @@
 - **HeroUI**: 2.8.5 for component library
 - **Framer Motion**: 12.23.24 for animations
 - **AOS**: 3.0.0-beta.6 for scroll animations
+- **@vis.gl/react-google-maps**: 1.8.0 for React Google Maps integration
+- **maplibre-gl**: 5.22.0 for map rendering
 
 ## State Management & Forms
 - **React Hook Form**: 7.65.0 for form handling
@@ -18,7 +20,7 @@
 - **React Hooks**: Built-in state management
 
 ## Database & ORM
-- **Prisma**: 6.17.1 with MySQL adapter
+- **Prisma**: 6.17.1 with MariaDB adapter
 - **MySQL**: Primary database
 - **Prisma Client**: 6.17.1 for database access
 
@@ -30,8 +32,10 @@
 ## Maps & Location
 - **Google Maps JavaScript API**: For interactive maps
 - **@googlemaps/js-api-loader**: 1.16.2 for API loading
-- **@googlemaps/markerclusterer**: 2.3.1 for marker clustering
-- **@react-google-maps/api**: 2.18.1 for React integration
+- **@googlemaps/markerclusterer**: 2.6.2 for marker clustering
+- **@vis.gl/react-google-maps**: 1.8.0 for modern React Google Maps integration
+- **@turf/distance**: 7.3.4 for geospatial calculations
+- **maplibre-gl**: 5.22.0 for alternative map rendering
 
 ## Email & Notifications
 - **Nodemailer**: 7.0.9 for email sending
@@ -55,22 +59,25 @@
 - **React Slick**: 0.30.2 for carousel components
 - **Class Variance Authority**: 0.7.0 for conditional styling
 - **Classnames**: 2.3.2 for conditional CSS classes
+- **@next/env**: 16.2.1 for environment configuration
+- **@next/third-parties**: 16.0.10 for third-party integrations
+- **next-axiom**: 1.5.1 for logging and monitoring
 
 ## Development Dependencies
 - **@types/aos**: 3.0.4 for AOS TypeScript definitions
 - **@types/google.maps**: 3.53.4 for Google Maps types
-- **@types/node**: 20 for Node.js types
+- **@types/node**: 22.19.15 for Node.js types
 - **@types/react**: 19.2.2 for React types
 - **@types/react-dom**: 19.2.2 for React DOM types
 - **@types/react-slick**: 0.23.10 for React Slick types
 - **Node HTML Parser**: 6.1.5 for HTML parsing
+- **@clerk/localizations**: 4.3.0 for Clerk authentication localizations
+- **@clerk/nextjs**: 7.0.8 for Clerk Next.js integration
 
 ## Environment Configuration
 Required environment variables:
 - `DATABASE_CON_URL` - MySQL database connection
 - `DATABASE_CON_URL_SHADOW` - Shadow database for Prisma
-- `NEXTAUTH_SECRET` - Authentication secret
-- `NEXTAUTH_URL` - Application URL
 - `GITHUB_ID` - GitHub OAuth client ID
 - `GITHUB_SECRET` - GitHub OAuth client secret
 - `MAIL_HOST` - SMTP server host

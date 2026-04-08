@@ -54,6 +54,16 @@ Dreptuś is a modern full-stack web application built on Next.js 15 with a hybri
 - `TripDetail.tsx` - Individual trip information display
 - `TripsMap.tsx` - Google Maps integration for trip visualization
 
+#### Wrappers (`/components/wrappers/`)
+- `TripsMapWrapper.tsx` - Wrapper for map component with data fetching
+- `TripListFilterWrapper.tsx` - Wrapper for filter component
+- `TripsListWrapper.tsx` - Wrapper for trips list component
+
+#### Skeletons (`/components/skeletons/`)
+- `TripsFilterSkeleton.tsx` - Loading skeleton for filter
+- `TripsMapSkeleton.tsx` - Loading skeleton for map
+- `TripsListSkeleton.tsx` - Loading skeleton for trips list
+
 #### Authentication
 - `auth/LogInButton.tsx` - Login interface component
 - `auth/LogOutButton.tsx` - Logout functionality
@@ -69,6 +79,13 @@ Dreptuś is a modern full-stack web application built on Next.js 15 with a hybri
 - `Marker.tsx` - Individual trip markers
 - `MarkerCluster.tsx` - Clustered markers for better performance
 - `InfoWindowF.tsx` - Map popup information
+
+#### New Maps (`/components/new-map/`)
+- `GoogleMapView.tsx` - Modern Google Maps implementation
+- `TripMarker.tsx` - Individual trip markers for new map
+- `TripMarkerCluster.tsx` - Marker clustering for new map
+- `TripInfoWindow.tsx` - Info window component for new map
+- `TripPopupContent.tsx` - Popup content for trip markers
 
 ### Database Layer (`/lib`)
 - `db.ts` - Database query functions and operations
@@ -104,10 +121,15 @@ Dreptuś is a modern full-stack web application built on Next.js 15 with a hybri
 
 ### Trip Discovery Flow
 1. User visits `/trips` page
-2. Server component fetches trips from WordPress database via Prisma
+2. Server component initiates parallel data fetching with Promise.all:
+   - Trips data from WordPress database via Prisma
+   - Location data for filtering
+   - Trip count for pagination
 3. Trips are filtered and processed based on location parameters
-4. Google Maps component displays trips with interactive markers
-5. Trip list displays with filtering and pagination
+4. Components are wrapped with Suspense for lazy loading
+5. Google Maps component displays trips with interactive markers
+6. Trip list displays with filtering and pagination
+7. Skeleton components provide loading states during data fetching
 
 ### Authentication Flow
 1. User attempts admin access
@@ -141,6 +163,13 @@ Dreptuś is a modern full-stack web application built on Next.js 15 with a hybri
 - `MarkerCluster.tsx` manages performance for many trip markers
 - `Marker.tsx` renders individual trip locations
 - `InfoWindowF.tsx` displays trip information on marker click
+
+### New Map System
+- `GoogleMapView.tsx` provides modern Google Maps integration using @vis.gl/react-google-maps
+- `TripMarkerCluster.tsx` implements advanced marker clustering
+- `TripMarker.tsx` renders individual trip markers with custom styling
+- `TripInfoWindow.tsx` handles popup information display
+- `TripPopupContent.tsx` formats trip information for display
 
 ### Admin System
 - Admin pages use custom action handlers for CRUD operations
