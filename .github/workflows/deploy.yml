@@ -2,11 +2,10 @@ name: Deploy to Vercel
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   deploy-production:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     env:
       MAIL_USER: ${{ secrets.MAIL_USER }}
