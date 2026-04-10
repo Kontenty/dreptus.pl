@@ -46,7 +46,7 @@ export default function Layout({ children }: Readonly<Props>) {
         <meta content="https://xn--dereptu-8ib.pl" property="og:url" />
       </head>
       <body>
-        <ClerkProvider localization={plPL}>
+        <ClerkProvider localization={plPL} afterSignOutUrl="/">
           <Providers>
             <AosProvider />
             <div

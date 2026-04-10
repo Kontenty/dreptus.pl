@@ -26,9 +26,10 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
         classNames: { title: "text-lg" },
         title: "RODO",
         variant: "solid",
+        size: "lg",
         timeout: 10000,
         description:
-          "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych...",
+          "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych informuję, e Państa dane osobowe będą przetwarzane i chronione zgodnie z ustawą.",
       });
       sessionStorage.setItem("gdprToastShown", "true");
     }
@@ -93,7 +94,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
         Formularz zgłoszenia
       </h2>
       <FormProvider {...methods}>
-        <form className="max-w-[1000px]" onSubmit={handleSubmit(onSubmit)}>
+        <form className="max-w-250" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 md:gap-y-6 p-fluid">
             <div className="md:col-span-2">
               <Controller
