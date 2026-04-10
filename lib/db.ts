@@ -201,14 +201,21 @@ export const getParticipantsPostsList = () =>
     JOIN wp_postmeta m ON m.post_id = p.ID 
     WHERE p.post_type = "post" AND p.post_status = "publish" AND m.meta_key = "liczba_uczestnikow" ORDER BY p.post_title;`;
 
-export const getTripsParticipants = () =>
-  prisma.$queryRaw<
+export const getTripsParticipants = async () => {
+  const data = await prisma.$queryRaw<
     ParticipantOnTrip[]
   >(Prisma.sql`SELECT tp.id,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) AS report_date, COUNT(tp.trip_id) AS pptCount 
     FROM TripParticipant tp
       JOIN wp_posts p ON p.ID = tp.trip_id
       JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_cth_cus_field_zxr0feyjz'
     GROUP  BY tp.trip_id ORDER BY p.post_title;`);
+
+  return data.map((item) => ({
+    ...item,
+    trip_id: Number(item.trip_id),
+    pptCount: item.pptCount ? Number(item.pptCount) : null,
+  }));
+};
 
 export const getParticipantSlugs = () =>
   prisma.tripParticipant.groupBy({

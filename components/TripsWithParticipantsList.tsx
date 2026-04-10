@@ -42,7 +42,7 @@ const organizeIntoSections = (trips: ParticipantOnTrip[]): TableRow[] => {
         sectionIndex,
         data: {
           id: 100001 + sectionIndex,
-          trip_id: BigInt(0),
+          trip_id: 0,
           pptCount: null,
           number: "",
           report_date: new Date(),

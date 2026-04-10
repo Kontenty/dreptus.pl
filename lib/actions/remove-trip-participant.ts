@@ -27,7 +27,7 @@ export async function removeTripParticipant(participantId: number) {
     return {
       success: true,
       message: "Uczestnik został usunięty",
-      tripId: tripParticipant.trip_id,
+      tripId: Number(tripParticipant.trip_id),
     };
   } catch (error) {
     console.error("Error removing trip participant:", error);

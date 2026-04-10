@@ -1,7 +1,5 @@
 import type { TripParticipant } from "@prisma/client";
 
-export type GoogleMapsT = typeof google.maps;
-
 export interface Post {
   ID: number;
   post_author: number;
@@ -150,11 +148,12 @@ export interface Location {
   count: string;
 }
 
-export type ParticipantOnTrip = Pick<
-  TripParticipant,
-  "id" | "trip_id" | "report_date"
+export type ParticipantOnTrip = Omit<
+  Pick<TripParticipant, "id" | "trip_id" | "report_date">,
+  "trip_id"
 > & {
-  pptCount: bigint | null;
+  trip_id: number;
+  pptCount: number | null;
   post_title: string;
   number: string;
 };

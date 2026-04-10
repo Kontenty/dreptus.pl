@@ -23,7 +23,7 @@ export async function getTripParticipants(tripId: number) {
       participants: data.trip_participant.map((tp) => ({
         id: tp.id,
         participant_id: tp.participant_id,
-        trip_id: tp.trip_id,
+        trip_id: Number(tp.trip_id),
         answers: tp.answers,
         report_date: tp.report_date,
         name: tp.participant.name,
