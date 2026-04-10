@@ -1,0 +1,219 @@
+@import "tailwindcss";
+@import "slick-carousel/slick/slick.css";
+@plugin "./hero.ts";
+@source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+
+@theme {
+  --color-accent-light: #ffe8e6;
+  --color-accent-dark: #ed422b;
+
+  --color-primary-dark: #0e2b2f;
+  --color-primary-light: #97c44b;
+
+  --color-brand-text: #566a6d;
+  --color-brand-brown: #784940;
+  --color-brand-primary: #4168c4;
+  --color-brand-accent: #d89365;
+
+  --color-brand-green-dark: #0e2b2f;
+  --color-brand-green-light: #97c44b;
+
+  --font-sans:
+    var(--text-font), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    sans-serif;
+  --font-body:
+    var(--text-font), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    sans-serif;
+  --font-heading:
+    var(--heading-font), var(--text-font), -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, sans-serif;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  html {
+    font-size: 15px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  body {
+    @apply text-brand-text;
+    background-color: #fcfdfd;
+    font-weight: 500;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500;
+    @apply font-heading text-primary-dark;
+  }
+}
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.p-justify {
+  text-align: justify;
+}
+
+.center-hv {
+  @apply flex justify-center items-center;
+}
+
+.page-title {
+  @apply text-brand-green-dark mb-6 text-4xl;
+}
+
+.text-bg {
+  position: relative;
+}
+.text-bg::after {
+  position: absolute;
+  border-radius: 2px;
+  content: " ";
+  width: 100%;
+  height: 20%;
+  top: 70%;
+  left: 0px;
+  transform: skew(-15deg);
+  z-index: -1;
+  @apply bg-accent-light;
+}
+
+/* google maps */
+button.gm-control-active {
+  opacity: 0.7;
+}
+
+.gm-style .gm-style-iw-c {
+  padding: 0;
+}
+.gm-style .gm-style-iw-d {
+  padding: 0;
+  width: 300px;
+  overflow: hidden !important;
+}
+.gm-style button.gm-ui-hover-effect {
+  background: rgb(255 255 255 / 0.9) !important;
+  @apply shadow-sm! top-0! right-0!;
+}
+
+article p {
+  line-height: 1.6;
+}
+article p:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+/* odznaki */
+.elementor ol {
+  list-style-type: decimal;
+}
+.elementor ul {
+  list-style-type: disc;
+}
+.elementor li ul {
+  margin-left: 1rem;
+}
+.elementor h3 span,
+.elementor h4 span,
+.elementor h5 span {
+  @apply text-brand-text;
+}
+.elementor h3 em,
+.elementor h4 em,
+.elementor h5 em {
+  font-style: normal;
+}
+
+.elementor > h4 {
+  font-size: 20px;
+}
+
+.post-article {
+  @apply md:px-6 py-2 md:py-4 bg-white rounded-md text-justify;
+}
+
+.post-article img.alignleft {
+  float: left;
+  @apply py-4 pr-4;
+}
+.post-article img.alignright {
+  float: right;
+  @apply py-4 pl-4;
+}
+.post-article ol {
+  @apply list-decimal;
+  padding-inline-start: 2rem;
+}
+.post-article ul {
+  @apply list-disc;
+  padding-inline-start: 2rem;
+}
+.post-article em {
+  font-style: normal;
+}
+
+.format-table h2 {
+  font-size: 36px;
+}
+.format-table table {
+  min-width: 100%;
+}
+.format-table th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border: 1px solid #dee2e6;
+  border-width: 0 0 1px 0;
+  font-weight: 700;
+  color: #343a40;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
+}
+.format-table td {
+  text-align: left;
+  border: 1px solid #dee2e6;
+  border-width: 0 0 1px 0;
+  padding: 0.75rem 1rem;
+}
+.format-table td h3 {
+  font-size: 24px;
+}
+.format-table td.has-text-align-center {
+  text-align: center;
+}
+
+.trip-popup .maplibregl-popup-content {
+  padding: 0.25rem;
+  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.3);
+}

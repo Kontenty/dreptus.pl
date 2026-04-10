@@ -1,0 +1,80 @@
+.lists {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: grid;
+  gap: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .lists {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .lists {
+    width: 1100px;
+  }
+}
+
+.imgBox {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.img {
+  object-fit: cover;
+  object-position: 50% 50%;
+  height: 100%;
+  width: auto;
+}
+
+.arrow {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  top: 50%;
+  display: block;
+  cursor: pointer;
+}
+
+.fitImg {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+}
+
+.imgOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  background-color: rgb(0 0 0 / 0.6);
+  transition: opacity 300ms;
+}
+
+.imgOverlay:hover {
+  opacity: 1;
+}
+
+.imgIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: white;
+  transition: transform 300ms;
+  transition-delay: 75ms;
+  transform: translateY(0.5rem);
+}
+
+.imgOverlay:hover .imgIcon {
+  transform: translateY(0);
+}

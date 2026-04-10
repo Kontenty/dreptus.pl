@@ -36,3 +36,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.claude
+.github/copilot-instructions.md
+.agents/skills/
+# clerk configuration (can include secrets)
+/.clerk/

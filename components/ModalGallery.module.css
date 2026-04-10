@@ -1,0 +1,19 @@
+.imgBoxBig {
+  position: relative;
+  height: 566px;
+  width: 100%;
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.imgBoxFull {
+  position: relative;
+  height: 90vh;
+  width: 88vw;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 5px;
+  overflow: hidden;
+}

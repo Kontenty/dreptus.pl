@@ -1,0 +1,46 @@
+.imgOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s ease-in-out;
+}
+
+.imgOverlay:hover {
+  opacity: 1;
+}
+
+.imgIcon {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: white;
+  transition: transform 0.075s ease-in-out;
+  transform: translateY(0.5rem);
+  transition-delay: 75ms;
+}
+
+.imgOverlay:hover .imgIcon {
+  transform: translateY(0);
+}
+
+.closeButton {
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  z-index: 10;
+  background: white;
+  border-radius: 9999px;
+  padding: 0.25rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+  cursor: pointer;
+  color: rgb(100 116 139);
+}
+
+.closeButton:hover {
+  transform: scale(1.1);
+  color: rgb(71 85 105);
+}
