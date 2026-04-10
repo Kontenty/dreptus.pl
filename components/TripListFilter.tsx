@@ -7,7 +7,7 @@ import type { Location } from "@/types";
 
 const css = {
   allBtnDiv:
-    "bg-brand-green-dark text-white p-3 mt-2 rounded cursor-pointer hover:bg-brand-green-dark/90 w-full text-left",
+    "block bg-brand-green-dark text-white p-3 mt-2 rounded cursor-pointer hover:bg-brand-green-dark/90 w-full text-left",
   btnDiv:
     "flex md:block items-center bg-brand-primary text-white p-3 rounded cursor-pointer hover:bg-brand-primary/90 w-full text-left",
 };
@@ -42,25 +42,22 @@ const TripListFilter = ({ count, locationsList }: Props) => {
         placement="left"
       >
         <div className="p-4">
-          <div className={`grid-cols-2 text-sm gap-1 items-stretch mb-4`}>
+          <div className="grid grid-cols-2 text-sm gap-1 items-stretch mb-4">
             {categories.map((loc) => (
               <Link
-                as={`/trips/${loc.slug}`}
                 href={{ pathname: "/trips", query: { slug: loc.slug } }}
                 key={loc.slug}
                 onClick={() => setShowMenu(false)}
+                className={css.btnDiv}
               >
-                <button className={css.btnDiv} type="button">
-                  {loc.name}
-                </button>
+                {loc.name}
               </Link>
             ))}
           </div>
-          <div className="grid-cols-2 text-sm gap-1 items-stretch">
+          <div className="grid grid-cols-2 text-sm gap-1 items-stretch">
             {locationsList?.map((loc) =>
               Number(loc.count) > 0 ? (
                 <Link
-                  as={`/trips/${loc.slug}`}
                   className={css.btnDiv}
                   href={{ pathname: "/trips", query: { slug: loc.slug } }}
                   key={loc.slug}
@@ -70,10 +67,8 @@ const TripListFilter = ({ count, locationsList }: Props) => {
                 </Link>
               ) : null,
             )}
-            <Link href="/trips">
-              <button className={css.allBtnDiv} type="button">
-                Wszystkie ({count})
-              </button>
+            <Link href="/trips" className={css.allBtnDiv}>
+              Wszystkie ({count})
             </Link>
           </div>
         </div>
@@ -84,10 +79,9 @@ const TripListFilter = ({ count, locationsList }: Props) => {
             <Link
               href={{ pathname: "/trips", query: { slug: loc.slug } }}
               key={loc.slug}
+              className={css.btnDiv}
             >
-              <button className={css.btnDiv} type="button">
-                {loc.name}
-              </button>
+              {loc.name}
             </Link>
           ))}
         </div>
@@ -97,17 +91,14 @@ const TripListFilter = ({ count, locationsList }: Props) => {
               <Link
                 href={{ pathname: "/trips", query: { slug: loc.slug } }}
                 key={loc.slug}
+                className={css.btnDiv}
               >
-                <button className={css.btnDiv} type="button">
-                  {loc.name} ({loc.count})
-                </button>
+                {loc.name} ({loc.count})
               </Link>
             ) : null,
           )}
-          <Link href="/trips">
-            <button className={css.allBtnDiv} type="button">
-              Wszystkie ({count})
-            </button>
+          <Link href="/trips" className={css.allBtnDiv}>
+            Wszystkie ({count})
           </Link>
         </div>
       </div>

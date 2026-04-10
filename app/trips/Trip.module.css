@@ -1,14 +1,15 @@
 .lists {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  overflow-x: auto;
+  display: grid;
+  gap: 1rem;
   margin-left: auto;
   margin-right: auto;
 }
 
 @media (min-width: 768px) {
   .lists {
-    display: flex;
+    grid-template-columns: 280px minmax(0, 1fr);
     gap: 2.5rem;
   }
 }

@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
       if (slug) {
         pathsToRevalidate.push(`/trips/${slug}`);
       }
+      revalidateTag("trips", "max");
     } else if (type === "participant") {
       pathsToRevalidate.push("/participants");
       if (slug) {

@@ -24,7 +24,7 @@ export const getCachedTripsForMap = unstable_cache(
   },
   ["trips-for-map"],
   {
-    tags: ["trips", "trips-all"],
+    tags: ["trips"],
     revalidate: 86400,
   },
 );
@@ -35,7 +35,7 @@ export const getCachedLocations = unstable_cache(
   },
   ["locations"],
   {
-    tags: ["locations"],
+    tags: ["trips"],
     revalidate: 86400,
   },
 );
@@ -46,7 +46,7 @@ export const getCachedTripsCount = unstable_cache(
   },
   ["trips-count"],
   {
-    tags: ["trips-count"],
-    revalidate: 300,
+    tags: ["trips"],
+    revalidate: 86400,
   },
 );

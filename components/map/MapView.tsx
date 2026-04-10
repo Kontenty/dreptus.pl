@@ -181,7 +181,7 @@ export default function MapView({
     };
   }, []);
 
-  const heightClass = size === "sm" ? "h-[300px]" : "h-[550px]";
+  const heightClass = size === "sm" ? "h-75" : "h-135";
 
   return (
     <div

@@ -11,8 +11,8 @@ type MapSize = "sm" | "lg";
 const mapWrapper = cva(["w-full"], {
   variants: {
     size: {
-      sm: "h-[300px]",
-      lg: "h-[550px]",
+      sm: "h-75",
+      lg: "h-135",
     },
   },
   defaultVariants: {

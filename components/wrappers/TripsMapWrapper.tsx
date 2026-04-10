@@ -1,8 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { use } from "react";
+import { TripsMapSkeleton } from "@/components/skeletons/TripsMapSkeleton";
 import type { TripFormMap } from "@/types";
-import { MapView } from "../map";
+
+const MapView = dynamic(() => import("../map/MapView"), {
+  ssr: false,
+  loading: () => <TripsMapSkeleton />,
+});
 
 interface Props {
   tripsPromise: Promise<TripFormMap[]>;
