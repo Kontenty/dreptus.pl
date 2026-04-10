@@ -14,23 +14,16 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'app/**'
-      - 'lib/**'
-      - 'components/**'
-      - 'scripts/**'
-      - 'public/**'
-      - 'prisma/**'
-      - 'types/**'
-      - 'package.json'
-      - 'next.config.*'
+  workflow_dispatch:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
 
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout repository
@@ -58,4 +51,3 @@ jobs:
 
       - name: Deploy to Vercel Production
         run: npx --yes vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-

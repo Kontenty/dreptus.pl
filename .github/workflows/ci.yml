@@ -5,6 +5,19 @@ on:
     branches:
       - main
       - develop
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'lib/**'
+      - 'components/**'
+      - 'scripts/**'
+      - 'public/**'
+      - 'prisma/**'
+      - 'types/**'
+      - 'package.json'
+      - 'next.config.*'
 
 jobs:
   lint-and-build:
