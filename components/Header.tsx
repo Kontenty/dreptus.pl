@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import logo from "@/public/image/logo200.png";
+
 import css from "./Header.module.css";
 
 const links = [
@@ -60,18 +60,29 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed inset-0 h-[52px] md:h-[90px] flex justify-between md:justify-start md:gap-12 px-2 md:px-5 bg-brand-green-dark text-white z-10">
-      <Link className="z-10" href="/">
+    <header className="fixed inset-0 h-13 md:h-[90px] flex justify-between md:justify-start md:gap-12 px-2 md:px-5 bg-brand-green-dark text-white z-10">
+      <div className="flex">
+        <Link className="z-10" href="/">
+          <Image
+            alt="logo"
+            className="shadow-small rounded-full border-2 border-slate-200 bg-white w-25 md:w-[150px]"
+            height={150}
+            loading="eager"
+            onClick={hideNav}
+            src="/image/logo200.png"
+            width={150}
+          />
+        </Link>
         <Image
           alt="logo"
-          className="shadow-lg rounded-full border-2 border-slate-200 bg-white w-[100px] md:w-[150px]"
-          height={150}
+          className="-ml-1 size-13 md:size-28 shadow-lg rounded-full"
+          height={95}
           loading="eager"
           onClick={hideNav}
-          src={logo}
-          width={150}
+          src="/image/logo-pttk.png"
+          width={95}
         />
-      </Link>
+      </div>
       <nav className={cl(css.nav, { [css.navHidden]: !showNav })}>
         {links.map((link) => {
           if (link.children) {

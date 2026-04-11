@@ -27,6 +27,9 @@ const getData = async () => {
   };
 };
 
+const years = new Date().getFullYear() - 2022;
+const yeatsText = years < 5 ? "lata" : "lat";
+
 export default async function Home() {
   const data = await getData();
   const trips = data?.trips;
@@ -120,9 +123,9 @@ export default async function Home() {
           </aside>
           <article className="max-w-3xl">
             <p className="p-justify ">
-              Za nami dwa lata intensywnej pracy nad Projektem Turystyczno
-              Rekreacyjnej Imprezy Plenerowej. Powstała strona internetowa,
-              sukcesywnie przybywa tras.
+              Za nami {years} {yeatsText} intensywnej pracy nad Projektem
+              Turystyczno Rekreacyjnej Imprezy Plenerowej. Powstała strona
+              internetowa, sukcesywnie przybywa tras.
               <br />
               <strong>Obecnie jest ich {data?.tripsCount} 😀</strong>, z czego
               jedna trzecia w samej Warszawie. Już tylko na terenie 4 województw
@@ -130,6 +133,13 @@ export default async function Home() {
               stan nie potrwał zbyt długo. Większość to trasy nowe, nigdy
               wcześniej nie publikowane. Z kolei trasy starsze zostały w
               większości sprawdzone i uaktualnione.
+            </p>
+            <p>
+              Od stycznia 2026 roku TRIP z Dreptusiem, w dowód uznania tego, co
+              robię dla polskiej turystyki i krajoznawstwa oraz zbieżność celów
+              Projektu z misją i działalnością programową Polskiego Towarzystwa
+              Turystyczno- Krajoznawczego, otrzymał zgodę Prezydium ZG PTTK na
+              używanie znaku słowno-granicznego Towarzystwa.
             </p>
             Mamy&nbsp;70 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym:
             <ul className="list-disc list-inside ml-6">
