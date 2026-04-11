@@ -22,6 +22,7 @@ on:
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'pull_request' && 'preview' || 'production' }}
     env:
       MAIL_USER: ${{ secrets.MAIL_USER }}
       MAIL_TO: ${{ secrets.MAIL_TO }}

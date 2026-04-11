@@ -1,17 +1,5 @@
 name: Vercel Preview Deployment
 
-env:
-    MAIL_USER: ${{ secrets.MAIL_USER }}
-    MAIL_TO: ${{ secrets.MAIL_TO }}
-    MAIL_FROM: ${{ secrets.MAIL_FROM }}
-    MAIL_PASS: ${{ secrets.MAIL_PASS }}
-    MAIL_PORT: ${{ secrets.MAIL_PORT }}
-    MAIL_HOST: ${{ secrets.MAIL_HOST }}
-    DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
-    DATABASE_CON_URL_SHADOW: ${{ secrets.DATABASE_CON_URL_SHADOW }}
-    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-    
 on:
   push:
     branches-ignore:
@@ -21,6 +9,16 @@ jobs:
   deploy-preview:
     runs-on: ubuntu-latest
     environment: preview
+    env:
+      MAIL_USER: ${{ secrets.MAIL_USER }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+      MAIL_FROM: ${{ secrets.MAIL_FROM }}
+      MAIL_PASS: ${{ secrets.MAIL_PASS }}
+      MAIL_PORT: ${{ vars.MAIL_PORT }}
+      MAIL_HOST: ${{ secrets.MAIL_HOST }}
+      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
       - name: Checkout repository
