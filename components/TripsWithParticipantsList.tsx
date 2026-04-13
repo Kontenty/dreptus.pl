@@ -16,7 +16,7 @@ interface TableRow {
 }
 
 const organizeIntoSections = (trips: ParticipantOnTrip[]): TableRow[] => {
-  const sections = [[], [], [], []] as ParticipantOnTrip[][];
+  const sections = [[], [], [], [], []] as ParticipantOnTrip[][];
   const sorted = [...trips].sort(sortTrips);
 
   for (const current of sorted) {
@@ -25,10 +25,12 @@ const organizeIntoSections = (trips: ParticipantOnTrip[]): TableRow[] => {
       sections[0].push(current);
     } else if (/^B[0-9]{2}/i.test(num)) {
       sections[1].push(current);
-    } else if (/^[0-9]{3}/.test(num)) {
+    } else if (/^C[0-9]{2}/i.test(num)) {
       sections[2].push(current);
-    } else if (/^#[0-9]{2}/.test(num)) {
+    } else if (/^[0-9]{3}/.test(num)) {
       sections[3].push(current);
+    } else if (/^#[0-9]{2}/.test(num)) {
+      sections[4].push(current);
     }
   }
 

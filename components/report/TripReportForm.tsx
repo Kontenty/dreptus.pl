@@ -29,7 +29,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
         size: "lg",
         timeout: 10000,
         description:
-          "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych informuję, e Państa dane osobowe będą przetwarzane i chronione zgodnie z ustawą.",
+          "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych informuję, że Państwa dane osobowe będą przetwarzane i chronione zgodnie z ustawą.",
       });
       sessionStorage.setItem("gdprToastShown", "true");
     }
@@ -171,7 +171,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
                 >
                   <small>
                     Wyrażam zgodę na przetwarzanie danych osobowych przez
-                    dreptuś.pl w celu weryfikacji zgłoszenia{" "}
+                    Dreptuś.pl w celu weryfikacji zgłoszenia{" "}
                     <span className="text-red-500">*</span>
                   </small>
                 </Checkbox>
@@ -183,7 +183,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
             aria-label="submit"
             className="mt-6 w-44"
             type="submit"
-            isDisabled={isSubmitting}
+            isLoading={isSubmitting}
           >
             Wyślij
           </Button>

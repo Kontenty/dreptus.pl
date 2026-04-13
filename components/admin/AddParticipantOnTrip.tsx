@@ -19,6 +19,7 @@ import { useReducer, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { addParticipant } from "@/lib/actions/add-participant";
 import { getParticipants } from "@/lib/actions/get-participants";
+import { formatDateTimeForDB } from "@/lib/utils";
 
 type ExtParticipant = {
   nameExt: string;
@@ -117,7 +118,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
   };
   const showSuccess = async () => {
     addToast({
-      severity: "success",
+      color: "success",
       title: "Sukces",
       description: "Pomyślnie dodano nowego użytkownika",
     });
@@ -126,12 +127,21 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
   };
 
   const onSubmit = async () => {
+    if (
+      !state.selectedTrip ||
+      !state.participantName ||
+      !state.answers ||
+      !state.date
+    ) {
+      showWrongData();
+      return;
+    }
     try {
       await addParticipant({
         name: state.participantName,
         origin: state.origin,
-        date: state.date as unknown as string,
-        tripId: state.selectedTrip as number,
+        date: formatDateTimeForDB(state.date),
+        tripId: state.selectedTrip,
         answers: state.answers,
       });
 
@@ -143,6 +153,12 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
         error.message.includes("Nieprawidłowe dane")
       ) {
         showWrongData();
+      } else {
+        addToast({
+          color: "danger",
+          title: "Błąd",
+          description: "Wystąpił błąd podczas dodawania uczestnika",
+        });
       }
     }
   };
@@ -150,7 +166,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
   return (
     <section className="mb-8">
       <h2 className="text-2xl">Dodaj uczestnika trasy</h2>
-      <div className="w-[1000px] grid grid-cols-3 gap-4">
+      <div className="w-250 grid grid-cols-3 gap-4">
         <div>
           <Autocomplete
             className="w-full"
@@ -252,7 +268,9 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
           </I18nProvider>
         </div>
         <div className="flex items-end">
-          <Button onPress={onSubmit}>Zapisz</Button>
+          <Button color="primary" onPress={onSubmit}>
+            Zapisz
+          </Button>
         </div>
       </div>
     </section>
