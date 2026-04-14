@@ -120,7 +120,7 @@ export const getTripsForMap = async (
       : Prisma.empty;
 
   const query = Prisma.sql`
-      SELECT  p.ID, 
+      SELECT  CAST(p.ID AS UNSIGNED) as ID, 
         p.post_title as title, 
         p.post_name as slug, 
         GROUP_CONCAT(DISTINCT t.name) as category_names,
@@ -147,7 +147,7 @@ export const getTripsForMap = async (
     postData
       ?.map((trip) => ({
         ...trip,
-        id: trip.ID,
+        id: Number(trip.ID),
         ID: Number(trip.ID),
         lat: trip.lat.toString(),
         lng: trip.lng.toString(),
@@ -174,7 +174,7 @@ export const getLocations = async () => {
 
 export const getPostsWithThumb = async (limit = 10): Promise<PostResponse[]> =>
   prisma.$queryRaw<PostResponse[]>(Prisma.sql`
-  SELECT p.ID, p.post_title,p.post_name, p.post_date, pm.meta_value as 'thumb_id', 
+  SELECT CAST(p.ID AS UNSIGNED) as ID, p.post_title,p.post_name, p.post_date, pm.meta_value as 'thumb_id', 
     (SELECT p2.guid  FROM wp_posts p2 WHERE p2.ID=pm.meta_value) 'thumb_url' FROM wp_posts p 
     JOIN wp_postmeta pm ON pm.post_id = p.ID 
   WHERE pm.meta_key = '_thumbnail_id' AND p.post_status = 'publish' ORDER BY p.ID DESC LIMIT ${limit}`);
@@ -197,14 +197,14 @@ export const getTripsCount = () =>
 export const getParticipantsPostsList = () =>
   prisma.$queryRaw<
     PostResponse[]
-  >`SELECT p.ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p 
+  >`SELECT CAST(p.ID AS UNSIGNED) as ID, p.post_name, p.post_title, p.post_modified, m.meta_value as participants FROM wp_posts p 
     JOIN wp_postmeta m ON m.post_id = p.ID 
     WHERE p.post_type = "post" AND p.post_status = "publish" AND m.meta_key = "liczba_uczestnikow" ORDER BY p.post_title;`;
 
 export const getTripsParticipants = async () => {
   const data = await prisma.$queryRaw<
     ParticipantOnTrip[]
-  >(Prisma.sql`SELECT tp.id,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) AS report_date, COUNT(tp.trip_id) AS pptCount 
+  >(Prisma.sql`SELECT CAST(p.ID AS UNSIGNED) as ID,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) AS report_date, COUNT(tp.trip_id) AS pptCount 
     FROM TripParticipant tp
       JOIN wp_posts p ON p.ID = tp.trip_id
       JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_cth_cus_field_zxr0feyjz'

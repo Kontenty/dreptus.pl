@@ -18,8 +18,8 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
   const rawDetails = await getTripBySlug(tripName);
   if (!rawDetails) return notFound();
   const tripDetails: TripDetails = {
-    id: rawDetails.ID,
-    ID: rawDetails.ID,
+    id: Number(rawDetails.ID),
+    ID: Number(rawDetails.ID),
     post_author: 0, // Default value since we don't have this from rawDetails
     post_date: "", // Default value since we don't have this from rawDetails
     post_date_gmt: "", // Default value since we don't have this from rawDetails
@@ -63,7 +63,7 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
   // Fetch list of all trips for sidebar
   const rawTrips = await getTripsForMap();
   const tripsList = rawTrips.map((t) => ({
-    ID: t.ID,
+    ID: Number(t.ID),
     slug: t.slug,
     title: t.title,
     thumb_url: t.thumb_url,
