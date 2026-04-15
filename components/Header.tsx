@@ -60,22 +60,22 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed inset-0 h-13 md:h-[90px] flex justify-between md:justify-start md:gap-12 px-2 md:px-5 bg-brand-green-dark text-white z-10">
+    <header className="fixed inset-0 h-13 md:h-22 flex justify-between md:justify-start md:gap-12 px-2 md:px-5 bg-brand-green-dark text-white z-10">
       <div className="flex">
         <Link className="z-10" href="/">
           <Image
             alt="logo"
-            className="shadow-small rounded-full border-2 border-slate-200 bg-white w-25 md:w-[150px]"
-            height={150}
+            className="shadow-small rounded-full border-2 border-slate-200 bg-white size-13 md:size-28"
+            height={95}
             loading="eager"
             onClick={hideNav}
             src="/image/logo200.png"
-            width={150}
+            width={95}
           />
         </Link>
         <Image
           alt="logo"
-          className="-ml-1 size-13 md:size-28 shadow-lg rounded-full"
+          className="-ml-1 size-13 md:size-28 shadow-small rounded-full"
           height={95}
           loading="eager"
           onClick={hideNav}
@@ -128,6 +128,18 @@ const Header = () => {
             </div>
           );
         })}
+        <Show when="signed-in">
+          <div className={css.navItem}>
+            <Link
+              as="/admin"
+              className={getLinkClass("/admin")}
+              href="/admin"
+              onClick={hideNav}
+            >
+              Administracja
+            </Link>
+          </div>
+        </Show>
       </nav>
       <div className="ml-auto center-hv gap-4">
         <Show when="signed-in">

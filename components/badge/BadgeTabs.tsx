@@ -43,11 +43,11 @@ const mapElementor = (node: ElementorNode) => {
 export default function BadgeTabs({
   rulesPageContent,
   scorersContent,
-}: BadgeTabsProps) {
+}: Readonly<BadgeTabsProps>) {
   return (
     <Tabs>
       <Tab key="regulamin" title="Regulamin">
-        <article className="pl-4 w-[1000px] elementor post-article">
+        <article className="pl-4 w-250 elementor post-article">
           {rulesPageContent
             ? rulesPageContent?.[0].elements.map((el) => {
                 if (el.settings.title) {
@@ -70,7 +70,7 @@ export default function BadgeTabs({
       </Tab>
       <Tab key="lista" title="Lista zdobywców">
         <article
-          className="format-table w-[1000px]"
+          className="format-table w-250"
           dangerouslySetInnerHTML={{
             __html: scorersContent ?? "",
           }}
