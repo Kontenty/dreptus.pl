@@ -202,9 +202,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
             }}
             onSelectionChange={(key) => {
               if (key) {
-                const selected = suggestions.find(
-                  (s) => s.name === key || s.nameExt === key,
-                );
+                const selected = suggestions.find((s) => s.id === Number(key));
                 if (selected) {
                   onParticipantSelect(selected);
                 }
@@ -212,7 +210,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
             }}
           >
             {(suggestion) => (
-              <AutocompleteItem key={suggestion.name}>
+              <AutocompleteItem key={suggestion.id}>
                 {suggestion.nameExt}
               </AutocompleteItem>
             )}
