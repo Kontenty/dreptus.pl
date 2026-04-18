@@ -27,14 +27,10 @@ interface PaginatedTableProps<T> extends TableProps {
   header?: string;
   emptyMessage?: string;
   isLoading?: boolean;
+  isSection?: (item: T) => boolean;
 }
 
-interface Item {
-  id?: number | string;
-  type?: string;
-}
-
-export default function PaginatedTable<T extends Item>({
+export default function PaginatedTable<T>({
   items,
   columns,
   keyExtractor,
@@ -43,30 +39,30 @@ export default function PaginatedTable<T extends Item>({
   header,
   emptyMessage = "Brak danych",
   isLoading = false,
+  isSection,
   ...tableProps
-}: PaginatedTableProps<T>) {
+}: Readonly<PaginatedTableProps<T>>) {
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(initialRowsPerPage);
 
   const pages = Math.ceil(items.length / rowsPerPage);
 
-  const itemsOnPage = useMemo(() => {
+  const itemsOnPageMap = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    return items
-      .slice(start, end)
-      .map((item, idx) => ({ item, globalIndex: start + idx }));
-  }, [items, page, rowsPerPage]);
+    const pageItems = items.slice(start, end);
+    const map = new Map<string, { item: T; globalIndex: number }>();
+    pageItems.forEach((item, idx) => {
+      map.set(String(keyExtractor(item)), { item, globalIndex: start + idx });
+    });
+    return map;
+  }, [items, page, rowsPerPage, keyExtractor]);
 
   const start = (page - 1) * rowsPerPage + 1;
   const end = Math.min(page * rowsPerPage, items.length);
 
-  const isSectionHeader = (item: T) => {
-    return item.type === "section" || Number(item?.id) >= 100001;
-  };
-
   return (
-    <div className="min-w-[450px]">
+    <div className="min-w-115">
       {header && <div className="mb-4 text-lg font-semibold">{header}</div>}
       <Table
         {...tableProps}
@@ -74,14 +70,13 @@ export default function PaginatedTable<T extends Item>({
         onRowAction={
           onRowClick
             ? (key) => {
-                const item = itemsOnPage.find(
-                  ({ item }) => String(keyExtractor(item)) === String(key),
-                );
-                if (item?.item) {
-                  // Only trigger click for non-section items
-                  const isSection = isSectionHeader(item.item);
-                  if (!isSection) {
-                    setTimeout(() => onRowClick(item.item), 300);
+                const entry = itemsOnPageMap.get(String(key));
+                if (entry) {
+                  const isNotSection = isSection
+                    ? !isSection(entry.item)
+                    : true;
+                  if (isNotSection) {
+                    setTimeout(() => onRowClick(entry.item), 300);
                   }
                 }
               }
@@ -98,17 +93,15 @@ export default function PaginatedTable<T extends Item>({
           ))}
         </TableHeader>
         <TableBody emptyContent={emptyMessage} isLoading={isLoading}>
-          {itemsOnPage.map(({ item, globalIndex }) => (
+          {Array.from(itemsOnPageMap.values()).map(({ item, globalIndex }) => (
             <TableRow
               key={keyExtractor(item)}
-              className={
-                isSectionHeader(item) ? "bg-gray-50 font-semibold" : ""
-              }
+              className={isSection?.(item) ? "bg-gray-50 font-semibold" : ""}
             >
               {columns.map((column) => (
                 <TableCell
                   key={String(column.key)}
-                  className={isSectionHeader(item) ? "py-3" : ""}
+                  className={isSection?.(item) ? "py-3" : ""}
                 >
                   {column.render
                     ? column.render(item, globalIndex)

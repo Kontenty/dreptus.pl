@@ -21,15 +21,15 @@ const organizeIntoSections = (trips: ParticipantOnTrip[]): TableRow[] => {
 
   for (const current of sorted) {
     const num = String(current.number || "");
-    if (/^A[0-9]{2}/i.test(num)) {
+    if (/^A\d{2}/i.test(num)) {
       sections[0].push(current);
-    } else if (/^B[0-9]{2}/i.test(num)) {
+    } else if (/^B\d{2}/i.test(num)) {
       sections[1].push(current);
-    } else if (/^C[0-9]{2}/i.test(num)) {
+    } else if (/^C\d{2}/i.test(num)) {
       sections[2].push(current);
-    } else if (/^[0-9]{3}/.test(num)) {
+    } else if (/^\d{3}/.test(num)) {
       sections[3].push(current);
-    } else if (/^#[0-9]{2}/.test(num)) {
+    } else if (/^#\d{2}/.test(num)) {
       sections[4].push(current);
     }
   }
@@ -88,10 +88,11 @@ const TripsWithParticipantsList = ({ trips }: Readonly<Props>) => {
   return (
     <PaginatedTable
       items={organizedData}
-      keyExtractor={(row) => row.data.id}
-      onRowClick={(row) =>
-        row.type === "trip" ? handleSelect(row) : undefined
+      keyExtractor={(row) =>
+        row.type === "trip" ? row.data.trip_id : row.data.id
       }
+      isSection={(row) => row.type === "section"}
+      onRowClick={handleSelect}
       rowsPerPage={50}
       rowsPerPageOptions={[20, 50, 100, 200]}
       color="primary"

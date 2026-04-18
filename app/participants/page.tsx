@@ -15,7 +15,7 @@ export default async function Participants() {
   return (
     <Main>
       <article
-        className="flex flex-col gap-2 min-w-[670px] overflow-x-auto"
+        className="flex flex-col gap-2 min-w-2xl overflow-x-auto"
         data-aos="fade-up"
       >
         <div>
