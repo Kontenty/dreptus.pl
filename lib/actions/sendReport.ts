@@ -21,7 +21,9 @@ const serialize = (data: ReportValues) => {
   }
   return {
     info: serialized,
-    questions: data.questions.filter((q) => q.answer || q.annotation),
+    questions: data.questions
+      .map((q, index) => ({ ...q, index: index + 1 }))
+      .filter((q) => q.answer || q.annotation),
   };
 };
 
@@ -50,20 +52,26 @@ export async function sendReport(values: ReportValues) {
       </table>
       <br>
       <h3>Odpowiedzi na pytania:</h3>
-      <table>
-      <tr>
-        <td><strong>Odpowiedź</strong></td>
-        <td><strong>Uwagi</strong></td>
-      </tr>
+      <table style="border-collapse: collapse; width: 100%;">
+      <thead>
+        <tr>
+          <th style="border-bottom: 1px solid #344979; text-align: left; padding: 8px;">Lp.</th>
+          <th style="border-bottom: 1px solid #344979; text-align: left; padding: 8px;">Odpowiedź</th>
+          <th style="border-bottom: 1px solid #344979; text-align: left; padding: 8px;">Uwagi</th>
+        </tr>
+      </thead>
+      <tbody>
         ${data.questions
           .map(
             (d) => `
           <tr>
-            <td><strong>${d.answer}</strong></td>
-            <td>${d.annotation}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #eee;">${d.index}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>${d.answer}</strong></td>
+            <td style="padding: 8px; border-bottom: 1px solid #eee;">${d.annotation ?? ""}</td>
           </tr>`,
           )
           .join("")}
+      </tbody>
       </table>
       </div>
     `;
@@ -72,7 +80,10 @@ export async function sendReport(values: ReportValues) {
       ${data.info.map((d) => `${d.field} - ${d.value}`).join("\n")}
       \nOdpowiedzi na pytania:
       ${data.questions
-        .map((d) => `${d.answer || "(brak odpowiedzi)"}`)
+        .map(
+          (d) =>
+            `${d.index}. ${d.answer || "(brak odpowiedzi)"}${d.annotation ? ` (Uwagi: ${d.annotation})` : ""}`,
+        )
         .join("\n")}
     `;
 
@@ -104,8 +115,9 @@ export async function sendReport(values: ReportValues) {
       });
     }
     return { success: true };
-  } catch (_error) {
-    return { success: false, error: "Could not send email" };
+  } catch (error) {
+    console.error("Zgłoszenie nie wysłane:", error);
+    return { success: false, error: `Could not send email, ${error}` };
   } finally {
     transporter.close();
   }
