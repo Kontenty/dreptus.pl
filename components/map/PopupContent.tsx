@@ -12,7 +12,7 @@ interface PopupContentProps {
   onClose?: () => void;
 }
 
-export function PopupContent({ trip, onClose }: PopupContentProps) {
+export function PopupContent({ trip, onClose }: Readonly<PopupContentProps>) {
   return (
     <div className="relative bg-white w-75 min-h-50" data-aos="fade">
       <button
