@@ -1,7 +1,7 @@
 "use client";
 
 import maplibregl from "maplibre-gl";
-import { useEffect, useRef, type RefObject } from "react";
+import { type RefObject, useEffect, useRef } from "react";
 
 const MAP_IMAGES = [
   { name: "dolina-bugu-icon", url: "/image/pieszo-dolina.png" },
@@ -21,7 +21,7 @@ interface UseMapInitializationResult {
 
 async function loadMapImages(
   map: maplibregl.Map,
-  images: typeof MAP_IMAGES
+  images: typeof MAP_IMAGES,
 ): Promise<void> {
   await Promise.all(
     images.map(async ({ name, url }) => {
@@ -29,12 +29,12 @@ async function loadMapImages(
         // Handle SVG files
         const response = await fetch(url);
         const svgText = await response.text();
-        const svgDataUri =
-          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
+        const svgDataUri = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
         const image = new Image();
         await new Promise<void>((resolve, reject) => {
           image.onload = () => resolve();
-          image.onerror = () => reject(new Error(`Failed to load image: ${url}`));
+          image.onerror = () =>
+            reject(new Error(`Failed to load image: ${url}`));
           image.src = svgDataUri;
         });
         map.addImage(name, image);
@@ -43,7 +43,7 @@ async function loadMapImages(
         const { data } = await map.loadImage(url);
         map.addImage(name, data);
       }
-    })
+    }),
   );
 }
 
