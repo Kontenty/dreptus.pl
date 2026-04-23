@@ -23,13 +23,6 @@ export const POLISH_TEXT_LAYERS = [
   "label_country_1",
 ] as const;
 
-export const GEOJSON_SOURCE_OPTIONS = {
-  type: "geojson" as const,
-  cluster: true,
-  clusterMaxZoom: 14,
-  clusterRadius: 50,
-};
-
 export function setPolishLanguage(map: MaplibreMap): void {
   const textField = [
     "case",

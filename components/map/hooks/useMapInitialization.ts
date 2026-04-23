@@ -1,7 +1,7 @@
 "use client";
 
 import maplibregl from "maplibre-gl";
-import { type RefObject, useEffect, useRef } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 
 const MAP_IMAGES = [
   { name: "dolina-bugu-icon", url: "/image/pieszo-dolina.png" },
@@ -16,7 +16,7 @@ interface UseMapInitializationOptions {
 
 interface UseMapInitializationResult {
   mapRef: RefObject<maplibregl.Map | null>;
-  isMapReady: RefObject<boolean>;
+  isMapReady: boolean;
 }
 
 async function loadMapImages(
@@ -52,7 +52,7 @@ export function useMapInitialization({
   onReady,
 }: UseMapInitializationOptions): UseMapInitializationResult {
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const isMapReady = useRef(false);
+  const [isMapReady, setIsMapReady] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -61,13 +61,13 @@ export function useMapInitialization({
       container: containerRef.current,
       style: "https://tiles.openfreemap.org/styles/liberty",
       center: [20.983333, 52.233333],
-      zoom: 12,
+      zoom: 7,
     });
 
     const map = mapRef.current;
 
     map.on("load", async () => {
-      isMapReady.current = true;
+      setIsMapReady(true);
       await loadMapImages(map, MAP_IMAGES);
       onReady?.(map);
     });
