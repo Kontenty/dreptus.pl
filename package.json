@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && lefthook install",
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
@@ -51,6 +51,7 @@
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.3.2",
     "framer-motion": "12.23.24",
+    "isomorphic-dompurify": "^3.10.0",
     "maplibre-gl": "^5.22.0",
     "next": "^16.2.1",
     "next-axiom": "^1.5.1",
@@ -76,7 +77,7 @@
     "@types/react-dom": "19.2.2",
     "@types/react-slick": "^0.23.10",
     "autoprefixer": "^10.4.21",
-    "lefthook": "^2.0.0",
+    "lefthook": "^2.1.6",
     "node-html-parser": "^6.1.5",
     "postcss": "^8.5.6",
     "prisma": "^6.17.1",
