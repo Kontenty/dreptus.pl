@@ -17,7 +17,7 @@ import Main from "@/components/ui/Main";
 import { getIcon } from "@/lib/utils";
 import type { TripDetails, TripFormMap } from "@/types";
 import ModalGallery from "./ModalGallery";
-import { TripsMap } from "./new-map";
+import { MapView } from "./map";
 import SlickArrow from "./SlickArrow";
 import css from "./tripDetail.module.css";
 
@@ -102,7 +102,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
     <div>
       <div>
         <div className="p-2 md:p-6">
-          <TripsMap trips={[trip]} mode="single" />
+          <MapView trips={[trip]} mode="single" />
         </div>
         <Main spacing="S">
           <div className="flex items-center pb-2">
@@ -217,7 +217,7 @@ const TripDetail = ({ trip, tripsList }: Props) => {
               ))}
             </aside>
           </section>
-          {nearbyTrips?.length && (
+          {!!nearbyTrips?.length && (
             <section className="mt-8 lg:w-2/3" data-aos="fade-up">
               <h3 className="text-center text-xl font-semibold">
                 Najbliższe trasy
