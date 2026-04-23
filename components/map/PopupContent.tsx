@@ -2,7 +2,6 @@
 
 import { EyeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { XCircleIcon } from "@heroicons/react/24/solid";
-import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
@@ -52,7 +51,7 @@ export const PopupContent = memo(function PopupContent({
         <p
           className="text-sm leading-tight font-semibold mb-1 text-slate-600"
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(trip.title ?? ""),
+            __html: trip.title ?? "",
           }}
         />
 
