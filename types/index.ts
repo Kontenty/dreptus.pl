@@ -73,7 +73,6 @@ export interface TripDetails extends Post {
   founding: string;
   type: string;
   number: string;
-  position: google.maps.LatLngLiteral;
   title: string;
   slug: string;
   category_slugs?: string;
@@ -85,7 +84,6 @@ export interface TripFormMap extends TripListItem {
   ID: number;
   locations?: string;
   dolinaBugu: boolean;
-  position: google.maps.LatLngLiteral;
   lat: string;
   lng: string;
   type: string;
