@@ -138,7 +138,7 @@ export default async function Home() {
               Od stycznia 2026 roku TRIP z Dreptusiem, w dowód uznania tego, co
               robię dla polskiej turystyki i krajoznawstwa oraz zbieżność celów
               Projektu z misją i działalnością programową Polskiego Towarzystwa
-              Turystyczno- Krajoznawczego, otrzymał zgodę Prezydium ZG PTTK na
+              Turystyczno-Krajoznawczego, otrzymał zgodę Prezydium ZG PTTK na
               używanie znaku słowno-granicznego Towarzystwa.
             </p>
             Mamy&nbsp;70 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym:

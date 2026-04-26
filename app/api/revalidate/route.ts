@@ -1,56 +1,57 @@
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+const token = process.env.REVALIDATE_TOKEN;
+
+export async function GET(request: NextRequest) {
+  const secret = request.nextUrl.searchParams.get("secret");
+
+  if (secret !== token) {
+    return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+  }
+
+  const host = request.headers.get("host");
+
+  if (host?.includes("dreptus.vercel.app")) {
+    await fetch(
+      `https://xn--dreptu-8ib.pl${request.nextUrl.toString().replace(request.nextUrl.origin, "")}`,
+    );
+    return NextResponse.json({ revalidated: true });
+  }
+
+  const slug = request.nextUrl.searchParams.get("slug");
+  const type = request.nextUrl.searchParams.get("new");
+
   try {
-    const body = await request.json();
-    const { type, slug } = body;
-
-    const host = request.headers.get("host");
-
-    if (host?.includes("dreptus.vercel.app")) {
-      await fetch(
-        `https://xn--dreptu-8ib.pl/api/revalidate?type=${type}&slug=${slug || ""}`,
-      );
-      return NextResponse.json({ revalidated: true });
-    }
-
-    const pathsToRevalidate: string[] = [];
-
     if (type === "trip") {
-      pathsToRevalidate.push("/", "/news", "/trips", "/form");
+      const promises = [
+        revalidatePath("/"),
+        revalidatePath("/news"),
+        revalidatePath("/trips"),
+        revalidatePath("/form"),
+      ];
       if (slug) {
-        pathsToRevalidate.push(`/trips/${slug}`);
+        promises.push(revalidatePath(`/trips/${slug}`));
       }
-      revalidateTag("trips", "max");
+      await Promise.all(promises);
     } else if (type === "participant") {
-      pathsToRevalidate.push("/participants");
       if (slug) {
-        pathsToRevalidate.push(`/participants/${slug}`);
+        await Promise.all([
+          revalidatePath("/participants"),
+          revalidatePath(`/participants/${slug}`),
+        ]);
+      } else {
+        await revalidatePath("/participants");
       }
     } else if (type === "packet") {
-      pathsToRevalidate.push("/news");
+      await revalidatePath("/news");
     } else if (type === "scorer" && slug) {
-      pathsToRevalidate.push(`/badges/${slug}`);
-    } else {
-      return NextResponse.json(
-        {
-          error: "Invalid type. Valid types: trip, participant, packet, scorer",
-        },
-        { status: 400 },
-      );
+      await revalidatePath(`/badges/${slug}`);
     }
 
-    for (const path of pathsToRevalidate) {
-      revalidatePath(path);
-    }
-
-    return NextResponse.json({
-      revalidated: true,
-      paths: pathsToRevalidate,
-    });
+    return NextResponse.json({ revalidated: true });
   } catch (error) {
     console.error("Revalidation error:", error);
-    return NextResponse.json({ error: "Revalidation failed" }, { status: 500 });
+    return NextResponse.json({ error: "Error revalidating" }, { status: 500 });
   }
 }
