@@ -54,4 +54,4 @@ async function testDatabaseConnection() {
   }
 }
 
-testDatabaseConnection();
+await testDatabaseConnection();
