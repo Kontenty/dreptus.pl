@@ -54,4 +54,4 @@ jobs:
         run: pnpm lint
 
       - name: Build application
-        run: prisma generate && pnpm build
+        run: pnpm prisma generate && pnpm build
