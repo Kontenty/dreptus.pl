@@ -1,11 +1,11 @@
 import maplibregl from "maplibre-gl";
-import { getIconUrl } from "@/lib/utils";
+import { getIconCode } from "@/lib/utils";
 import type { TripFormMap } from "@/types";
 
 export function tripToGeoJSONFeature(
   trip: TripFormMap,
 ): GeoJSON.Feature<GeoJSON.Point> {
-  const icon = getIconUrl(trip);
+  const icon = getIconCode(trip);
 
   return {
     type: "Feature",

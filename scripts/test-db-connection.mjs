@@ -6,7 +6,9 @@
 
 import { cwd } from "node:process";
 import nextEnv from "@next/env";
-import { PrismaClient } from "@prisma/client";
+import prismaPkg from "@prisma/client";
+
+const { PrismaClient } = prismaPkg;
 
 const { loadEnvConfig } = nextEnv;
 
@@ -54,4 +56,4 @@ async function testDatabaseConnection() {
   }
 }
 
-testDatabaseConnection();
+await testDatabaseConnection();

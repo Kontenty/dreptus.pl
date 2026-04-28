@@ -4,6 +4,7 @@ import { EyeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
+import { memo } from "react";
 import type { TripFormMap } from "@/types";
 import css from "./map.module.css";
 
@@ -12,7 +13,10 @@ interface PopupContentProps {
   onClose?: () => void;
 }
 
-export function PopupContent({ trip, onClose }: PopupContentProps) {
+export const PopupContent = memo(function PopupContent({
+  trip,
+  onClose,
+}: Readonly<PopupContentProps>) {
   return (
     <div className="relative bg-white w-75 min-h-50" data-aos="fade">
       <button
@@ -46,7 +50,9 @@ export function PopupContent({ trip, onClose }: PopupContentProps) {
       <div className="p-4">
         <p
           className="text-sm leading-tight font-semibold mb-1 text-slate-600"
-          dangerouslySetInnerHTML={{ __html: trip.title ?? "" }}
+          dangerouslySetInnerHTML={{
+            __html: trip.title ?? "",
+          }}
         />
 
         {trip.lat && trip.lng && (
@@ -58,4 +64,4 @@ export function PopupContent({ trip, onClose }: PopupContentProps) {
       </div>
     </div>
   );
-}
+});

@@ -55,7 +55,6 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
     pdf: rawDetails.pdf,
     pdf_images: rawDetails.pdf_images,
     pdfImages: rawDetails.pdfImages,
-    position: { lat: Number(rawDetails.lat), lng: Number(rawDetails.lng) },
     slug: rawDetails.post_name,
     title: rawDetails.post_title,
     dolinaBugu: rawDetails.category_slugs?.includes("dolina-bugu") ?? false,

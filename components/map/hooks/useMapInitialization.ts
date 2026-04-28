@@ -1,16 +1,50 @@
 "use client";
 
 import maplibregl from "maplibre-gl";
-import { useEffect, useRef } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
+
+const MAP_IMAGES = [
+  { name: "dolina-bugu-icon", url: "/image/pieszo-dolina.png" },
+  { name: "cyclist-icon", url: "/image/icons/cyclist-circle.svg" },
+  { name: "footman-icon", url: "/image/icons/footman-circle.svg" },
+];
 
 interface UseMapInitializationOptions {
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
   onReady?: (map: maplibregl.Map) => void;
 }
 
 interface UseMapInitializationResult {
-  mapRef: React.MutableRefObject<maplibregl.Map | null>;
-  isMapReady: React.MutableRefObject<boolean>;
+  mapRef: RefObject<maplibregl.Map | null>;
+  isMapReady: boolean;
+}
+
+async function loadMapImages(
+  map: maplibregl.Map,
+  images: typeof MAP_IMAGES,
+): Promise<void> {
+  await Promise.all(
+    images.map(async ({ name, url }) => {
+      if (url.endsWith(".svg")) {
+        // Handle SVG files
+        const response = await fetch(url);
+        const svgText = await response.text();
+        const svgDataUri = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
+        const image = new Image();
+        await new Promise<void>((resolve, reject) => {
+          image.onload = () => resolve();
+          image.onerror = () =>
+            reject(new Error(`Failed to load image: ${url}`));
+          image.src = svgDataUri;
+        });
+        map.addImage(name, image);
+      } else {
+        // Handle PNG/raster files
+        const { data } = await map.loadImage(url);
+        map.addImage(name, data);
+      }
+    }),
+  );
 }
 
 export function useMapInitialization({
@@ -18,7 +52,7 @@ export function useMapInitialization({
   onReady,
 }: UseMapInitializationOptions): UseMapInitializationResult {
   const mapRef = useRef<maplibregl.Map | null>(null);
-  const isMapReady = useRef(false);
+  const [isMapReady, setIsMapReady] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -27,65 +61,14 @@ export function useMapInitialization({
       container: containerRef.current,
       style: "https://tiles.openfreemap.org/styles/liberty",
       center: [20.983333, 52.233333],
-      zoom: 12,
+      zoom: 7,
     });
 
     const map = mapRef.current;
-    const loadedImages = new Set<string>();
 
-    map.on("styleimagemissing", async (e) => {
-      if (loadedImages.has(e.id)) return;
-      loadedImages.add(e.id);
-
-      if (
-        !e.id ||
-        e.id.includes("DIN") ||
-        e.id.includes("Offc") ||
-        e.id.includes("glyphs")
-      ) {
-        return;
-      }
-
-      const maybeUrl = e.id.startsWith("/") ? e.id : e.id;
-
-      try {
-        const response = await fetch(maybeUrl);
-        if (!response.ok) return;
-
-        const contentType = response.headers.get("content-type") || "";
-        let dataUrl: string;
-
-        if (contentType.includes("image/svg")) {
-          const svgText = await response.text();
-          dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
-        } else if (e.id.endsWith(".png")) {
-          const arrayBuffer = await response.arrayBuffer();
-          const base64 = btoa(
-            String.fromCharCode(...new Uint8Array(arrayBuffer)),
-          );
-          dataUrl = `data:image/png;base64,${base64}`;
-        } else {
-          const blob = await response.blob();
-          dataUrl = URL.createObjectURL(blob);
-        }
-
-        const img = new Image();
-        await new Promise<void>((resolve) => {
-          img.onload = () => resolve();
-          img.onerror = () => resolve();
-          img.src = dataUrl;
-        });
-
-        if (map.style) {
-          map.addImage(e.id, img);
-        }
-      } catch {
-        // ignore fetch errors
-      }
-    });
-
-    map.on("load", () => {
-      isMapReady.current = true;
+    map.on("load", async () => {
+      setIsMapReady(true);
+      await loadMapImages(map, MAP_IMAGES);
       onReady?.(map);
     });
 

@@ -5,17 +5,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { TripFormMap } from "@/types";
-import {
-  CLUSTER_PAINT,
-  CLUSTER_TEXT_LAYOUT,
-  GEOJSON_SOURCE_OPTIONS,
-  NON_CLUSTERED_POINT_LAYOUT,
-  setPolishLanguage,
-} from "./config/mapConfig";
+import { setPolishLanguage } from "./config/mapConfig";
 import { useMapInitialization } from "./hooks/useMapInitialization";
-import { useMapLayers } from "./hooks/useMapLayers";
 import { PopupContent } from "./PopupContent";
-import { fitToTrips, tripsToGeoJSON } from "./utils/geoJsonUtils";
+import {
+  fitToTrips,
+  tripsToGeoJSON,
+  tripToGeoJSONFeature,
+} from "./utils/geoJsonUtils";
+import { setupMapEvents } from "./utils/mapEvents";
+import { addMapLayers } from "./utils/mapLayers";
 
 type MapSize = "sm" | "lg";
 
@@ -33,7 +32,7 @@ export default function MapView({
   className,
   mode,
   onTripClick,
-}: MapViewProps) {
+}: Readonly<MapViewProps>) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const popupRef = useRef<maplibregl.Popup | null>(null);
   const tripsRef = useRef(trips);
@@ -49,116 +48,47 @@ export default function MapView({
   modeRef.current = mode;
 
   const handleMapReady = useCallback((map: maplibregl.Map) => {
+    const currentMode = modeRef.current;
     const data = tripsToGeoJSON(tripsRef.current);
 
-    map.addSource("markers", {
-      ...GEOJSON_SOURCE_OPTIONS,
-      data,
-    });
+    addMapLayers(map, data, currentMode);
 
-    map.addLayer({
-      id: "clusters",
-      type: "circle",
-      source: "markers",
-      filter: ["has", "point_count"],
-      paint: CLUSTER_PAINT,
-    });
+    setupMapEvents(map, {
+      mode: currentMode ?? "multiple",
+      onPointClick: (props, lngLat) => {
+        if (popupRef.current) {
+          popupRef.current.remove();
+        }
 
-    map.addLayer({
-      id: "cluster-count",
-      type: "symbol",
-      source: "markers",
-      filter: ["has", "point_count"],
-      layout: CLUSTER_TEXT_LAYOUT,
-    });
+        const currentTrips = tripsRef.current;
+        const trip = currentTrips.find((t) => t.ID === Number(props.id));
+        if (trip) {
+          onTripClickRef.current?.(trip);
+          setSelectedTrip(trip);
+        }
 
-    map.addLayer({
-      id: "unclustered-point",
-      type: "symbol",
-      source: "markers",
-      filter: ["!", ["has", "point_count"]],
-      layout: NON_CLUSTERED_POINT_LAYOUT,
-    });
+        const popupContent = document.createElement("div");
+        setPopupContainer(popupContent);
 
-    map.on("click", "clusters", async (e) => {
-      const features = map.queryRenderedFeatures(e.point, {
-        layers: ["clusters"],
-      });
-      if (!features.length || !features[0].properties) return;
-
-      const clusterId = features[0].properties.cluster_id;
-      const source = map.getSource("markers") as maplibregl.GeoJSONSource;
-
-      const zoom = await source.getClusterExpansionZoom(clusterId);
-      const geometry = features[0].geometry as GeoJSON.Point;
-      if (!geometry || geometry.type !== "Point") return;
-      const coordinates = geometry.coordinates as [number, number];
-      map.easeTo({
-        center: coordinates,
-        zoom,
-      });
-    });
-
-    map.on("click", "unclustered-point", (e) => {
-      const features = map.queryRenderedFeatures(e.point, {
-        layers: ["unclustered-point"],
-      });
-      if (!features.length || !features[0].properties) return;
-      const props = features[0].properties;
-      if (!props) return;
-
-      if (popupRef.current) {
-        popupRef.current.remove();
-      }
-
-      if (popupRef.current) {
-        popupRef.current.remove();
-      }
-
-      const currentTrips = tripsRef.current;
-      const trip = currentTrips.find((t) => t.ID === Number(props.id));
-      if (trip) {
-        onTripClickRef.current?.(trip);
-        setSelectedTrip(trip);
-      }
-
-      const popupContent = document.createElement("div");
-      setPopupContainer(popupContent);
-
-      popupRef.current = new maplibregl.Popup({
-        closeButton: false,
-        closeOnClick: true,
-        anchor: "left",
-        offset: 20,
-        maxWidth: "none",
-        padding: { top: 100, bottom: 0, left: 0, right: 0 },
-      })
-        .setLngLat(e.lngLat)
-        .setDOMContent(popupContent);
-      popupRef.current.on("close", () => setSelectedTrip(null));
-      popupRef.current.addTo(map);
-    });
-
-    map.on("mouseenter", "clusters", () => {
-      map.getCanvas().style.cursor = "pointer";
-    });
-
-    map.on("mouseleave", "clusters", () => {
-      map.getCanvas().style.cursor = "";
-    });
-
-    map.on("mouseenter", "unclustered-point", () => {
-      map.getCanvas().style.cursor = "pointer";
-    });
-
-    map.on("mouseleave", "unclustered-point", () => {
-      map.getCanvas().style.cursor = "";
+        popupRef.current = new maplibregl.Popup({
+          closeButton: false,
+          closeOnClick: true,
+          anchor: "left",
+          offset: 20,
+          maxWidth: "none",
+          padding: { top: 100, bottom: 0, left: 0, right: 0 },
+        })
+          .setLngLat(lngLat)
+          .setDOMContent(popupContent);
+        popupRef.current.on("close", () => setSelectedTrip(null));
+        popupRef.current.addTo(map);
+      },
     });
 
     setPolishLanguage(map);
 
     if (tripsRef.current.length > 0) {
-      fitToTrips(map, tripsRef.current, modeRef.current);
+      fitToTrips(map, tripsRef.current, currentMode);
     }
   }, []);
 
@@ -167,11 +97,22 @@ export default function MapView({
     onReady: handleMapReady,
   });
 
-  useMapLayers({
-    mapRef,
-    isMapReady,
-    trips,
-  });
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !isMapReady) return;
+
+    const source = map.getSource("markers") as
+      | maplibregl.GeoJSONSource
+      | undefined;
+    if (!source) return;
+
+    source.setData({
+      type: "FeatureCollection",
+      features: trips.map(tripToGeoJSONFeature),
+    });
+
+    fitToTrips(map, trips, mode);
+  }, [mapRef, isMapReady, trips, mode]);
 
   useEffect(() => {
     return () => {

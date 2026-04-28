@@ -151,7 +151,6 @@ export const getTripsForMap = async (
         ID: Number(trip.ID),
         lat: trip.lat.toString(),
         lng: trip.lng.toString(),
-        position: { lat: Number(trip.lat), lng: Number(trip.lng) },
         locations: trip.category_names
           ?.split(",")
           .filter((name: string) => locationsSet.has(name.toLowerCase()))

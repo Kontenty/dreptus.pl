@@ -33,6 +33,21 @@ export function getIconUrl(data: TripFormMap) {
   return dict[activityCode[code]] || "/image/icons/footman-circle.svg";
 }
 
+export function getIconCode(data: TripFormMap) {
+  if (data?.category_slugs?.includes("dolina-bugu")) {
+    return "dolina-bugu-icon";
+  }
+  const code = data?.type;
+  if (!code) {
+    return "footman-icon";
+  }
+  const dict: Record<string, string> = {
+    bike: "cyclist-icon",
+    foot: "footman-icon",
+  };
+  return dict[activityCode[code]] || "footman-icon";
+}
+
 export const sortTrips = (
   a: { number?: string | null },
   b: { number?: string | null },
