@@ -1,5 +1,5 @@
 "use client";
-import { Autocomplete, AutocompleteItem } from "@heroui/react";
+import { ComboBox, Input, Label, ListBox } from "@heroui/react";
 import { useState } from "react";
 import AddParticipantOnTrip from "@/components/admin/AddParticipantOnTrip";
 import ParticipantsOnTrip from "@/components/admin/ParticipantsOnTrip";
@@ -19,22 +19,33 @@ export default function TripParticipantsManager({
       <AddParticipantOnTrip tripsList={tripsParticipants} />
       <div>
         <h2 className="text-2xl mb-2">Zarządzaj uczestnikami</h2>
-        <div className="flex flex-col mb-4 w-[600px]">
-          <Autocomplete
+        <div className="flex flex-col mb-4 w-150">
+          <ComboBox
             id="trip-select"
-            label="Trasa"
-            placeholder="Wybierz trasę"
             selectedKey={selectedTripId ? String(selectedTripId) : null}
             onSelectionChange={(key) => {
               setSelectedTripId(key ? Number(key) : null);
             }}
           >
-            {tripsParticipants.map((trip) => (
-              <AutocompleteItem key={String(trip.value)}>
-                {trip.label}
-              </AutocompleteItem>
-            ))}
-          </Autocomplete>
+            <Label>Trasa</Label>
+            <ComboBox.InputGroup>
+              <Input placeholder="Wybierz trasę" />
+              <ComboBox.Trigger />
+            </ComboBox.InputGroup>
+            <ComboBox.Popover>
+              <ListBox>
+                {tripsParticipants.map((trip) => (
+                  <ListBox.Item
+                    id={String(trip.value)}
+                    key={String(trip.value)}
+                    textValue={trip.label}
+                  >
+                    {trip.label}
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </ComboBox.Popover>
+          </ComboBox>
         </div>
         <ParticipantsOnTrip tripId={selectedTripId} />
       </div>

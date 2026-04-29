@@ -1,9 +1,11 @@
 import {
-  Autocomplete,
-  AutocompleteItem,
-  addToast,
   Button,
   Checkbox,
+  ComboBox,
+  Input,
+  Label,
+  ListBox,
+  toast,
 } from "@heroui/react";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import React, { useEffect } from "react";
@@ -21,15 +23,10 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
   useEffect(() => {
     const hasShownToast = sessionStorage.getItem("gdprToastShown");
     if (!hasShownToast) {
-      addToast({
-        color: "primary",
-        classNames: { title: "text-lg" },
-        title: "RODO",
-        variant: "solid",
-        size: "lg",
-        timeout: 10000,
+      toast.info("RODO", {
         description:
           "Zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych informuję, że Państwa dane osobowe będą przetwarzane i chronione zgodnie z ustawą.",
+        timeout: 10000,
       });
       sessionStorage.setItem("gdprToastShown", "true");
     }
@@ -73,16 +70,12 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
       if (result?.success) {
         onSuccess();
       } else {
-        addToast({
-          color: "danger",
-          title: "Błąd",
+        toast.danger("Błąd", {
           description: result?.error || "Nie udało się wysłać formularza",
         });
       }
     } catch (_e) {
-      addToast({
-        color: "danger",
-        title: "Błąd",
+      toast.danger("Błąd", {
         description: "Wystąpił błąd podczas wysyłania",
       });
     }
@@ -95,29 +88,38 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
       </h2>
       <FormProvider {...methods}>
         <form className="max-w-250" onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 md:gap-y-6 p-fluid">
+          <div className="grid grid-cols-1 gap-y-4 md:grid-cols-2 md:gap-x-4 md:gap-y-6">
             <div className="md:col-span-2">
               <Controller
                 control={control}
                 name="trip"
                 render={({ field }) => (
-                  <Autocomplete
-                    label="Wybierz przebytą trasę"
-                    placeholder="Wybierz przebytą trasę"
+                  <ComboBox
+                    isRequired
                     selectedKey={field.value || null}
                     onSelectionChange={(key) => {
                       field.onChange(key || "");
                     }}
-                    isInvalid={!!errors.trip}
-                    errorMessage={errors.trip?.message}
-                    isRequired
                   >
-                    {trips.map((trip) => (
-                      <AutocompleteItem key={trip.value}>
-                        {trip.label}
-                      </AutocompleteItem>
-                    ))}
-                  </Autocomplete>
+                    <Label>Wybierz przebytą trasę</Label>
+                    <ComboBox.InputGroup>
+                      <Input placeholder="Wybierz przebytą trasę" />
+                      <ComboBox.Trigger />
+                    </ComboBox.InputGroup>
+                    <ComboBox.Popover>
+                      <ListBox>
+                        {trips.map((trip) => (
+                          <ListBox.Item
+                            id={trip.value}
+                            key={trip.value}
+                            textValue={trip.label}
+                          >
+                            {trip.label}
+                          </ListBox.Item>
+                        ))}
+                      </ListBox>
+                    </ComboBox.Popover>
+                  </ComboBox>
                 )}
               />
             </div>
@@ -164,16 +166,22 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
               name="checked"
               render={({ field }) => (
                 <Checkbox
-                  isSelected={field.value}
-                  onValueChange={field.onChange}
+                  id="gdpr"
                   isInvalid={!!errors.checked}
                   isRequired
+                  isSelected={field.value}
+                  onChange={field.onChange}
                 >
-                  <small>
-                    Wyrażam zgodę na przetwarzanie danych osobowych przez
-                    Dreptuś.pl w celu weryfikacji zgłoszenia{" "}
-                    <span className="text-red-500">*</span>
-                  </small>
+                  <Checkbox.Control>
+                    <Checkbox.Indicator />
+                  </Checkbox.Control>
+                  <Checkbox.Content>
+                    <Label htmlFor="gdpr" className="text-sm">
+                      Wyrażam zgodę na przetwarzanie danych osobowych przez
+                      Dreptuś.pl w celu weryfikacji zgłoszenia{" "}
+                      <span className="text-red-500">*</span>
+                    </Label>
+                  </Checkbox.Content>
                 </Checkbox>
               )}
             />
@@ -183,7 +191,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
             aria-label="submit"
             className="mt-6 w-44"
             type="submit"
-            isLoading={isSubmitting}
+            isPending={isSubmitting}
           >
             Wyślij
           </Button>

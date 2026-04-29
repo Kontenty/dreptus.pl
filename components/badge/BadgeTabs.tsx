@@ -1,6 +1,6 @@
 "use client";
 
-import { Tab, Tabs } from "@heroui/react";
+import { Tabs } from "@heroui/react";
 import type { ElementorData } from "@/types";
 
 interface BadgeTabsProps {
@@ -46,7 +46,19 @@ export default function BadgeTabs({
 }: Readonly<BadgeTabsProps>) {
   return (
     <Tabs>
-      <Tab key="regulamin" title="Regulamin">
+      <Tabs.ListContainer>
+        <Tabs.List aria-label="Odznaki">
+          <Tabs.Tab id="regulamin">
+            Regulamin
+            <Tabs.Indicator />
+          </Tabs.Tab>
+          <Tabs.Tab id="lista">
+            Lista zdobywców
+            <Tabs.Indicator />
+          </Tabs.Tab>
+        </Tabs.List>
+      </Tabs.ListContainer>
+      <Tabs.Panel id="regulamin">
         <article className="pl-4 w-250 elementor post-article">
           {rulesPageContent
             ? rulesPageContent?.[0].elements.map((el) => {
@@ -67,15 +79,15 @@ export default function BadgeTabs({
               })
             : null}
         </article>
-      </Tab>
-      <Tab key="lista" title="Lista zdobywców">
+      </Tabs.Panel>
+      <Tabs.Panel id="lista">
         <article
           className="format-table w-250"
           dangerouslySetInnerHTML={{
             __html: scorersContent ?? "",
           }}
         />
-      </Tab>
+      </Tabs.Panel>
     </Tabs>
   );
 }

@@ -95,8 +95,6 @@ const TripsWithParticipantsList = ({ trips }: Readonly<Props>) => {
       onRowClick={handleSelect}
       rowsPerPage={50}
       rowsPerPageOptions={[20, 50, 100, 200]}
-      color="primary"
-      selectionMode="single"
       columns={[
         {
           key: "number",

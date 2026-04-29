@@ -7,16 +7,7 @@ import {
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {
-  addToast,
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@heroui/react";
+import { Button, Modal, toast, useOverlayState } from "@heroui/react";
 import { log } from "next-axiom";
 import React, { useState } from "react";
 import useSWR from "swr";
@@ -49,21 +40,12 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
   );
   const [selectedTripParticipant, setSelectedTripParticipant] =
     useState<TripParticipant | null>(null);
-  const [_item] = useState(null);
-  const {
-    isOpen: isDeleteOpen,
-    onOpen: onDeleteOpen,
-    onClose: onDeleteClose,
-  } = useDisclosure();
-  const {
-    isOpen: isEditOpen,
-    onOpen: onEditOpen,
-    onClose: onEditClose,
-  } = useDisclosure();
+  const deleteState = useOverlayState();
+  const editState = useOverlayState();
 
   const confirmDeleteParticipant = (participant: TripParticipant) => {
     setSelectedTripParticipant(participant);
-    onDeleteOpen();
+    deleteState.open();
   };
 
   const deleteParticipant = async () => {
@@ -71,22 +53,17 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
 
     try {
       await removeTripParticipant(selectedTripParticipant.id);
-      onDeleteClose();
+      deleteState.close();
+      setSelectedTripParticipant(null);
 
-      addToast({
-        color: "success",
-        title: "Pomyślnie",
-        description: "usunięto uczestnika",
-      });
+      toast.success("Pomyślnie", { description: "usunięto uczestnika" });
 
       await mutate();
     } catch (error) {
-      onDeleteClose();
+      deleteState.close();
       log.error("admin: delete participant error", { message: error });
 
-      addToast({
-        color: "danger",
-        title: "Błąd",
+      toast.danger("Błąd", {
         description:
           error instanceof Error
             ? error.message
@@ -107,21 +84,17 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
         origin: participant.origin,
       });
 
-      onEditClose();
+      editState.close();
+      setSelectedTripParticipant(null);
 
-      addToast({
-        color: "success",
-        title: "Pomyślnie zapisano zmiany",
-      });
+      toast.success("Pomyślnie zapisano zmiany");
 
       await mutate();
     } catch (error) {
-      onEditClose();
+      editState.close();
       log.error("admin: edit participant error", { message: error });
 
-      addToast({
-        color: "danger",
-        title: "Błąd",
+      toast.danger("Błąd", {
         description:
           error instanceof Error
             ? error.message
@@ -131,7 +104,7 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
   };
 
   const editParticipant = (participant: TripParticipant) => {
-    onEditOpen();
+    editState.open();
     setSelectedTripParticipant(participant);
   };
 
@@ -142,17 +115,14 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
           className="mr-2"
           isIconOnly
           onPress={() => editParticipant(participant)}
-          variant="bordered"
-          radius="full"
+          variant="secondary"
         >
           <PencilIcon className="w-4 h-4" />
         </Button>
         <Button
           isIconOnly
           onPress={() => confirmDeleteParticipant(participant)}
-          variant="bordered"
-          radius="full"
-          color="danger"
+          variant="danger-soft"
         >
           <TrashIcon className="w-4 h-4" />
         </Button>
@@ -196,53 +166,61 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
       ) : (
         <h2>Wybierz trasę aby zoabczyć uczestników</h2>
       )}
-      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose} size="md">
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <ExclamationTriangleIcon className="w-5 h-5 text-red-300" />
-                  Zatwierdź
-                </div>
-              </ModalHeader>
-              <ModalBody>
-                <span>
-                  Czy na pewno chcesz usunąć uczestnika
-                  <br />
-                  {selectedTripParticipant?.name} z trasy
-                </span>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="bordered" onPress={onClose}>
-                  <XMarkIcon className="w-4 h-4 mr-2" />
-                  Nie
-                </Button>
-                <Button color="danger" onPress={deleteParticipant}>
-                  <CheckIcon className="w-4 h-4 mr-2" />
-                  Tak
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
+      <Modal state={deleteState}>
+        <Modal.Backdrop>
+          <Modal.Container size="md">
+            <Modal.Dialog>
+              {({ close }) => (
+                <>
+                  <Modal.Header>
+                    <Modal.Heading>
+                      <div className="flex items-center gap-2">
+                        <ExclamationTriangleIcon className="w-5 h-5 text-red-300" />
+                        Zatwierdź
+                      </div>
+                    </Modal.Heading>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <span>
+                      Czy na pewno chcesz usunąć uczestnika
+                      <br />
+                      {selectedTripParticipant?.name} z trasy
+                    </span>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onPress={close}>
+                      <XMarkIcon className="w-4 h-4 mr-2" />
+                      Nie
+                    </Button>
+                    <Button variant="danger" onPress={deleteParticipant}>
+                      <CheckIcon className="w-4 h-4 mr-2" />
+                      Tak
+                    </Button>
+                  </Modal.Footer>
+                </>
+              )}
+            </Modal.Dialog>
+          </Modal.Container>
+        </Modal.Backdrop>
       </Modal>
-      <Modal isOpen={isEditOpen} onClose={onEditClose} size="2xl">
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalBody>
-                {selectedTripParticipant && (
-                  <EditParticipantOnTrip
-                    onAbort={onClose}
-                    onSubmit={saveParticipant}
-                    participant={selectedTripParticipant}
-                  />
-                )}
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
+      <Modal state={editState}>
+        <Modal.Backdrop>
+          <Modal.Container size="lg">
+            <Modal.Dialog>
+              {({ close }) => (
+                <Modal.Body>
+                  {selectedTripParticipant && (
+                    <EditParticipantOnTrip
+                      onAbort={close}
+                      onSubmit={saveParticipant}
+                      participant={selectedTripParticipant}
+                    />
+                  )}
+                </Modal.Body>
+              )}
+            </Modal.Dialog>
+          </Modal.Container>
+        </Modal.Backdrop>
       </Modal>
     </div>
   );
