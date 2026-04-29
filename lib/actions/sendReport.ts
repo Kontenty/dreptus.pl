@@ -2,7 +2,11 @@
 import nodemailer from "nodemailer";
 import * as v from "valibot";
 import { config } from "@/lib/config";
-import { type ReportValues, reportSchema } from "@/lib/schemas/reportSchema";
+import {
+  type ReportInput,
+  type ReportValues,
+  reportSchema,
+} from "@/lib/schemas/reportSchema";
 
 const serialize = (data: ReportValues) => {
   const dict: Record<string, string> = {
@@ -27,14 +31,15 @@ const serialize = (data: ReportValues) => {
   };
 };
 
-export async function sendReport(values: ReportValues) {
+export async function sendReport(values: ReportInput) {
   // Validate essential fields
   const result = v.safeParse(reportSchema, values);
   if (!result.success) {
     return { success: false, error: "Inappropriate data" };
   }
 
-  const data = serialize(values);
+  const data = serialize(result.output);
+  const { email, trip } = result.output;
 
   const html = `
       <div style="color: #344979">
@@ -99,18 +104,16 @@ export async function sendReport(values: ReportValues) {
       text, // plain text body
       html, // html body
     };
-
     await transporter.sendMail(messageToAdmin);
-    const userMail = values.email;
-    if (typeof userMail === "string") {
+    if (typeof email === "string") {
       await transporter.sendMail({
         from: '"Dreptuś.pl - zgłoszenia" <zgloszenia@dreptuś.pl>', // sender address
-        to: userMail, // list of receivers
+        to: email, // list of receivers
         subject: "Zgłoszenie udziału w Dreptuś.pl 👣", // Subject line
         text: `Dziękujemy za zgłoszenie udziału w Dreptuś\nPo rozpatrzeniu odpowiedzi prześlemy wyniki`, // plain text body
         html: `<div style="color: #344979">
         <h2>Dziękujemy za zgłoszenie udziału w Dreptuś,</h2>
-        <p>na trasie ${values.trip}</p>
+        <p>na trasie ${trip}</p>
         Po rozpatrzeniu odpowiedzi prześlemy wyniki</div>`, // html body
       });
     }

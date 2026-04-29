@@ -14,9 +14,9 @@ export const reportSchema = v.object({
     v.nonEmpty("Adres email jest wymagany"),
     v.email("Adres email jest nieprawidłowy"),
   ),
-  checked: v.pipe(
+  gdprChecked: v.pipe(
     v.boolean(),
-    v.check((input) => input === true, "Must be true"),
+    v.check((input) => input === true, "Zgoda jest wymagana"),
   ),
   add: v.literal("null"),
   questions: v.array(
@@ -27,4 +27,5 @@ export const reportSchema = v.object({
   ),
 });
 
+export type ReportInput = v.InferInput<typeof reportSchema>;
 export type ReportValues = v.InferOutput<typeof reportSchema>;
