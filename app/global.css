@@ -3,6 +3,7 @@
 @import "slick-carousel/slick/slick.css";
 
 @theme {
+  --surface-secondary: oklch(0.98 0 0 / 1);
   --color-accent-light: #ffe8e6;
   --color-accent-dark: #ed422b;
 

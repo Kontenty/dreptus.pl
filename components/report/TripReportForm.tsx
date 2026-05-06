@@ -47,7 +47,7 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
     location: "",
     gdprChecked: false,
     add: "null",
-    questions: Array(30).fill({ answer: "", annotation: "" }),
+    questions: new Array(30).fill({ answer: "", annotation: "" }),
   };
 
   const methods = useForm<ReportInput>({
@@ -83,7 +83,10 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
     <>
       <h2 className="text-4xl text-brand-green-dark">Formularz zgłoszenia</h2>
       <FormProvider {...methods}>
-        <Surface variant="secondary" className="px-8 py-6">
+        <Surface
+          variant="secondary"
+          className="px-12 py-8 rounded-xl shadow-inner"
+        >
           <form className="max-w-250" onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-1 gap-y-4 md:grid-cols-2 md:gap-x-4 md:gap-y-6">
               <div className="md:col-span-2">

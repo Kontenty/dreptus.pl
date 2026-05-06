@@ -1,5 +1,6 @@
 export const revalidate = 86400; // 24 hours
 
+import { Breadcrumbs, BreadcrumbsItem } from "@heroui/react";
 import { notFound } from "next/navigation";
 import ParticipantsOnTrip from "@/components/ParticipantsOnTrip";
 import Main from "@/components/ui/Main";
@@ -31,6 +32,12 @@ const TripParticipants = async ({ params }: Props) => {
 
   return (
     <Main>
+      <Breadcrumbs>
+        <BreadcrumbsItem href="/participants">Uczestnicy</BreadcrumbsItem>
+        <BreadcrumbsItem>
+          {cleanTitle(participantsList[0]?.trip?.post_title)}
+        </BreadcrumbsItem>
+      </Breadcrumbs>
       <header>
         <h2 className="text-xl text-slate-700">Lista uczestników</h2>
         <h1 className="text-2xl">
