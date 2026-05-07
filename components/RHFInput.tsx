@@ -1,6 +1,10 @@
 "use client";
 import { FieldError, Input, Label, TextField } from "@heroui/react";
 import { useController, useFormContext } from "react-hook-form";
+import DatePicker, {
+  getDatePickerValueAsDate,
+  getDatePickerValueAsString,
+} from "@/components/ui/DatePicker";
 
 export type RHFField = {
   name: string;
@@ -15,19 +19,22 @@ const RHFInput = ({ label, required, ...props }: RHFField) => {
 
   if (props.type === "date") {
     return (
-      <TextField isRequired={required} name={field.name}>
-        <Label>{label}</Label>
-        <Input
-          id={field.name}
-          onBlur={field.onBlur}
-          onChange={(event) => field.onChange(event.target.value)}
-          type="date"
-          value={String(field.value ?? "")}
-        />
-        <FieldError>
-          {fieldState.error?.message || "Pole jest wymagane"}
-        </FieldError>
-      </TextField>
+      <DatePicker
+        errorMessage={fieldState.error?.message}
+        isInvalid={!!fieldState.error}
+        isRequired={required}
+        label={label}
+        name={field.name}
+        onBlur={field.onBlur}
+        onChange={(value) => {
+          field.onChange(
+            field.value instanceof Date
+              ? getDatePickerValueAsDate(value)
+              : getDatePickerValueAsString(value),
+          );
+        }}
+        value={field.value}
+      />
     );
   }
 
