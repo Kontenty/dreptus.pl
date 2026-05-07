@@ -1,19 +1,10 @@
 "use client";
-import { DatePicker, Input } from "@heroui/react";
-import { CalendarDate } from "@internationalized/date";
-import { I18nProvider } from "@react-aria/i18n";
+import { FieldError, Input, Label, TextField } from "@heroui/react";
 import { useController, useFormContext } from "react-hook-form";
-
-function toCalendarDate(value: string | Date | null): CalendarDate | null {
-  if (!value) return null;
-  const date = typeof value === "string" ? new Date(value) : value;
-  if (Number.isNaN(date.getTime())) return null;
-  return new CalendarDate(
-    date.getFullYear(),
-    date.getMonth() + 1,
-    date.getDate(),
-  );
-}
+import DatePicker, {
+  getDatePickerValueAsDate,
+  getDatePickerValueAsString,
+} from "@/components/ui/DatePicker";
 
 export type RHFField = {
   name: string;
@@ -28,37 +19,38 @@ const RHFInput = ({ label, required, ...props }: RHFField) => {
 
   if (props.type === "date") {
     return (
-      <I18nProvider locale="pl-PL">
-        <DatePicker
-          id={field.name}
-          label={label}
-          value={toCalendarDate(field.value ?? null)}
-          onChange={(date) => {
-            const val = date
-              ? `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`
-              : "";
-            field.onChange(val);
-          }}
-          onBlur={field.onBlur}
-          isInvalid={!!fieldState.error}
-          errorMessage={fieldState.error?.message || "Pole jest wymagane"}
-          isRequired={required}
-        />
-      </I18nProvider>
+      <DatePicker
+        errorMessage={fieldState.error?.message}
+        isInvalid={!!fieldState.error}
+        isRequired={required}
+        label={label}
+        name={field.name}
+        onBlur={field.onBlur}
+        onChange={(value) => {
+          field.onChange(
+            field.value instanceof Date
+              ? getDatePickerValueAsDate(value)
+              : getDatePickerValueAsString(value),
+          );
+        }}
+        value={field.value}
+      />
     );
   }
 
   return (
-    <Input
-      id={field.name}
-      label={label}
-      value={String(field.value ?? "")}
-      onValueChange={field.onChange}
-      onBlur={field.onBlur}
-      isInvalid={!!fieldState.error}
-      errorMessage={fieldState.error?.message || "Pole jest wymagane"}
-      isRequired={required}
-    />
+    <TextField isRequired={required} name={field.name}>
+      <Label>{label}</Label>
+      <Input
+        id={field.name}
+        onBlur={field.onBlur}
+        onChange={(event) => field.onChange(event.target.value)}
+        value={String(field.value ?? "")}
+      />
+      <FieldError>
+        {fieldState.error?.message || "Pole jest wymagane"}
+      </FieldError>
+    </TextField>
   );
 };
 

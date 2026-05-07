@@ -162,11 +162,7 @@ const Header = () => {
         </Link>
       </div>
       <div className="block md:hidden ml-auto self-center">
-        <Button
-          className="bg-white p-button-sm "
-          onPress={toggleNav}
-          color="success"
-        >
+        <Button isIconOnly onPress={toggleNav}>
           {showNav ? (
             <XMarkIcon className="w-5 h-5 text-black" />
           ) : (

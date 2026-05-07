@@ -21,8 +21,6 @@ const TripsList = ({ trips }: Props) => {
       keyExtractor={(trip) => trip.ID}
       header="Lista tras"
       onRowClick={handleTripSelect}
-      selectionMode="single"
-      color="primary"
       rowsPerPage={50}
       rowsPerPageOptions={[20, 50, 100, 200]}
       columns={[

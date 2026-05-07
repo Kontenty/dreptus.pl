@@ -39,19 +39,16 @@ const EditParticipantOnTrip = ({ participant, onSubmit, onAbort }: Props) => {
     <FormProvider {...methods}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 md:gap-y-6 pt-6 p-fluid"
+        className="grid grid-cols-1 gap-y-4 pt-6 md:grid-cols-2 md:gap-x-4 md:gap-y-6"
       >
         {fields.map((f, i) => (
           <RHFInput key={`${i}_${f.name}`} {...f} />
         ))}
         <div className="flex gap-4 items-start">
-          <Button type="submit">Zapisz</Button>
-          <Button
-            onPress={() => onAbort()}
-            variant="bordered"
-            color="default"
-            type="button"
-          >
+          <Button type="submit" variant="primary">
+            Zapisz
+          </Button>
+          <Button onPress={() => onAbort()} variant="secondary" type="button">
             Anuluj
           </Button>
         </div>

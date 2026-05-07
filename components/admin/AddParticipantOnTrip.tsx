@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  Autocomplete,
-  AutocompleteItem,
-  addToast,
   Button,
-  DateInput,
+  ComboBox,
+  FieldError,
   Input,
+  Label,
+  ListBox,
+  TextField,
+  toast,
 } from "@heroui/react";
-import { CalendarDate } from "@internationalized/date";
 import type { Participant } from "@prisma/client";
-import { I18nProvider } from "@react-aria/i18n";
 import { log } from "next-axiom";
 
 type Nullable<T> = T | null;
@@ -32,6 +32,7 @@ type Props = { tripsList: TripOption[] };
 
 type State = {
   selectedTrip: number | null;
+  selectedParticipantId: number | null;
   participantName: string;
   origin: string;
   answers: string;
@@ -39,6 +40,7 @@ type State = {
 };
 const initialState: State = {
   selectedTrip: null,
+  selectedParticipantId: null,
   participantName: "",
   origin: "",
   answers: "",
@@ -46,10 +48,12 @@ const initialState: State = {
 };
 type Action =
   | { type: "trip"; value: State["selectedTrip"] }
+  | { type: "selectedParticipantId"; value: State["selectedParticipantId"] }
   | { type: "participant"; value: State["participantName"] }
   | {
       type: "selectParticipant";
       value: {
+        id: number;
         participant: State["participantName"];
         origin: State["origin"];
       };
@@ -65,13 +69,20 @@ function reducer(state: State, action: Action) {
       return initialState;
     case "trip":
       return { ...state, selectedTrip: action.value };
+    case "selectedParticipantId":
+      return { ...state, selectedParticipantId: action.value };
     case "participant":
-      return { ...state, participantName: action.value };
+      return {
+        ...state,
+        participantName: action.value,
+        selectedParticipantId: null,
+      };
     case "selectParticipant":
       return {
         ...state,
         participantName: action.value.participant,
         origin: action.value.origin,
+        selectedParticipantId: action.value.id,
       };
     case "origin":
       return { ...state, origin: action.value };
@@ -102,24 +113,18 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
     setSuggestions(filteredList ?? []);
   };
 
-  const onParticipantSelect = ({ name, origin }: ExtParticipant) => {
+  const onParticipantSelect = ({ id, name, origin }: ExtParticipant) => {
     dispatch({
       type: "selectParticipant",
-      value: { origin, participant: name },
+      value: { id, origin, participant: name },
     });
   };
 
   const showWrongData = () => {
-    addToast({
-      color: "danger",
-      title: "Błąd",
-      description: "Wysłano nieprawidłowe dane",
-    });
+    toast.danger("Błąd", { description: "Wysłano nieprawidłowe dane" });
   };
   const showSuccess = async () => {
-    addToast({
-      color: "success",
-      title: "Sukces",
+    toast.success("Sukces", {
       description: "Pomyślnie dodano nowego użytkownika",
     });
     await mutate({ tripId: state.selectedTrip });
@@ -154,9 +159,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
       ) {
         showWrongData();
       } else {
-        addToast({
-          color: "danger",
-          title: "Błąd",
+        toast.danger("Błąd", {
           description: "Wystąpił błąd podczas dodawania uczestnika",
         });
       }
@@ -166,13 +169,10 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
   return (
     <section className="mb-8">
       <h2 className="text-2xl">Dodaj uczestnika trasy</h2>
-      <div className="w-250 grid grid-cols-3 gap-4">
+      <div className="grid w-[250px] grid-cols-3 gap-4">
         <div>
-          <Autocomplete
-            className="w-full"
+          <ComboBox
             id="ppt-trip"
-            label="Trasa"
-            placeholder="Wybierz trasę"
             selectedKey={state.selectedTrip ? String(state.selectedTrip) : null}
             onSelectionChange={(key) => {
               dispatch({
@@ -181,20 +181,34 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
               });
             }}
           >
-            {tripsList.map((trip) => (
-              <AutocompleteItem key={String(trip.value)}>
-                {trip.label}
-              </AutocompleteItem>
-            ))}
-          </Autocomplete>
+            <Label>Trasa</Label>
+            <ComboBox.InputGroup>
+              <Input placeholder="Wybierz trasę" />
+              <ComboBox.Trigger />
+            </ComboBox.InputGroup>
+            <ComboBox.Popover>
+              <ListBox>
+                {tripsList.map((trip) => (
+                  <ListBox.Item
+                    id={String(trip.value)}
+                    key={String(trip.value)}
+                    textValue={trip.label}
+                  >
+                    {trip.label}
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </ComboBox.Popover>
+          </ComboBox>
         </div>
-        <div className="p-fluid">
-          <Autocomplete
+        <div>
+          <ComboBox
             id="ppt-name"
-            label="Uczestnik"
-            className="w-full"
-            defaultItems={suggestions}
-            selectedKey={state.participantName ? state.participantName : null}
+            selectedKey={
+              state.selectedParticipantId
+                ? String(state.selectedParticipantId)
+                : null
+            }
             inputValue={state.participantName}
             onInputChange={(value) => {
               dispatch({ type: "participant", value });
@@ -209,64 +223,71 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
               }
             }}
           >
-            {(suggestion) => (
-              <AutocompleteItem key={suggestion.id}>
-                {suggestion.nameExt}
-              </AutocompleteItem>
-            )}
-          </Autocomplete>
+            <Label>Uczestnik</Label>
+            <ComboBox.InputGroup>
+              <Input placeholder="Wpisz lub wybierz uczestnika" />
+              <ComboBox.Trigger />
+            </ComboBox.InputGroup>
+            <ComboBox.Popover>
+              <ListBox>
+                {suggestions.map((suggestion) => (
+                  <ListBox.Item
+                    id={String(suggestion.id)}
+                    key={suggestion.id}
+                    textValue={suggestion.nameExt}
+                  >
+                    {suggestion.nameExt}
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </ComboBox.Popover>
+          </ComboBox>
         </div>
         <div className="flex flex-col">
-          <Input
-            id="ppt-origin"
-            label="Klub / miasto"
-            onValueChange={(value) => dispatch({ value, type: "origin" })}
-            value={state.origin}
-          />
-        </div>
-        <div className="flex flex-col">
-          <Input
-            id="ppt-answers"
-            label="Odpowiedzi"
-            onValueChange={(value) => dispatch({ value, type: "answers" })}
-            isRequired
-            value={state.answers}
-          />
-        </div>
-        <div className="flex flex-col">
-          <I18nProvider locale="pl-PL">
-            <DateInput
-              id="ppt-date"
-              label="Data zgłoszenia"
-              maxValue={
-                new CalendarDate(
-                  new Date().getFullYear(),
-                  new Date().getMonth() + 1,
-                  new Date().getDate(),
-                )
+          <TextField name="ppt-origin">
+            <Label>Klub / miasto</Label>
+            <Input
+              id="ppt-origin"
+              onChange={(event) =>
+                dispatch({ value: event.target.value, type: "origin" })
               }
-              value={
-                state.date
-                  ? new CalendarDate(
-                      state.date.getFullYear(),
-                      state.date.getMonth() + 1,
-                      state.date.getDate(),
-                    )
-                  : null
-              }
-              onChange={(date) => {
-                if (date) {
-                  const jsDate = new Date(date.year, date.month - 1, date.day);
-                  dispatch({ value: jsDate, type: "date" });
-                } else {
-                  dispatch({ value: null, type: "date" });
-                }
-              }}
+              value={state.origin}
             />
-          </I18nProvider>
+          </TextField>
+        </div>
+        <div className="flex flex-col">
+          <TextField isRequired name="ppt-answers">
+            <Label>Odpowiedzi</Label>
+            <Input
+              id="ppt-answers"
+              onChange={(event) =>
+                dispatch({ value: event.target.value, type: "answers" })
+              }
+              value={state.answers}
+            />
+          </TextField>
+        </div>
+        <div className="flex flex-col">
+          <TextField name="ppt-date" isRequired>
+            <Label>Data zgłoszenia</Label>
+            <Input
+              id="ppt-date"
+              onChange={(event) => {
+                dispatch({
+                  value: event.target.value
+                    ? new Date(event.target.value)
+                    : null,
+                  type: "date",
+                });
+              }}
+              type="date"
+              value={state.date ? state.date.toISOString().slice(0, 10) : ""}
+            />
+            <FieldError>Pole jest wymagane</FieldError>
+          </TextField>
         </div>
         <div className="flex items-end">
-          <Button color="primary" onPress={onSubmit}>
+          <Button onPress={onSubmit} variant="primary">
             Zapisz
           </Button>
         </div>

@@ -1,9 +1,9 @@
 @import "tailwindcss";
+@import "@heroui/styles";
 @import "slick-carousel/slick/slick.css";
-@plugin "./hero.ts";
-@source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
 
 @theme {
+  --surface-secondary: oklch(0.98 0 0 / 1);
   --color-accent-light: #ffe8e6;
   --color-accent-dark: #ed422b;
 
