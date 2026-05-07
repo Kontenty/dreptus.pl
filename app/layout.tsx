@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./global.css";
 
 import { plPL } from "@clerk/localizations";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Nunito, Open_Sans } from "next/font/google";
 import { AosProvider } from "@/components/aos/AosProvider";
 import Footer from "@/components/Footer";
@@ -59,6 +60,7 @@ export default function Layout({ children }: Readonly<Props>) {
             </div>
           </Providers>
         </ClerkProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
