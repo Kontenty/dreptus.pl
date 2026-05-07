@@ -2,9 +2,11 @@
 
 import { Accordion } from "@heroui/react";
 
-export default function StarterPack({ content }: { content?: string }) {
+export default function StarterPack({
+  content,
+}: Readonly<{ content?: string }>) {
   return (
-    <Accordion variant="surface">
+    <Accordion variant="surface" className="shadow">
       <Accordion.Item id="pakiety">
         <Accordion.Heading>
           <Accordion.Trigger>
