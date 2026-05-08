@@ -6,9 +6,8 @@
 
 import { cwd } from "node:process";
 import nextEnv from "@next/env";
-import prismaPkg from "@prisma/client";
-
-const { PrismaClient } = prismaPkg;
+import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { PrismaClient } from "../lib/generated/prisma/client.js";
 
 const { loadEnvConfig } = nextEnv;
 
@@ -23,10 +22,22 @@ if (!dbUrl || !/^mysql:\/\/.+:.+@.+:.+$/.test(dbUrl)) {
   process.exit(1);
 }
 
+function parseDatabaseUrl(url) {
+  const parsed = new URL(url);
+  return {
+    host: parsed.hostname,
+    port: Number(parsed.port || 3306),
+    user: parsed.username,
+    password: parsed.password,
+    database: parsed.pathname.replace(/^\//, ""),
+  };
+}
+
 async function testDatabaseConnection() {
   console.log("🧪 Testing database connection...");
 
-  const prisma = new PrismaClient();
+  const adapter = new PrismaMariaDb(parseDatabaseUrl(dbUrl));
+  const prisma = new PrismaClient({ adapter });
 
   try {
     // Test the connection with a simple query

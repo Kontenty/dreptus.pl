@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import type {
   ParticipantOnTrip,
   PostResponse,
@@ -8,6 +7,7 @@ import type {
   TripsForMapResponse,
 } from "@/types";
 import { locationsSet } from "./data";
+import { Prisma } from "./generated/prisma/client";
 import { prisma } from "./prisma";
 
 import { sortTrips } from "./utils";

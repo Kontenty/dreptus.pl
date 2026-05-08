@@ -1,12 +1,10 @@
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_CON_URL")
-  shadowDatabaseUrl = env("DATABASE_CON_URL_SHADOW")
+  provider = "mysql"
 }
 
 model Participant {

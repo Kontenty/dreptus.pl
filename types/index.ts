@@ -1,4 +1,4 @@
-import type { TripParticipant } from "@prisma/client";
+import type { TripParticipant } from "@/lib/generated/prisma/client";
 
 export interface Post {
   ID: number;
