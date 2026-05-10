@@ -108,8 +108,10 @@ export const getTripBySlug = async (
       : [];
 
     return { ...trip, images, pdfImages };
-  } catch (_error) {
-    return null;
+  } catch (error) {
+    throw new Error(
+      `Failed to load trip by slug "${slug}": ${error instanceof Error ? error.message : "Unknown error"}`,
+    );
   }
 };
 
@@ -151,8 +153,10 @@ export const getTripsForMap = async (
         ...trip,
         id: Number(trip.ID),
         ID: Number(trip.ID),
-        lat: trip.lat.toString(),
-        lng: trip.lng.toString(),
+        lat:
+          trip.lat === null || trip.lat === undefined ? "" : String(trip.lat),
+        lng:
+          trip.lng === null || trip.lng === undefined ? "" : String(trip.lng),
         locations: trip.category_names
           ?.split(",")
           .filter((name: string) => locationsSet.has(name.toLowerCase()))
