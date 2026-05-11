@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import type {
   ParticipantOnTrip,
   PostResponse,
@@ -8,14 +7,17 @@ import type {
   TripsForMapResponse,
 } from "@/types";
 import { locationsSet } from "./data";
+import { Prisma as PrismaTool } from "./generated/prisma/client";
 import { prisma } from "./prisma";
 
 import { sortTrips } from "./utils";
 
 export const getTrips = async (limit?: number) => {
   const limitPart =
-    typeof limit === "number" ? Prisma.sql`LIMIT ${limit}` : Prisma.empty;
-  const query = Prisma.sql`SELECT p.ID, p.post_title, p.post_name, p.post_date, pm.meta_value AS number FROM wp_posts p
+    typeof limit === "number"
+      ? PrismaTool.sql`LIMIT ${limit}`
+      : PrismaTool.empty;
+  const query = PrismaTool.sql`SELECT p.ID, p.post_title, p.post_name, p.post_date, pm.meta_value AS number FROM wp_posts p
   JOIN wp_postmeta pm ON p.ID = pm.post_id
   WHERE post_type = 'listing' AND post_status = 'publish' AND pm.meta_key = '_cth_cus_field_zxr0feyjz'
   ORDER BY p.post_date DESC
@@ -58,7 +60,7 @@ export const getTripBySlug = async (
       "_cth_cus_field_i5t95ytae",
     ];
 
-    const query = Prisma.sql`
+    const query = PrismaTool.sql`
       SELECT 
         p.ID, 
         p.post_title, 
@@ -77,7 +79,7 @@ export const getTripBySlug = async (
         MAX(CASE WHEN pm.meta_key = '_cth_longitude' THEN pm.meta_value END) as lng,
         MAX(CASE WHEN pm.meta_key = '_cth_cus_field_i5t95ytae' THEN pm.meta_value END) as pdf_images
       FROM wp_posts p
-      LEFT JOIN wp_postmeta pm ON pm.post_id = p.ID AND pm.meta_key IN (${Prisma.join(metaKeys)})
+      LEFT JOIN wp_postmeta pm ON pm.post_id = p.ID AND pm.meta_key IN (${PrismaTool.join(metaKeys)})
       WHERE p.ID = ${id}
       GROUP BY p.ID
     `;
@@ -106,8 +108,10 @@ export const getTripBySlug = async (
       : [];
 
     return { ...trip, images, pdfImages };
-  } catch (_error) {
-    return null;
+  } catch (error) {
+    throw new Error(
+      `Failed to load trip by slug "${slug}": ${error instanceof Error ? error.message : "Unknown error"}`,
+    );
   }
 };
 
@@ -116,10 +120,10 @@ export const getTripsForMap = async (
 ): Promise<TripFormMap[]> => {
   const locationQuery =
     location && location !== "all"
-      ? Prisma.sql`AND t.slug = ${location}`
-      : Prisma.empty;
+      ? PrismaTool.sql`AND t.slug = ${location}`
+      : PrismaTool.empty;
 
-  const query = Prisma.sql`
+  const query = PrismaTool.sql`
       SELECT  CAST(p.ID AS UNSIGNED) as ID, 
         p.post_title as title, 
         p.post_name as slug, 
@@ -149,8 +153,10 @@ export const getTripsForMap = async (
         ...trip,
         id: Number(trip.ID),
         ID: Number(trip.ID),
-        lat: trip.lat.toString(),
-        lng: trip.lng.toString(),
+        lat:
+          trip.lat === null || trip.lat === undefined ? "" : String(trip.lat),
+        lng:
+          trip.lng === null || trip.lng === undefined ? "" : String(trip.lng),
         locations: trip.category_names
           ?.split(",")
           .filter((name: string) => locationsSet.has(name.toLowerCase()))
@@ -172,7 +178,7 @@ export const getLocations = async () => {
 };
 
 export const getPostsWithThumb = async (limit = 10): Promise<PostResponse[]> =>
-  prisma.$queryRaw<PostResponse[]>(Prisma.sql`
+  prisma.$queryRaw<PostResponse[]>(PrismaTool.sql`
   SELECT CAST(p.ID AS UNSIGNED) as ID, p.post_title,p.post_name, p.post_date, pm.meta_value as 'thumb_id', 
     (SELECT p2.guid  FROM wp_posts p2 WHERE p2.ID=pm.meta_value) 'thumb_url' FROM wp_posts p 
     JOIN wp_postmeta pm ON pm.post_id = p.ID 
@@ -203,7 +209,7 @@ export const getParticipantsPostsList = () =>
 export const getTripsParticipants = async () => {
   const data = await prisma.$queryRaw<
     ParticipantOnTrip[]
-  >(Prisma.sql`SELECT CAST(p.ID AS UNSIGNED) as ID,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) AS report_date, COUNT(tp.trip_id) AS pptCount 
+  >(PrismaTool.sql`SELECT CAST(p.ID AS UNSIGNED) as ID,  tp.trip_id, m.meta_value AS number, p.post_title, MAX(tp.report_date) AS report_date, COUNT(tp.trip_id) AS pptCount 
     FROM TripParticipant tp
       JOIN wp_posts p ON p.ID = tp.trip_id
       JOIN wp_postmeta m ON m.post_id = p.ID WHERE m.meta_key = '_cth_cus_field_zxr0feyjz'

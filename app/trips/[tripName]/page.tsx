@@ -15,7 +15,17 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
   const tripName = (await params).tripName;
   if (typeof tripName !== "string") return notFound();
   // Fetch main trip details
-  const rawDetails = await getTripBySlug(tripName);
+  let rawDetails: TripDetails | null;
+  try {
+    rawDetails = await getTripBySlug(tripName);
+  } catch (error) {
+    // Log the error for observability but treat as not found for UX
+    console.error(
+      `Failed to load trip "${tripName}":`,
+      error instanceof Error ? error.message : error,
+    );
+    return notFound();
+  }
   if (!rawDetails) return notFound();
   const tripDetails: TripDetails = {
     id: Number(rawDetails.ID),
@@ -67,8 +77,8 @@ export default async function TripDetailsPage({ params }: Readonly<Props>) {
     title: t.title,
     thumb_url: t.thumb_url,
     category_names: t.category_names,
-    lat: t.lat.toString(),
-    lng: t.lng.toString(),
+    lat: t.lat,
+    lng: t.lng,
   }));
 
   return <TripDetail trip={tripDetails} tripsList={tripsList} />;

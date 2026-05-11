@@ -10,8 +10,8 @@ import {
   TextField,
   toast,
 } from "@heroui/react";
-import type { Participant } from "@prisma/client";
 import { log } from "next-axiom";
+import type { Participant } from "@/lib/generated/prisma/client";
 
 type Nullable<T> = T | null;
 
