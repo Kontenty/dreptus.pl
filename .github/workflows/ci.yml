@@ -1,13 +1,9 @@
 name: CI
 
 on:
-  pull_request:
-    branches:
-      - main
-      - develop
   push:
     branches:
-      - '**'
+      - main
     paths:
       - 'app/**'
       - 'lib/**'
@@ -16,25 +12,59 @@ on:
       - 'public/**'
       - 'prisma/**'
       - 'types/**'
+      - 'proxy.ts'
+      - 'prisma.config.ts'
+      - 'vercel.json'
+      - 'lefthook.yml'
       - 'package.json'
       - 'next.config.*'
+      - '.github/workflows/**'
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'lib/**'
+      - 'components/**'
+      - 'scripts/**'
+      - 'public/**'
+      - 'prisma/**'
+      - 'types/**'
+      - 'proxy.ts'
+      - 'prisma.config.ts'
+      - 'vercel.json'
+      - 'lefthook.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'next.config.*'
+      - '.github/workflows/**'
+      - 'postcss.config.*'
+      - 'tsconfig.json'
+      - 'biome.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  lint-and-build:
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
-    environment: ${{ (github.event_name == 'pull_request' || github.ref != 'refs/heads/main') && 'preview' || 'production' }}
-    env:
-      MAIL_USER: ${{ secrets.MAIL_USER }}
-      MAIL_TO: ${{ secrets.MAIL_TO }}
-      MAIL_FROM: ${{ secrets.MAIL_FROM }}
-      MAIL_PASS: ${{ secrets.MAIL_PASS }}
-      MAIL_PORT: ${{ secrets.MAIL_PORT }}
-      MAIL_HOST: ${{ secrets.MAIL_HOST }}
-      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
-      DATABASE_CON_URL_SHADOW: ${{ secrets.DATABASE_CON_URL_SHADOW }}
+    timeout-minutes: 5
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v5
@@ -47,11 +77,192 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
+      - name: Cache Prisma client
+        id: cache-prisma
+        uses: actions/cache@v4
+        with:
+          path: lib/generated/prisma
+          key: prisma-${{ runner.os }}-${{ hashFiles('prisma/schema.prisma') }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            prisma-${{ runner.os }}-${{ hashFiles('prisma/schema.prisma') }}-
+
+      - name: Cache Next.js build cache
+        id: cache-next
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('app/**', 'lib/**', 'components/**', 'scripts/**', 'types/**', 'prisma/schema.prisma', 'next.config.*') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Generate Prisma client
+        if: steps.cache-prisma.outputs.cache-hit != 'true'
+        run: pnpm prisma generate
 
       - name: Run linter
         run: pnpm lint
 
+      - name: Run typecheck
+        run: pnpm typecheck
+
+  build-trusted:
+    name: Build Trusted
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: validate
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) }}
+    environment: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+    env:
+      MAIL_USER: ${{ secrets.MAIL_USER }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+      MAIL_FROM: ${{ secrets.MAIL_FROM }}
+      MAIL_PASS: ${{ secrets.MAIL_PASS }}
+      MAIL_PORT: ${{ vars.MAIL_PORT }}
+      MAIL_HOST: ${{ secrets.MAIL_HOST }}
+      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
+      DATABASE_CON_URL_SHADOW: ${{ secrets.DATABASE_CON_URL_SHADOW }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Cache Prisma client
+        id: cache-prisma
+        uses: actions/cache@v4
+        with:
+          path: lib/generated/prisma
+          key: prisma-${{ runner.os }}-${{ hashFiles('prisma/schema.prisma') }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            prisma-${{ runner.os }}-${{ hashFiles('prisma/schema.prisma') }}-
+
+      - name: Cache Next.js build cache
+        id: cache-next
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('app/**', 'lib/**', 'components/**', 'scripts/**', 'types/**', 'prisma/schema.prisma', 'next.config.*') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Generate Prisma client
+        if: steps.cache-prisma.outputs.cache-hit != 'true'
+        run: pnpm prisma generate
+
       - name: Build application
-        run: pnpm prisma generate && pnpm build
+        run: pnpm build
+
+      - name: Report cache status
+        if: always()
+        run: |
+          echo "| Cache | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Prisma | ${{ steps.cache-prisma.outputs.cache-hit == 'true' && 'HIT ✅' || 'MISS ❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Next.js | ${{ steps.cache-next.outputs.cache-hit == 'true' && 'HIT ✅' || 'MISS ❌' }} |" >> $GITHUB_STEP_SUMMARY
+
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: build-trusted
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.draft == false && github.event.pull_request.head.repo.full_name == github.repository && needs.build-trusted.result == 'success' }}
+    concurrency:
+      group: preview-deploy-pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    environment: preview
+    env:
+      MAIL_USER: ${{ secrets.MAIL_USER }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
+      MAIL_FROM: ${{ secrets.MAIL_FROM }}
+      MAIL_PASS: ${{ secrets.MAIL_PASS }}
+      MAIL_PORT: ${{ vars.MAIL_PORT }}
+      MAIL_HOST: ${{ vars.MAIL_HOST }}
+      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Cache Prisma client
+        id: cache-prisma
+        uses: actions/cache@v4
+        with:
+          path: lib/generated/prisma
+          key: prisma-${{ runner.os }}-${{ hashFiles('prisma/schema.prisma') }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            prisma-${{ runner.os }}-${{ hashFiles('prisma/schema.prisma') }}-
+
+      - name: Cache Next.js build cache
+        id: cache-next
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('app/**', 'lib/**', 'components/**', 'scripts/**', 'types/**', 'prisma/schema.prisma', 'next.config.*') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
+      - name: Cache Vercel CLI cache
+        uses: actions/cache@v4
+        with:
+          path: .vercel/cache
+          key: vercel-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            vercel-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Generate Prisma client
+        if: steps.cache-prisma.outputs.cache-hit != 'true'
+        run: pnpm prisma generate
+
+      - name: Pull Vercel Environment Information
+        run: npx --yes vercel pull --yes --environment=preview
+
+      - name: Build application
+        run: npx --yes vercel build
+
+      - name: Deploy to Vercel Preview
+        run: npx --yes vercel deploy --prebuilt
+
+      - name: Report cache status
+        if: always()
+        run: |
+          echo "| Cache | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Prisma | ${{ steps.cache-prisma.outputs.cache-hit == 'true' && 'HIT ✅' || 'MISS ❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Next.js | ${{ steps.cache-next.outputs.cache-hit == 'true' && 'HIT ✅' || 'MISS ❌' }} |" >> $GITHUB_STEP_SUMMARY
