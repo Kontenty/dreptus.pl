@@ -169,7 +169,7 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
   return (
     <section className="mb-8">
       <h2 className="text-2xl">Dodaj uczestnika trasy</h2>
-      <div className="grid w-[250px] grid-cols-3 gap-4">
+      <div className="grid w-230 grid-cols-3 gap-4">
         <div>
           <ComboBox
             id="ppt-trip"
