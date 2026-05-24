@@ -1,5 +1,8 @@
 name: Vercel Production Deployment
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
   workflow_run:
@@ -10,25 +13,30 @@ on:
 jobs:
   deploy-production:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     environment: production
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push') }}
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
     env:
+      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
+      MAIL_HOST: ${{ secrets.MAIL_HOST }}
       MAIL_USER: ${{ secrets.MAIL_USER }}
-      MAIL_TO: ${{ secrets.MAIL_TO }}
-      MAIL_FROM: ${{ secrets.MAIL_FROM }}
       MAIL_PASS: ${{ secrets.MAIL_PASS }}
       MAIL_PORT: ${{ vars.MAIL_PORT }}
-      MAIL_HOST: ${{ secrets.MAIL_HOST }}
-      DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      MAIL_FROM: ${{ secrets.MAIL_FROM }}
+      MAIL_TO: ${{ secrets.MAIL_TO }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v5
@@ -41,14 +49,52 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
+      - name: Cache Prisma client
+        id: cache-prisma
+        uses: actions/cache@v4
+        with:
+          path: lib/generated/prisma
+          key: prisma-${{ runner.os }}-${{ hashFiles('prisma/schema.prisma') }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            prisma-${{ runner.os }}-${{ hashFiles('prisma/schema.prisma') }}-
+
+      - name: Cache Next.js build cache
+        id: cache-next
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('app/**', 'lib/**', 'components/**', 'scripts/**', 'types/**', 'prisma/schema.prisma', 'next.config.*') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
+      - name: Cache Vercel CLI cache
+        uses: actions/cache@v4
+        with:
+          path: .vercel/cache
+          key: vercel-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            vercel-${{ runner.os }}-
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --ignore-scripts && pnpm prisma generate
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Generate Prisma client
+        if: steps.cache-prisma.outputs.cache-hit != 'true'
+        run: pnpm prisma generate
 
       - name: Pull Vercel Environment Information
-        run: npx --yes vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel pull --yes --environment=production
 
       - name: Build application
-        run: npx --yes vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel build --prod
 
       - name: Deploy to Vercel Production
-        run: npx --yes vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel deploy --prebuilt --prod
+
+      - name: Report cache status
+        if: always()
+        run: |
+          echo "| Cache | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Prisma | ${{ steps.cache-prisma.outputs.cache-hit == 'true' && 'HIT ✅' || 'MISS ❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Next.js | ${{ steps.cache-next.outputs.cache-hit == 'true' && 'HIT ✅' || 'MISS ❌' }} |" >> $GITHUB_STEP_SUMMARY
