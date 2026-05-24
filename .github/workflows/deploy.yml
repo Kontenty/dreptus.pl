@@ -20,6 +20,7 @@ jobs:
       MAIL_PORT: ${{ vars.MAIL_PORT }}
       MAIL_HOST: ${{ secrets.MAIL_HOST }}
       DATABASE_CON_URL: ${{ secrets.DATABASE_CON_URL }}
+      DATABASE_CON_URL_SHADOW: ${{ secrets.DATABASE_CON_URL_SHADOW }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
