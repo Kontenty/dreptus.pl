@@ -67,22 +67,5 @@
     "prisma": "^7.8.0",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.6.3"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.2.2",
-      "@types/react-dom": "19.2.2"
-    },
-    "onlyBuiltDependencies": [
-      "@clerk/shared",
-      "@heroui/shared-utils",
-      "@prisma/client",
-      "@prisma/engines",
-      "prisma",
-      "sharp"
-    ],
-    "ignoredBuiltDependencies": [
-      "lefthook"
-    ]
   }
 }
