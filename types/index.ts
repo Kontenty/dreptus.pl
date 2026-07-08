@@ -1,4 +1,9 @@
-import type { TripParticipant } from "@/lib/generated/prisma/client";
+import type {
+  Badge,
+  BadgeDegree,
+  BadgeScorer,
+  TripParticipant,
+} from "@/lib/generated/prisma/client";
 
 export interface Post {
   ID: number;
@@ -154,4 +159,18 @@ export type ParticipantOnTrip = Omit<
   pptCount: number | null;
   post_title: string;
   number: string;
+};
+
+export type BadgeWithDegrees = Badge & {
+  degrees: BadgeDegreeWithCount[];
+  _count: { scorers: number };
+};
+
+export type BadgeScorerWithDetails = BadgeScorer & {
+  participant: { id: number; name: string; origin: string };
+  degree: { id: number; name: string } | null;
+};
+
+export type BadgeDegreeWithCount = BadgeDegree & {
+  _count: { scorers: number };
 };

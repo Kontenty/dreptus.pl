@@ -1,11 +1,12 @@
 "use client";
 
-import { Tabs } from "@heroui/react";
-import type { ElementorData } from "@/types";
+import { Table, Tabs } from "@heroui/react";
+import type { BadgeScorerWithDetails, ElementorData } from "@/types";
 
 interface BadgeTabsProps {
   rulesPageContent?: ElementorData;
-  scorersContent?: string;
+  scorers?: BadgeScorerWithDetails[];
+  degrees?: { id: number; name: string }[];
 }
 
 interface ElementorNode {
@@ -42,8 +43,15 @@ const mapElementor = (node: ElementorNode) => {
 
 export default function BadgeTabs({
   rulesPageContent,
-  scorersContent,
+  scorers = [],
+  degrees = [],
 }: Readonly<BadgeTabsProps>) {
+  const groupedScorers = degrees.map((degree) => ({
+    degree,
+    scorers: scorers.filter((s) => s.degree_id === degree.id),
+  }));
+  const ungroupedScorers = scorers.filter((s) => s.degree_id == null);
+
   return (
     <Tabs>
       <Tabs.ListContainer>
@@ -81,12 +89,69 @@ export default function BadgeTabs({
         </article>
       </Tabs.Panel>
       <Tabs.Panel id="lista">
-        <article
-          className="format-table w-250"
-          dangerouslySetInnerHTML={{
-            __html: scorersContent ?? "",
-          }}
-        />
+        {groupedScorers.map(({ degree, scorers: degreeScorers }) => (
+          <div key={degree.id} className="mb-8">
+            <h3 className="text-xl font-semibold mb-2">{degree.name}</h3>
+            {degreeScorers.length > 0 ? (
+              <Table>
+                <Table.ScrollContainer>
+                  <Table.Content aria-label={`Zdobywcy stopnia ${degree.name}`}>
+                    <Table.Header>
+                      <Table.Column isRowHeader>Uczestnik</Table.Column>
+                      <Table.Column>Klub / miasto</Table.Column>
+                      <Table.Column>Data</Table.Column>
+                    </Table.Header>
+                    <Table.Body>
+                      {degreeScorers.map((scorer) => (
+                        <Table.Row key={scorer.id}>
+                          <Table.Cell>{scorer.participant.name}</Table.Cell>
+                          <Table.Cell>{scorer.participant.origin}</Table.Cell>
+                          <Table.Cell>
+                            {new Date(scorer.date).toLocaleDateString("pl-PL")}
+                          </Table.Cell>
+                        </Table.Row>
+                      ))}
+                    </Table.Body>
+                  </Table.Content>
+                </Table.ScrollContainer>
+              </Table>
+            ) : (
+              <p className="text-gray-500">Brak zdobywców</p>
+            )}
+          </div>
+        ))}
+        {ungroupedScorers.length > 0 && (
+          <div className="mb-8">
+            {degrees.length > 0 && (
+              <h3 className="text-xl font-semibold mb-2">Inne</h3>
+            )}
+            <Table>
+              <Table.ScrollContainer>
+                <Table.Content aria-label="Pozostali zdobywcy odznaki">
+                  <Table.Header>
+                    <Table.Column isRowHeader>Uczestnik</Table.Column>
+                    <Table.Column>Klub / miasto</Table.Column>
+                    <Table.Column>Data</Table.Column>
+                  </Table.Header>
+                  <Table.Body>
+                    {ungroupedScorers.map((scorer) => (
+                      <Table.Row key={scorer.id}>
+                        <Table.Cell>{scorer.participant.name}</Table.Cell>
+                        <Table.Cell>{scorer.participant.origin}</Table.Cell>
+                        <Table.Cell>
+                          {new Date(scorer.date).toLocaleDateString("pl-PL")}
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table.Content>
+              </Table.ScrollContainer>
+            </Table>
+          </div>
+        )}
+        {degrees.length === 0 && ungroupedScorers.length === 0 && (
+          <p className="text-gray-500">Brak danych o zdobywcach</p>
+        )}
       </Tabs.Panel>
     </Tabs>
   );

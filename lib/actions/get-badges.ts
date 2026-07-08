@@ -7,7 +7,12 @@ export async function getBadges(): Promise<BadgeWithDegrees[]> {
   try {
     const badges = await prisma.badge.findMany({
       include: {
-        degrees: { orderBy: { sort_order: "asc" } },
+        degrees: {
+          include: {
+            _count: { select: { scorers: true } },
+          },
+          orderBy: { sort_order: "asc" },
+        },
         _count: { select: { scorers: true } },
       },
       orderBy: { name: "asc" },
