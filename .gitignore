@@ -44,5 +44,6 @@ next-env.d.ts
 .github/copilot-instructions.md
 .agents/skills/
 .pi
+.opencode
 # clerk configuration (can include secrets)
 /.clerk/

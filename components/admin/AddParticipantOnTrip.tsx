@@ -144,8 +144,8 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
         <div>
           <ComboBox
             id="ppt-trip"
-            selectedKey={state.selectedTrip ? String(state.selectedTrip) : null}
-            onSelectionChange={(key) => {
+            value={state.selectedTrip ?? null}
+            onChange={(key) => {
               dispatch({
                 type: "trip",
                 value: key ? Number(key) : null,
@@ -161,8 +161,8 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
               <ListBox>
                 {tripsList.map((trip) => (
                   <ListBox.Item
-                    id={String(trip.value)}
-                    key={String(trip.value)}
+                    id={trip.value}
+                    key={trip.value}
                     textValue={trip.label}
                   >
                     {trip.label}

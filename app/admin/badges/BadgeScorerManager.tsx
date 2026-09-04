@@ -472,8 +472,8 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                 </div>
                 <div>
                   <Select
-                    selectedKey={scorerDegreeId ? String(scorerDegreeId) : null}
-                    onSelectionChange={(key) => {
+                    value={scorerDegreeId ?? null}
+                    onChange={(key) => {
                       setScorerDegreeId(key ? Number(key) : null);
                     }}
                     placeholder="Wybierz stopień"
@@ -487,7 +487,7 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                       <ListBox>
                         {selectedBadge.degrees.map((degree) => (
                           <ListBox.Item
-                            id={String(degree.id)}
+                            id={degree.id}
                             key={degree.id}
                             textValue={degree.name}
                           >
