@@ -96,8 +96,8 @@ export default function TripReportForm({ trips, onSuccess }: Readonly<Props>) {
                   render={({ field }) => (
                     <ComboBox
                       isRequired
-                      selectedKey={field.value || null}
-                      onSelectionChange={(key) => {
+                      value={field.value || null}
+                      onChange={(key) => {
                         field.onChange(key || "");
                       }}
                     >

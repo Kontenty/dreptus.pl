@@ -11,22 +11,13 @@ import {
   toast,
 } from "@heroui/react";
 import { log } from "next-axiom";
-import type { Participant } from "@/lib/generated/prisma/client";
+import { useReducer } from "react";
+import { useSWRConfig } from "swr";
+import { addParticipant } from "@/lib/actions/add-participant";
+import { formatDateTimeForDB } from "@/lib/utils";
+import ParticipantSearch from "./ParticipantSearch";
 
 type Nullable<T> = T | null;
-
-import { useReducer, useState } from "react";
-import useSWR, { useSWRConfig } from "swr";
-import { addParticipant } from "@/lib/actions/add-participant";
-import { getParticipants } from "@/lib/actions/get-participants";
-import { formatDateTimeForDB } from "@/lib/utils";
-
-type ExtParticipant = {
-  nameExt: string;
-  id: number;
-  name: string;
-  origin: string;
-};
 type TripOption = { label: string; value: number };
 type Props = { tripsList: TripOption[] };
 
@@ -98,27 +89,7 @@ function reducer(state: State, action: Action) {
 
 const AddParticipantOnTrip = ({ tripsList }: Props) => {
   const { mutate } = useSWRConfig();
-  const { data: participantsList } = useSWR<Participant[]>(
-    "get-participants",
-    () => getParticipants(),
-  );
-  const [suggestions, setSuggestions] = useState<ExtParticipant[]>([]);
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  const search = (value: string) => {
-    const name = value.toLowerCase();
-    const filteredList = participantsList
-      ?.filter((pp) => pp.name.toLowerCase().includes(name))
-      .map((pp) => ({ ...pp, nameExt: `${pp.name} - ${pp.origin}` }));
-    setSuggestions(filteredList ?? []);
-  };
-
-  const onParticipantSelect = ({ id, name, origin }: ExtParticipant) => {
-    dispatch({
-      type: "selectParticipant",
-      value: { id, origin, participant: name },
-    });
-  };
 
   const showWrongData = () => {
     toast.danger("Błąd", { description: "Wysłano nieprawidłowe dane" });
@@ -173,8 +144,8 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
         <div>
           <ComboBox
             id="ppt-trip"
-            selectedKey={state.selectedTrip ? String(state.selectedTrip) : null}
-            onSelectionChange={(key) => {
+            value={state.selectedTrip ?? null}
+            onChange={(key) => {
               dispatch({
                 type: "trip",
                 value: key ? Number(key) : null,
@@ -190,8 +161,8 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
               <ListBox>
                 {tripsList.map((trip) => (
                   <ListBox.Item
-                    id={String(trip.value)}
-                    key={String(trip.value)}
+                    id={trip.value}
+                    key={trip.value}
                     textValue={trip.label}
                   >
                     {trip.label}
@@ -202,46 +173,23 @@ const AddParticipantOnTrip = ({ tripsList }: Props) => {
           </ComboBox>
         </div>
         <div>
-          <ComboBox
-            id="ppt-name"
-            selectedKey={
-              state.selectedParticipantId
-                ? String(state.selectedParticipantId)
-                : null
-            }
-            inputValue={state.participantName}
+          <ParticipantSearch
+            selectedParticipantId={state.selectedParticipantId}
+            participantName={state.participantName}
+            onSelect={(participant) => {
+              dispatch({
+                type: "selectParticipant",
+                value: {
+                  id: participant.id,
+                  origin: participant.origin,
+                  participant: participant.name,
+                },
+              });
+            }}
             onInputChange={(value) => {
               dispatch({ type: "participant", value });
-              search(value);
             }}
-            onSelectionChange={(key) => {
-              if (key) {
-                const selected = suggestions.find((s) => s.id === Number(key));
-                if (selected) {
-                  onParticipantSelect(selected);
-                }
-              }
-            }}
-          >
-            <Label>Uczestnik</Label>
-            <ComboBox.InputGroup>
-              <Input placeholder="Wpisz lub wybierz uczestnika" />
-              <ComboBox.Trigger />
-            </ComboBox.InputGroup>
-            <ComboBox.Popover>
-              <ListBox>
-                {suggestions.map((suggestion) => (
-                  <ListBox.Item
-                    id={String(suggestion.id)}
-                    key={suggestion.id}
-                    textValue={suggestion.nameExt}
-                  >
-                    {suggestion.nameExt}
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </ComboBox.Popover>
-          </ComboBox>
+          />
         </div>
         <div className="flex flex-col">
           <TextField name="ppt-origin">

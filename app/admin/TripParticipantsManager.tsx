@@ -22,8 +22,8 @@ export default function TripParticipantsManager({
         <div className="flex flex-col mb-4 w-150">
           <ComboBox
             id="trip-select"
-            selectedKey={selectedTripId ? String(selectedTripId) : null}
-            onSelectionChange={(key) => {
+            value={selectedTripId ?? null}
+            onChange={(key) => {
               setSelectedTripId(key ? Number(key) : null);
             }}
           >
@@ -36,8 +36,8 @@ export default function TripParticipantsManager({
               <ListBox>
                 {tripsParticipants.map((trip) => (
                   <ListBox.Item
-                    id={String(trip.value)}
-                    key={String(trip.value)}
+                    id={trip.value}
+                    key={trip.value}
                     textValue={trip.label}
                   >
                     {trip.label}

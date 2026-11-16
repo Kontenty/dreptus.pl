@@ -1,0 +1,29 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Next.js 16 (App Router), TypeScript, React 19, Tailwind CSS 4, HeroUI v3, Prisma (MariaDB), Clerk auth, MapLibre GL, Vercel
+  Package manager: pnpm (single-package, not a monorepo)
+  Linting: Biome (check + format); pre-commit runs `biome check --write` on staged files
+  Type checking: `pnpm typecheck` (tsc -p tsconfig.json)
+  No test runner configured
+  Prisma client output: `lib/generated/prisma`; adapter: `@prisma/adapter-mariadb` via `DATABASE_CON_URL`
+  Domain: dreptus.pl — a Polish outdoor/trips platform with trip listings, participant tracking, badge scoring, and report submission
+  Data layer mixes Prisma with raw SQL against WordPress tables (schema in prisma/schema.prisma)
+  Auth: Clerk, only `/admin(.*)` routes are protected
+  Caching: `unstable_cache` with tag `trips` in `lib/db-cached.ts`; on-demand revalidation via `/api/revalidate`
+  Code intelligence: GitNexus indexed as dreptus.pl — run impact analysis before editing symbols
+  MCP: `@heroui/react-mcp` server for HeroUI v3 API lookups
+
+rules:
+  proposal:
+    - Must use `grill-me` skill
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours

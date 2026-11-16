@@ -7,6 +7,7 @@ import Hero from "@/components/hero";
 import Hr from "@/components/hr";
 import Main from "@/components/ui/Main";
 import { getTrips, getTripsCount } from "@/lib/db";
+import { getCachedBadgeScorerCounts } from "@/lib/db-cached";
 import { prisma } from "@/lib/prisma";
 import odznaki from "@/public/image/odznaki.jpg";
 import trip from "@/public/image/trip.jpg";
@@ -17,13 +18,15 @@ const getData = async () => {
     getTrips(10),
     getTripsCount(),
     prisma.tripParticipant.count(),
+    getCachedBadgeScorerCounts(),
   ]);
-  const [trips, tripsCount, participantsCount] = data;
+  const [trips, tripsCount, participantsCount, badgeCounts] = data;
 
   return {
     trips,
     tripsCount,
     participantsCount,
+    badgeCounts,
   };
 };
 
@@ -141,13 +144,53 @@ export default async function Home() {
               Turystyczno-Krajoznawczego, otrzymał zgodę Prezydium ZG PTTK na
               używanie znaku słowno-granicznego Towarzystwa.
             </p>
-            Mamy&nbsp;70 zdobywców odznaki “Z Dreptusiem po Polsce”, w tym:
-            <ul className="list-disc list-inside ml-6">
-              <li>3 w stopniu niebieskim (łącznie co najmniej 160 tras),</li>
-              <li>19 w stopniu żółtym (łącznie ponad 60 tras),</li>
-            </ul>
-            21&nbsp;“Z&nbsp;Dreptusiem Traktem Królewskim”&nbsp;i&nbsp;10 “Z
-            Dreptusiem po Dolinie Bugu”.
+            {(() => {
+              const badge = data?.badgeCounts?.find(
+                (b) => b.slug === "z-dreptusiem-po-polsce",
+              );
+              const totalScorers = badge?._count.scorers ?? 0;
+              const degreeCounts =
+                badge?.degrees.filter((d) => d._count.scorers > 0) ?? [];
+              return (
+                <>
+                  Mamy&nbsp;{totalScorers} zdobywców odznaki „Z Dreptusiem po
+                  Polsce"
+                  {degreeCounts.length > 0 && (
+                    <>
+                      , w tym:
+                      <ul className="list-disc list-inside ml-6">
+                        {degreeCounts.map((degree) => (
+                          <li key={degree.id}>
+                            {degree._count.scorers} w stopniu{" "}
+                            {degree.name.toLowerCase()}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </>
+              );
+            })()}
+            {(() => {
+              const traktem = data?.badgeCounts?.find(
+                (b) => b.slug === "z-dreptusiem-traktem-krolewskim",
+              );
+              const dolina = data?.badgeCounts?.find(
+                (b) => b.slug === "z-dreptusiem-po-dolinie-bugu",
+              );
+              const parts = [];
+              if (traktem && traktem._count.scorers > 0) {
+                parts.push(
+                  `${traktem._count.scorers}\u00A0„Z\u00A0Dreptusiem Traktem Królewskim"`,
+                );
+              }
+              if (dolina && dolina._count.scorers > 0) {
+                parts.push(
+                  `${dolina._count.scorers}\u00A0„Z\u00A0Dreptusiem po Dolinie Bugu"`,
+                );
+              }
+              return parts.length > 0 ? <span>{parts.join(" i ")}</span> : null;
+            })()}
             <br />
             <p>
               <strong>Z&nbsp;tras spłynęło {data?.participantsCount}</strong>{" "}

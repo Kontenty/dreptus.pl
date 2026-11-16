@@ -45,8 +45,6 @@ export async function GET(request: NextRequest) {
       }
     } else if (type === "packet") {
       await revalidatePath("/news");
-    } else if (type === "scorer" && slug) {
-      await revalidatePath(`/badges/${slug}`);
     }
 
     return NextResponse.json({ revalidated: true });

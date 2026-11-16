@@ -1,4 +1,3 @@
-import Main from "@/components/ui/Main";
 import { getTrips } from "@/lib/db";
 import { sortTrips } from "@/lib/utils";
 import TripParticipantsManager from "./TripParticipantsManager";
@@ -15,8 +14,16 @@ export default async function AdminPage() {
     .sort(sortTrips);
 
   return (
-    <Main>
+    <section aria-labelledby="admin-trips-title" className="space-y-6">
+      <header className="max-w-2xl space-y-2">
+        <h2 id="admin-trips-title" className="text-3xl">
+          Uczestnicy tras
+        </h2>
+        <p className="text-sm leading-6 text-[#566a6d] md:text-base">
+          Dodawaj zgloszenia i porzadkuj listy uczestnikow dla wybranej trasy.
+        </p>
+      </header>
       <TripParticipantsManager tripsParticipants={tripsParticipants} />
-    </Main>
+    </section>
   );
 }
