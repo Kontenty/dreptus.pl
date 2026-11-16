@@ -8,14 +8,12 @@ const schema = v.object({
   id: v.number(),
   name: v.pipe(v.string(), v.nonEmpty()),
   description: v.optional(v.string()),
-  sort_order: v.optional(v.number()),
 });
 
 type EditBadgeDegreeData = {
   id: number;
   name: string;
   description?: string;
-  sort_order?: number;
 };
 
 export async function editBadgeDegree(data: EditBadgeDegreeData) {
@@ -31,7 +29,6 @@ export async function editBadgeDegree(data: EditBadgeDegreeData) {
       data: {
         name: data.name,
         description: data.description ?? null,
-        sort_order: data.sort_order ?? 0,
       },
     });
 

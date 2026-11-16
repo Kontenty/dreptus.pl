@@ -166,62 +166,64 @@ const ParticipantsOnTrip = ({ tripId }: Props) => {
       ) : (
         <h2>Wybierz trasę aby zoabczyć uczestników</h2>
       )}
-      <Modal state={deleteState}>
-        <Modal.Backdrop>
-          <Modal.Container size="md">
-            <Modal.Dialog>
-              {({ close }) => (
-                <>
-                  <Modal.Header>
-                    <Modal.Heading>
-                      <div className="flex items-center gap-2">
-                        <ExclamationTriangleIcon className="w-5 h-5 text-red-300" />
-                        Zatwierdź
-                      </div>
-                    </Modal.Heading>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <span>
-                      Czy na pewno chcesz usunąć uczestnika
-                      <br />
-                      {selectedTripParticipant?.name} z trasy
-                    </span>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button variant="secondary" onPress={close}>
-                      <XMarkIcon className="w-4 h-4 mr-2" />
-                      Nie
-                    </Button>
-                    <Button variant="danger" onPress={deleteParticipant}>
-                      <CheckIcon className="w-4 h-4 mr-2" />
-                      Tak
-                    </Button>
-                  </Modal.Footer>
-                </>
-              )}
-            </Modal.Dialog>
-          </Modal.Container>
-        </Modal.Backdrop>
-      </Modal>
-      <Modal state={editState}>
-        <Modal.Backdrop>
-          <Modal.Container size="lg">
-            <Modal.Dialog>
-              {({ close }) => (
+      <Modal.Backdrop
+        isOpen={deleteState.isOpen}
+        onOpenChange={deleteState.setOpen}
+      >
+        <Modal.Container size="md">
+          <Modal.Dialog>
+            {({ close }) => (
+              <>
+                <Modal.Header>
+                  <Modal.Heading>
+                    <div className="flex items-center gap-2">
+                      <ExclamationTriangleIcon className="w-5 h-5 text-red-300" />
+                      Zatwierdź
+                    </div>
+                  </Modal.Heading>
+                </Modal.Header>
                 <Modal.Body>
-                  {selectedTripParticipant && (
-                    <EditParticipantOnTrip
-                      onAbort={close}
-                      onSubmit={saveParticipant}
-                      participant={selectedTripParticipant}
-                    />
-                  )}
+                  <span>
+                    Czy na pewno chcesz usunąć uczestnika
+                    <br />
+                    {selectedTripParticipant?.name} z trasy
+                  </span>
                 </Modal.Body>
-              )}
-            </Modal.Dialog>
-          </Modal.Container>
-        </Modal.Backdrop>
-      </Modal>
+                <Modal.Footer>
+                  <Button variant="secondary" onPress={close}>
+                    <XMarkIcon className="w-4 h-4 mr-2" />
+                    Nie
+                  </Button>
+                  <Button variant="danger" onPress={deleteParticipant}>
+                    <CheckIcon className="w-4 h-4 mr-2" />
+                    Tak
+                  </Button>
+                </Modal.Footer>
+              </>
+            )}
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
+      <Modal.Backdrop
+        isOpen={editState.isOpen}
+        onOpenChange={editState.setOpen}
+      >
+        <Modal.Container size="lg">
+          <Modal.Dialog aria-label="Edytuj uczestnika">
+            {({ close }) => (
+              <Modal.Body>
+                {selectedTripParticipant && (
+                  <EditParticipantOnTrip
+                    onAbort={close}
+                    onSubmit={saveParticipant}
+                    participant={selectedTripParticipant}
+                  />
+                )}
+              </Modal.Body>
+            )}
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
     </div>
   );
 };

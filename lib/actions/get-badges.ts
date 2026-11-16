@@ -11,7 +11,7 @@ export async function getBadges(): Promise<BadgeWithDegrees[]> {
           include: {
             _count: { select: { scorers: true } },
           },
-          orderBy: { sort_order: "asc" },
+          orderBy: [{ sort_order: "asc" }, { id: "asc" }],
         },
         _count: { select: { scorers: true } },
       },

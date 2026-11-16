@@ -66,6 +66,7 @@ export const getCachedBadgeScorers = unstable_cache(
       },
       orderBy: [
         { degree: { sort_order: "asc" } },
+        { degree: { id: "asc" } },
         { participant: { name: "asc" } },
       ],
     });
@@ -85,7 +86,7 @@ export const getCachedBadgeScorerCounts = unstable_cache(
           include: {
             _count: { select: { scorers: true } },
           },
-          orderBy: { sort_order: "asc" },
+          orderBy: [{ sort_order: "asc" }, { id: "asc" }],
         },
         _count: { select: { scorers: true } },
       },

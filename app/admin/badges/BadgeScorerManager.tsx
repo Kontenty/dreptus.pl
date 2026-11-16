@@ -11,7 +11,7 @@ import {
   Table,
   toast,
 } from "@heroui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ParticipantSearch from "@/components/admin/ParticipantSearch";
 import { addBadge } from "@/lib/actions/add-badge";
 import { addBadgeDegree } from "@/lib/actions/add-badge-degree";
@@ -23,6 +23,7 @@ import { editBadgeDegree } from "@/lib/actions/edit-badge-degree";
 import { editBadgeScorer } from "@/lib/actions/edit-badge-scorer";
 import { getBadgeScorers } from "@/lib/actions/get-badge-scorers";
 import { removeBadgeScorer } from "@/lib/actions/remove-badge-scorer";
+import { reorderBadgeDegrees } from "@/lib/actions/reorder-badge-degrees";
 import type {
   BadgeDegreeWithCount,
   BadgeScorerWithDetails,
@@ -54,7 +55,8 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
   // Degree form state
   const [degreeName, setDegreeName] = useState("");
   const [degreeDescription, setDegreeDescription] = useState("");
-  const [degreeSortOrder, setDegreeSortOrder] = useState("0");
+  const [savingDegree, setSavingDegree] = useState(false);
+  const savingDegreeRef = useRef(false);
   const [editingDegree, setEditingDegree] =
     useState<BadgeDegreeWithCount | null>(null);
 
@@ -69,13 +71,18 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
   );
   const [editingScorer, setEditingScorer] =
     useState<BadgeScorerWithDetails | null>(null);
+  const [editScorerDegreeId, setEditScorerDegreeId] = useState<number | null>(
+    null,
+  );
+  const [editScorerDate, setEditScorerDate] = useState("");
+  const [savingScorer, setSavingScorer] = useState(false);
+  const savingScorerRef = useRef(false);
 
   const getToday = () => new Date().toISOString().slice(0, 10);
 
   const resetDegreeForm = () => {
     setDegreeName("");
     setDegreeDescription("");
-    setDegreeSortOrder("0");
     setEditingDegree(null);
   };
 
@@ -84,17 +91,15 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
     setScorerParticipantName("");
     setScorerDegreeId(null);
     setScorerDate(getToday());
-    setEditingScorer(null);
   };
 
   const refreshBadges = async () => {
     const { getBadges } = await import("@/lib/actions/get-badges");
     const fresh = await getBadges();
     setBadges(fresh);
-    if (selectedBadge) {
-      const updated = fresh.find((b) => b.id === selectedBadge.id);
-      if (updated) setSelectedBadge(updated);
-    }
+    setSelectedBadge((current) =>
+      current ? (fresh.find((b) => b.id === current.id) ?? null) : null,
+    );
   };
 
   const loadScorers = async (badgeId: number) => {
@@ -110,8 +115,10 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
   };
 
   const handleSelectBadge = async (badge: BadgeWithDegrees) => {
+    if (savingDegreeRef.current) return;
     resetDegreeForm();
     resetScorerForm();
+    setEditingScorer(null);
     setScorers([]);
     setSelectedBadge(badge);
     await loadScorers(badge.id);
@@ -173,6 +180,7 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
         setScorers([]);
         resetDegreeForm();
         resetScorerForm();
+        setEditingScorer(null);
       }
       await refreshBadges();
     } catch (error) {
@@ -184,13 +192,14 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
 
   // Degree CRUD
   const handleSaveDegree = async () => {
-    if (!selectedBadge) return;
+    if (!selectedBadge || savingDegreeRef.current) return;
+    savingDegreeRef.current = true;
+    setSavingDegree(true);
     try {
       const data = {
         badge_id: selectedBadge.id,
         name: degreeName,
         description: degreeDescription || undefined,
-        sort_order: Number(degreeSortOrder),
       };
 
       if (editingDegree) {
@@ -207,11 +216,20 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
       toast.danger("Błąd", {
         description: error instanceof Error ? error.message : "Wystąpił błąd",
       });
+    } finally {
+      savingDegreeRef.current = false;
+      setSavingDegree(false);
     }
   };
 
   const handleDeleteDegree = async (degreeId: number) => {
-    if (!confirm("Czy na pewno chcesz usunąć ten stopień?")) return;
+    if (
+      savingDegreeRef.current ||
+      !confirm("Czy na pewno chcesz usunąć ten stopień?")
+    )
+      return;
+    savingDegreeRef.current = true;
+    setSavingDegree(true);
     try {
       await deleteBadgeDegree(degreeId);
       toast.success("Sukces", { description: "Stopień usunięty" });
@@ -220,6 +238,36 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
       toast.danger("Błąd", {
         description: error instanceof Error ? error.message : "Wystąpił błąd",
       });
+    } finally {
+      savingDegreeRef.current = false;
+      setSavingDegree(false);
+    }
+  };
+
+  const handleMoveDegree = async (index: number, direction: -1 | 1) => {
+    if (!selectedBadge || savingDegreeRef.current) return;
+    const target = index + direction;
+    if (target < 0 || target >= selectedBadge.degrees.length) return;
+    const degreeIds = selectedBadge.degrees.map((degree) => degree.id);
+    [degreeIds[index], degreeIds[target]] = [
+      degreeIds[target],
+      degreeIds[index],
+    ];
+    savingDegreeRef.current = true;
+    setSavingDegree(true);
+    try {
+      await reorderBadgeDegrees({ badgeId: selectedBadge.id, degreeIds });
+      await refreshBadges();
+    } catch (error) {
+      toast.danger("Błąd", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "Nie udało się zmienić kolejności",
+      });
+    } finally {
+      savingDegreeRef.current = false;
+      setSavingDegree(false);
     }
   };
 
@@ -227,26 +275,14 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
   const handleSaveScorer = async () => {
     if (!selectedBadge) return;
     try {
-      const participantId =
-        editingScorer?.participant_id ?? scorerParticipantId;
-
-      if (editingScorer) {
-        await editBadgeScorer({
-          id: editingScorer.id,
-          degree_id: scorerDegreeId ?? undefined,
-          date: scorerDate,
-        });
-        toast.success("Sukces", { description: "Zdobywca zaktualizowany" });
-      } else {
-        if (!participantId) return;
-        await addBadgeScorer({
-          participant_id: participantId,
-          badge_id: selectedBadge.id,
-          degree_id: scorerDegreeId ?? undefined,
-          date: scorerDate,
-        });
-        toast.success("Sukces", { description: "Zdobywca dodany" });
-      }
+      if (!scorerParticipantId) return;
+      await addBadgeScorer({
+        participant_id: scorerParticipantId,
+        badge_id: selectedBadge.id,
+        degree_id: scorerDegreeId ?? undefined,
+        date: scorerDate,
+      });
+      toast.success("Sukces", { description: "Zdobywca dodany" });
 
       resetScorerForm();
       await loadScorers(selectedBadge.id);
@@ -258,10 +294,39 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
     }
   };
 
+  const handleUpdateScorer = async () => {
+    if (!editingScorer || !selectedBadge || savingScorerRef.current) return;
+    if (!editScorerDate) {
+      toast.danger("Błąd", { description: "Wybierz datę" });
+      return;
+    }
+    savingScorerRef.current = true;
+    setSavingScorer(true);
+    try {
+      await editBadgeScorer({
+        id: editingScorer.id,
+        degree_id: editScorerDegreeId ?? undefined,
+        date: editScorerDate,
+      });
+      setEditingScorer(null);
+      toast.success("Sukces", { description: "Zdobywca zaktualizowany" });
+      await loadScorers(selectedBadge.id);
+      await refreshBadges();
+    } catch (error) {
+      toast.danger("Błąd", {
+        description: error instanceof Error ? error.message : "Wystąpił błąd",
+      });
+    } finally {
+      savingScorerRef.current = false;
+      setSavingScorer(false);
+    }
+  };
+
   const handleRemoveScorer = async (scorerId: number) => {
     if (!confirm("Czy na pewno chcesz usunąć tego zdobywcę?")) return;
     try {
       await removeBadgeScorer(scorerId);
+      if (editingScorer?.id === scorerId) setEditingScorer(null);
       toast.success("Sukces", { description: "Zdobywca usunięty" });
       if (selectedBadge) {
         await loadScorers(selectedBadge.id);
@@ -276,10 +341,8 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
 
   const startEditScorer = (scorer: BadgeScorerWithDetails) => {
     setEditingScorer(scorer);
-    setScorerParticipantId(scorer.participant_id);
-    setScorerParticipantName(scorer.participant.name);
-    setScorerDegreeId(scorer.degree_id);
-    setScorerDate(new Date(scorer.date).toISOString().slice(0, 10));
+    setEditScorerDegreeId(scorer.degree_id);
+    setEditScorerDate(new Date(scorer.date).toISOString().slice(0, 10));
   };
 
   return (
@@ -314,7 +377,11 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm" onPress={() => handleSelectBadge(badge)}>
+                  <Button
+                    size="sm"
+                    isDisabled={savingScorer || savingDegree}
+                    onPress={() => handleSelectBadge(badge)}
+                  >
                     Wybierz
                   </Button>
                   <Button
@@ -327,6 +394,7 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                   <Button
                     size="sm"
                     variant="danger"
+                    isDisabled={savingScorer || savingDegree}
                     onPress={() => handleDeleteBadge(badge.id)}
                   >
                     Usuń
@@ -348,7 +416,7 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
               <h3 className="font-semibold mb-2">
                 {editingDegree ? "Edytuj stopień" : "Dodaj stopień"}
               </h3>
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div>
                   <Label>Nazwa</Label>
                   <Input
@@ -365,16 +433,12 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                     placeholder="Wymagania..."
                   />
                 </div>
-                <div>
-                  <Label>Kolejność</Label>
-                  <Input
-                    type="number"
-                    value={degreeSortOrder}
-                    onChange={(e) => setDegreeSortOrder(e.target.value)}
-                  />
-                </div>
                 <div className="flex items-end gap-2">
-                  <Button onPress={handleSaveDegree} variant="primary">
+                  <Button
+                    onPress={handleSaveDegree}
+                    variant="primary"
+                    isDisabled={savingDegree}
+                  >
                     {editingDegree ? "Zapisz" : "Dodaj"}
                   </Button>
                   {editingDegree && (
@@ -399,31 +463,48 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                   <Table.Header>
                     <Table.Column isRowHeader>Nazwa</Table.Column>
                     <Table.Column>Opis</Table.Column>
-                    <Table.Column>Kolejność</Table.Column>
                     <Table.Column>Zdobywców</Table.Column>
                     <Table.Column>Akcje</Table.Column>
                   </Table.Header>
                   <Table.Body>
-                    {selectedBadge.degrees.map((degree) => {
+                    {selectedBadge.degrees.map((degree, index) => {
                       return (
                         <Table.Row key={degree.id}>
                           <Table.Cell>{degree.name}</Table.Cell>
                           <Table.Cell>{degree.description ?? "—"}</Table.Cell>
-                          <Table.Cell>{degree.sort_order}</Table.Cell>
                           <Table.Cell>{degree._count?.scorers ?? 0}</Table.Cell>
                           <Table.Cell>
                             <div className="flex gap-2">
                               <Button
                                 size="sm"
                                 variant="secondary"
+                                aria-label={`Przenieś ${degree.name} w górę`}
+                                isDisabled={savingDegree || index === 0}
+                                onPress={() => handleMoveDegree(index, -1)}
+                              >
+                                ↑
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="secondary"
+                                aria-label={`Przenieś ${degree.name} w dół`}
+                                isDisabled={
+                                  savingDegree ||
+                                  index === selectedBadge.degrees.length - 1
+                                }
+                                onPress={() => handleMoveDegree(index, 1)}
+                              >
+                                ↓
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="secondary"
+                                isDisabled={savingDegree}
                                 onPress={() => {
                                   setEditingDegree(degree);
                                   setDegreeName(degree.name);
                                   setDegreeDescription(
                                     degree.description ?? "",
-                                  );
-                                  setDegreeSortOrder(
-                                    degree.sort_order.toString(),
                                   );
                                 }}
                               >
@@ -432,6 +513,7 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                               <Button
                                 size="sm"
                                 variant="danger"
+                                isDisabled={savingDegree}
                                 onPress={() => handleDeleteDegree(degree.id)}
                               >
                                 Usuń
@@ -451,15 +533,12 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
           <section>
             <h2 className="text-2xl mb-4">Zdobywcy — {selectedBadge.name}</h2>
             <div className="mb-4 p-4 border rounded-lg">
-              <h3 className="font-semibold mb-2">
-                {editingScorer ? "Edytuj zdobywcę" : "Dodaj zdobywcę"}
-              </h3>
+              <h3 className="font-semibold mb-2">Dodaj zdobywcę</h3>
               <div className="grid grid-cols-4 gap-4">
                 <div>
                   <ParticipantSearch
                     selectedParticipantId={scorerParticipantId}
                     participantName={scorerParticipantName}
-                    isDisabled={Boolean(editingScorer)}
                     onSelect={(p) => {
                       setScorerParticipantId(p.id);
                       setScorerParticipantName(p.name);
@@ -507,19 +586,13 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                   />
                 </div>
                 <div className="flex items-end gap-2">
-                  <Button onPress={handleSaveScorer} variant="primary">
-                    {editingScorer ? "Zapisz" : "Dodaj"}
+                  <Button
+                    onPress={handleSaveScorer}
+                    variant="primary"
+                    isDisabled={savingScorer}
+                  >
+                    Dodaj
                   </Button>
-                  {editingScorer && (
-                    <Button
-                      onPress={() => {
-                        resetScorerForm();
-                      }}
-                      variant="secondary"
-                    >
-                      Anuluj
-                    </Button>
-                  )}
                 </div>
               </div>
             </div>
@@ -544,26 +617,109 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                         <Table.Row key={scorer.id}>
                           <Table.Cell>{scorer.participant.name}</Table.Cell>
                           <Table.Cell>{scorer.participant.origin}</Table.Cell>
-                          <Table.Cell>{scorer.degree?.name ?? "—"}</Table.Cell>
                           <Table.Cell>
-                            {new Date(scorer.date).toLocaleDateString("pl-PL")}
+                            {editingScorer?.id === scorer.id ? (
+                              <div className="flex items-center gap-2">
+                                <Select
+                                  aria-label={`Stopień: ${scorer.participant.name}`}
+                                  isDisabled={savingScorer}
+                                  value={editScorerDegreeId}
+                                  onChange={(key) =>
+                                    setEditScorerDegreeId(
+                                      key ? Number(key) : null,
+                                    )
+                                  }
+                                  placeholder="Bez stopnia"
+                                >
+                                  <Select.Trigger>
+                                    <Select.Value />
+                                    <Select.Indicator />
+                                  </Select.Trigger>
+                                  <Select.Popover>
+                                    <ListBox>
+                                      {selectedBadge.degrees.map((degree) => (
+                                        <ListBox.Item
+                                          id={degree.id}
+                                          key={degree.id}
+                                          textValue={degree.name}
+                                        >
+                                          {degree.name}
+                                        </ListBox.Item>
+                                      ))}
+                                    </ListBox>
+                                  </Select.Popover>
+                                </Select>
+                                <Button
+                                  size="sm"
+                                  variant="secondary"
+                                  isDisabled={savingScorer}
+                                  onPress={() => setEditScorerDegreeId(null)}
+                                >
+                                  Wyczyść
+                                </Button>
+                              </div>
+                            ) : (
+                              (scorer.degree?.name ?? "—")
+                            )}
+                          </Table.Cell>
+                          <Table.Cell>
+                            {editingScorer?.id === scorer.id ? (
+                              <Input
+                                aria-label={`Data: ${scorer.participant.name}`}
+                                disabled={savingScorer}
+                                type="date"
+                                value={editScorerDate}
+                                onChange={(e) =>
+                                  setEditScorerDate(e.target.value)
+                                }
+                              />
+                            ) : (
+                              new Date(scorer.date).toLocaleDateString("pl-PL")
+                            )}
                           </Table.Cell>
                           <Table.Cell>
                             <div className="flex gap-2">
-                              <Button
-                                size="sm"
-                                variant="secondary"
-                                onPress={() => startEditScorer(scorer)}
-                              >
-                                Edytuj
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="danger"
-                                onPress={() => handleRemoveScorer(scorer.id)}
-                              >
-                                Usuń
-                              </Button>
+                              {editingScorer?.id === scorer.id ? (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    variant="primary"
+                                    isDisabled={savingScorer}
+                                    onPress={handleUpdateScorer}
+                                  >
+                                    Zapisz
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    isDisabled={savingScorer}
+                                    onPress={() => setEditingScorer(null)}
+                                  >
+                                    Anuluj
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    isDisabled={savingScorer}
+                                    onPress={() => startEditScorer(scorer)}
+                                  >
+                                    Edytuj
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="danger"
+                                    isDisabled={savingScorer}
+                                    onPress={() =>
+                                      handleRemoveScorer(scorer.id)
+                                    }
+                                  >
+                                    Usuń
+                                  </Button>
+                                </>
+                              )}
                             </div>
                           </Table.Cell>
                         </Table.Row>
@@ -608,7 +764,7 @@ export default function BadgeScorerManager({ initialBadges }: Readonly<Props>) {
                       </div>
                       <div className="flex items-center gap-4">
                         <Label htmlFor="badge-slug" className="w-12 shrink-0">
-                          Slug
+                          Link
                         </Label>
                         <Input
                           id="badge-slug"

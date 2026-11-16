@@ -8,14 +8,12 @@ const schema = v.object({
   badge_id: v.number(),
   name: v.pipe(v.string(), v.nonEmpty()),
   description: v.optional(v.string()),
-  sort_order: v.optional(v.number()),
 });
 
 type AddBadgeDegreeData = {
   badge_id: number;
   name: string;
   description?: string;
-  sort_order?: number;
 };
 
 export async function addBadgeDegree(data: AddBadgeDegreeData) {
@@ -26,13 +24,19 @@ export async function addBadgeDegree(data: AddBadgeDegreeData) {
   }
 
   try {
-    const degree = await prisma.badgeDegree.create({
-      data: {
-        badge_id: data.badge_id,
-        name: data.name,
-        description: data.description ?? null,
-        sort_order: data.sort_order ?? 0,
-      },
+    const degree = await prisma.$transaction(async (tx) => {
+      const lastDegree = await tx.badgeDegree.findFirst({
+        where: { badge_id: data.badge_id },
+        orderBy: { sort_order: "desc" },
+      });
+      return tx.badgeDegree.create({
+        data: {
+          badge_id: data.badge_id,
+          name: data.name,
+          description: data.description ?? null,
+          sort_order: lastDegree ? lastDegree.sort_order + 1 : 0,
+        },
+      });
     });
 
     revalidatePath("/admin/badges");
