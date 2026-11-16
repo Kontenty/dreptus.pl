@@ -1,12 +1,12 @@
+import * as v from "valibot";
 import { describe, expect, it } from "vitest";
 import { reportSchema } from "@/lib/schemas/reportSchema";
-import invalidForm from "../__fixtures__/report-form-invalid.json";
 import validForm from "../__fixtures__/report-form-valid.json";
 
 describe("reportSchema", () => {
   describe("fullName validation", () => {
     it("rejects empty string", () => {
-      const result = reportSchema.safeParse({ ...validForm, fullName: "" });
+      const result = v.safeParse(reportSchema, { ...validForm, fullName: "" });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.issues[0].message).toBe("Imię i nazwisko jest wymagane");
@@ -14,7 +14,10 @@ describe("reportSchema", () => {
     });
 
     it("rejects less than 4 characters", () => {
-      const result = reportSchema.safeParse({ ...validForm, fullName: "ABC" });
+      const result = v.safeParse(reportSchema, {
+        ...validForm,
+        fullName: "ABC",
+      });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.issues[0].message).toBe(
@@ -24,14 +27,14 @@ describe("reportSchema", () => {
     });
 
     it("accepts valid name", () => {
-      const result = reportSchema.safeParse(validForm);
+      const result = v.safeParse(reportSchema, validForm);
       expect(result.success).toBe(true);
     });
   });
 
   describe("email validation", () => {
     it("rejects empty string", () => {
-      const result = reportSchema.safeParse({ ...validForm, email: "" });
+      const result = v.safeParse(reportSchema, { ...validForm, email: "" });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.issues[0].message).toBe("Adres email jest wymagany");
@@ -39,7 +42,7 @@ describe("reportSchema", () => {
     });
 
     it("rejects invalid format", () => {
-      const result = reportSchema.safeParse({
+      const result = v.safeParse(reportSchema, {
         ...validForm,
         email: "invalid-email",
       });
@@ -50,14 +53,14 @@ describe("reportSchema", () => {
     });
 
     it("accepts valid email", () => {
-      const result = reportSchema.safeParse(validForm);
+      const result = v.safeParse(reportSchema, validForm);
       expect(result.success).toBe(true);
     });
   });
 
   describe("trip validation", () => {
     it("rejects empty string", () => {
-      const result = reportSchema.safeParse({ ...validForm, trip: "" });
+      const result = v.safeParse(reportSchema, { ...validForm, trip: "" });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.issues[0].message).toBe("Trasa jest wymagana");
@@ -67,7 +70,7 @@ describe("reportSchema", () => {
 
   describe("date validation", () => {
     it("rejects empty string", () => {
-      const result = reportSchema.safeParse({ ...validForm, date: "" });
+      const result = v.safeParse(reportSchema, { ...validForm, date: "" });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.issues[0].message).toBe("Data jest wymagana");
@@ -77,7 +80,7 @@ describe("reportSchema", () => {
 
   describe("location validation", () => {
     it("rejects empty string", () => {
-      const result = reportSchema.safeParse({ ...validForm, location: "" });
+      const result = v.safeParse(reportSchema, { ...validForm, location: "" });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.issues[0].message).toBe(
@@ -89,7 +92,7 @@ describe("reportSchema", () => {
 
   describe("gdprChecked validation", () => {
     it("rejects false", () => {
-      const result = reportSchema.safeParse({
+      const result = v.safeParse(reportSchema, {
         ...validForm,
         gdprChecked: false,
       });
@@ -100,14 +103,14 @@ describe("reportSchema", () => {
     });
 
     it("accepts true", () => {
-      const result = reportSchema.safeParse(validForm);
+      const result = v.safeParse(reportSchema, validForm);
       expect(result.success).toBe(true);
     });
   });
 
   describe("valid input passes", () => {
     it("accepts valid form data from fixture", () => {
-      const result = reportSchema.safeParse(validForm);
+      const result = v.safeParse(reportSchema, validForm);
       expect(result.success).toBe(true);
     });
   });

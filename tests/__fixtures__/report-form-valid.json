@@ -1,0 +1,10 @@
+{
+  "fullName": "Jan Kowalski",
+  "date": "2026-06-30",
+  "trip": "Pieszo",
+  "location": "Warszawa",
+  "email": "jan@example.com",
+  "gdprChecked": true,
+  "add": "null",
+  "questions": []
+}

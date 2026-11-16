@@ -14,7 +14,8 @@
     "lint": "biome check",
     "format": "biome format --write",
     "postinstall": "prisma generate && lefthook install",
-    "typecheck": "tsc -p tsconfig.json"
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
   },
   "dependencies": {
     "@clerk/localizations": "^4.3.0",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.2.6",
     "@tailwindcss/postcss": "^4.1.17",
+    "@testing-library/react": "^16.3.3",
     "@types/aos": "^3.0.4",
     "@types/node": "22",
     "@types/nodemailer": "^7.0.2",
@@ -61,11 +63,13 @@
     "@types/react-dom": "19.2.2",
     "@types/react-slick": "^0.23.10",
     "autoprefixer": "^10.4.21",
+    "jsdom": "^31.0.1",
     "lefthook": "^2.1.6",
     "node-html-parser": "^6.1.5",
     "postcss": "^8.5.6",
     "prisma": "^7.8.0",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^5.1.0"
   }
 }
